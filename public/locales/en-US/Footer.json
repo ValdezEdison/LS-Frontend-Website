@@ -1,0 +1,23 @@
+{
+    "downloadApp": "Download our app",
+    "sections": {
+      "aboutUs": "About Us",
+      "whoWeAre": "Who We Are",
+      "careers": "Join Our Team",
+      "lifeAtLS": "Life at Local Secrets",
+      "partners": "Partners",
+      "ambassadors": "Ambassadors",
+      "lsManagers": "Local Secret Managers",
+      "resources": "Resources",
+      "contact": "Contact Us",
+      "helpCenter": "Help Center",
+      "lsManagersLogin": "LS Managers Login"
+    },
+    "legal": {
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "cookies": "Cookie Settings"
+    },
+    "copyright": "Copyright Local Secrets 2024"
+  }
+  

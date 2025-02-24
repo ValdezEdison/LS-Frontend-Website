@@ -1,0 +1,12 @@
+{
+    "placeholder": "City, country, events...",
+    "ariaLabel": "Search for a city, country, or events",
+    "suggestions": [
+      "Lisbon, Portugal",
+      "Liverpool, United Kingdom",
+      "Lisbon Historic District, Portugal",
+      "Downtown Lisbon, Portugal",
+      "Liguria, Italy"
+    ]
+  }
+  

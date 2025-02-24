@@ -1,0 +1,176 @@
+.placeCard {
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.placeImage {
+  width: 180px;
+  height: 124px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.placeInfo {
+  flex: 1;
+}
+
+.placeName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 8px 0;
+}
+
+.placeLocation,
+.placeCategory {
+  font-size: 12px;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.placeRating {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ratingScore {
+  background-color: #212d94;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
+.ratingInfo {
+  font-size: 10px;
+  color: #000000;
+}
+
+.ratingText {
+  font-weight: 600;
+}
+
+.placeActions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 146px;
+}
+
+.viewMoreButton,
+.addToTripButton {
+  width: 100%;
+  padding: 10px 13px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.viewMoreButton {
+  background-color: #f4c031;
+  color: #000000;
+  border: none;
+  margin-bottom: 8px;
+  transition: all ease .3s;
+}
+
+.viewMoreButton:hover{
+  background-color: #e5b22e;
+}
+
+.addToTripButton {
+  background-color: #fff;
+  color: #000000;
+  border: 1px solid #212d94;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ease .3s;
+}
+
+.addToTripButton:hover{
+  border-color: #000;
+  color: #212d94;
+}
+
+.addIcon {
+  width: 20px;
+  height: 20px;
+  /* border: solid 1px #212d94; */
+  margin-right: 8px;
+  position: relative;
+  background: url(../../../images/add-icon.png);
+}
+
+.placeImageContainer{
+  position: relative;
+}
+
+.favIcon{
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  top: 4px;
+  right: 20px;
+  transition: all ease .3s;
+}
+
+.favIcon::after{
+  position: absolute;
+  content: '';
+  background: url(../../../images/heart.png) no-repeat 0 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 14px;
+  height: 12px;
+  cursor: pointer;
+}
+
+.favIcon.clicked::after{
+  background: url(../../../images/heart-fill.png) no-repeat 0 0;
+}
+
+
+@media (max-width: 991px) {
+  .placeCard {
+    flex-direction: column;
+  }
+
+  .placeImage {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .placeActions {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .favIcon {
+    top: 10px;
+    right: 25px;
+}
+
+}
+
+
+@media screen and (max-width:480px) {
+  .favIcon {
+    top: 8px;
+    right: 5px;
+  }
+}

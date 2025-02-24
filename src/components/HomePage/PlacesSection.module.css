@@ -1,0 +1,173 @@
+.placesSection {
+  /* padding: 119px 112px 30px; */
+  padding: 40px 0 0px;
+  color: #000000;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  padding-bottom: 8px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-top: 8px; */
+  gap: 10px;
+}
+
+.sectionSubtitle {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.seeMoreLink {
+  font-size: 14px;
+  text-decoration: underline;
+  color: inherit;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #828282;
+  margin: 10px 0 16px;
+}
+
+.placesList {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.placeCard {
+  /* width: calc(25% - 21px); */
+  /* min-width: 240px; */
+  padding: 0px 14px !important;
+}
+
+
+.placeImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.placeName {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+:global(.slick-next),
+:global(.slick-prev) {
+  width: 40px !important;
+  height: 40px !important;
+  background: #F4C031 !important;
+  border-radius: 8px !important;
+  transform: translateY(-50%) !important;
+  top: 42% !important;
+}
+
+:global(.slick-next) {
+  right: -5px !important;
+}
+
+:global(.slick-prev) {
+  left: -5px !important;
+  z-index: 1 !important;
+}
+
+:global(.slick-slider) {
+  margin: 0 -14px !important;
+}
+
+:global(.slick-prev:before),
+:global(.slick-next:before) {
+  position: absolute;
+  content: '' !important;
+  background: url('../../../public/images/arrow-1.svg') no-repeat 0 0;
+  width: 17px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:global(.slick-prev:before) {
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+.carouselSkeletonWrapper {
+  position: relative;
+}
+
+.carouselNav {
+  position: absolute !important;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.leftNav {
+  left: -20px;
+}
+
+.rightNav {
+  right: -20px;
+}
+
+
+@media (max-width: 991px) {
+  /* .placesSection {
+    padding: 60px 20px 30px;
+  } */
+
+  .placesList {
+    justify-content: center;
+  }
+
+  .placeCard {
+    /* width: calc(50% - 14px); */
+  }
+
+  :global(.slick-next) {
+    right: -5px !important;
+  }
+
+  :global(.slick-prev) {
+    left: -5px !important;
+  }
+
+
+}
+
+@media screen and (max-width:640px) {
+  :global(.slick-next) {
+    right: 2px !important;
+  }
+
+  :global(.slick-prev) {
+    left: -0px !important;
+  }
+
+  :global(.slick-next),
+  :global(.slick-prev) {
+    width: 30px !important;
+    height: 30px !important;
+ 
+  }
+}
+
+
+@media (max-width: 480px) {
+  .placeCard {
+    /* width: 100%; */
+  }
+
+  .sectionHeader {
+    flex-wrap: wrap;
+  }
+}

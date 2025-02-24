@@ -1,0 +1,116 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  background-color: #fff;
+  color: #000000;
+  position: relative;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.logo {
+  width: 60px;
+  height: 50px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.mainNav {
+  display: flex;
+  gap: 28px;
+}
+
+.navButton {
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 7px 12px;
+  border-radius: 12px;
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.secondaryNav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.navLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #151820;
+}
+
+.userIcon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.languageContainer{
+  position: relative;
+  cursor: pointer;
+}
+
+.navItemActive {
+  background-color: rgba(232, 234, 244, 1);
+  color: rgba(21, 24, 32, 1);
+}
+
+@media (max-width: 991px) {
+  .header {
+    padding: 12px 0px;
+    /* flex-wrap: wrap; */
+    gap: 10px;
+  }
+
+  .logoContainer {
+    flex-wrap: wrap;
+  }
+
+  .mainNav {
+    flex-wrap: wrap;
+    display: none;
+  }
+
+  .userActions {
+    margin-top: 10px;
+  }
+
+  .secondaryNav {
+    display: none;
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "nav": {
+      "places": "Places",
+      "events": "Events",
+      "itineraries": "Itineraries",
+      "explore": "Explore",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "login": "Sign in"
+  }
+  

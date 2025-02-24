@@ -1,0 +1,131 @@
+.searchContainer {
+  display: flex;
+  max-width: 550px;
+  flex-direction: column;
+  font: 400 14px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  position: relative;
+}
+
+.searchBar {
+  border-radius: 12px 12px 12px 12px;
+  border: 2px solid var(--Desactivado, #718295);
+  background-color: #fff;
+  display: flex;
+  gap: 8px;
+  color: #010101;
+  flex-wrap: wrap;
+  padding: 17px 19px;
+  transition: all ease .3s;
+  align-items: center;
+}
+
+.searchBar.open{
+  border-radius: 12px 12px 0 0;
+  border: 2px solid var(--Desactivado, #212D94);
+}
+
+.searchIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 24px;
+}
+
+.searchInput {
+  flex-grow: 1;
+  /* width: 475px; */
+  flex-basis: auto;
+  margin: auto 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: 'Source Sans Pro';
+}
+
+.suggestionsContainer {
+  border-radius: 0 0 12px 12px;
+  border: 2px solid var(--Color-principal-azul, #212d94);
+  background-color: #fff;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  color: #000000;
+  padding: 3px 2px;
+  position: absolute;
+  top: 60px;
+  display: none;
+  z-index: 2;
+}
+
+.suggestionsContainer.active {
+  display: block;
+}
+
+.suggestionItem {
+  background-color: #fff;
+  display: flex;
+  /* min-height: 45px; */
+  align-items: center;
+  gap: 10px;
+  justify-content: start;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: all ease .3s;
+}
+
+.suggestionItem:hover {
+  background-color: #F1F5FA;
+}
+
+.suggestionIcon {
+  align-self: stretch;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin: auto 0;
+  /* background: url(../../assets/images/map-icon.png) no-repeat 0 0; */
+  background-size: 100%;
+}
+
+.suggestionText {
+  align-self: stretch;
+  margin: auto 0;
+}
+
+.searchClose{
+  background: url(../../../images/close.png) no-repeat 0 0;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .searchInput,
+  .suggestionsContainer {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .searchContainer {
+    font-size: 12px;
+  }
+
+  .suggestionIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .suggestionItem {
+    padding: 10px;
+  }
+
+  .searchBar{
+    padding: 14px 10px;
+  }
+
+  .suggestionsContainer{
+    top: 52px;
+  }
+}

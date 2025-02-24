@@ -1,0 +1,109 @@
+.sidebar {
+  max-width: 282px;
+  width: 100%;
+  margin-right: 24px;
+}
+
+.mapContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.mapFrame{
+  height: 157px;
+  border-radius: 12px;
+}
+
+.map {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.mapPin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  height: 42px;
+}
+
+.viewMapButton {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #212d94;
+  color: #fff;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.filters {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 0;
+}
+
+.filterTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+  margin: 0;
+  padding: 0 14px 8px 14px;
+  border-bottom: solid 1px #E0E0E0;
+}
+
+.categoryFilters,
+.ratingFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 12px 12px;
+ 
+}
+
+.categoryFilters{
+  border-bottom: solid 1px #E0E0E0;
+}
+
+.ratingFilters {
+  padding: 12px 12px 0px;
+}
+
+.categoryLabel,
+.ratingLabel {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: #000000;
+}
+
+.categoryCheckbox,
+.ratingCheckbox {
+  margin-right: 8px;
+}
+
+.ratingTitle {
+  font-size: 14px;
+  /* margin-top: 12px; */
+  /* margin-bottom: 8px; */
+  padding: 12px 12px 0px;
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
