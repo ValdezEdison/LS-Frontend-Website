@@ -11,7 +11,7 @@ const HeroSection = () => {
   return (
     <section className="hero-section">
       <img
-        src={images[1] ? images[1]?.image.fullsize : Banner}
+        src={ Banner}
         alt="Vibrant cityscape showcasing local attractions"
         className="hero-image"
       />
