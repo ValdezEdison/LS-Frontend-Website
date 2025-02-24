@@ -8,6 +8,7 @@ import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchImages } from "../../features/common/defaultImages/ImageAction";
+import { setLanguage } from "../../utils/Helper";
 
 const Header = () => {
 
@@ -46,6 +47,7 @@ const Header = () => {
 
   } else {
     console.log('No language data found in localStorage.');
+    setLanguage("es", "images/spain.png", "Español");
   }
 
 
