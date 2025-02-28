@@ -1,0 +1,40 @@
+{
+    "availablePlaces": "{{count}} places available",
+    "showMore": "Show more",
+    "places": {
+        "place_list": "{{placeNames}}"
+    },
+    "search": {
+        "placeholder": "Search your destination",
+        "iconAlt": "Search"
+    },
+    "filter": {
+        "select": "Select",
+        "country": "Country",
+        "destination": "Destination",
+        "sortBy": "Sort by",
+        "countries": [
+            "Spain",
+            "Portugal",
+            "France"
+        ],
+        "destinations": [
+            "Lisbon",
+            "Lagos",
+            "Leiria"
+        ],
+        "orderOptions": [
+            "Ascending price",
+            "Descending price"
+        ]
+    },
+    "loginBanner": {
+        "imageAlt": "Sign in",
+        "message": "Log in and start planning your next adventure",
+        "button": "Sign in"
+    },
+    
+    "recommendedPlaces": {
+        "title": "Other people also viewed"
+    }
+}

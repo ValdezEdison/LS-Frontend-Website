@@ -1,4 +1,4 @@
-import apiService from "../../../services/ApiService";
+import apiService from "../../services/ApiService";
 
 const eventService = {
     getEvents: async () => {

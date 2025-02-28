@@ -55,6 +55,8 @@
   top: 60px;
   display: none;
   z-index: 2;
+  max-height: 320px;
+  overflow-y: scroll;
 }
 
 .suggestionsContainer.active {

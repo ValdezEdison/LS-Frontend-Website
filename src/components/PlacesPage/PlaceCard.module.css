@@ -146,6 +146,8 @@
 @media (max-width: 991px) {
   .placeCard {
     flex-direction: column;
+    max-width: calc(50% - 6px);
+    flex-basis: calc(50% - 6px);
   }
 
   .placeImage {
@@ -165,6 +167,15 @@
     right: 25px;
 }
 
+}
+
+@media screen and (max-width:640px) {
+
+  .placeCard {
+    max-width: 100%;
+    flex-basis: 100%;
+  }
+  
 }
 
 

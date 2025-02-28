@@ -152,9 +152,9 @@ button,input,select,textarea{
 }
 
 .check-container {
-  display: block;
+  display: flex;
   position: relative;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   margin-bottom: 0px;
   cursor: pointer;
   font-size: 10px;
@@ -162,6 +162,13 @@ button,input,select,textarea{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  align-items: center;
+  gap: 5px;
+
+}
+
+.filter-check .check-container {
+  font-size: 16px;
 }
 
 /* Hide the browser's default checkbox */
@@ -175,13 +182,14 @@ button,input,select,textarea{
 
 /* Create a custom checkbox */
 .checkmark {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   height: 12px;
   width: 12px;
   background-color: transparent;
   border:solid 1px #828282;
+  display: inline-block;
 }
 
 /* On mouse-over, add a grey background color */

@@ -11,17 +11,20 @@ import styles from "./HomePage.module.css";
 import AppPromotion from "../../components/HomePage/AppPromotion";
 import SearchComponent from "../../components/HomePage/SearchComponent"
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlaces } from "../../features/home/places/PlaceAction";
-import { fetchEvents } from "../../features/home/events/EventAction";
-import { useEffect } from "react";
+import { fetchPlaces } from "../../features/places/PlaceAction";
+import { fetchEvents } from "../../features/events/EventAction";
+import { useContext, useEffect } from "react";
 import History from "../../components/HomePage/History";
 import { useTranslation } from "react-i18next";
 import { LSLogo2_2 } from "../../components/common/Images";
 import { CommonWidgetSkeleton } from "../../components/skeleton/HomePage/CommonWidgetSkeleton";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const HomePage = () => {
   
   const { t } = useTranslation("History");
+
+  const { language } = useContext(LanguageContext);
 
 
   const dispatch = useDispatch();
@@ -35,7 +38,7 @@ const HomePage = () => {
   useEffect(() => {
       dispatch(fetchPlaces());
       dispatch(fetchEvents());
-  }, [dispatch]);
+  }, [dispatch, language]);
 
 
   return (

@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./PlaceCard.module.css";
+import { PlaceHolderImg2 } from "../common/Images";
 
 const PlaceCard = ({ place }) => {
   return (
     <div className={styles.placeCard}>
       <div className={styles.placeImageContainer}>
-        <img src={place.image} alt={place.name} className={styles.placeImage} />
+        <img src={place.images[0]? place.images[0]?.midsize : PlaceHolderImg2} alt={place.name} className={styles.placeImage} />
         <div className={`${styles.favIcon} ${styles.clicked}`}></div>
       </div>
       <div className={styles.placeInfo}>

@@ -1,0 +1,60 @@
+import React from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import styles from "../../PlacesPage/MainContent.module.css";
+
+const PlaceCardSkeleton = () => {
+  return (
+    <div className={styles.placeCard}>
+      <div className={styles.placeImageContainer}>
+        <Skeleton height={150} />
+      </div>
+      <div className={styles.placeInfo}>
+        {/* <Skeleton height={20} width={`80%`} /> */}
+        {/* <Skeleton height={20} width={`60%`} />
+        <Skeleton height={20} width={`40%`} />
+        <Skeleton height={30} width={`100%`} /> */}
+      </div>
+      <div className={styles.placeActions}>
+        {/* <Skeleton height={40} width={`45%`} />
+        <Skeleton height={40} width={`45%`} /> */}
+      </div>
+    </div>
+  );
+};
+
+const RecommendedPlacesSkeleton = () => {
+  return (
+    <div className={styles.recommendedPlaces}>
+      <h2 className={styles.recommendedTitle}><Skeleton width={200} /></h2>
+      <div className={styles.recommendedList}>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className={styles.recommendedItem}>
+            <Skeleton height={150} />
+            <Skeleton height={20} width={`70%`} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const MainContentSkeleton = () => {
+  return (
+    <main className={styles.mainContent}>
+      <div className={styles.header}>
+        <h1 className={styles.title}><Skeleton width={300} /></h1>
+      </div>
+      <div className={styles.placesList}>
+        {[...Array(10)].map((_, index) => (
+          <PlaceCardSkeleton key={index} />
+        ))}
+      </div>
+      <RecommendedPlacesSkeleton />
+    </main>
+  );
+};
+
+export { MainContentSkeleton, PlaceCardSkeleton, RecommendedPlacesSkeleton }; 
+
+

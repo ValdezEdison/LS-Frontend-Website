@@ -56,9 +56,10 @@ const Sidebar = () => {
             <span key={index} className={styles.ratingLabel}>
               {/* <input type="checkbox" className={styles.ratingCheckbox} /> */}
               <label key={index} className="check-container">
-                {rating.label}
+                
                 <input type="checkbox"/>
                 <span className="checkmark"></span>
+                {rating.label}
               </label>
             </span>
           ))}

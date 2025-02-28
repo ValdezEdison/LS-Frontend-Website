@@ -1,7 +1,7 @@
 // src/features/places/PlaceAction.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import placeService from './PlaceService';
-import { handleApiError } from '../../../utils/Helper';
+import { handleApiError } from '../../utils/Helper';
 
 // Fetch all places
 export const fetchPlaces = createAsyncThunk(
@@ -23,6 +23,18 @@ export const fetchPlaceById = createAsyncThunk(
   async (placeId, { rejectWithValue }) => {
     try {
       const response = await placeService.getPlace(placeId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+export const fetchPlacesByCityId = createAsyncThunk(
+  'places/fetchPlacesByCityId',
+  async ({ cityId, page = 1, preview = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getPlacesByCityId(cityId, page, preview);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

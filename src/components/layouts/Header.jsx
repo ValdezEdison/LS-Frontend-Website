@@ -1,107 +1,90 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styles from "./Header.module.css";
 import LanguageSelector from "../common/LanguageSelector";
-import { getLanguageData } from "../../utils/Helper";
+import { getLanguageData, setLanguage } from "../../utils/Helper";
 import { useTranslation } from "react-i18next";
 import { LSLogo2_1, Favorite } from "../common/Images";
 import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchImages } from "../../features/common/defaultImages/ImageAction";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const Header = () => {
 
-  const { t } = useTranslation("Header");
-
-  const [showNavBar, setShownavBar] = useState(false)
+  const { t, i18n } = useTranslation("Header");
+  const { language, setLanguage } = useContext(LanguageContext); // Use context to manage language
+  const [showNavBar, setShownavBar] = useState(false);
   const [showLanguageOption, setShowLanguageOption] = useState(false);
   const languagesRef = useRef(null);
   const mobNavRef = useRef(null);
 
   const location = useLocation();
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleNavigation = (path) => {
     navigate(path);
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchLanguages());
     dispatch(fetchImages());
-  }, [dispatch]);
+  }, [dispatch, language]); // Re-fetch data when language changes
 
   const handleClickHamburger = () => {
-    setShownavBar(!showNavBar)
-  }
+    setShownavBar(!showNavBar);
+  };
 
   const handleClickLanguage = () => {
-    setShowLanguageOption(!showLanguageOption)
-  }
-
-  const languageData = getLanguageData();
-  if (languageData) {
-
-  } else {
-    console.log('No language data found in localStorage.');
-  }
-
+    setShowLanguageOption(!showLanguageOption);
+  };
 
   const handleClickOutside = (event) => {
-    // Check if the click is outside both the SearchInput and the dropdown
-    if (
-      languagesRef.current &&
-      !languagesRef.current.contains(event.target)
-
-    ) {
-      setShowLanguageOption(false); // Close the dropdown
+    if (languagesRef.current && !languagesRef.current.contains(event.target)) {
+      setShowLanguageOption(false);
     }
   };
-
-
-  useEffect(() => {
-    // Add event listener when the dropdown is shown
-    if (showLanguageOption) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showLanguageOption]); // Re-run effect when showRegionDropDown changes
 
   const handleClickOutsideMobNav = (event) => {
-    // Check if the click is outside both the SearchInput and the dropdown
-    if (
-      mobNavRef.current &&
-      !mobNavRef.current.contains(event.target)
-    ) {
-      setShownavBar(false); // Close the dropdown
+    if (mobNavRef.current && !mobNavRef.current.contains(event.target)) {
+      setShownavBar(false);
     }
   };
 
   useEffect(() => {
-    // Add event listener when the dropdown is shown
-    if (showNavBar) {
-      document.addEventListener('mousedown', handleClickOutsideMobNav);
+    if (showLanguageOption) {
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutsideMobNav);
-    } 
-
-    // Cleanup the event listener on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutsideMobNav);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showLanguageOption]);
+
+  useEffect(() => {
+    if (showNavBar) {
+      document.addEventListener("mousedown", handleClickOutsideMobNav);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutsideMobNav);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideMobNav);
     };
   }, [showNavBar]);
 
   const isActive = (path) => {
     return location.pathname === path;
   };
+
+  const handleLanguageChange = (code, flag, name) => {
+    i18n.changeLanguage(code); // Update i18n
+    setLanguage(code, flag, name); // Update context and localStorage
+    setShowLanguageOption(false); // Close the language selector
+  };
+
+  const languageData = getLanguageData();
 
   return (
     <header>
@@ -156,7 +139,7 @@ const Header = () => {
                   className={styles.icon}
                   onClick={handleClickLanguage}
                 />
-                {showLanguageOption ? <LanguageSelector setShowLanguageOption={setShowLanguageOption} languagesRef={languagesRef} /> : ""}
+                {showLanguageOption ? <LanguageSelector languagesRef={languagesRef} handleLanguageChange={handleLanguageChange} /> : ""}
 
               </div>
               <img

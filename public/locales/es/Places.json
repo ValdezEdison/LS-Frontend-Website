@@ -1,0 +1,39 @@
+{
+  "availablePlaces": "{{count}} lugares disponibles",
+  "showMore": "Mostrar más",
+  "places": {
+    "place_list": "{{placeNames}}"
+  },
+  "search": {
+    "placeholder": "Busca tu destino",
+    "iconAlt": "Buscar"
+  },
+  "filter": {
+    "select": "Selecciona",
+    "country": "País",
+    "destination": "Destino",
+    "sortBy": "Ordenar por",
+    "countries": [
+      "España",
+      "Portugal",
+      "Francia"
+    ],
+    "destinations": [
+      "Lisboa",
+      "Lagos",
+      "Leiria"
+    ],
+    "orderOptions": [
+      "Precio ascendente",
+      "Precio descendente"
+    ]
+  },
+  "loginBanner": {
+    "imageAlt": "Iniciar sesión",
+    "message": "Inicia sesión y empieza a organizar tu próxima aventura",
+    "button": "Iniciar sesión"
+  },
+  "recommendedPlaces": {
+    "title": "Otras personas también han visto"
+  }
+}

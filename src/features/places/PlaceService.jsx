@@ -1,4 +1,4 @@
-import apiService from "../../../services/ApiService";
+import apiService from "../../services/ApiService";
 
 const PlaceService = {
     getPlaces: async () => {
@@ -7,6 +7,11 @@ const PlaceService = {
     getPlace: async (placeId) => {
         return apiService.get(`/places/${placeId}`);
     },
+
+    getPlacesByCityId: async (cityId, page = 1, preview = 1) => {
+        return apiService.get('/sites/?type=place&city_id=' + cityId + '&page=' + page + '&preview=' + preview);
+    },
+
     createPlace: async (placeData) => {
         return apiService.post('/places', placeData);
     },

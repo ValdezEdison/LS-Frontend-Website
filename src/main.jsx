@@ -7,12 +7,15 @@ import "./global.css";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import i18n from "./i18n";
+import { LanguageProvider } from "./context/LanguageContext";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <LanguageProvider>
     <Provider store={store}>
       <App />
     </Provider>
+    </LanguageProvider>
  </React.StrictMode>
 )
 

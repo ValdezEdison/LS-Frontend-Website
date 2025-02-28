@@ -229,4 +229,18 @@
   .promotionalContent {
     width: 100%;
   }
+
+  .placesList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+
+}
+
+@media screen and (max-width: 640px) {
+  .placesList {
+    flex-direction: column; 
+  }
+
 }
