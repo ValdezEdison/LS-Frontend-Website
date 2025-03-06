@@ -75,7 +75,7 @@ const Header = () => {
   }, [showNavBar]);
 
   const isActive = (path) => {
-    return location.pathname === path;
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
 
   const handleLanguageChange = (code, flag, name) => {
@@ -85,6 +85,13 @@ const Header = () => {
   };
 
   const languageData = getLanguageData();
+
+  if (languageData) {
+
+  } else {
+    console.log('No language data found in localStorage.');
+    setLanguage("es", "images/spain.png", "Español");
+  }
 
   return (
     <header>

@@ -34,7 +34,7 @@ AxiosInstance.interceptors.request.use(
     }
 
     config.headers['Accept-Language'] = currentLanguage;
-    // config.headers['language'] = currentLanguage;
+    config.headers['language'] = currentLanguage;
     // config.headers['X-Platform'] = '1';
 
     return config;

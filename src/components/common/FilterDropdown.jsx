@@ -11,13 +11,19 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
   };
 
   const handleCheckboxChange = (id) => {
-    if (Array.isArray(selectedId)) {
-      const updatedSelection = selectedId.includes(id)
-        ? selectedId.filter((item) => item !== id)
-        : [...selectedId, id];
-      onSelect(updatedSelection);
+    let selectedArray = selectedId ? String(selectedId).split(",") : [];
+
+    if (selectedArray.includes(String(id))) {
+      selectedArray = selectedArray.filter((item) => item !== String(id));
+    } else {
+      selectedArray.push(String(id));
     }
+
+    const updatedSelection = selectedArray.join(",");
+    onSelect(updatedSelection);
   };
+  
+
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -39,7 +45,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
           <div className={styles.filterHeaderContent}>
             <div className={styles.filterLabel}>{label}</div>
             <div className={styles.filterTitle}>
-              { `${label.toLowerCase()}`}
+              {`${label.toLowerCase()}`}
               {/* { options &&options.find((opt) => opt.id === selectedId)?.name || label.toLowerCase()} */}
             </div>
           </div>
@@ -53,8 +59,9 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
 
       {isOpen && !disabled && (
         <div className={styles.filterContent}>
-          <div className={styles.filterselectedItem}>
-            {onSearch && (
+          {onSearch && (
+            <div className={styles.filterselectedItem}>
+
               <CustomInput
                 type="text"
                 name="search"
@@ -63,20 +70,21 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
                 placeholder={`Search ${label}`}
                 className={styles.selectedItem}
               />
-            )}
 
-            {searchQuery.length > 0 && (
-              <div
-                className={styles.closeIcon}
-                role="button"
-                tabIndex="0"
-                aria-label="Close selection"
-                onClick={() => onSearch("")}
-              />
-            )}
-          </div>
+
+              {searchQuery.length > 0 && (
+                <div
+                  className={styles.closeIcon}
+                  role="button"
+                  tabIndex="0"
+                  aria-label="Close selection"
+                  onClick={() => onSearch("")}
+                />
+              )}
+            </div>
+          )}
           <ul className={`${styles.filterChecklist} filter-check`}>
-          {Array.isArray(options) && options.length > 0 && options.map((option, index) => (
+            {Array.isArray(options) && options.length > 0 && options.map((option, index) => (
               <li key={index} onClick={() => {
                 if (!checkbox) {
                   onSelect(option.id);
@@ -85,7 +93,12 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
               }} onChange={!checkbox ? undefined : () => handleCheckboxChange(option.id)}>
                 {checkbox ? (
                   <label className="check-container">
-                    <CustomInput type="checkbox" checked={selectedId.includes(option.id)} />
+                    <CustomInput
+                      type="checkbox"
+                      checked={String(selectedId).split(",").includes(String(option.id))}
+                    />
+
+
                     <span className="checkmark"></span>
                     {option?.name}
                   </label>

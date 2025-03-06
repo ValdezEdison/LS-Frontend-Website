@@ -26,7 +26,7 @@ const FilterBar = ({ state, setState, countries, cities, updateState }) => {
           label={`${t("filter.select")} ${t("filter.destination")}`}
           options={cities}
           selectedId={state.selectedDestinations}
-          onSelect={(value) => updateState("selectedDestination", value)}
+          onSelect={(value) => setState((prevState) => ({ ...prevState, selectedDestinations: value, selectedDestinationId: null }))}
           onSearch={(query) => updateState("destinationSearchQuery", query)}
           searchQuery={state.destinationSearchQuery}
           disabled={!state.selectedCountryId} 

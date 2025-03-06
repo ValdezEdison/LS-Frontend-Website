@@ -1,0 +1,19 @@
+.showMoreButton {
+    display: block;
+    width: 146px;
+    margin: 21px auto;
+    padding: 10px 16px;
+    background-color: #fff;
+    border: 1px solid #212d94;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000001;
+    cursor: pointer;
+    transition: all ease .3s;
+  }
+  
+  .showMoreButton:hover{
+    border-color:#000 ;
+    color: #212d94;
+  }

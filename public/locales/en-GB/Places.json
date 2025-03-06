@@ -24,8 +24,10 @@
             "Leiria"
         ],
         "orderOptions": [
-            "Ascending price",
-            "Descending price"
+            "All",
+            "Most Recent",
+            "Highest Rated",
+            "Our Recommendation"
         ]
     },
     "loginBanner": {
@@ -33,8 +35,20 @@
         "message": "Log in and start planning your next adventure",
         "button": "Sign in"
     },
-    
     "recommendedPlaces": {
         "title": "Other people also viewed"
+    },
+    "placeCard": {
+        "place_image": "Place image",
+        "perfect": "Perfect",
+        "excellent": "Excellent",
+        "very_good": "Very Good",
+        "good": "Good",
+        "average": "Average",
+        "bad": "Bad",
+        "terrible": "Terrible",
+        "comments": "Comments",
+        "view_more": "View more",
+        "add_to_trip": "Add to trip"
     }
 }

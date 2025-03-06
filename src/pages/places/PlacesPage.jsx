@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useEffect, useContext, useState, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { debounce } from 'lodash';
 import Header from "../../components/layouts/Header";
@@ -8,23 +8,27 @@ import Footer from "../../components/layouts/Footer";
 import PromotionalBanner from "../../components/PlacesPage/PromotionalBanner";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
-import { fetchPlaces, fetchPlacesByCityId } from "../../features/places/PlaceAction";
+import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations } from "../../features/places/PlaceAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
-import { use } from "react";
+import Newsletter from "../../components/common/Newsletter";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
   const { language } = useContext(LanguageContext);
 
+const initialRender = useRef(true);
+
   const [state, setState] = useState({
     selectedCountryId: null,
     selectedDestinationId: null,
-    selectedDestinations: [],
+    selectedDestinations: "",
     selectedOrder: "",
     searchQuery: "",
     destinationSearchQuery: "",
+    selectedCountryName: "",
+    page: 1,
   });
 
   const { loading: placesLoading } = useSelector((state) => state.places);
@@ -36,9 +40,10 @@ const PlacesPage = () => {
     dispatch(fetchPlaces());
     dispatch(fetchCountries());
     dispatch(fetchCities({}));
+    dispatch(fetchGeoLocations({cityId: "", type: "place"}));
   }, [dispatch, language]);
 
-    const debouncedFetchCountries = useCallback(
+  const debouncedFetchCountries = useCallback(
     debounce((query) => {
       dispatch(fetchCountries(query));
     }, 500),
@@ -65,25 +70,38 @@ const PlacesPage = () => {
 
   useEffect(() => {
     if (state.selectedCountryId) {
-        if (state.destinationSearchQuery.trim() !== "") {
-            debouncedFetchCities(state.selectedCountryId, state.destinationSearchQuery);
-        } else {
-            dispatch(fetchCities({ countryId: state.selectedCountryId, searchQuery: "" }));
-        }
+      if (state.destinationSearchQuery.trim() !== "") {
+        debouncedFetchCities(state.selectedCountryId, state.destinationSearchQuery);
+      } else {
+        dispatch(fetchCities({ countryId: state.selectedCountryId, searchQuery: "" }));
+      }
     } else if (state.destinationSearchQuery.trim() !== "") {
-        debouncedFetchCities(null, state.destinationSearchQuery);
+      debouncedFetchCities(null, state.destinationSearchQuery);
     } else {
-        dispatch(fetchCities({}));
+      dispatch(fetchCities({}));
     }
     return () => debouncedFetchCities.cancel();
-}, [state.selectedCountryId, state.destinationSearchQuery, debouncedFetchCities, dispatch]);
+  }, [state.selectedCountryId, state.destinationSearchQuery, debouncedFetchCities, dispatch]);
 
 
-useEffect(() => {
-    if (state.selectedDestinationId) {
-        dispatch(fetchPlacesByCityId({cityId: state.selectedDestinationId, page: 1, preview: 1}));
-    } 
-}, [state.selectedDestinationId, dispatch]);
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false; // Skip the first render
+      return;
+    }
+
+    dispatch(fetchPlacesByCityId({
+      cityId: state.selectedDestinationId !== null
+        ? state.selectedDestinationId
+        : state.selectedDestinations,
+      country: state.selectedCountryName,
+      page: state.page,
+      preview: 1
+    }));
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, dispatch]);
+
+
+
 
 
 
@@ -97,9 +115,9 @@ useEffect(() => {
           <Sidebar />
           {placesLoading ? <MainContentSkeleton /> : (
             <MainContent
-             state={state} setState={setState}
-             countries={countries}
-             cities={cities} // Pass cities data to MainContent
+              state={state} setState={setState}
+              countries={countries}
+              cities={cities} // Pass cities data to MainContent
             />
           )}
         </div>
@@ -107,6 +125,7 @@ useEffect(() => {
           <PromotionalBanner />
         </div>
       </div>
+      <Newsletter />
       <Footer />
     </div>
   );
