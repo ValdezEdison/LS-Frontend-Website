@@ -1,0 +1,75 @@
+.mapSection {
+  width: 282px;
+}
+
+.mapContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1.796;
+}
+
+.mapImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.locationPin {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 53px;
+}
+
+.viewMapButton {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #212d94;
+  color: #fff;
+  border: none;
+  padding: 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.openingHours {
+  margin-top: 23px;
+}
+
+.openingHoursTitle {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.hoursList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.hoursItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.day {
+  font-weight: 400;
+}
+
+.hours {
+  font-weight: 400;
+}
+
+@media (max-width: 991px) {
+  .mapSection {
+    width: 100%;
+  }
+}

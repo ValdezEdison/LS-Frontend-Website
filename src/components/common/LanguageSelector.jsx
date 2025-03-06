@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import LanguageOption from "./LanguageOption";
 import styles from "./LanguageSelector.module.css";
 import { setLanguage } from "../../utils/Helper";
@@ -6,26 +6,13 @@ import { getLanguageData } from "../../utils/Helper";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Spain, UK, US } from "./Images";
+import { LanguageContext } from "../../context/LanguageContext";
 
-const LanguageSelector = ({ setShowLanguageOption, languagesRef }) => {
+const LanguageSelector = ({ languagesRef, handleLanguageChange }) => {
   const { languages } = useSelector((state) => state.languages);
-  console.log(languages, 'languages')
-  const { i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState("es");
 
-  useEffect(() => {
-    const languageData = getLanguageData();
-    if (languageData) {
-      setSelectedLanguage(languageData.code);
-    }
-  }, []);
+  const { language } = useContext(LanguageContext); // Get the current language from context
 
-  const handleLanguageChange = (code, flag, language) => {
-    i18n.changeLanguage(code);
-    setSelectedLanguage(code);
-    setLanguage(code, flag, language);
-    setShowLanguageOption(false);
-  };
 
   // Filter out 'fr' and 'pt' languages
   const filteredLanguages = languages.filter(
@@ -46,7 +33,7 @@ const LanguageSelector = ({ setShowLanguageOption, languagesRef }) => {
           key={lang.code}
           flag={flagImages[lang.code]} // Use the corresponding flag image
           language={lang.name}
-          selected={selectedLanguage === lang.code}
+          selected={language === lang.code}
           onClick={() => handleLanguageChange(lang.code, flagImages[lang.code], lang.name)}
         />
       ))}

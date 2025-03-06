@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import RegionSearch from "./RegionSearch";
-import SearchInput from "./SearchInput";
+import SearchInput from "../common/SearchInput";
 import styles from "./SearchComponent.module.css";
 import { America } from "../common/Images";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ function SearchComponent() {
 
   const { t } = useTranslation("SearchComponent");
   const dropdownRef = useRef(null); // Ref for the dropdown container
-  const sugguestionRef = useRef(null); // Ref for the SearchInput container
+  const suggestionRef = useRef(null); // Ref for the SearchInput container
   const [showRegionDropDown, setShowRegionDropDown] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
@@ -54,13 +54,13 @@ function SearchComponent() {
 
 
   const handleClickOutside = (event) => {
-    console.log(event, 'fffff');
+    
     // Check if the click is outside both the SearchInput and the dropdown
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target) ||
-      sugguestionRef.current &&
-      !sugguestionRef.current.contains(event.target)
+      suggestionRef.current &&
+      !suggestionRef.current.contains(event.target)
     ) {
       setShowRegionDropDown(false); // Close the dropdown
       setShowSuggestionDropDown(false); // Close the dropdown
@@ -100,7 +100,7 @@ function SearchComponent() {
       <div className={styles.searchWrapperMain}>
         <div className={styles.searchContainer}>
           <div >
-            <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} sugguestionRef={sugguestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/>
+            <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} suggestionRef={suggestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/>
           </div>
           <div className={`${styles.regionSearchContainer} ${showRegionDropDown ? styles.active : ""}`} ref={dropdownRef}>
             <h2 className={styles.regionSearchTitle}>{t("regionSearchTitle")}</h2>

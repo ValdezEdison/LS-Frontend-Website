@@ -161,6 +161,7 @@
   border-radius: 24px;
   overflow: hidden;
   margin-top: 36px;
+  margin-bottom: 80px;
 }
 
 .promotionalImage {
@@ -198,6 +199,32 @@
   cursor: pointer;
 }
 
+.placesSelectedItemsList{
+  padding: 0 0 14px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.placesSelectedItem{
+  border: solid 1px #F4C031;
+  border-radius: 8px;
+  padding: 6px 12px 6px 12px;
+  font-size: 12px;
+  color: #151820;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.placesSelectedClose{
+  background: url(../../../public/images/close.png) no-repeat 0 0;
+  background-size: 100%;
+  width: 10px;
+  height: 9px;
+  cursor: pointer;
+}
+
 @media (max-width: 991px) {
   .header,
   .filters {
@@ -229,4 +256,18 @@
   .promotionalContent {
     width: 100%;
   }
+
+  .placesList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+
+}
+
+@media screen and (max-width: 640px) {
+  .placesList {
+    flex-direction: column; 
+  }
+
 }

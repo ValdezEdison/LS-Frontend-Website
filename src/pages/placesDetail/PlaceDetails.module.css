@@ -1,0 +1,33 @@
+.lugaresContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 26px 0;
+}
+
+.contentWrapper {
+  display: flex;
+  gap: 38px;
+}
+
+.infoSection {
+  flex: 1;
+}
+
+.museumDescription {
+  color: #000;
+  font-size: 14px;
+  line-height: 25px;
+  margin-top: 26px;
+}
+
+@media (max-width: 991px) {
+  .contentWrapper {
+    flex-direction: column;
+  }
+}

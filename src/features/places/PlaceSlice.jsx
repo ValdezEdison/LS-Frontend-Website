@@ -3,9 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
     fetchPlaces,
     fetchPlaceById,
+    fetchPlacesByCityId,
     createPlace,
     updatePlace,
     deletePlace,
+    fetchGeoLocations
 } from './PlaceAction';
 
 const initialState = {
@@ -13,6 +15,9 @@ const initialState = {
     place: null,
     loading: false,
     error: null,
+    next: null,
+    count: null,
+    geoLocations: []
 };
 
 const placeSlice = createSlice({
@@ -31,8 +36,40 @@ const placeSlice = createSlice({
             .addCase(fetchPlaces.fulfilled, (state, action) => {
                 state.loading = false;
                 state.places = action.payload?.results;
+                state.next = action.payload?.next;
+                state.count = action.payload?.count;
             })
             .addCase(fetchPlaces.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Fetch places by city ID
+            .addCase(fetchPlacesByCityId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchPlacesByCityId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.places = action.payload?.results;
+                state.next = action.payload?.next;
+                state.count = action.payload?.count;
+            })
+            .addCase(fetchPlacesByCityId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Fetch GeoLocations
+            .addCase(fetchGeoLocations.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchGeoLocations.fulfilled, (state, action) => {
+                state.loading = false;
+                state.geoLocations = action.payload;
+            })
+            .addCase(fetchGeoLocations.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

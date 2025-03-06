@@ -1,7 +1,7 @@
 // src/features/events/EventAction.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import eventService from './EventService';
-import { handleApiError } from '../../../utils/Helper';
+import { handleApiError } from '../../utils/Helper';
 
 // Fetch all events
 export const fetchEvents = createAsyncThunk(

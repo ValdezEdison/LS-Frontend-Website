@@ -18,6 +18,9 @@
   transition: all ease .3s;
   align-items: center;
 }
+.placesSearchInputContainer .searchBar{
+  padding: 11px 19px;
+}
 
 .searchBar.open{
   border-radius: 12px 12px 0 0;
@@ -55,6 +58,12 @@
   top: 60px;
   display: none;
   z-index: 2;
+  max-height: 320px;
+  overflow-y: scroll;
+}
+
+.placesSearchInputContainer .suggestionsContainer {
+  top: 48px;
 }
 
 .suggestionsContainer.active {
