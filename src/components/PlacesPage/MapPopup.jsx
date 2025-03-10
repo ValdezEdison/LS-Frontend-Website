@@ -5,66 +5,75 @@ import styles2 from "./MapPopup.module.css";
 import PlaceCard from "./PlaceCard";
 import { useTranslation } from 'react-i18next';
 import { useSelector } from "react-redux";
-
-const MapPopup = ({ onClose }) => {
+import { Loader } from "@googlemaps/js-api-loader";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { Marker } from '../common/Images'; // Ensure this is the correct path to your custom marker image
+const MapPopup = ({ onClose, categories, ratings }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { places, geoLocations } = useSelector((state) => state.places);
 
     const mapContainerRef = useRef(null);
-    const [pins, setPins] = useState([]);
-
-    const categories = [
-        "Alojamiento - Hotelería",
-        "Arte y cultura",
-        "Compras",
-        "Emergencias",
-        "Gastronomía",
-        "Ocio y deporte",
-        "Planificador de viajes y excursiones",
-        "Salud y bienestar",
-        "Servicios profesionales",
-        "Vida nocturna",
-    ];
-
-    const ratings = [
-        { label: "Excelente: 4 o más", value: 4 },
-        { label: "Muy bueno: 3 o más", value: 3 },
-        { label: "Bueno: 2 o más", value: 2 },
-        { label: "Mejorable: menos de 2", value: 1 },
-    ];
+    const placeRefs = useRef({}); // Store refs for each place card
+    const [map, setMap] = useState(null);
+    const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
     useEffect(() => {
-        const calculatePinPosition = (lat, lng) => {
-            // Ensure the map container ref is assigned
-            if (!mapContainerRef.current) {
-                console.error("Map container ref is not assigned.");
-                return { x: 0, y: 0 };
-            }
+        const loader = new Loader({
+            apiKey: apiKey,
+            version: "weekly",
+            libraries: ["marker"],
+        });
 
-            const mapWidth = mapContainerRef.current.offsetWidth;
-            const mapHeight = mapContainerRef.current.offsetHeight;
-
-            // Convert latitude and longitude to pixel values
-            const x = ((lng + 180) * (mapWidth / 360));
-            const y = ((90 - lat) * (mapHeight / 180));
-
-            return { x, y };
-        };
-
-        const newPins = geoLocations
-            .filter(location => location.address?.latitude !== 0 && location.address?.longitude !== 0)
-            .map(location => {
-                const { x, y } = calculatePinPosition(location.address.latitude, location.address.longitude);
-                return {
-                    id: location.id,
-                    x,
-                    y,
-                };
+        loader.load().then(() => {
+            const google = window.google;
+            const mapInstance = new google.maps.Map(mapContainerRef.current, {
+                center: { lat: 0, lng: 0 },
+                zoom: 2,
+                mapId: "DEMO_MAP_ID",
+                fullscreenControl: false,
             });
 
-        setPins(newPins);
-    }, [geoLocations]);
+            setMap(mapInstance);
+
+            if (geoLocations.length > 0) {
+                const markers = geoLocations
+                    .filter(location => location.address?.latitude !== 0 && location.address?.longitude !== 0)
+                    .map(location => {
+                        const customContent = document.createElement("div");
+                        customContent.innerHTML = `
+                            <img src="${Marker}" alt="Marker" style="width: 40px; height: 40px;" />
+                        `;
+
+                        const marker = new google.maps.marker.AdvancedMarkerElement({
+                            position: { lat: location.address.latitude, lng: location.address.longitude },
+                            map: mapInstance,
+                            content: customContent,
+                        });
+
+                        // 🟠 Focus place card on marker click
+                        marker.addListener("click", () => {
+                            const matchedPlace = places.find(place =>
+                                place.address?.latitude === location.address.latitude &&
+                                place.address?.longitude === location.address.longitude
+                            );
+
+                            if (matchedPlace && placeRefs.current[matchedPlace.id]) {
+                                placeRefs.current[matchedPlace.id].scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "center",
+                                });
+                            }
+                        });
+
+                        return marker;
+                    });
+
+                // Add marker clustering
+                new MarkerClusterer({ map: mapInstance, markers });
+            }
+        });
+    }, [geoLocations, apiKey, places]);
 
     return (
         <div className={styles2.popupOverlay}>
@@ -73,40 +82,38 @@ const MapPopup = ({ onClose }) => {
                     <div className={styles2.mapPopupFilter}>
                         <Filter categories={categories} ratings={ratings} />
                     </div>
-                    <div className={styles2.mapPopupMapArea} ref={mapContainerRef}>
-                        <iframe
-                            src="https://www.google.com/maps/embed?..."
-                            width="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen=""
-                            loading="lazy"
-                        ></iframe>
-
-                        {/* {pins.map(pin => (
-                            <img
-                                key={pin.id}
-                                src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/df11d3e639a6734868b974ac4877f86bc7a88fb56257cdfa7b7842afa8e6a10c?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-                                alt="Map Pin"
-                                className={styles2.mapPin}
-                                style={{
-                                    position: 'absolute',
-                                    left: `${pin.x}px`,
-                                    top: `${pin.y}px`,
-                                    transform: 'translate(-50%, -100%)', // Adjust to center the pin
-                                }}
-                            />
-                        ))} */}
+                    <div className={styles2.mapPopupMapArea}>
+                        <div
+                            ref={mapContainerRef}
+                            className={styles2.mapFrame}
+                            style={{ width: '100%' }}
+                        ></div>
                         <div className={styles2.mapPopupPlaces}>
                             {places?.map((place, index) => (
-                                <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} isPopup={true} />
+                                <PlaceCard
+                                    key={place.id || index}
+                                    place={place}
+                                    translate={t}
+                                    isAuthenticated={isAuthenticated}
+                                    isPopup={true}
+                                    ref={(el) => placeRefs.current[place.id] = el} // 🟠 Set ref for each place
+                                />
                             ))}
                         </div>
                     </div>
                 </div>
-                <button className={styles2.popupcloseButton} onClick={onClose}></button>
+                <button
+                    className={`${styles2.popupcloseButton} ${styles2.closeButtonMd}`}
+                    onClick={onClose}
+                ></button>
             </div>
+            <button
+                className={`${styles2.popupcloseButton} ${styles2.closeButtonSm}`}
+                onClick={onClose}
+            ></button>
         </div>
     );
 };
+
 
 export default MapPopup;

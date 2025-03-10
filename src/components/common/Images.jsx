@@ -33,6 +33,7 @@ const MapsFinderDefault = "/images/mapas-buscadordefault@2x.png";
 const MapsSearchEuropeDefault = "/images/mapas-buscadoreuropa-default.svg";
 const MapsSearchAfricaDefault = "/images/mapas-buscadorfrica-default@2x.png";
 const MyWeirdLittleDesign = "/images/my-weird-little-design@3x.png";
+const Marker = "/images/marker.svg";
 const Notch = "/images/notch@2x.png";
 const Oceana = "/images/oceana@2x.png";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
@@ -86,6 +87,7 @@ export {
     MapsSearchEuropeDefault,
     MapsSearchAfricaDefault,
     MyWeirdLittleDesign,
+    Marker,
     Notch,
     Oceana,
     PlaceHolderImg1,

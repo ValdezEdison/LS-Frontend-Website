@@ -1,0 +1,204 @@
+
+
+.gallerySection {
+  flex: 1;
+  padding: 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.mainImageContainer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+}
+
+/* .mainImage {
+  width: 641px;
+  height: 390px;
+  border-radius: 8px;
+  object-fit: cover;
+} */
+
+.imageCounter {
+  color: #000;
+  text-align: center;
+  font: 14px/25px "Source Sans Pro", sans-serif;
+}
+
+.thumbnailContainer {
+  display: flex;
+  gap: 22px;
+  margin-top: 6px;
+}
+
+.thumbnail {
+  width: 144px;
+  height: 94px;
+  border-radius: 3px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.reviewsSection {
+  width: 285px;
+  border-left: 1px solid #bdbdbd;
+  border-top: 1px solid #bdbdbd;
+  padding-top: 10px;
+  overflow: auto;
+  flex-shrink: 0;
+}
+
+.ratingContainer {
+  padding: 10px;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.ratingScore {
+  width: 50px;
+  height: 40px;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #212d94;
+  font: 18px "Source Sans Pro", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ratingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stars {
+  width: 108px;
+  height: 22px;
+  display: flex;
+  gap: 3px;
+}
+
+.reviewCount {
+  color: #000;
+  font: 12px "Source Sans Pro", sans-serif;
+}
+
+.reviewsTitle {
+  color: #000;
+  padding: 0 10px;
+  /* margin-top: 48px; */
+  font: 600 12px "Source Sans Pro", sans-serif;
+}
+
+.reviewList {
+  margin-top: 6px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.reviewItem {
+  padding: 11px 14px;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.reviewText {
+  color: #151820;
+  margin-bottom: 5px;
+  font: 10px "Source Sans Pro", sans-serif;
+}
+
+.reviewerInfo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.reviewerAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  overflow: hidden;
+}
+
+.reviewerName,
+.reviewerLocation {
+  color: #000;
+  font: 10px "Source Sans Pro", sans-serif;
+}
+
+.arrowButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+
+@media screen and (max-height:680px) {
+  /* .mainImage{
+      height: 300px;
+  } */
+}
+
+@media screen and  (max-width: 1400px)  {
+  .gallerySection {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 991px) {
+
+
+  .gallerySection {
+    padding: 0 0px;
+  }
+
+  /* .mainImage {
+    width: 100%;
+    height: auto;
+  } */
+
+  .thumbnailContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width:991px) {
+  .reviewsSection {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+
+
+  .gallerySection {
+    /* padding: 0 20px; */
+  }
+
+  .mainImageContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .thumbnail {
+    width: 100px;
+    height: 65px;
+  }
+
+  .reviewsSection {
+    width: 100%;
+    border-left: none;
+    margin-top: 20px;
+  }
+}

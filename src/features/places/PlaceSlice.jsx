@@ -7,7 +7,8 @@ import {
     createPlace,
     updatePlace,
     deletePlace,
-    fetchGeoLocations
+    fetchGeoLocations,
+    fectchPlaceComments
 } from './PlaceAction';
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
     error: null,
     next: null,
     count: null,
-    geoLocations: []
+    geoLocations: [],
+    comments: []
 };
 
 const placeSlice = createSlice({
@@ -84,6 +86,20 @@ const placeSlice = createSlice({
                 state.place = action.payload;
             })
             .addCase(fetchPlaceById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Fetch place comments
+            .addCase(fectchPlaceComments.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fectchPlaceComments.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments = action.payload;
+            })
+            .addCase(fectchPlaceComments.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

@@ -6,6 +6,7 @@ import languageReducer from "../features/common/languages/LanguageSlice.jsx"
 import imageReducer from "../features/common/defaultImages/ImageSlice.jsx"
 import countryReducer from "../features/common/countries/CountrySlice.jsx"
 import citiesReducer from "../features/common/cities/CitySlice.jsx"
+import popupReducer from "../features/popup/PopupSlice.jsx"
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     images: imageReducer,
     countries: countryReducer,
     cities: citiesReducer,
+    popup: popupReducer,
   },
 });
 

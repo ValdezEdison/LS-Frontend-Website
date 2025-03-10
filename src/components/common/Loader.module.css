@@ -1,0 +1,35 @@
+.loader {
+    color: #212d94;
+    width: 4px;
+    aspect-ratio: 1;
+    border-radius: 50%; 
+    animation:
+      loading-1 .75s infinite linear alternate,
+      loading-2 1.5s  infinite linear; 
+  }
+  @keyframes loading-1 {
+    0%,
+    20% {box-shadow:30px 0 0 3px, 10px 0 0 3px, -10px 0 0 3px,-30px 0 0 3px}
+    60%,
+    100% {box-shadow:12px 0 0 3px, 14px 0 0 6px, -14px 0 0 6px,-12px 0 0 3px}
+  }
+  
+  @keyframes loading-2 {
+    0%,25%   {transform: rotate(0)}
+    50%,100% {transform: rotate(.5turn)}
+  }
+
+  .loadingButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 146px;
+    margin: 21px auto;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000001;
+    cursor: pointer;
+    transition: all ease .3s;
+  }

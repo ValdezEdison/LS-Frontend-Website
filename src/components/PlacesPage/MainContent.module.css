@@ -203,8 +203,29 @@
   padding: 0 0 14px 0;
   display: flex;
   gap: 10px;
+  /* flex-wrap: wrap; */
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.placesSelectedItemsListLeft{
+  display: flex;
+  gap: 10px;
   flex-wrap: wrap;
 }
+
+.placesClearFilter {
+  font-size: 12px;
+  flex-shrink: 0;
+  cursor: pointer;
+  padding-top: 8px;
+}
+
+.placesListbreaker {
+  display: block;
+  /* border: red solid 1px;
+  height: 1px; */
+}
+
 
 .placesSelectedItem{
   border: solid 1px #F4C031;
