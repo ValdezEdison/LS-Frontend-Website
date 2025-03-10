@@ -13,6 +13,9 @@ import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import { useNavigate } from "react-router-dom";
+import { Arrow } from "../common/Images";
+import styles3 from "./PlaceCard.module.css";
+import Loader from "../common/Loader";
 
 const MainContent = ({ state, setState, countries, cities }) => {
   const { t } = useTranslation('Places');
@@ -21,9 +24,15 @@ const MainContent = ({ state, setState, countries, cities }) => {
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(places, next);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isOpen } = useSelector((state) => state.popup);
 
   const suggestionRef = useRef(null);
   const placesListRef = useRef(null);
+  const mainRef = useRef(null);
+  const gotoTopButtonRef = useRef(null);
+  const placesListBreakerRef = useRef(null);
+
+  const [showArrow, setShowArrow] = useState(true);
 
   const navigate = useNavigate();
 
@@ -81,8 +90,86 @@ const MainContent = ({ state, setState, countries, cities }) => {
     navigate('/places/details', { state: { id } });
   };
 
+  const getResponsiveOffset = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 480) return -20; // Smaller tablets
+    if (screenWidth <= 1160) return -5; // Small screens
+    if (screenWidth <= 1280) return 0; // Slightly larger screens
+    if (screenWidth <= 1350) return 10;   // Medium screens
+
+    return 30;                           // Large screens
+  };
+
+  const updateButtonPosition = () => {
+    if (placesListRef.current && mainRef.current && gotoTopButtonRef.current) {
+      const mainWrapperLeftPosition = mainRef.current.getBoundingClientRect().left;
+
+      const leftPosition = placesListRef.current.getBoundingClientRect().left;
+      const placesListWidth = placesListRef.current.offsetWidth;
+      const final = leftPosition + placesListWidth;
+      const offset = getResponsiveOffset();
+
+      if (final) {
+        gotoTopButtonRef.current.style.left = `${final + offset}px`;
+      }
+
+    }
+  };
+
+  useEffect(() => {
+    // Initial position calculation
+    updateButtonPosition();
+
+    // Handle resize event
+    window.addEventListener('resize', updateButtonPosition);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', updateButtonPosition);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+  
+    const handleScroll = () => {
+      const arrowButton = gotoTopButtonRef.current?.getBoundingClientRect();
+      const breaker = placesListBreakerRef.current?.getBoundingClientRect();
+  
+      if (arrowButton && breaker) {
+        if (
+          arrowButton.bottom >= breaker.top &&
+          window.scrollY > lastScrollY
+        ) {
+          // Scrolling down and elements meet — hide the arrow
+          setShowArrow(false);
+        } else if (
+          breaker.top > window.innerHeight &&
+          window.scrollY < lastScrollY
+        ) {
+          // Scrolling up and passed the breaker — show the arrow
+          setShowArrow(true);
+        }
+      }
+  
+      lastScrollY = window.scrollY;
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+  
+  
+  
+  
+
   return (
-    <main className={styles.mainContent}>
+    <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
         <h1 className={styles.title}>{t('availablePlaces', { count })}</h1>
         <div className={styles2.searchContainer}>
@@ -108,27 +195,42 @@ const MainContent = ({ state, setState, countries, cities }) => {
         updateState={updateState}
       />
       {!isAuthenticated && <LoginBanner />}
-      <PlacesSelectedItemList
-        state={state}
-        setState={setState}
-        countries={countries}
-        cities={cities}
-        styles={styles}
-        translate={t}
-      />
-      <div className={styles.placesList}>
+      <div className={styles.placesSelectedItemsList}>
+        <PlacesSelectedItemList
+          state={state}
+          setState={setState}
+          countries={countries}
+          cities={cities}
+          styles={styles}
+          translate={t}
+        />
+      </div>
+      <div className={styles.placesList} ref={placesListRef}>
+        <button
+          style={{
+            display: showArrow && !isOpen ? 'block' : 'none'
+          }}
+
+          className={styles3.gotoTopButton}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          ref={gotoTopButtonRef}
+        >
+          <img src={Arrow} alt="arrow" />
+        </button>
         {visiblePlaces?.map((place, index) => (
           <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} />
         ))}
       </div>
 
-      <SeeMoreButton
+      {loading ? <Loader /> : <SeeMoreButton
         onClick={loadMore}
         loading={loading}
         next={hasNext}
         translate={t}
       />
+      }
 
+      <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
       <RecommendedPlaces />
     </main>
   );

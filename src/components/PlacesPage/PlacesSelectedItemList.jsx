@@ -44,7 +44,8 @@ const PlacesSelectedItemList = ({ state, setState, countries, cities, styles, tr
     if (!selectedCountryId && destinationIds.length === 0 && !selectedOrder) return null;
 
     return (
-        <div className={styles.placesSelectedItemsList}>
+        <>
+        <div className={styles.placesSelectedItemsListLeft}>
             {selectedCountryId && (
                 <div className={styles.placesSelectedItem}>
                     <span className={styles.placesSelectedText}>{selectedCountry?.name}</span>
@@ -78,6 +79,11 @@ const PlacesSelectedItemList = ({ state, setState, countries, cities, styles, tr
                 </div>
             )}
         </div>
+
+        <div className={styles.placesClearFilter}>
+        Eliminar filtros
+        </div>
+        </>
     );
 };
 

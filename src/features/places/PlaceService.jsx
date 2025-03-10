@@ -5,7 +5,7 @@ const PlaceService = {
         return apiService.get('/sites/sites_to_discover?page=1');
     },
     getPlace: async (placeId) => {
-        return apiService.get(`/places/${placeId}`);
+        return apiService.get(`/sites/${placeId}`);
     },
 
     getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null) => {
@@ -18,6 +18,14 @@ const PlaceService = {
 
     getGeoLocations: async (cityId, type) => {
         return apiService.get(`/sites/geolocations?city_id=${cityId}&type=${type}`);
+    },
+
+    getPlaceComments: async (placeId) => {
+        return apiService.get(`/sites/${placeId}/comments`);
+    },
+
+    getNearbyPlaces: async (placeId, page=1) => {
+        return apiService.get(`/sites/${placeId}/nearby?page=${page}`);
     },
 
     createPlace: async (placeData) => {

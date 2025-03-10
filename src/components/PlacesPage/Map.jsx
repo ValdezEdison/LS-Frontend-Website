@@ -1,64 +1,57 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "./Sidebar.module.css";
 import { useSelector } from "react-redux";
+import { Loader } from "@googlemaps/js-api-loader";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+
 
 const Map = ({ onOpenPopup }) => {
     const { geoLocations } = useSelector((state) => state.places);
     const mapContainerRef = useRef(null);
-    const [pins, setPins] = useState([]);
+    const [map, setMap] = useState(null);
+    const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
     useEffect(() => {
-        const calculatePinPosition = (lat, lng) => {
-            const mapWidth = mapContainerRef.current.offsetWidth;
-            const mapHeight = 400; // Height of the iframe
+        const loader = new Loader({
+            apiKey: apiKey,
+            version: "weekly",
+            libraries: ["marker"] // Load the marker library
+        });
 
-            // Convert latitude and longitude to pixel values
-            const x = ((lng + 180) * (mapWidth / 360));
-            const y = ((90 - lat) * (mapHeight / 180));
-
-            return { x, y };
-        };
-
-        const newPins = geoLocations
-            .filter(location => location.address.latitude !== 0 && location.address.longitude !== 0)
-            .map(location => {
-                const { x, y } = calculatePinPosition(location.address.latitude, location.address.longitude);
-                return {
-                    id: location.id,
-                    x,
-                    y,
-                };
+        loader.load().then(() => {
+            const google = window.google;
+            const mapInstance = new google.maps.Map(mapContainerRef.current, {
+                center: { lat: 0, lng: 0 },
+                zoom: 2,
+                mapId: "DEMO_MAP_ID",
+                fullscreenControl: false
             });
 
-        setPins(newPins);
-    }, [geoLocations]);
+            setMap(mapInstance);
+
+            // Create markers with AdvancedMarkerElement
+            const markers = geoLocations
+                .filter(location => location.address.latitude !== 0 && location.address.longitude !== 0)
+                .map(location => {
+                    const markerElement = document.createElement('div');
+                    markerElement.className = styles.marker;
+                    markerElement.innerText = '';
+
+                    return new google.maps.marker.AdvancedMarkerElement({
+                        position: { lat: location.address.latitude, lng: location.address.longitude },
+                        map: mapInstance,
+                        content: markerElement,
+                    });
+                });
+
+            // Add marker clustering
+            new MarkerClusterer({ map: mapInstance, markers });
+        });
+    }, [geoLocations, apiKey]);
 
     return (
-        <div className={styles.mapContainer} ref={mapContainerRef}>
-            <div className={styles.mapFrame}>
-                <iframe
-                    src="https://www.google.com/maps/embed?..."
-                    width="100%"
-                    height="400"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    loading="lazy"
-                ></iframe>
-                {/* {pins.map(pin => (
-                    <img
-                        key={pin.id}
-                        src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/df11d3e639a6734868b974ac4877f86bc7a88fb56257cdfa7b7842afa8e6a10c?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-                        alt="Map Pin"
-                        className={styles.mapPin}
-                        style={{
-                            position: 'absolute',
-                            left: `${pin.x}px`,
-                            top: `${pin.y}px`,
-                            transform: 'translate(-50%, -100%)', // Adjust to center the pin
-                        }}
-                    />
-                ))} */}
-            </div>
+        <div className={styles.mapContainer}>
+            <div ref={mapContainerRef} className={styles.mapFrame} style={{height: '157px', width: '100%' }}></div>
             <button className={styles.viewMapButton} onClick={onOpenPopup}>Ver mapa</button>
         </div>
     );

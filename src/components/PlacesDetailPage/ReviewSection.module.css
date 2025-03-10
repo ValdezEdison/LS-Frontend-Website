@@ -91,6 +91,10 @@
   margin-bottom: 12px;
 }
 
+.reviewCard .reviewHeader {
+  justify-content: flex-start;
+}
+
 .avatar {
   width: 30px;
   height: 30px;
@@ -100,6 +104,8 @@
 .reviewerName {
   font-size: 12px;
   color: #151820;
+  margin: 0;
+  font-weight: normal;
 }
 
 .reviewDate {

@@ -55,7 +55,7 @@
 .popupcloseButton{
     width: 33px;
     height: 33px;
-    background: transparent;
+    background: #fff;
     border: solid 1px #151820;
     position: absolute;
     top: 12px;
@@ -63,6 +63,7 @@
     z-index: 4;
     border-radius: 50%;
     cursor: pointer;
+
 }
 
 .popupcloseButton::after{
@@ -76,13 +77,49 @@
     height: 14px;
 }
 
-.mapPopupMapArea iframe{
-    height: calc(100vh - 100px);
+.mapPopupMapArea iframe, .mapPopupMapArea .mapFrame{
+    height: 934px;
 }
 
+.closeButtonSm{
+    display: none;
+}
+
+@media screen  and (max-height:1000px) {
+    .mapPopupMapArea iframe,.mapPopupMapArea .mapFrame{
+        height: calc(100vh - 100px);
+    }
+    
+}
 
 @media screen and (max-width:1400px) {
     .popupContent{
         max-width: 95%; 
     }
+}
+
+@media screen and (max-width:640px){
+    .mapPopupWrapper{
+       flex-direction: column;
+    }
+
+    .closeButtonMd{
+        display: none;
+    }
+
+    .closeButtonSm{
+        display: block;
+    }
+
+    .popupcloseButton{
+        width: 33px;
+        height: 33px;
+        top: 32px;
+        right: 25px;
+    }
+
+    .mapPopupPlaces{
+        position: relative;
+    }
+    
 }

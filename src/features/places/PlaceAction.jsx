@@ -54,6 +54,30 @@ export const fetchGeoLocations = createAsyncThunk(
   }
 );
 
+export const fectchPlaceComments = createAsyncThunk(
+  'places/fetchPlaceComments',
+  async (placeId, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getPlaceComments(placeId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const fetchNearbyPlaces = createAsyncThunk(
+  'places/fetchNearbyPlaces',
+  async (placeId, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getNearbyPlaces(placeId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
 // Create a new place
 export const createPlace = createAsyncThunk(
   'places/createPlace',

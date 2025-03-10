@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PlaceDetails.module.css";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
@@ -7,40 +7,79 @@ import MuseumInfo from "../../components/PlacesDetailPage/MuseumInfo";
 import ImageGallery from "../../components/PlacesDetailPage/ImageGallery";
 import ReviewSection from "../../components/PlacesDetailPage/ReviewSection";
 import NearbyPlaces from "../../components/PlacesDetailPage/NearbyPlaces";
+import Modal from "../../components/modal/Modal";
+import ImageGalleryPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ImageGalleryPopupContent";
+import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ReviewSectionPopupContent";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from 'react-router-dom';
+import { fetchPlaceById } from "../../features/places/PlaceAction";
 
 const PlaceDetails = () => {
+  const dispatch = useDispatch();
+  const [showImgGalleryPopup, setShowImgGalleryPopup] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const { isOpen } = useSelector((state) => state.popup);
+  const { place } = useSelector((state) => state.places);
+
+  const location = useLocation();
+  const { id } = location.state || {};
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPlaceById(id));
+    }
+  }, [id, dispatch]);
+
+  const handleClickViewMoreDetails = () => {
+    setShowImgGalleryPopup(true);
+    dispatch(openPopup());
+  };
+
+  // Function to open the modal with specific content
+  const openModalWithContent = (content) => {
+    setModalContent(content);
+  };
+
+  const closeModal = () => {
+    setShowImgGalleryPopup(false);
+    setModalContent(null);
+    dispatch(closePopup());
+  };
+
   return (
-    <div className={styles.lugaresContainer}>
-    <Header />
-      <main className={styles.mainContent}>
-        <div className="page-center" >
-          <div className={styles.contentWrapper}>
-          <MapSection />
-          <div className={styles.infoSection}>
-            <MuseumInfo />
-            <ImageGallery />
-            <p className={styles.museumDescription}>
-              El Museo Histórico Nacional de la ciudad de Atenas, Grecia, es uno
-              de los museos más destacados del país y es una joya cultural que
-              alberga una rica colección de artefactos históricos que abarcan
-              siglos de historia griega. Este museo está ubicado en el corazón
-              de Atenas, en el edificio neoclásico del Antiguo Parlamento,
-              conocido como el 'Viejo Parlamento'. El museo fue inaugurado en
-              1882 y se ha convertido en un lugar imprescindible para explorar
-              la historia y la cultura de Grecia desde la antigüedad hasta la
-              época contemporánea. Su colección incluye una amplia variedad de
-              objetos, desde hallazgos arqueológicos hasta obras de arte y
-              documentos históricos.
-            </p>
+    <>
+      {isOpen && showImgGalleryPopup && (
+        <Modal onClose={closeModal}>
+          <ImageGalleryPopupContent images={place.images}/>
+          <ReviewSectionPopupContent />
+        </Modal>
+      )}
+      <div className={styles.lugaresContainer}>
+        <Header />
+        <main className={styles.mainContent}>
+          <div className="page-center">
+            <div className={styles.contentWrapper}>
+            <MapSection place={place} />
+              <div className={styles.infoSection}>
+                <MuseumInfo place={place}/>
+                <ImageGallery
+                  handleClickViewMoreDetails={handleClickViewMoreDetails}
+                  images={place?.images}
+                />
+                <p className={styles.museumDescription}>
+                {place?.description}
+                </p>
+              </div>
+            </div>
+
+            <ReviewSection />
+            <NearbyPlaces />
           </div>
-        </div>
-        
-        <ReviewSection />
-        <NearbyPlaces />
-        </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 

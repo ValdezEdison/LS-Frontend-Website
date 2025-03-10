@@ -13,6 +13,8 @@ import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
 import Newsletter from "../../components/common/Newsletter";
+import MapPopup from "../../components/PlacesPage/MapPopup";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -34,6 +36,19 @@ const initialRender = useRef(true);
   const { loading: placesLoading } = useSelector((state) => state.places);
   const { countries } = useSelector((state) => state.countries);
   const { cities } = useSelector((state) => state.cities);
+  const { isOpen } = useSelector((state) => state.popup);
+
+  const [showMapPopup, setShowMapPopup] = useState(false);
+
+  const handleShowMapPopup = () => {
+    setShowMapPopup(true);
+    dispatch(openPopup());
+  };
+
+  const handleCloseMapPopup = () => {
+    setShowMapPopup(false);
+    dispatch(closePopup());
+  };
 
   // Fetch places and countries on component mount and language change
   useEffect(() => {
@@ -98,21 +113,50 @@ const initialRender = useRef(true);
       page: state.page,
       preview: 1
     }));
+
+   
   }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, dispatch]);
 
+  useEffect (() => {
+    dispatch(fetchGeoLocations({cityId: state.selectedDestinationId !== null
+      ? state.selectedDestinationId
+      : state.selectedDestinations, type: "place"}));
+  }, [state.selectedDestinationId, state.selectedDestinations]);
 
 
+
+  const categories = [
+    "Alojamiento - Hotelería",
+    "Arte y cultura",
+    "Compras",
+    "Emergencias",
+    "Gastronomía",
+    "Ocio y deporte",
+    "Planificador de viajes y excursiones",
+    "Salud y bienestar",
+    "Servicios profesionales",
+    "Vida nocturna",
+  ];
+
+  const ratings = [
+    { label: "Excelente: 4 o más", value: 4 },
+    { label: "Muy bueno: 3 o más", value: 3 },
+    { label: "Bueno: 2 o más", value: 2 },
+    { label: "Mejorable: menos de 2", value: 1 },
+  ];
 
 
 
 
 
   return (
+    <>
+    {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings}/>}
     <div className={styles.placesPage}>
       <Header />
       <div className="page-center">
         <div className={styles.content}>
-          <Sidebar />
+          <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings}/>
           {placesLoading ? <MainContentSkeleton /> : (
             <MainContent
               state={state} setState={setState}
@@ -128,6 +172,7 @@ const initialRender = useRef(true);
       <Newsletter />
       <Footer />
     </div>
+    </>
   );
 };
 
