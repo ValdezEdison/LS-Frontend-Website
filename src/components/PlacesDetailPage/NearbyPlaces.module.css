@@ -1,6 +1,7 @@
 .nearbyPlaces {
   margin: 26px auto;
   padding: 0 20px;
+  border-top: solid 1px #BDBDBD;
 }
 
 .sectionTitle {
@@ -17,8 +18,48 @@
 }
 
 .placeCard {
-  flex: 0 0 auto;
-  width: 279px;
+  /* flex: 0 0 auto; */
+  /* width: 279px; */
+  padding: 0px 14px !important;
+}
+
+:global(.slick-next),
+:global(.slick-prev) {
+  width: 40px !important;
+  height: 40px !important;
+  background: #F4C031 !important;
+  border-radius: 8px !important;
+  transform: translateY(-50%) !important;
+  top: 38% !important;
+}
+
+:global(.slick-next) {
+  right: -5px !important;
+}
+
+:global(.slick-prev) {
+  left: -5px !important;
+  z-index: 1 !important;
+}
+
+:global(.slick-slider) {
+  margin: 0 -14px !important;
+}
+
+:global(.slick-prev:before),
+:global(.slick-next:before) {
+  position: absolute;
+  content: '' !important;
+  background: url('../../../public/images/arrow-1.svg') no-repeat 0 0;
+  width: 17px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:global(.slick-prev:before) {
+  transform: translate(-50%, -50%) rotate(180deg);
 }
 
 .placeImage {
@@ -47,6 +88,11 @@
   .nearbyPlaces {
     padding: 0;
   }
+
+  :global(.slick-next), :global(.slick-prev) {
+    top: 42% !important;
+  }
+
 }
 
 @media (max-width: 576px) {

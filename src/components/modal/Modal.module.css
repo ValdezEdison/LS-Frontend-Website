@@ -11,6 +11,8 @@
     z-index: 9;
 }
 
+
+
 .modal {
     max-width: 1205px;
     width: 100%;    
@@ -67,6 +69,14 @@
     }
 }
 
+@media screen and (max-height: 550px) {
+    .modal{
+        max-height: calc(100vh - 10px);
+    }
+}
+
+
+
 @media (max-width: 1280px) {
     .modal {
         width: 90%;
@@ -79,7 +89,13 @@
         height: 90%;
     }
 
-
+    .galleryReviewPopup{
+        flex-direction: column;
+    }
+      
+    .modalContent {
+        overflow: auto;
+    }
 
 }
 

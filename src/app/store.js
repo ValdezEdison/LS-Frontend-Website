@@ -7,6 +7,7 @@ import imageReducer from "../features/common/defaultImages/ImageSlice.jsx"
 import countryReducer from "../features/common/countries/CountrySlice.jsx"
 import citiesReducer from "../features/common/cities/CitySlice.jsx"
 import popupReducer from "../features/popup/PopupSlice.jsx"
+import destinationReducer from "../features/places/placesInfo/destination/DestinationSlice.jsx"
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     countries: countryReducer,
     cities: citiesReducer,
     popup: popupReducer,
+    destination: destinationReducer
   },
 });
 

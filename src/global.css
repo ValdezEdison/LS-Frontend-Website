@@ -264,6 +264,32 @@ button,input,select,textarea{
   opacity: 0.5;
 }
 
+.yellowButton {
+  background-color: #f4c031;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 16px;
+  color: #151820;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all ease-in .3s;
+}  
+
+.yellowButton:hover{
+  background-color:#e5b22e;
+}
+
+.popupOverlay{
+  background: rgba(21, 24, 32, 0.4);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+
 
 @media screen and (max-width: 1260px) {
   .page-center{

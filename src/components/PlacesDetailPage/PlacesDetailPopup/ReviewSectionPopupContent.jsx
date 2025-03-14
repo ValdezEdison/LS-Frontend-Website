@@ -1,60 +1,45 @@
 import React from 'react';
 import styles from './MuseumModal.module.css';
+import { Star, StarFill } from "../../common/Images";
 
-const ReviewSectionPopupContent = () => {
-  const reviews = [
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
-    },
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
-    },
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
-    },
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
-    },
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
-    },
-    {
-      text: "Mirador muy concurrido! Tiene bonitas vistas, incluido el agua, pero sigo prefiriendo el punto de vista de la dama del monte porque es más alto y ofrece mejores vistas de la ciudad y no está tan lleno de gente.",
-      name: "Virginia I",
-      location: "España"
+const ReviewSectionPopupContent = ({ placeDetails, reviews }) => {
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={i <= rating ? styles.starFilled : styles.starEmpty}>
+          {i <= rating ? <img src={StarFill} alt="filled star" /> : <img src={Star} alt="empty star" />}
+        </span>
+      );
     }
-  ];
+    return stars;
+  };
 
   return (
     <div className={styles.reviewsSection}>
       <div className={styles.ratingContainer}>
-        <div className={styles.ratingScore}>4,5</div>
+        <div className={styles.ratingScore}>{placeDetails.rating}</div>
         <div className={styles.ratingDetails}>
           <div className={styles.stars}>
-          
+            {renderStars(placeDetails.rating)}
           </div>
-          <div className={styles.reviewCount}>123 reseñas</div>
+          <div className={styles.reviewCount}>{reviews.length} reseñas</div>
         </div>
       </div>
       <h3 className={styles.reviewsTitle}>Comentarios de los viajeros:</h3>
       <ul className={styles.reviewList}>
         {reviews.map((review, index) => (
-          <li key={index} className={styles.reviewItem}>
-            <p className={styles.reviewText}>{review.text}</p>
+          <li key={review.id || index} className={styles.reviewItem}>
+            <div className={styles.reviewContent}>
+              <p className={styles.reviewText}>{review.body}</p>
+            </div>
             <div className={styles.reviewerInfo}>
-              <div className={styles.reviewerAvatar} aria-hidden="true" />
-              <span className={styles.reviewerName}>{review.name}</span>
-              <span className={styles.reviewerLocation}>{review.location}</span>
+              <img
+                src={review.user.profile_picture.thumbnail}
+                alt={review.user.username}
+                className={styles.reviewerAvatar}
+              />
+              <span className={styles.reviewerName}>{review.user.username}</span>
             </div>
           </li>
         ))}

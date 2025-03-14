@@ -44,6 +44,8 @@ const PhoneMockup = "/images/Phone Mockup.png";
 const Rectangle = "/images/rectangle-19290@2x.png";
 const SearchBlack = "/images/search-black-24dp-1.svg";
 const Spain = "/images/spain.png";
+const Star = "/images/star.svg";
+const StarFill = "/images/star-fill.svg";
 const Subtract = "/images/subtract.svg";
 const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
@@ -101,5 +103,7 @@ export {
     Spain,
     UK,
     US,
-    Wifi
+    Wifi,
+    Star,
+    StarFill
 };

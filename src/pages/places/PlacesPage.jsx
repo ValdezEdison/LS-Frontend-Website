@@ -8,13 +8,15 @@ import Footer from "../../components/layouts/Footer";
 import PromotionalBanner from "../../components/PlacesPage/PromotionalBanner";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
-import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations } from "../../features/places/PlaceAction";
+import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations, fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
 import Newsletter from "../../components/common/Newsletter";
 import MapPopup from "../../components/PlacesPage/MapPopup";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -31,12 +33,32 @@ const initialRender = useRef(true);
     destinationSearchQuery: "",
     selectedCountryName: "",
     page: 1,
+    levels: "",
+    categories: "",
+    ratings: "",
+    subcategories: "",
   });
 
-  const { loading: placesLoading } = useSelector((state) => state.places);
+
+  const removeDuplicates = (str) => {
+    return Array.from(new Set(str.split(","))).join(",");
+  };
+  
+  // Clean up the state
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      categories: removeDuplicates(prevState.categories),
+      levels: removeDuplicates(prevState.levels),
+    }));
+  }, [state.categories, state.levels]);
+
+  const { loading: placesLoading, categories, filterLoading } = useSelector((state) => state.places);
   const { countries } = useSelector((state) => state.countries);
   const { cities } = useSelector((state) => state.cities);
   const { isOpen } = useSelector((state) => state.popup);
+
+  const navigate = useNavigate();
 
   const [showMapPopup, setShowMapPopup] = useState(false);
 
@@ -56,6 +78,7 @@ const initialRender = useRef(true);
     dispatch(fetchCountries());
     dispatch(fetchCities({}));
     dispatch(fetchGeoLocations({cityId: "", type: "place"}));
+    dispatch(fetchPlacesFilterCategories({page: 1, type: "place", cityId: ""}));
   }, [dispatch, language]);
 
   const debouncedFetchCountries = useCallback(
@@ -111,11 +134,15 @@ const initialRender = useRef(true);
         : state.selectedDestinations,
       country: state.selectedCountryName,
       page: state.page,
-      preview: 1
+      preview: 1,
+      avg_rating: state.ratings,        // Pass ratings from state
+      categories: state.categories,    // Pass categories from state
+      levels: state.levels             // Pass levels from state
+    
     }));
 
    
-  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, dispatch]);
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, dispatch]);
 
   useEffect (() => {
     dispatch(fetchGeoLocations({cityId: state.selectedDestinationId !== null
@@ -125,18 +152,6 @@ const initialRender = useRef(true);
 
 
 
-  const categories = [
-    "Alojamiento - Hotelería",
-    "Arte y cultura",
-    "Compras",
-    "Emergencias",
-    "Gastronomía",
-    "Ocio y deporte",
-    "Planificador de viajes y excursiones",
-    "Salud y bienestar",
-    "Servicios profesionales",
-    "Vida nocturna",
-  ];
 
   const ratings = [
     { label: "Excelente: 4 o más", value: 4 },
@@ -146,7 +161,13 @@ const initialRender = useRef(true);
   ];
 
 
+ useEffect(() => {
 
+  if(state.selectedDestinationId !== null){ 
+    navigate('/places/destination', { state: { id: state.selectedDestinationId } });
+  }
+
+ }, [state.selectedDestinationId]);
 
 
   return (
@@ -154,9 +175,11 @@ const initialRender = useRef(true);
     {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings}/>}
     <div className={styles.placesPage}>
       <Header />
+      {filterLoading && <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading}/> }
+        <>
       <div className="page-center">
         <div className={styles.content}>
-          <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings}/>
+          <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings} state={state} setState={setState}/>
           {placesLoading ? <MainContentSkeleton /> : (
             <MainContent
               state={state} setState={setState}
@@ -171,6 +194,7 @@ const initialRender = useRef(true);
       </div>
       <Newsletter />
       <Footer />
+      </>
     </div>
     </>
   );

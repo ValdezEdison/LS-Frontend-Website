@@ -6,14 +6,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 1px;
 }
 
 .mainImageContainer {
-  display: flex;
-  align-items: center;
-  gap: 30px;
   width: 100%;
+  max-width: 641px;
+  position: relative;
 }
 
 /* .mainImage {
@@ -32,11 +31,13 @@
 .thumbnailContainer {
   display: flex;
   gap: 22px;
-  margin-top: 6px;
+  margin: 6px 0 16px;
+  flex-wrap: wrap;
 }
 
 .thumbnail {
-  width: 144px;
+  /* width: 144px; */
+  width: calc(25% - 22px);
   height: 94px;
   border-radius: 3px;
   object-fit: cover;
@@ -139,7 +140,70 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  position: absolute;
+  background: url(../../../../public/images/arrowright.svg) no-repeat 0 0;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
 }
+.arrowButton.prev{
+  transform: translateY(-50%) rotate(-180deg);
+  left: -90px;
+}
+
+.arrowButton.next{
+  right: -90px;
+}
+
+.imageGalleryPopupContentOuter{
+  max-width: 920px;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.imageGalleryPopupContent{
+  max-width: 641px;
+  width: 100%;
+}
+
+.mainImageContainer :global(.slick-slide img){
+  width: 641px !important;
+  height: 390px !important;
+  border-radius: 8px;
+}
+
+.imageGalleryPopupContent :global(.slick-slider) {
+  margin: 0 !important;
+}
+
+
+
+@media screen and (max-width:1920px){
+  .mainImageContainer :global(.slick-slide img){
+    width: 33.38vw !important;
+    height: 20.31vw !important;
+  }
+
+  .mainImageContainer{
+    max-width: 33.38vw;
+  }
+}
+
+@media screen  and (max-width:1200px) {
+  .mainImageContainer :global(.slick-slide img) {
+    width: 447px !important;
+    height: 270px !important;
+}
+
+.mainImageContainer{
+  width: 447px ;
+}
+}
+
+
 
 
 
@@ -179,7 +243,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
 
 
   .gallerySection {
@@ -201,4 +265,14 @@
     border-left: none;
     margin-top: 20px;
   }
+
+  .mainImageContainer{
+    width: 100%;
+    height: auto;
+}
+
+.mainImageContainer :global(.slick-slide img){
+  width: 100% !important;
+  height: auto !important;
+}
 }

@@ -2,22 +2,24 @@ import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "../../PlacesPage/MainContent.module.css";
+import styles2 from "../../PlacesPage/PlaceCard.module.css";
+import { PlaceHolderImg2 } from "../../common/Images";
 
 const PlaceCardSkeleton = () => {
   return (
-    <div className={styles.placeCard}>
-      <div className={styles.placeImageContainer}>
-        <Skeleton height={150} />
+    <div className={styles2.placeCard}>
+      <div className={styles2.placeImageContainer}>
+        <img src={PlaceHolderImg2} alt="" />
       </div>
-      <div className={styles.placeInfo}>
-        {/* <Skeleton height={20} width={`80%`} /> */}
-        {/* <Skeleton height={20} width={`60%`} />
+      <div className={styles2.placeInfo}>
+        <Skeleton height={20} width={`80%`} />
+        <Skeleton height={20} width={`60%`} />
         <Skeleton height={20} width={`40%`} />
-        <Skeleton height={30} width={`100%`} /> */}
+        <Skeleton height={30} width={`100%`} />
       </div>
-      <div className={styles.placeActions}>
-        {/* <Skeleton height={40} width={`45%`} />
-        <Skeleton height={40} width={`45%`} /> */}
+      <div className={styles2.placeActions}>
+        <Skeleton height={40} width={`45%`} />
+        <Skeleton height={40} width={`45%`} />
       </div>
     </div>
   );

@@ -5,6 +5,12 @@
   font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
 }
 
+.lugaresContainer.overflowHide {
+  min-height: unset;
+  overflow: hidden;
+  height: 100vh;
+}
+
 .mainContent {
   flex: 1;
   padding: 26px 0;

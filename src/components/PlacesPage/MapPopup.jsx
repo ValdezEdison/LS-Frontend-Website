@@ -16,7 +16,8 @@ const MapPopup = ({ onClose, categories, ratings }) => {
     const mapContainerRef = useRef(null);
     const placeRefs = useRef({}); // Store refs for each place card
     const [map, setMap] = useState(null);
-    const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+    const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
+    const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
     useEffect(() => {
         const loader = new Loader({
@@ -30,7 +31,7 @@ const MapPopup = ({ onClose, categories, ratings }) => {
             const mapInstance = new google.maps.Map(mapContainerRef.current, {
                 center: { lat: 0, lng: 0 },
                 zoom: 2,
-                mapId: "DEMO_MAP_ID",
+                mapId: mapId,
                 fullscreenControl: false,
             });
 

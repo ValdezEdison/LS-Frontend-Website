@@ -1,5 +1,5 @@
 import React from "react";
-import CommonSection from "./CommonSection";
+import CommonSection from "../common/CommonSection";
 import styles from "./PlacesSection.module.css";
 import { PlaceHolderImg2 } from "../common/Images";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ const PlacesSection = ({ places = [] }) => {
     <div key={place.id} className={styles.placeCard}>
       <img
         src={place.images[0] ? place.images[0]?.original : PlaceHolderImg2}
-        alt={place.name}
+        alt={place.display_text}
         className={styles.placeImage}
       />
       <p className={styles.placeName}>{place.display_text}</p>

@@ -32,15 +32,16 @@ export const fetchPlaceById = createAsyncThunk(
 
 export const fetchPlacesByCityId = createAsyncThunk(
   'places/fetchPlacesByCityId',
-  async ({ cityId, page = 1, preview = 1, country = null }, { rejectWithValue }) => {
+  async ({ cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "" }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getPlacesByCityId(cityId, page, preview, country);
+      const response = await placeService.getPlacesByCityId(cityId, page, preview, country, avg_rating, categories, levels);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
     }
   }
 );
+
 
 export const fetchGeoLocations = createAsyncThunk(
   'places/fetchGeoLocations',
@@ -71,6 +72,18 @@ export const fetchNearbyPlaces = createAsyncThunk(
   async (placeId, { rejectWithValue }) => {
     try {
       const response = await placeService.getNearbyPlaces(placeId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+export const fetchPlacesFilterCategories = createAsyncThunk(
+  'places/fetchPlacesFilterCategories',
+  async ({ page = 1, type = "place", cityId = "" }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getPlacesFilterCategories(page, type, cityId);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
