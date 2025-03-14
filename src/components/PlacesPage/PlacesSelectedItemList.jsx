@@ -30,6 +30,20 @@ const PlacesSelectedItemList = ({ state, setState, countries, cities, styles, tr
         }));
     };
 
+    const handleClickClearFilter = () => {
+        setState((prevState) => ({
+            ...prevState,
+            selectedCountryId: null,
+            selectedDestinationId: null,
+            selectedDestinations: "",
+            selectedOrder: "",
+            searchQuery: "",
+            destinationSearchQuery: "",
+            selectedCountryName: "",
+            page: 1,
+        }));
+    };
+
     // Get the country name from the selectedCountryId
     const selectedCountry = countries.find(country => country.id === selectedCountryId);
 
@@ -80,7 +94,7 @@ const PlacesSelectedItemList = ({ state, setState, countries, cities, styles, tr
             )}
         </div>
 
-        <div className={styles.placesClearFilter}>
+        <div className={styles.placesClearFilter} onClick={handleClickClearFilter}>
         Eliminar filtros
         </div>
         </>

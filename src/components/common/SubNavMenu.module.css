@@ -1,0 +1,61 @@
+.subNav {
+    display: flex;
+    margin-top: 40px;
+    gap: 36px;
+    border-bottom: solid 1px #BDBDBD;
+  }
+  
+  .subNavLink {
+    color: #151820;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 14px;
+    padding-bottom: 10px;
+    position: relative;
+  }
+  
+  .subNavLink.active::after {
+    position: absolute;
+    content: '';
+    background: #212D94;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom: -1px;
+  }
+  
+  .subNavLink.active {
+    color: var(--Color-principal-azul, #212d94);
+    font-weight: 600;
+  }
+
+  @media (max-width: 991px) {
+  
+  
+    .subNav {
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+  
+  
+  }
+  
+  @media (max-width:640px) {
+    subNav{
+      gap: 10px;
+    }
+  
+  }
+  
+  @media (max-width:480px) {
+    .subNavLink{
+      padding: 0 8px 8px;
+      border-bottom: solid 1px #BDBDBD;
+    }
+  
+    .subNav {
+      flex-direction: column;
+      border-bottom: none;
+    }
+  }

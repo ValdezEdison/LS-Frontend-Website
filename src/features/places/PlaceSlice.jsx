@@ -8,7 +8,9 @@ import {
     updatePlace,
     deletePlace,
     fetchGeoLocations,
-    fectchPlaceComments
+    fectchPlaceComments, 
+    fetchNearbyPlaces,
+    fetchPlacesFilterCategories
 } from './PlaceAction';
 
 const initialState = {
@@ -19,7 +21,10 @@ const initialState = {
     next: null,
     count: null,
     geoLocations: [],
-    comments: []
+    comments: [],
+    NearbyPlaces: [],
+    categories: [],
+    filterLoading: false
 };
 
 const placeSlice = createSlice({
@@ -101,6 +106,34 @@ const placeSlice = createSlice({
             })
             .addCase(fectchPlaceComments.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Fetch nearby places
+            .addCase(fetchNearbyPlaces.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchNearbyPlaces.fulfilled, (state, action) => {
+                state.loading = false;
+                state.NearbyPlaces = action.payload?.results;
+            })
+            .addCase(fetchNearbyPlaces.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Fetch place categories
+            .addCase(fetchPlacesFilterCategories.pending, (state) => {
+                state.filterLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchPlacesFilterCategories.fulfilled, (state, action) => {
+                state.filterLoading = false;
+                state.categories = action.payload?.results;
+            })
+            .addCase(fetchPlacesFilterCategories.rejected, (state, action) => {
+                state.filterLoading = false;
                 state.error = action.payload;
             })
 

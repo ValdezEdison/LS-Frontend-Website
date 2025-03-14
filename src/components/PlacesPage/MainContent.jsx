@@ -4,7 +4,7 @@ import styles from "./MainContent.module.css";
 import SearchBar from "../common/SearchBar";
 import LoginBanner from "./LoginBanner";
 import RecommendedPlaces from "./RecommendedPlaces";
-import FilterBar from "./FilterBar";
+// import FilterBar from "./FilterBar";
 import { useTranslation } from 'react-i18next';
 import { useSelector } from "react-redux";
 import SearchInput from "../common/SearchInput";
@@ -16,10 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { Arrow } from "../common/Images";
 import styles3 from "./PlaceCard.module.css";
 import Loader from "../common/Loader";
+import FilterBar from "../common/FilterBar";
 
 const MainContent = ({ state, setState, countries, cities }) => {
   const { t } = useTranslation('Places');
   const { places, loading: placesLoading, error: placesError, next, count } = useSelector((state) => state.places);
+
+  const { loading: countriesLoading } = useSelector((state) => state.countries);
+  const { loading: citiesLoading } = useSelector((state) => state.cities);
 
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(places, next);
 
@@ -43,6 +47,44 @@ const MainContent = ({ state, setState, countries, cities }) => {
     }
     // setShowSuggestionDropDown(false);
   };
+  
+  const orderOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
+    id: index,
+    name: option,
+  }));
+
+
+  const filters = [
+    {
+      label: `${t("filter.select")} ${t("filter.country")}`,
+      options: countries,
+      selectedId: state.selectedCountryId,
+      onSelect: (value) => updateState("selectedCountryId", value),
+      onSearch: (query) => updateState("searchQuery", query),
+      searchQuery: state.searchQuery,
+    },
+    {
+      label: `${t("filter.select")} ${t("filter.destination")}`,
+      options: cities,
+      selectedId: state.selectedDestinations,
+      onSelect: (value) =>
+        setState((prevState) => ({
+          ...prevState,
+          selectedDestinations: value,
+          selectedDestinationId: null,
+        })),
+      onSearch: (query) => updateState("destinationSearchQuery", query),
+      searchQuery: state.destinationSearchQuery,
+      disabled: !state.selectedCountryId,
+      checkbox: true,
+    },
+    {
+      label: `${t("filter.select")} ${t("filter.sortBy")}`,
+      options: orderOptions,
+      selectedId: state.selectedOrder,
+      onSelect: (value) => updateState("selectedOrder", value),
+    },
+  ];
 
   const handleSearch = (value) => {
     updateState("destinationSearchQuery", value);
@@ -132,11 +174,11 @@ const MainContent = ({ state, setState, countries, cities }) => {
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
-  
+
     const handleScroll = () => {
       const arrowButton = gotoTopButtonRef.current?.getBoundingClientRect();
       const breaker = placesListBreakerRef.current?.getBoundingClientRect();
-  
+
       if (arrowButton && breaker) {
         if (
           arrowButton.bottom >= breaker.top &&
@@ -152,48 +194,46 @@ const MainContent = ({ state, setState, countries, cities }) => {
           setShowArrow(true);
         }
       }
-  
+
       lastScrollY = window.scrollY;
     };
-  
+
     window.addEventListener('scroll', handleScroll);
-  
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  
-  
-  
-  
-  
+
+
+
+
+
 
   return (
     <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
         <h1 className={styles.title}>{t('availablePlaces', { count })}</h1>
-        <div className={styles2.searchContainer}>
-          <SearchInput
-            handleSearchClick={() => setShowSuggestionDropDown(true)}
-            suggestionRef={suggestionRef}
-            handleSearch={handleSearch}
-            showSuggestionDropDown={showSuggestionDropDown}
-            handleSearchClose={handleSearchClose}
-            searchValue={state.destinationSearchQuery}
-            suggestionsList={cities}
-            placeholder={t("search.placeholder")}
-            onSelect={(value) => updateState("selectedDestinationId", value)}
-            customClassName="placesSearchInputContainer"
-            selectedValue={state.selectedDestinationId}
-          />
-        </div>
+          <div className={styles2.searchContainer}>
+            <SearchInput
+              handleSearchClick={() => setShowSuggestionDropDown(true)}
+              suggestionRef={suggestionRef}
+              handleSearch={handleSearch}
+              showSuggestionDropDown={showSuggestionDropDown}
+              handleSearchClose={handleSearchClose}
+              searchValue={state.destinationSearchQuery}
+              suggestionsList={cities}
+              placeholder={t("search.placeholder")}
+              onSelect={(value) => updateState("selectedDestinationId", value)}
+              customClassName="placesSearchInputContainer"
+              selectedValue={state.selectedDestinationId}
+            />
+          </div>
       </div>
       <FilterBar
-        state={state} setState={setState}
-        countries={countries}
-        cities={cities} // Pass cities data to FilterBar
-        updateState={updateState}
-      />
+      filters={filters}
+      isLoading={citiesLoading || countriesLoading}
+    />
       {!isAuthenticated && <LoginBanner />}
       <div className={styles.placesSelectedItemsList}>
         <PlacesSelectedItemList
@@ -208,7 +248,7 @@ const MainContent = ({ state, setState, countries, cities }) => {
       <div className={styles.placesList} ref={placesListRef}>
         <button
           style={{
-            display: showArrow && !isOpen ? 'block' : 'none'
+            display: showArrow && !isOpen && !loading ? 'block' : 'none'
           }}
 
           className={styles3.gotoTopButton}

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./MuseumInfo.module.css";
 
 const MuseumInfo = ({ place }) => {
-  console.log(place, 'place')
+ 
   return (
     <div className={styles.museumInfo}>
       <div className={styles.museumInfoLeft}>

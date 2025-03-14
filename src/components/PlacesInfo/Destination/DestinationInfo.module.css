@@ -1,0 +1,117 @@
+.destinationInfo {
+  display: flex;
+  margin-top: 40px;
+  /* width: 1200px;
+  max-width: 100%; */
+  flex-direction: column;
+  font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.title {
+  color: #000;
+  font: 700 32px Montserrat, -apple-system, Roboto, Helvetica, sans-serif;
+  margin: 0;
+}
+
+
+
+.panoramicImage {
+  width: 100%;
+  margin-top: 4px;
+  border-radius: 0;
+}
+
+.imageGallery {
+  margin-top: 40px;
+}
+
+.galleryImage {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.viewMoreButton {
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 8px;
+  text-align: right;
+  width: 100%;
+}
+
+.infoSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 34px;
+}
+
+.infoTitle {
+  color: #000;
+  font-size: 25px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.websiteButton {
+  background-color: var(--Color-principal-naranja, #f4c031);
+  border: none;
+  border-radius: 8px;
+  color: var(--Negro-textos, #151820);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 12px 16px;
+  text-decoration: none;
+}
+
+.description {
+  color: #000;
+  font-size: 14px;
+  line-height: 25px;
+  margin-top: 32px;
+}
+
+@media (max-width: 991px) {
+  .destinationInfo {
+    padding: 0 20px;
+  }
+
+  .subNav {
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .infoSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .destinationInfo{
+    margin-top: 20px;
+  }
+}
+
+@media (max-width:640px) {
+  subNav{
+    gap: 10px;
+  }
+
+}
+
+@media (max-width:480px) {
+  .subNavLink{
+    padding: 0 8px 8px;
+    border-bottom: solid 1px #BDBDBD;
+  }
+
+  .subNav {
+    flex-direction: column;
+    border-bottom: none;
+  }
+}

@@ -2,8 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { PlaceHolderImg2 } from "../common/Images";
-import styles from "./PlacesSection.module.css";
+import { PlaceHolderImg2 } from "./Images";
+import styles from "../HomePage/PlacesSection.module.css";
 import { useTranslation } from "react-i18next";
 
 const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCarousel }) => {

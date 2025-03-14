@@ -1,5 +1,5 @@
 import React from "react";
-import CommonSection from "./CommonSection";
+import CommonSection from "../common/CommonSection";
 import styles from "./PlacesSection.module.css";
 import { PlaceHolderImg2 } from "../common/Images";
 import { useTranslation } from "react-i18next";
