@@ -25,194 +25,194 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
     ],
   };
 
-  const reviews = [
-    {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    },
-    {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    },
-    {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    },
-    {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }, {
-      "id": 347,
-      "user": {
-        "username": "robertosanesteban1@gmail.com",
-        "profile_picture": {
-          "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
-          "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
-          "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
-          "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
-        }
-      },
-      "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
-      "rating": 5,
-      "created_at": "2024-02-07T18:32:34.667290+01:00"
-    }
-  ];
+  // const reviews = [
+  //   {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada.",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   },
+  //   {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   },
+  //   {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   },
+  //   {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }, {
+  //     "id": 347,
+  //     "user": {
+  //       "username": "robertosanesteban1@gmail.com",
+  //       "profile_picture": {
+  //         "original": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg",
+  //         "thumbnail": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.128x128_q90.jpg",
+  //         "midsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.720x720_q90.jpg",
+  //         "fullsize": "https://localsecrets-staging.rudo.es/media/pfp/47327BEA-9E0F-4B04-AA26-B965EDA46869.jpg.1080x1080_q90.jpg"
+  //       }
+  //     },
+  //     "body": "La Plaza de Santo Domingo es el sitio alrededor del cual gira la vida nocturna de la ciudad amurallada. ",
+  //     "rating": 5,
+  //     "created_at": "2024-02-07T18:32:34.667290+01:00"
+  //   }
+  // ];
 
   const renderStars = (rating) => {
     const stars = [];
@@ -250,7 +250,7 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
       </div>
       <div className={styles.reviewWrapper}>
         <Slider {...sliderSettings}>
-          {reviews?.map((comment, index) => (
+          {comments?.map((comment, index) => (
             <div className={styles.reviewCardWrapper}>
               <div key={comment.id || index} className={styles.reviewCard}>
                 <div className={styles.reviewHeader}>

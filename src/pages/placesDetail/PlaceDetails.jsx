@@ -128,6 +128,14 @@ const PlaceDetails = () => {
   
   };
 
+  const handleNavigateToWebsite = (place) => {
+    if (place?.url) {
+      window.open(place.url, "_blank"); // Open the external URL in a new tab
+    } else {
+      console.error("No website URL provided for this place.");
+    }
+  };
+
   return (
     <>
       {isOpen && showImgGalleryPopup && (
@@ -157,7 +165,7 @@ const PlaceDetails = () => {
                 {isLoading ? (
                   <MuseumInfoSkeleton />
                 ) : (
-                  <MuseumInfo place={place} />
+                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite}/>
                 )}
                 {isLoading ? (
                   <ImageGallerySkeleton />

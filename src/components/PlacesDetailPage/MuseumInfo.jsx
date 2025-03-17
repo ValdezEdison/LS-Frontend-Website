@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./MuseumInfo.module.css";
 
-const MuseumInfo = ({ place }) => {
+const MuseumInfo = ({ place, handleNavigateToWebsite }) => {
  
   return (
     <div className={styles.museumInfo}>
@@ -25,7 +25,7 @@ const MuseumInfo = ({ place }) => {
             alt="Web icon"
             className={styles.webIcon}
           />
-          <button className={styles.websiteButton}>Ir a la web</button>
+          <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>Ir a la web</button>
         </div>
         <p className={styles.phoneNumber}>Teléfono: {place?.phone}</p>
       </div>

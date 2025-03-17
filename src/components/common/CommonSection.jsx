@@ -36,7 +36,7 @@ const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCaro
                 <h2 className={styles.sectionTitle}>{title}</h2>
                 <div className={styles.sectionHeader}>
                     <p className={styles.sectionSubtitle}>{subtitle}</p>
-                    <a href={seeMoreLink} className={styles.seeMoreLink}>
+                    <a onClick={() => seeMoreLink()} className={styles.seeMoreLink}>
                         {t("seeMore")}
                     </a>
                 </div>

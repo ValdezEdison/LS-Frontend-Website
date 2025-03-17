@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getLanguageData } from "../utils/Helper";
 import config from "../config";
 console.log(config.api.cmsBaseUrl, 'config.api.cmsBaseUrl');
+console.log(import.meta.env.VITE_API_BASE_URL, 'import.meta.env');
 const ApiInstance = axios.create({
   baseURL: config.api.baseUrl,
 });
