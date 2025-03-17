@@ -6,9 +6,7 @@ import FilterBarSkeleton from "../skeleton/PlacesPage/FilterBarSkeleton";
 const FilterBar = ({ filters, isLoading, isDrawer=false }) => {
   return (
     <div className={styles.destinationFilter}>
-      {isLoading && !isDrawer ? (
-        <FilterBarSkeleton />
-      ) : (
+   
         <>
           {filters.map((filter, index) => (
             <FilterDropdown
@@ -24,7 +22,6 @@ const FilterBar = ({ filters, isLoading, isDrawer=false }) => {
             />
           ))}
         </>
-      )}
     </div>
   );
 };

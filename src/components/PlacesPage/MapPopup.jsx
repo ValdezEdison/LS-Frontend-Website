@@ -65,6 +65,13 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
                                     block: "center",
                                 });
                             }
+                              // Update latAndLng state
+                              const lat = location.address.latitude;
+                              const lng = location.address.longitude;
+                              setState(prevState => ({
+                                  ...prevState,
+                                  latAndLng: `${lat},${lng}`,
+                              }));
                         });
 
                         return marker;

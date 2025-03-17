@@ -194,7 +194,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
           </div>
 
           {expandedCategories[mainCategory.id] && (
-            <div className={styles.categoryFilters}>
+            <div className={styles.categoryFilters} key={mainCategory.id}>
               {mainCategory.categories
                 .slice(0, visibleSubcategories[mainCategory.id] ? mainCategory.categories.length : 4)
                 .map((subcategory) => (
