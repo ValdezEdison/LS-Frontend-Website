@@ -50,9 +50,13 @@ const Filter = ({ categories, ratings, state, setState }) => {
           const updatedCategories = currentCategories.filter((id) => id !== trimmedParentCategoryId);
   
           // Check if any other subcategories under the same parent category are selected
-          const hasOtherSubcategories = updatedSubcategories.some((id) =>
-            categories.find((cat) => cat.id === trimmedParentCategoryId)?.categories.some((subcat) => subcat.id === id)
-          );
+          // const hasOtherSubcategories = updatedSubcategories.some((id) =>
+          //   categories.find((cat) => cat.id === trimmedParentCategoryId)?.categories.some((subcat) => subcat.id === id)
+          // );
+
+          const hasOtherSubcategories = updatedCategories.filter((id) =>
+            categories.find((cat) => cat.id.toString() === trimmedLevelId)?.categories.some((subcat) => subcat.id.toString() === id)
+          ).length;
   
           // Remove parentCategoryId from levels only if no subcategories are selected under it
           const updatedLevels = hasOtherSubcategories
@@ -86,8 +90,9 @@ const Filter = ({ categories, ratings, state, setState }) => {
   
           // Count the number of selected categories under the same level
           const selectedCategoriesUnderLevel = updatedCategories.filter((id) =>
-            categories.find((cat) => cat.id === trimmedLevelId)?.categories.some((subcat) => subcat.id === id)
+            categories.find((cat) => cat.id.toString() === trimmedLevelId)?.categories.some((subcat) => subcat.id.toString() === id)
           ).length;
+          
   
           // Remove levelId from levels only if no categories are selected under it
           const updatedLevels = selectedCategoriesUnderLevel > 0

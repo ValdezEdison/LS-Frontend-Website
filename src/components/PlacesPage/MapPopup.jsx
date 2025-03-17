@@ -54,6 +54,7 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
 
                         // 🟠 Focus place card on marker click
                         marker.addListener("click", () => {
+                            console.log("Marker clicked");
                             const matchedPlace = places.find(place =>
                                 place.address?.latitude === location.address.latitude &&
                                 place.address?.longitude === location.address.longitude
@@ -82,6 +83,8 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
             }
         });
     }, [geoLocations, apiKey, places]);
+
+    console.log(state, 'state in map popup');
 
     return (
         <div className={styles2.popupOverlay}>
