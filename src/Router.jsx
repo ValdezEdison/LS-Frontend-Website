@@ -5,7 +5,8 @@ import HomePage from "./pages/home/HomePage";
 import PlacesPage from "./pages/places/PlacesPage";
 import PlaceDetails from "./pages/placesDetail/PlaceDetails";
 import Destination from "./pages/placesInfo/destination/Destination";
-import Events from "./features/places/placesInfo/events/Events";
+import Events from "./pages/placesInfo/events/Events";
+import ItineraryDetail from "./pages/placesInfo/itineries/ItineraryDetail";
 const Router = () => {
     return (
         <>
@@ -16,6 +17,7 @@ const Router = () => {
                 <Route path="/places/details" element={<PlaceDetails />} />
                 <Route path="/places/destination" element={<Destination />} />
                 <Route path="/places/events" element={<Events />} />
+                <Route path="/places/itineraries" element={<ItineraryDetail />} />
             </Routes>
         </>
     );

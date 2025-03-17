@@ -9,9 +9,13 @@ import citiesReducer from "../features/common/cities/CitySlice.jsx"
 import popupReducer from "../features/popup/PopupSlice.jsx"
 import destinationReducer from "../features/places/placesInfo/destination/DestinationSlice.jsx"
 
+
+// cms reducer
+import blockReducer from "../features/cms/Blocks/BlockSlice.jsx"
+
 const store = configureStore({
   reducer: {
-    // Add your reducers here
+    // main api reducers
     auth: authReducer,
     places: placeReducer,
     events: eventReducer,
@@ -20,7 +24,11 @@ const store = configureStore({
     countries: countryReducer,
     cities: citiesReducer,
     popup: popupReducer,
-    destination: destinationReducer
+    destination: destinationReducer,
+    // cms api reducers
+    cms: {
+      blocks: blockReducer
+    }
   },
 });
 

@@ -17,6 +17,7 @@ import MapPopup from "../../components/PlacesPage/MapPopup";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
+import FilterBarSkeleton from "../../components/skeleton/PlacesPage/FilterBarSkeleton";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -54,8 +55,8 @@ const initialRender = useRef(true);
   }, [state.categories, state.levels]);
 
   const { loading: placesLoading, categories, filterLoading } = useSelector((state) => state.places);
-  const { countries } = useSelector((state) => state.countries);
-  const { cities } = useSelector((state) => state.cities);
+  const { countries, loading: countriesLoading } = useSelector((state) => state.countries);
+  const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
   const { isOpen } = useSelector((state) => state.popup);
 
   const navigate = useNavigate();
@@ -169,32 +170,30 @@ const initialRender = useRef(true);
 
  }, [state.selectedDestinationId]);
 
-
   return (
     <>
-    {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings}/>}
+    {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState}/>}
     <div className={styles.placesPage}>
       <Header />
-      {filterLoading && <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading}/> }
-        <>
-      <div className="page-center">
-        <div className={styles.content}>
-          <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings} state={state} setState={setState}/>
-          {placesLoading ? <MainContentSkeleton /> : (
-            <MainContent
-              state={state} setState={setState}
-              countries={countries}
-              cities={cities} // Pass cities data to MainContent
-            />
-          )}
-        </div>
-        <div className={styles.content}>
-          <PromotionalBanner />
-        </div>
-      </div>
+      {(filterLoading) ? (
+          <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading} />
+        ) : (
+          <>
+            <div className="page-center">
+              <div className={styles.content}>
+                <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />
+                {!filterLoading && placesLoading ? <MainContentSkeleton /> :
+                <MainContent state={state} setState={setState} countries={countries} cities={cities} />
+                }
+              </div>
+              <div className={styles.content}>
+                <PromotionalBanner />
+              </div>
+            </div>
+          </>
+        )}
       <Newsletter />
       <Footer />
-      </>
     </div>
     </>
   );

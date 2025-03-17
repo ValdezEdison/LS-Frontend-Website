@@ -4,17 +4,17 @@ import { MainContentSkeleton } from "./PlaceSkeleton";
 import PromotionalBannerSkeleton from "./PromotionalBannerSkeleton";
 import styles from "../../../pages/places/PlacesPage.module.css";
 
-const PlacesPageSkeleton = () => {
+const PlacesPageSkeleton = ({ filterLoading, placesLoading }) => {
   return (
     <div className={styles.placesPage}>
       {/* <HeaderSkeleton /> */}
       <div className="page-center">
         <div className={styles.content}>
+        <SidebarSkeleton />
+          
 
-          <SidebarSkeleton />
 
-
-          <MainContentSkeleton />
+           <MainContentSkeleton />
 
         </div>
         <div className={styles.content}>
