@@ -8,7 +8,7 @@ const PlaceService = {
         return apiService.get(`/sites/${placeId}`);
     },
 
-    getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "") => {
+    getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", points = "") => {
         let url = `/sites/?type=place&city_id=${cityId}&page=${page}&preview=${preview}`;
         
         if (country) {
@@ -22,6 +22,9 @@ const PlaceService = {
         }
         if (levels) {
             url += `&levels=${encodeURIComponent(levels)}`;
+        }
+        if (points) {
+            url += `&points=${encodeURIComponent(points)}`;
         }
         
         return apiService.get(url);

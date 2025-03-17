@@ -17,7 +17,6 @@ import MapPopup from "../../components/PlacesPage/MapPopup";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
-import FilterBarSkeleton from "../../components/skeleton/PlacesPage/FilterBarSkeleton";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -38,6 +37,7 @@ const initialRender = useRef(true);
     categories: "",
     ratings: "",
     subcategories: "",
+    latAndLng: "",
   });
 
 
@@ -138,12 +138,13 @@ const initialRender = useRef(true);
       preview: 1,
       avg_rating: state.ratings,        // Pass ratings from state
       categories: state.categories,    // Pass categories from state
-      levels: state.levels             // Pass levels from state
+      levels: state.levels,             // Pass levels from state
+      points: state.latAndLng
     
     }));
 
    
-  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, dispatch]);
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.latAndLng, state.page, dispatch]);
 
   useEffect (() => {
     dispatch(fetchGeoLocations({cityId: state.selectedDestinationId !== null
@@ -169,6 +170,8 @@ const initialRender = useRef(true);
   }
 
  }, [state.selectedDestinationId]);
+
+ console.log(state, 'state');
 
   return (
     <>
