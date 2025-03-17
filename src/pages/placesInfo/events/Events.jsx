@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "../../../../components/layouts/Header";
-import Footer from "../../../../components/layouts/Footer";
-import EventCard from "../../../../components/PlacesInfo/Events/EventCard";
-import RecommendedEvent from "../../../../components/PlacesInfo/Events/RecommendedEvent";
+import Header from "../../../components/layouts/Header";
+import Footer from "../../../components/layouts/Footer";
+import EventCard from "../../../components/PlacesInfo/Events/EventCard";
+import RecommendedEvent from "../../../components/PlacesInfo/Events/RecommendedEvent";
 import styles from "./Events.module.css";
-import SubNavMenu from "../../../../components/common/SubNavMenu";
+import SubNavMenu from "../../../components/common/SubNavMenu";
 
 const popularEvents = [
   {
@@ -68,7 +68,7 @@ const Events = () => {
   return (
     <>
       <Header />
-      <main className={styles.mainContent}>
+      <main className="page-center">
         <h1 className={styles.pageTitle}>Atenas, Grecia</h1>
         <SubNavMenu activeLink="eventos" />
         {/* <div className={styles.divider} /> */}

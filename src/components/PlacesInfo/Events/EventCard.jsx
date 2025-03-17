@@ -4,18 +4,11 @@ import styles from "./EventCard.module.css";
 function EventCard({ title, location, date, category, image }) {
   return (
     <div className={styles.eventCard}>
-      <img src={image} alt={title} className={styles.eventImage} />
-      <button className={styles.favoriteButton} aria-label="Add to favorites">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* SVG content */}
-        </svg>
-      </button>
+      <div className={styles.eventImageContainer}>
+        <img src={image} alt={title} className={styles.eventImage} />
+        <div className={styles.favIcon}></div>
+      </div>
+      
       <div className={styles.eventInfo}>
         <h3 className={styles.eventTitle}>{title}</h3>
         <p className={styles.eventLocation}>{location}</p>
@@ -25,15 +18,7 @@ function EventCard({ title, location, date, category, image }) {
       <div className={styles.eventActions}>
         <button className={styles.viewMoreButton}>Ver más</button>
         <button className={styles.addToTripButton}>
-          <svg
-            width="21"
-            height="20"
-            viewBox="0 0 21 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* SVG content */}
-          </svg>
+          <span className={styles.addIcon}></span>
           Añadir a viaje
         </button>
       </div>

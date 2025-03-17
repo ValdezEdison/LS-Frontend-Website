@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
+import { fetchHeaderBlocks } from "../../features/cms/Blocks/BlockAction";
 
 const Header = () => {
 
@@ -30,6 +31,7 @@ const Header = () => {
   useEffect(() => {
     dispatch(fetchLanguages());
     dispatch(fetchImages());
+    dispatch(fetchHeaderBlocks());
   }, [dispatch, language]); // Re-fetch data when language changes
 
   const handleClickHamburger = () => {

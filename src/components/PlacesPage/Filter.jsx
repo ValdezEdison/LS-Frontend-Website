@@ -116,7 +116,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
 
   const handleRatingChange = (ratingValue) => {
     setState((prevState) => {
-      const currentRatings = prevState.rating ? prevState.rating.split(',') : [];
+      const currentRatings = prevState.ratings ? prevState.ratings.split(',') : [];
       const trimmedRatingValue = ratingValue.toString().trim();
       const trimmedCurrentRatings = currentRatings.map((id) => id.toString().trim());
 
@@ -245,7 +245,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
           {ratings.map((rating, index) => (
             <span key={index} className={styles.ratingLabel}>
               <label key={index} className="check-container">
-                <input type="checkbox" checked={state.rating?.includes(rating.value)}
+                <input type="checkbox" checked={state.ratings?.includes(rating.value)}
                   onChange={() => handleRatingChange(rating.value)}/>
                 <span className="checkmark"></span>
                 {rating.label}

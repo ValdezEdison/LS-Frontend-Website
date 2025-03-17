@@ -1,0 +1,120 @@
+.itineraryDetailContainer {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mainContent {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 0 70px;
+}
+
+@media (max-width: 991px) {
+  .mainContent {
+    padding: 0 20px;
+  }
+}
+
+.itineraryHeader {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 41px;
+}
+
+@media (max-width: 991px) {
+  .itineraryHeader {
+    margin-top: 20px;
+  }
+}
+
+.itineraryInfo {
+  display: flex;
+  flex-direction: column;
+  font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+.itineraryTitle {
+  color: #000;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.itineraryTag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 7px 12px;
+  margin-bottom: 20px;
+}
+
+.tagText {
+  color: #000;
+  font-size: 14px;
+}
+
+.itineraryMeta {
+  color: #000;
+  font-size: 20px;
+}
+
+.itineraryActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.shareButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.shareIcon {
+  width: 26px;
+  height: 26px;
+}
+
+.addToTripButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: var(--Color-principal-naranja, #f4c031);
+  color: var(--Negro-textos, #151820);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.addIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background-image: url("path-to-add-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.itineraryPlaces {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 41px;
+}
+
+@media (max-width: 991px) {
+  .itineraryPlaces {
+    margin-top: 20px;
+  }
+}

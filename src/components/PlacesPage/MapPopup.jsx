@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { Marker } from '../common/Images'; // Ensure this is the correct path to your custom marker image
-const MapPopup = ({ onClose, categories, ratings }) => {
+const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { places, geoLocations } = useSelector((state) => state.places);
@@ -81,7 +81,7 @@ const MapPopup = ({ onClose, categories, ratings }) => {
             <div className={styles2.popupContent}>
                 <div className={styles2.mapPopupWrapper}>
                     <div className={styles2.mapPopupFilter}>
-                        <Filter categories={categories} ratings={ratings} />
+                        <Filter categories={categories} ratings={ratings} state={state} setState={setState}/>
                     </div>
                     <div className={styles2.mapPopupMapArea}>
                         <div
