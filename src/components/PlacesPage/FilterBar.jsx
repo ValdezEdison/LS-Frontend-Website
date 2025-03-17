@@ -18,7 +18,7 @@ const FilterBar = ({ state, setState, countries, cities, updateState }) => {
   return (
 
     <div className={styles.destinationFilter}>
-      {loading || countriesLoading ? <FilterBarSkeleton /> : (
+      {/* {loading || countriesLoading ? <FilterBarSkeleton /> : ( */}
         <>
           <FilterDropdown
             label={`${t("filter.select")} ${t("filter.country")}`}
@@ -48,8 +48,8 @@ const FilterBar = ({ state, setState, countries, cities, updateState }) => {
             searchQuery={''}
           />
         </>
-      )
-      }
+      {/* )
+      } */}
     </div>
   );
 };
