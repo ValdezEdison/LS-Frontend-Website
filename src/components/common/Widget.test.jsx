@@ -1,16 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import NearbyPlaces from "./NearbyPlaces";
+import Widget from "./Widget";
 
-describe("NearbyPlaces", () => {
+describe("Widget", () => {
   test("renders section title", () => {
-    render(<NearbyPlaces />);
+    render(<Widget />);
 
     expect(screen.getByText("Otros lugares cercanos")).toBeInTheDocument();
   });
 
   test("renders all nearby places", () => {
-    render(<NearbyPlaces />);
+    render(<Widget />);
 
     expect(screen.getByText("Las Artes y las Ciencias")).toBeInTheDocument();
     expect(screen.getByText("Praça do Comércio")).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("NearbyPlaces", () => {
   });
 
   test("renders images for all places", () => {
-    render(<NearbyPlaces />);
+    render(<Widget />);
 
     const images = screen.getAllByRole("img");
     expect(images).toHaveLength(4);

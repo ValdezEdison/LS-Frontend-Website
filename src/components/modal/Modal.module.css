@@ -61,19 +61,20 @@
     display: flex;
     flex: 1;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
-@media screen and (max-height:700px) {
-    .modal {
-        max-height: calc(100vh - 80px);
-    }
+ @media screen and (max-height:700px) {
+    /* .modal {
+        max-height: calc(100vh - 120px);
+    } */
 }
 
-@media screen and (max-height: 550px) {
+/*@media screen and (max-height: 550px) {
     .modal{
         max-height: calc(100vh - 10px);
     }
-}
+} */
 
 
 
@@ -86,7 +87,7 @@
 @media (max-width: 991px) {
     .modal {
         width: 90%;
-        height: 90%;
+        /* height: 90%; */
     }
 
     .galleryReviewPopup{
@@ -102,7 +103,7 @@
 @media (max-width: 640px) {
     .modal {
         width: 95%;
-        height: 95%;
+        /* height: 95%; */
     }
 
     .modalHeader {

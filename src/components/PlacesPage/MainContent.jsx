@@ -248,7 +248,7 @@ const MainContent = ({ state, setState, countries, cities }) => {
       <div className={styles.placesList} ref={placesListRef}>
         <button
           style={{
-            display: showArrow && !isOpen && !loading ? 'block' : 'none'
+            display: showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
           }}
 
           className={styles3.gotoTopButton}

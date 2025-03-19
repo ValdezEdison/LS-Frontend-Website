@@ -198,6 +198,14 @@
   opacity: 0.6;
 }
 
+.filterselectedInputWrapper{
+  position: relative;
+}
+
+.filterNoResults{
+  font-size: 13px;
+  text-align: center;
+}
 
 @media screen and (max-width: 991px) {
   .destinationFilter > div {

@@ -1,0 +1,102 @@
+.nearbyPlaces {
+  margin: 26px auto;
+  padding: 0 20px;
+  border-top: solid 1px #BDBDBD;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.placesList {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.placeCard {
+  /* flex: 0 0 auto; */
+  /* width: 279px; */
+  padding: 0px 14px !important;
+}
+
+:global(.slick-next),
+:global(.slick-prev) {
+  width: 40px !important;
+  height: 40px !important;
+  background: #F4C031 !important;
+  border-radius: 8px !important;
+  transform: translateY(-50%) !important;
+  top: 38% !important;
+}
+
+:global(.slick-next) {
+  right: -5px !important;
+}
+
+:global(.slick-prev) {
+  left: -5px !important;
+  z-index: 1 !important;
+}
+
+:global(.slick-slider) {
+  margin: 0 -14px !important;
+}
+
+:global(.slick-prev:before),
+:global(.slick-next:before) {
+  position: absolute;
+  content: '' !important;
+  background: url('../../../public/images/arrow-1.svg') no-repeat 0 0;
+  width: 17px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:global(.slick-prev:before) {
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+.placeImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.placeName {
+  font-size: 14px;
+  color: #000;
+  margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+  .placesList {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .placeCard {
+    width: calc(50% - 14px);
+  }
+
+  .nearbyPlaces {
+    padding: 0;
+  }
+
+  :global(.slick-next), :global(.slick-prev) {
+    top: 42% !important;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .placeCard {
+    width: 100%;
+  }
+}

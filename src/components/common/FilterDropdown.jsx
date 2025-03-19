@@ -61,7 +61,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
         <div className={styles.filterContent}>
           {onSearch && (
             <div className={styles.filterselectedItem}>
-
+              <div className={styles.filterselectedInputWrapper}>
               <CustomInput
                 type="text"
                 name="search"
@@ -81,6 +81,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
                   onClick={() => onSearch("")}
                 />
               )}
+              </div>
             </div>
           )}
           <ul className={`${styles.filterChecklist} filter-check`}>

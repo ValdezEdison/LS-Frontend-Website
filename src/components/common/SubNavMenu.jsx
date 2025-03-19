@@ -5,9 +5,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 const SubNavMenu = ({ activeLink }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = location.state || {};
+
+  console.log(id, 'id in SubNavMenu');
 
   const handleNavigation = (path) => {
-    navigate(path);
+    navigate(path, { state: { id } });
   };
 
   const isActive = (path) => {

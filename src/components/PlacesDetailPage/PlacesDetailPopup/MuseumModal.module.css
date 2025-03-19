@@ -15,6 +15,15 @@
   position: relative;
 }
 
+.destinationImageContainer .mainImageContainer{
+  max-width: 965px;
+  padding-bottom: 30px;
+}
+
+.mainImageContainer img{
+  max-width: 100%;
+}
+
 /* .mainImage {
   width: 641px;
   height: 390px;
@@ -33,12 +42,17 @@
   gap: 22px;
   margin: 6px 0 16px;
   flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+  position: relative;
+  left: -16px;
 }
-
+  
 .thumbnail {
-  /* width: 144px; */
-  width: calc(25% - 22px);
-  height: 94px;
+  width: 144px;
+  /* width: calc(25% - 22px); */
+  height: auto;
   border-radius: 3px;
   object-fit: cover;
   cursor: pointer;
@@ -152,8 +166,16 @@
   left: -90px;
 }
 
+.destinationImageContainer .arrowButton.prev{
+  left: -48px;
+}
+
 .arrowButton.next{
-  right: -90px;
+  right: -70px;
+}
+
+.destinationImageContainer .arrowButton.next{
+  right: 35px;
 }
 
 .imageGalleryPopupContentOuter{
@@ -175,22 +197,51 @@
   border-radius: 8px;
 }
 
+.destinationImageContainer .thumbnailContainer{
+  max-width: 965px;
+}
+
+.destinationImageContainer .mainImageContainer :global(.slick-slide img){
+  width: 965px !important;
+}
 .imageGalleryPopupContent :global(.slick-slider) {
   margin: 0 !important;
 }
 
+@media screen and (max-width:1450px) {
+  .destinationImageContainer .mainImageContainer :global(.slick-slide img){
+    width: 55.55vw !important;
+  }
+
+  .destinationImageContainer .thumbnailContainer{
+    max-width: 55.55vw;
+  }
+
+  .destinationImageContainer .mainImageContainer{
+    max-width: 55.55vw;
+  }
+
+  /* .destinationImageContainer .arrowButton.next{
+    right: 65px;
+  } */
+}
 
 
-@media screen and (max-width:1920px){
+
+/* @media screen and (max-width:1920px){
   .mainImageContainer :global(.slick-slide img){
     width: 33.38vw !important;
     height: 20.31vw !important;
   }
 
-  .mainImageContainer{
+  .mainImageContainer,.thumbnailContainer {
     max-width: 33.38vw;
   }
-}
+
+  .destinationImageContainer.mainImageContainer{
+    max-width: 50.26vw;
+  }
+} */
 
 @media screen  and (max-width:1200px) {
   .mainImageContainer :global(.slick-slide img) {
@@ -200,6 +251,19 @@
 
 .mainImageContainer{
   width: 447px ;
+}
+
+.thumbnailContainer{
+    max-width: 447px ;
+    left: 0;
+}
+
+.arrowButton.next{
+  right: -90px;
+}
+
+.destinationImageContainer .arrowButton.next {
+  right: -50px;
 }
 }
 
@@ -241,6 +305,18 @@
   .reviewsSection {
     width: 100%;
   }
+
+  .destinationImageContainer .mainImageContainer :global(.slick-slide img)  {
+    width: 100% !important;
+}
+
+.destinationImageContainer .mainImageContainer{
+  max-width: 90%;
+}
+
+/* .destinationImageContainer .arrowButton.prev{
+  left: -28px;
+} */
 }
 
 @media screen and (max-width: 640px) {
@@ -267,12 +343,35 @@
   }
 
   .mainImageContainer{
-    width: 100%;
+    width: 85%;
     height: auto;
+}
+
+.arrowButton.prev{
+  left: -42px;
+}
+
+ .arrowButton.next{
+  right: -42px;
+}
+
+.thumbnailContainer{
+  max-width: 100%;
 }
 
 .mainImageContainer :global(.slick-slide img){
   width: 100% !important;
   height: auto !important;
 }
+
+.destinationImageContainer .mainImageContainer{
+  max-width: 75%;
+}
+
+}
+
+@media screen and (max-width: 480px){
+  .mainImageContainer{
+    width: 75%;
+  }
 }
