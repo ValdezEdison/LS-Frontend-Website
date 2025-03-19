@@ -5,15 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./global.css";
 import { Provider } from "react-redux";
-import { store } from "./app/store";
+import { store, persistor } from "./app/store";
 import i18n from "./i18n";
 import { LanguageProvider } from "./context/LanguageContext";
+import { PersistGate } from "redux-persist/integration/react";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
     <LanguageProvider>
     <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       <App />
+    </PersistGate>
     </Provider>
     </LanguageProvider>
 //  </React.StrictMode>

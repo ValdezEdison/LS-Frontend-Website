@@ -28,7 +28,8 @@ const Places = () => {
   const navigate = useNavigate();
 
   const { loading: placesLoading, error, placesList, next } = useSelector((state) => state.placesInCity);
-  const { isAuthenticated } = useSelector((state) => state.auth)
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { loading:destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next);
   const { isOpen } = useSelector((state) => state.popup);
 
@@ -132,7 +133,7 @@ const Places = () => {
     <>
       <Header />
       <main className="page-center" ref={mainRef}>
-        <h1 className={commonStyle.pageTitle}>Atenas, Grecia</h1>
+        <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
         <SubNavMenu activeLink="lugares" />
         <SearchFilters />
         <p className={commonStyle.availablePlaces}>32 lugares disponibles</p>
