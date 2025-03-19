@@ -77,6 +77,7 @@ const Events = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
+  const { loading:destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
 
   const { t } = useTranslation('Places');
@@ -93,7 +94,7 @@ const Events = () => {
     <>
       <Header />
       <main className="page-center">
-        <h1 className={styles.pageTitle}>Atenas, Grecia</h1>
+        <h1 className={styles.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
         <SubNavMenu activeLink="eventos" />
         {/* <div className={styles.divider} /> */}
         <div className={styles.searchSection}>

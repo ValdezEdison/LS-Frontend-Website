@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./SubNavMenu.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { PURGE } from "redux-persist"; // Import PURGE action
+import { useDispatch } from "react-redux";
 
 const SubNavMenu = ({ activeLink }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { id } = location.state || {};
 
   console.log(id, 'id in SubNavMenu');
@@ -16,6 +19,30 @@ const SubNavMenu = ({ activeLink }) => {
   const isActive = (path) => {
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
+
+   // Clear persisted data when the user navigates away from the sub-navigation routes
+   useEffect(() => {
+    const subNavRoutes = [
+      "/places/destination",
+      "/places/events",
+      "/places/destination-places",
+      "/places/itineraries",
+      "/places/itineraries-details",
+    ];
+
+    const isSubNavRouteActive = subNavRoutes.some((route) =>
+      location.pathname.startsWith(route)
+    );
+
+    if (!isSubNavRouteActive) {
+      // Clear persisted data if the user navigates away from the sub-navigation routes
+      dispatch({
+        type: PURGE,
+        key: "destination", // Key used in persistConfig
+        result: () => null, // Optional callback
+      });
+    }
+  }, [location.pathname, dispatch]);
 
   return (
     <nav className={styles.subNav}>
