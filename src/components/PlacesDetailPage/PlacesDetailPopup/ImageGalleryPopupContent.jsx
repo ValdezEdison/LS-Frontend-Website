@@ -4,11 +4,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./MuseumModal.module.css";
 
-const ImageGalleryPopupContent = ({ images }) => {
+const ImageGalleryPopupContent = ({ images, isWide = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef(null);
   const thumbnailCount = images && images.length ? images.length : 0
- 
+
   const handlePrev = () => {
     sliderRef.current.slickPrev();
   };
@@ -46,53 +46,69 @@ const ImageGalleryPopupContent = ({ images }) => {
 
   const visibleThumbnails = getVisibleThumbnails();
 
+  console.log(images.length, 'images.length')
+
   return (
-    <div className={styles.gallerySection}>
-      <div className={styles.mainImageContainer}>
-        <button
-          className={`${styles.arrowButton} ${styles.prev}`}
-          aria-label="Previous image"
-          onClick={handlePrev}
-        >
-          {/* Add your arrow icon here */}
-        </button>
-        <Slider {...settings} ref={sliderRef}>
-          {images.map((image, index) => (
-            <img
-              key={index}
-              src={image.original}
-              alt={image.alt}
-              className={styles.mainImage}
-            />
-          ))}
-        </Slider>
-        <button
-          className={`${styles.arrowButton} ${styles.next}`}
-          aria-label="Next image"
-          onClick={handleNext}
-        >
-          {/* Add your arrow icon here */}
-        </button>
-      </div>
-      <div className={styles.imageCounter}>
-        {currentIndex + 1}/{images.length}
-      </div>
-      <div className={styles.thumbnailContainer}>
-        {visibleThumbnails.map((image, index) => (
+    <div className={`${styles.gallerySection} ${isWide ? styles.destinationImageContainer : ""}`}>
+      {images.length > 1 ? (
+        <>
+          <div className={styles.mainImageContainer}>
+            <button
+              className={`${styles.arrowButton} ${styles.prev}`}
+              aria-label="Previous image"
+              onClick={handlePrev}
+            >
+              {/* Add your arrow icon here */}
+            </button>
+            <Slider {...settings} ref={sliderRef}>
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.original}
+                  alt={image.alt}
+                  className={styles.mainImage}
+                />
+              ))}
+            </Slider>
+            <button
+              className={`${styles.arrowButton} ${styles.next}`}
+              aria-label="Next image"
+              onClick={handleNext}
+            >
+              {/* Add your arrow icon here */}
+            </button>
+          </div>
+
+          <div className={styles.imageCounter}>
+            {currentIndex + 1}/{images.length}
+          </div>
+          <div className={styles.thumbnailContainer}>
+            {visibleThumbnails.map((image, index) => (
+              <img
+                key={index}
+                src={image.thumbnail}
+                alt={image.alt}
+                className={`${styles.thumbnail} ${index === 0 ? styles.activeThumbnail : ""
+                  }`}
+                onClick={() => {
+                  const clickedIndex = images.indexOf(image);
+                  sliderRef.current.slickGoTo(clickedIndex);
+                }}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className={styles.mainImageContainer}>
           <img
-            key={index}
-            src={image.thumbnail}
-            alt={image.alt}
-            className={`${styles.thumbnail} ${
-              index === 0 ? styles.activeThumbnail : ""
-            }`}
-            onClick={() => {
-              const clickedIndex = images.indexOf(image);
-              sliderRef.current.slickGoTo(clickedIndex);
-            }}
+            src={images[0] ? images[0]?.original : PlaceHolderImg2}
+            alt="Main exhibit"
+            className={styles.mainImage}
           />
-        ))}
-      </div>
+        </div>
+      )}
+
+
     </div>
   );
 };

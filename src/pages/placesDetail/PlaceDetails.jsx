@@ -6,24 +6,24 @@ import MapSection from "../../components/PlacesDetailPage/MapSection";
 import MuseumInfo from "../../components/PlacesDetailPage/MuseumInfo";
 import ImageGallery from "../../components/PlacesDetailPage/ImageGallery";
 import ReviewSection from "../../components/PlacesDetailPage/ReviewSection";
-import NearbyPlaces from "../../components/PlacesDetailPage/NearbyPlaces";
 import Modal from "../../components/modal/Modal";
 import ImageGalleryPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ImageGalleryPopupContent";
 import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ReviewSectionPopupContent";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from 'react-router-dom';
-import { fetchPlaceById, fectchPlaceComments, fetchNearbyPlaces } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces } from "../../features/places/PlaceAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
 import ImageGallerySkeleton from "../../components/skeleton/PlacesDetailPage/ImageGallerySkeleton";
 import ReviewSectionSkeleton from "../../components/skeleton/PlacesDetailPage/ReviewSectionSkeleton";
-import NearbyPlacesSkeleton from "../../components/skeleton/PlacesDetailPage/NearbyPlacesSkeleton";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import TravelerReviews from "../../components/PlacesDetailPage/TravelReviewDrawer/TravelerReviews";
 import FeedbackModal from "../../components/PlacesDetailPage/popup/FeedbackModal";
 import { useTranslation } from "react-i18next";
+import Widget from "../../components/common/Widget";
+import WigetSkeleton from "../../components/skeleton/common/WidgetSkeleton";
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
@@ -94,7 +94,7 @@ const PlaceDetails = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchPlaceById(id));
-      dispatch(fectchPlaceComments(id));
+      dispatch(fetchPlaceComments(id));
       dispatch(fetchNearbyPlaces(id));
     }
   }, [id, dispatch]);
@@ -191,9 +191,9 @@ const PlaceDetails = () => {
               <ReviewSection handleClickSeeAllComments={handleClickSeeAllComments} handleClickAddComment={handleClickAddComment} comments={comments} placeDetails={place}/>
             )}
             {isLoading ? (
-              <NearbyPlacesSkeleton />
+              <WigetSkeleton />
             ) : (
-              <NearbyPlaces  places={NearByPlaces}/>
+              <Widget  data={NearByPlaces} title="Otros lugares cercanos" count={4}/>
             )}
           </div>
         </main>

@@ -8,7 +8,7 @@ import {
     updatePlace,
     deletePlace,
     fetchGeoLocations,
-    fectchPlaceComments, 
+    fetchPlaceComments, 
     fetchNearbyPlaces,
     fetchPlacesFilterCategories
 } from './PlaceAction';
@@ -96,15 +96,15 @@ const placeSlice = createSlice({
             })
 
             // Fetch place comments
-            .addCase(fectchPlaceComments.pending, (state) => {
+            .addCase(fetchPlaceComments.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fectchPlaceComments.fulfilled, (state, action) => {
+            .addCase(fetchPlaceComments.fulfilled, (state, action) => {
                 state.loading = false;
                 state.comments = action.payload;
             })
-            .addCase(fectchPlaceComments.rejected, (state, action) => {
+            .addCase(fetchPlaceComments.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

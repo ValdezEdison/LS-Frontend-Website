@@ -8,6 +8,9 @@ import countryReducer from "../features/common/countries/CountrySlice.jsx"
 import citiesReducer from "../features/common/cities/CitySlice.jsx"
 import popupReducer from "../features/popup/PopupSlice.jsx"
 import destinationReducer from "../features/places/placesInfo/destination/DestinationSlice.jsx"
+import eventByCityReducer from "../features/places/placesInfo/events/EventSlice.jsx"
+import placesInCityReducer from "../features/places/placesInfo/places/PlacesSlice.jsx"
+import itineriesInCityReducer from "../features/places/placesInfo/itinerary/ItinerarySlice.jsx"
 
 
 // cms reducer
@@ -25,6 +28,9 @@ const store = configureStore({
     cities: citiesReducer,
     popup: popupReducer,
     destination: destinationReducer,
+    eventsByCity: eventByCityReducer,
+    placesInCity: placesInCityReducer,
+    itineriesInCity: itineriesInCityReducer,
     // cms api reducers
     cms: {
       blocks: blockReducer

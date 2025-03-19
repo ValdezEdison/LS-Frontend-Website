@@ -22,7 +22,7 @@ const PlacesPage = () => {
   const dispatch = useDispatch();
   const { language } = useContext(LanguageContext);
 
-const initialRender = useRef(true);
+  const initialRender = useRef(true);
 
   const [state, setState] = useState({
     selectedCountryId: null,
@@ -44,7 +44,7 @@ const initialRender = useRef(true);
   const removeDuplicates = (str) => {
     return Array.from(new Set(str.split(","))).join(",");
   };
-  
+
   // Clean up the state
   useEffect(() => {
     setState((prevState) => ({
@@ -78,8 +78,8 @@ const initialRender = useRef(true);
     dispatch(fetchPlaces());
     dispatch(fetchCountries());
     dispatch(fetchCities({}));
-    dispatch(fetchGeoLocations({cityId: "", type: "place"}));
-    dispatch(fetchPlacesFilterCategories({page: 1, type: "place", cityId: ""}));
+    dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
+    dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
   }, [dispatch, language]);
 
   const debouncedFetchCountries = useCallback(
@@ -129,6 +129,8 @@ const initialRender = useRef(true);
       return;
     }
 
+    const points = Array(4).fill(state.latAndLng);
+
     dispatch(fetchPlacesByCityId({
       cityId: state.selectedDestinationId !== null
         ? state.selectedDestinationId
@@ -139,17 +141,33 @@ const initialRender = useRef(true);
       avg_rating: state.ratings,        // Pass ratings from state
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
-      points: state.latAndLng
-    
+      points: points
+
     }));
 
-   
+    dispatch(fetchGeoLocations({
+      cityId: state.selectedDestinationId !== null
+        ? state.selectedDestinationId
+        : state.selectedDestinations,
+      country: state.selectedCountryName,
+      page: state.page,
+      preview: 1,
+      avg_rating: state.ratings,        // Pass ratings from state
+      categories: state.categories,    // Pass categories from state
+      levels: state.levels,             // Pass levels from state
+      points: points,
+
+    }));
+
+
   }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.latAndLng, state.page, dispatch]);
 
-  useEffect (() => {
-    dispatch(fetchGeoLocations({cityId: state.selectedDestinationId !== null
-      ? state.selectedDestinationId
-      : state.selectedDestinations, type: "place"}));
+  useEffect(() => {
+    dispatch(fetchGeoLocations({
+      cityId: state.selectedDestinationId !== null
+        ? state.selectedDestinationId
+        : state.selectedDestinations, type: "place"
+    }));
   }, [state.selectedDestinationId, state.selectedDestinations]);
 
 
@@ -163,22 +181,22 @@ const initialRender = useRef(true);
   ];
 
 
- useEffect(() => {
+  useEffect(() => {
 
-  if(state.selectedDestinationId !== null){ 
-    navigate('/places/destination', { state: { id: state.selectedDestinationId } });
-  }
+    if (state.selectedDestinationId !== null) {
+      navigate('/places/destination', { state: { id: state.selectedDestinationId } });
+    }
 
- }, [state.selectedDestinationId]);
+  }, [state.selectedDestinationId]);
 
- console.log(state, 'state');
+  console.log(state, 'state');
 
   return (
     <>
-    {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState}/>}
-    <div className={styles.placesPage}>
-      <Header />
-      {(filterLoading) ? (
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />}
+      <div className={styles.placesPage}>
+        <Header />
+        {(filterLoading) ? (
           <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading} />
         ) : (
           <>
@@ -186,7 +204,7 @@ const initialRender = useRef(true);
               <div className={styles.content}>
                 <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />
                 {!filterLoading && placesLoading ? <MainContentSkeleton /> :
-                <MainContent state={state} setState={setState} countries={countries} cities={cities} />
+                  <MainContent state={state} setState={setState} countries={countries} cities={cities} />
                 }
               </div>
               <div className={styles.content}>
@@ -195,9 +213,9 @@ const initialRender = useRef(true);
             </div>
           </>
         )}
-      <Newsletter />
-      <Footer />
-    </div>
+        <Newsletter />
+        <Footer />
+      </div>
     </>
   );
 };

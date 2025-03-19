@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "../../PlacesDetailPage/NearbyPlaces.module.css";
+import styles from "../../common/Widget.module.css";
 import Skeleton from "react-loading-skeleton";
 
-const NearbyPlacesSkeleton = () => {
+const WigetSkeleton = () => {
   return (
     <section className={styles.nearbyPlaces}>
       <h2 className={styles.sectionTitle}>
@@ -20,4 +20,4 @@ const NearbyPlacesSkeleton = () => {
   );
 };
 
-export default NearbyPlacesSkeleton;
+export default WigetSkeleton;

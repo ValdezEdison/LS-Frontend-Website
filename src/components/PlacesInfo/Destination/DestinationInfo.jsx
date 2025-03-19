@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./DestinationInfo.module.css";
 import SubNavMenu from "../../common/SubNavMenu";
 
-const DestinationInfo = ({ destination }) => {
+const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
   if (!destination) return null;
 
   const {
@@ -15,6 +15,7 @@ const DestinationInfo = ({ destination }) => {
     latitude,
     longitude,
     activated,
+    media
   } = destination;
 
   return (
@@ -35,7 +36,7 @@ const DestinationInfo = ({ destination }) => {
             ))}
           </div>
         )}
-    <button className={styles.viewMoreButton}>Ver más</button>
+    <button className={styles.viewMoreButton} onClick={handleClickViewMoreDetails}>Ver más</button>
         <div className={styles.infoSection}>
           <h2 className={styles.infoTitle}>{slogan || "Discover this destination"}</h2>
           {link && (

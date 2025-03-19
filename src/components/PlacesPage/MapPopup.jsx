@@ -30,7 +30,7 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
             const google = window.google;
             const mapInstance = new google.maps.Map(mapContainerRef.current, {
                 center: { lat: 0, lng: 0 },
-                zoom: 2,
+                zoom: 10,
                 mapId: mapId,
                 fullscreenControl: false,
             });
