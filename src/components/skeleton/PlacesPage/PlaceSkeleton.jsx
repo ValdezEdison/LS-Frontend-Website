@@ -2,7 +2,7 @@ import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "../../PlacesPage/MainContent.module.css";
-import styles2 from "../../PlacesPage/PlaceCard.module.css";
+import styles2 from "../../common/PlaceCard.module.css";
 import { PlaceHolderImg2 } from "../../common/Images";
 
 const PlaceCardSkeleton = () => {

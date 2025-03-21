@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import PlaceCard from "./PlaceCard";
+import PlaceCard from "../common/PlaceCard";
 import styles from "./MainContent.module.css";
 import SearchBar from "../common/SearchBar";
 import LoginBanner from "./LoginBanner";
@@ -14,9 +14,11 @@ import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import { useNavigate } from "react-router-dom";
 import { Arrow } from "../common/Images";
-import styles3 from "./PlaceCard.module.css";
+import styles3 from "../common/PlaceCard.module.css";
 import Loader from "../common/Loader";
 import FilterBar from "../common/FilterBar";
+import styles4 from "../common/FilterBar.module.css";
+import SelectedItemList from "../common/SelectedItemList";
 
 const MainContent = ({ state, setState, countries, cities }) => {
   const { t } = useTranslation('Places');
@@ -47,7 +49,7 @@ const MainContent = ({ state, setState, countries, cities }) => {
     }
     // setShowSuggestionDropDown(false);
   };
-  
+
   const orderOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
     id: index,
     name: option,
@@ -214,35 +216,45 @@ const MainContent = ({ state, setState, countries, cities }) => {
     <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
         <h1 className={styles.title}>{t('availablePlaces', { count })}</h1>
-          <div className={styles2.searchContainer}>
-            <SearchInput
-              handleSearchClick={() => setShowSuggestionDropDown(true)}
-              suggestionRef={suggestionRef}
-              handleSearch={handleSearch}
-              showSuggestionDropDown={showSuggestionDropDown}
-              handleSearchClose={handleSearchClose}
-              searchValue={state.destinationSearchQuery}
-              suggestionsList={cities}
-              placeholder={t("search.placeholder")}
-              onSelect={(value) => updateState("selectedDestinationId", value)}
-              customClassName="placesSearchInputContainer"
-              selectedValue={state.selectedDestinationId}
-            />
-          </div>
+        <div className={styles2.searchContainer}>
+          <SearchInput
+            handleSearchClick={() => setShowSuggestionDropDown(true)}
+            suggestionRef={suggestionRef}
+            handleSearch={handleSearch}
+            showSuggestionDropDown={showSuggestionDropDown}
+            handleSearchClose={handleSearchClose}
+            searchValue={state.destinationSearchQuery}
+            suggestionsList={cities}
+            placeholder={t("search.placeholder")}
+            onSelect={(value) => updateState("selectedDestinationId", value)}
+            customClassName="placesSearchInputContainer"
+            selectedValue={state.selectedDestinationId}
+          />
+        </div>
       </div>
-      <FilterBar
-      filters={filters}
-      isLoading={citiesLoading || countriesLoading}
-    />
+      <div className={styles4.placesFilterContainer}>
+        <FilterBar
+          filters={filters}
+          isLoading={citiesLoading || countriesLoading}
+        />
+      </div>
       {!isAuthenticated && <LoginBanner />}
       <div className={styles.placesSelectedItemsList}>
-        <PlacesSelectedItemList
+        {/* <PlacesSelectedItemList
           state={state}
           setState={setState}
           countries={countries}
           cities={cities}
           styles={styles}
           translate={t}
+        /> */}
+        <SelectedItemList
+          state={state}
+          setState={setState}
+          countries={countries}
+          cities={cities}
+          translate={t}
+          type="places"
         />
       </div>
       <div className={styles.placesList} ref={placesListRef}>
@@ -257,9 +269,13 @@ const MainContent = ({ state, setState, countries, cities }) => {
         >
           <img src={Arrow} alt="arrow" />
         </button>
-        {visiblePlaces?.map((place, index) => (
-          <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} />
-        ))}
+        {visiblePlaces?.length > 0 ? (
+          visiblePlaces?.map((place, index) => (
+            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} />
+          ))
+        ) : (
+          <div className="no-results-wrapper">No results</div>
+        )}
       </div>
 
       {loading ? <Loader /> : <SeeMoreButton

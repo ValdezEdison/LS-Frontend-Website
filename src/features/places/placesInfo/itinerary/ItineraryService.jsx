@@ -9,6 +9,10 @@ const itineraryService = {
         return ApiService.get('/routes/', {params});
     },
 
+    getItineraryDetails: async (routeId) => {
+        return ApiService.get(`/routes/${routeId}`);
+    },
+
 }
 
 export default itineraryService

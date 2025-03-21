@@ -49,6 +49,13 @@ const store = configureStore({
       blocks: blockReducer
     }
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types from redux-persist
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER"],
+      },
+    }),
 });
 
 // Create a persisted version of the store

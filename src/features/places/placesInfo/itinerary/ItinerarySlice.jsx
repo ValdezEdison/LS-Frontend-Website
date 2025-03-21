@@ -1,13 +1,14 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails } from './ItineraryAction';
 
 const initialState = {
   itineries: [],
   loading: false,
   error: null,
   next: null,
-  count: 0
+  count: 0,
+  itineraryDetails: null
 };
 
 const itineriesInCitySlice = createSlice({
@@ -28,6 +29,19 @@ const itineriesInCitySlice = createSlice({
         state.count = action.payload?.count;
       })
       .addCase(fetchItineriesInCity.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchItineraryDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchItineraryDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.itineraryDetails = action.payload;
+      })
+      .addCase(fetchItineraryDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

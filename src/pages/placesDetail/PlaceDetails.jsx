@@ -23,7 +23,7 @@ import TravelerReviews from "../../components/PlacesDetailPage/TravelReviewDrawe
 import FeedbackModal from "../../components/PlacesDetailPage/popup/FeedbackModal";
 import { useTranslation } from "react-i18next";
 import Widget from "../../components/common/Widget";
-import WigetSkeleton from "../../components/skeleton/common/WidgetSkeleton";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
@@ -191,7 +191,7 @@ const PlaceDetails = () => {
               <ReviewSection handleClickSeeAllComments={handleClickSeeAllComments} handleClickAddComment={handleClickAddComment} comments={comments} placeDetails={place}/>
             )}
             {isLoading ? (
-              <WigetSkeleton />
+              <WidgetSkeleton />
             ) : (
               <Widget  data={NearByPlaces} title="Otros lugares cercanos" count={4}/>
             )}

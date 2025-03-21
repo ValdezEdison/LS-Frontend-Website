@@ -8,10 +8,27 @@
   position: relative;
 }
 
+.homeHeader{
+  background-color: transparent ;
+  padding: 0;
+}
+
 .logoContainer {
   display: flex;
   align-items: center;
   gap: 42px;
+}
+
+.homeHeader .logoCommon{
+  display: none;
+}
+
+.logoAuth{
+  display: none;
+}
+
+.homeHeader .logoAuth{
+  display: block;
 }
 
 .logo {
@@ -19,6 +36,15 @@
   height: 50px;
   object-fit: contain;
   cursor: pointer;
+}
+
+.homeHeader .logo{
+  width: 85px;
+  height: auto;
+}
+
+.homeHeader .mainNav{
+  display: none;
 }
 
 .mainNav {
@@ -53,6 +79,19 @@
   height: 20px;
   object-fit: contain;
   cursor: pointer;
+}
+
+.homeHeader .icon{
+  width: 30px;
+  height: 30px;
+}
+
+.homeHeader .favouriteicon,.homeHeader .secondaryNav,.homeHeader .btnLogin,.homeHeader .mob-nav-container{
+  display: none;
+}
+
+.homeHeader .iconContainer{
+  gap: 28px;
 }
 
 .secondaryNav {

@@ -1,0 +1,119 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: #151820;
+  font: 600 14px "Source Sans Pro", sans-serif;
+}
+
+.input {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  font: 14px "Source Sans Pro", sans-serif;
+  width: 100%;
+  outline: none;
+}
+
+.phoneInput {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+}
+
+.phoneInput input{
+  border: none;
+}
+
+.select {
+  border: none;
+  outline: none;
+  color: #bdbdbd;
+  font: 14px "Source Sans Pro", sans-serif;
+}
+
+.passwordRequirements {
+  color: #151820;
+  font: 12px/1.2 "Source Sans Pro", sans-serif;
+}
+
+.passwordInput {
+  position: relative;
+}
+
+.passwordInput input{
+  width: 100%;
+}
+
+.showPassword{
+  position: absolute;
+  background: url(../../../public/images/eye.svg) no-repeat 0 0;
+  width: 22px;
+  height: 16px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #828282;
+  cursor: pointer;
+}
+
+.termsGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 14px "Source Sans Pro", sans-serif;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.termsLink {
+  color: #212d94;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.submitButton {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  background-color: #bdbdbd;
+  font: 600 15px "Source Sans Pro", sans-serif;
+  cursor: pointer;
+}
+
+.loginPrompt {
+  text-align: center;
+  font: 14px "Source Sans Pro", sans-serif;
+}
+
+.loginLink {
+  color: #212d94;
+  text-decoration: underline;
+  cursor: pointer;
+}

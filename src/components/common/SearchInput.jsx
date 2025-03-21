@@ -7,11 +7,7 @@ import CustomInput from "./CustomInput";
 
 const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "" }) => {
   const [defaultSuggestions] = useState([
-    "Lisboa, Portugal",
-    "Liverpool, Reino Unido",
-    "Centro histórico de Lisboa, Portugal",
-    "Centro de Lisboa, Portugal",
-    "Liguria, Italia",
+
   ]);
 
   const { t } = useTranslation("SearchInput");
@@ -37,14 +33,28 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           <span className={styles.searchClose} onClick={handleSearchClose}></span>
         )}      </div>
       <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""}`} ref={suggestionRef}>
-        {Array.isArray(suggestions) && suggestions.map((suggestion, index) => (
+        {/* {Array.isArray(suggestions) && suggestions.map((suggestion, index) => (
           <SuggestionItem
             key={index}
             id={suggestion.id}
             text={suggestion.name || suggestion}
             onSelect={onSelect}
           />
-        ))}
+        ))} */}
+        {Array.isArray(suggestions) && suggestions.length > 0 ? (
+          // Render suggestions if available
+          suggestions.map((suggestion, index) => (
+            <SuggestionItem
+              key={index}
+              id={suggestion.id}
+              text={suggestion.name || suggestion}
+              onSelect={onSelect}
+            />
+          ))
+        ) : (
+          // Show "No results" message if no suggestions are found
+          <div className={styles.filterNoResults}>No results</div>
+        )}
       </div>
     </div>
   );

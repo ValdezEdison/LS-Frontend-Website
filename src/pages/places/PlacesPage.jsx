@@ -13,7 +13,7 @@ import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
 import Newsletter from "../../components/common/Newsletter";
-import MapPopup from "../../components/PlacesPage/MapPopup";
+import MapPopup from "../../components/common/MapPopup";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +65,7 @@ const PlacesPage = () => {
 
   const handleShowMapPopup = () => {
     setShowMapPopup(true);
+    setState({ ...state, latAndLng: "" });
     dispatch(openPopup());
   };
 
@@ -141,6 +142,7 @@ const PlacesPage = () => {
       avg_rating: state.ratings,        // Pass ratings from state
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
+      subcategories: state.subcategories,
       points: points
 
     }));
@@ -155,12 +157,13 @@ const PlacesPage = () => {
       avg_rating: state.ratings,        // Pass ratings from state
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
+      subcategories: state.subcategories,
       points: points,
 
     }));
 
 
-  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.latAndLng, state.page, dispatch]);
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.latAndLng, state.page, state.subcategories, dispatch]);
 
   useEffect(() => {
     dispatch(fetchGeoLocations({

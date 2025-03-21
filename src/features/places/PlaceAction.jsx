@@ -32,9 +32,9 @@ export const fetchPlaceById = createAsyncThunk(
 
 export const fetchPlacesByCityId = createAsyncThunk(
   'places/fetchPlacesByCityId',
-  async ({ cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", points = [] }, { rejectWithValue }) => {
+  async ({ cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points = [] }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getPlacesByCityId(cityId, page, preview, country, avg_rating, categories, levels, points);
+      const response = await placeService.getPlacesByCityId(cityId, page, preview, country, avg_rating, categories, levels,subcategories, points);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
@@ -45,9 +45,9 @@ export const fetchPlacesByCityId = createAsyncThunk(
 
 export const fetchGeoLocations = createAsyncThunk(
   'places/fetchGeoLocations',
-  async ({ cityId, type, country, page, preview, avg_rating, categories, levels, points = [] }, { rejectWithValue }) => {
+  async ({ cityId, type, country, page, preview, avg_rating, categories, levels,subcategories, points = [] }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, points);
+      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, subcategories, points);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

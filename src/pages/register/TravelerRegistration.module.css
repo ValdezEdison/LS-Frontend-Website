@@ -1,0 +1,104 @@
+.registrationPage {
+  max-width: none;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+
+.authPage header{
+  background-color: #212d94;
+  padding: 1rem 0rem;
+}
+
+.mainContent {
+  display: flex;
+  width: 100%;
+}
+
+.bannerContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: calc(100vh - 105px);
+  
+  /* max-width: 720px; */
+}
+
+.bannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.formContainer {
+  flex: 1;
+  max-width: 720px;
+  /* min-width: 400px; */
+  padding: 27px 152px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+
+.formTitle {
+  color: #000;
+  text-align: center;
+  margin-bottom: 20px;
+  font: 600 20px "Source Sans Pro", sans-serif;
+}
+
+@media (max-width: 991px) {
+  .registrationPage {
+    max-width: 991px;
+  }
+
+  .mainContent {
+    /* flex-direction: column; */
+  }
+
+  .bannerContainer,
+  .formContainer {
+    max-width: 100%;
+  }
+
+  .formContainer {
+    padding: 27px 20px;
+  }
+
+  .formWrapper {
+    width: 100%;
+    max-width: 415px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerContainer{
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .registrationPage {
+    max-width: 640px;
+  }
+
+  .bannerImage {
+    height: 300px;
+  }
+}

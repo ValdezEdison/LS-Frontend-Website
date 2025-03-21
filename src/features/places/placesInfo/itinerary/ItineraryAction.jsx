@@ -14,3 +14,15 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const fetchItineraryDetails = createAsyncThunk(
+    'places/fetchItineraryDetails',
+    async (routeId, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.getItineraryDetails(routeId);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

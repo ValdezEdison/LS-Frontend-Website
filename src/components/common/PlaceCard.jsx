@@ -2,10 +2,15 @@ import React, { forwardRef } from "react";
 import styles from "./PlaceCard.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { getRatingText } from "../../constants/RatingText";
+import { useLocation } from "react-router-dom";
 
 const PlaceCard = forwardRef(({ place, translate, isAuthenticated, handleViewMoreDetails = () => { }, isPopup = false }, ref) => {
-    const hasStopsOrViews = place?.num_of_stops !== undefined || place?.num_of_views !== undefined;
-    const hasComments = place?.comments_count !== undefined && place.comments_count > 0;
+    const hasStopsOrTags = place?.num_of_stops !== undefined || (place?.tags && place?.tags.length > 0);
+    const hasComments = place?.comments_count !== undefined;
+
+    const location = useLocation();
+
+    const isItineraryPage = location.pathname.includes("itineraries");
 
     return (
         <div
@@ -23,17 +28,27 @@ const PlaceCard = forwardRef(({ place, translate, isAuthenticated, handleViewMor
             </div>
             <div className={styles.placeInfo}>
                 <h3 className={styles.placeName}>{place?.display_text || place?.title || ""}</h3>
-                <p className={styles.placeLocation}>{place?.city?.name || ""}, {place?.city?.country?.name || ""}</p>
+                <p className={styles.placeLocation}>
+                    {place?.city?.name}
+                    {place?.city?.name && place?.city?.country?.name && ", "}
+                    {place?.city?.country?.name}
+                </p>
                 <p className={styles.placeCategory}>{place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}</p>
 
                 {/* Conditionally render the stops and views section */}
-                {hasStopsOrViews && !hasComments && (
-                    <div className={styles.placeStopsViews}>
+                {hasStopsOrTags && !hasComments && isItineraryPage && (
+                    <div className={styles.placeStopsTags}>
                         {place?.num_of_stops !== undefined && (
                             <p className={styles.placeStops}>Stops: {place.num_of_stops}</p>
                         )}
-                        {place?.num_of_views !== undefined && (
-                            <p className={styles.placeViews}>Views: {place.num_of_views}</p>
+                        {place?.tags?.length > 0 && (
+                            <div className={styles.placeTags}>
+                                {place.tags.map((tag) => (
+                                    <span key={tag.id} className={styles.tag}>
+                                        {tag.title}
+                                    </span>
+                                ))}
+                            </div>
                         )}
                     </div>
                 )}

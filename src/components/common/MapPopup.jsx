@@ -1,25 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styles from "./Sidebar.module.css";
-import Filter from "./Filter";
+import Filter from "../PlacesPage/Filter";
 import styles2 from "./MapPopup.module.css";
-import PlaceCard from "./PlaceCard";
+import PlaceCard from './PlaceCard';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from "react-redux";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { Marker } from '../common/Images'; // Ensure this is the correct path to your custom marker image
-const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
+import { Marker } from './Images'; // Ensure this is the correct path to your custom marker image
+import { MapPlaceHolderImage } from './Images';
+import { useLocation } from 'react-router-dom';
+
+const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { places, geoLocations } = useSelector((state) => state.places);
+    const { events } = useSelector((state) => state.eventsByCity);
+
+    const location = useLocation();
+    const isEventsRoute = location.pathname === '/places/events';
 
     const mapContainerRef = useRef(null);
-    const placeRefs = useRef({}); // Store refs for each place card
+    const placeRefs = useRef({});
     const [map, setMap] = useState(null);
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
     const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
     const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
+    const dataToMap = isEventsRoute ? events : places;
+    const geoDataToMap = isEventsRoute ? events : geoLocations;
+
     useEffect(() => {
+        window.gm_authFailure = () => {
+            console.error("Google Maps authentication failed. Please check your API key and restrictions.");
+            setIsMapLoaded(false); // Show the placeholder image
+        };
+
         const loader = new Loader({
             apiKey: apiKey,
             version: "weekly",
@@ -36,9 +51,10 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
             });
 
             setMap(mapInstance);
+            setIsMapLoaded(true);
 
-            if (geoLocations.length > 0) {
-                const markers = geoLocations
+            if (geoDataToMap.length > 0) {
+                const markers = geoDataToMap
                     .filter(location => location.address?.latitude !== 0 && location.address?.longitude !== 0)
                     .map(location => {
                         const customContent = document.createElement("div");
@@ -52,10 +68,8 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
                             content: customContent,
                         });
 
-                        // 🟠 Focus place card on marker click
                         marker.addListener("click", () => {
-                            console.log("Marker clicked");
-                            const matchedPlace = places.find(place =>
+                            const matchedPlace = dataToMap.find(place =>
                                 place.address?.latitude === location.address.latitude &&
                                 place.address?.longitude === location.address.longitude
                             );
@@ -66,50 +80,73 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
                                     block: "center",
                                 });
                             }
-                              // Update latAndLng state
-                              const lat = location.address.latitude;
-                              const lng = location.address.longitude;
-                              setState(prevState => ({
-                                  ...prevState,
-                                  latAndLng: `${lat},${lng}`,
-                              }));
+
+                            const lat = location.address.latitude;
+                            const lng = location.address.longitude;
+                            setState(prevState => ({
+                                ...prevState,
+                                latAndLng: `${lat},${lng}`,
+                            }));
                         });
 
                         return marker;
                     });
 
-                // Add marker clustering
                 new MarkerClusterer({ map: mapInstance, markers });
             }
+        }).catch((error) => {
+            console.error("Failed to load the map:", error);
+            setIsMapLoaded(false);
         });
-    }, [geoLocations, apiKey, places]);
-
-    console.log(state, 'state in map popup');
+    }, [geoDataToMap, apiKey, dataToMap]);
 
     return (
         <div className={styles2.popupOverlay}>
             <div className={styles2.popupContent}>
                 <div className={styles2.mapPopupWrapper}>
-                    <div className={styles2.mapPopupFilter}>
-                        <Filter categories={categories} ratings={ratings} state={state} setState={setState}/>
-                    </div>
+                    {categories.length > 0 && ratings.length > 0 && (
+                        <div className={styles2.mapPopupFilter}>
+                            <Filter categories={categories} ratings={ratings} state={state} setState={setState} />
+                        </div>
+                    )}
                     <div className={styles2.mapPopupMapArea}>
+                        {!isMapLoaded && 
+                            <>
+                            <div className={styles2.mapFrame} >
+                            <img
+                                src={MapPlaceHolderImage}
+                                alt="Map Placeholder"
+                                className={styles2.mapPlaceholder}
+                            />
+                            </div>
+                            </>
+                        }
                         <div
                             ref={mapContainerRef}
                             className={styles2.mapFrame}
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', display: isMapLoaded ? 'block' : 'none' }}
                         ></div>
                         <div className={styles2.mapPopupPlaces}>
-                            {places?.map((place, index) => (
-                                <PlaceCard
-                                    key={place.id || index}
-                                    place={place}
-                                    translate={t}
-                                    isAuthenticated={isAuthenticated}
-                                    isPopup={true}
-                                    ref={(el) => placeRefs.current[place.id] = el} // 🟠 Set ref for each place
-                                />
-                            ))}
+                            {dataToMap?.length > 0 ? (
+                                dataToMap.map((item, index) => (
+                                    <PlaceCard
+                                        key={item.id || index}
+                                        place={item}
+                                        translate={t}
+                                        isAuthenticated={isAuthenticated}
+                                        isPopup={true}
+                                        ref={(el) => {
+                                            if (el) {
+                                                placeRefs.current[item.id] = el;
+                                            }
+                                        }}
+                                    />
+                                ))
+                            ) : (
+                                <div className={styles2.noDataFound}>
+                                    No data found
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -125,6 +162,5 @@ const MapPopup = ({ onClose, categories, ratings, state, setState }) => {
         </div>
     );
 };
-
 
 export default MapPopup;

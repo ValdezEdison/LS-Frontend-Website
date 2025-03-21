@@ -104,6 +104,10 @@ body {
   top: 0px;
 }
 
+.authHeader .mob-nav-container {
+  display: none;
+}
+
 .mob-nav-container {
   position: relative;
 }
@@ -171,6 +175,10 @@ button,input,select,textarea{
   font-size: 16px;
 }
 
+.check-container.login-check{
+  font-size: 12px;
+}
+
 /* Hide the browser's default checkbox */
 .check-container input {
   position: absolute;
@@ -191,6 +199,15 @@ button,input,select,textarea{
   border:solid 1px #828282;
   display: inline-block;
 }
+
+.terms-check .checkmark {
+  height: 20px;
+  width: 20px;
+  border:solid 1px #212D94;
+  border-radius: 50%;
+}
+
+
 
 /* On mouse-over, add a grey background color */
 /* .check-container:hover input ~ .checkmark {
@@ -225,6 +242,19 @@ button,input,select,textarea{
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.terms-check.check-container .checkmark:after {
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+}
+
+.terms-check.check-container {
+  font-size: 14px;
 }
 
 .paginationMainWrapper{
@@ -290,6 +320,34 @@ button,input,select,textarea{
   z-index: 9;
 }
 
+.react-datepicker__month {
+  margin: 0 !important;
+}
+.react-datepicker {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.authPage .header{
+  background-color: transparent !important;
+}
+
+.login-page-center{
+  max-width: 1440px;
+  width: 100%;
+  flex-grow: 1;
+  align-items: center;
+  margin: 0 auto;
+  display: flex;
+}
+
+.no-results-wrapper{
+  padding: 70px 20px;
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+}
 
 @media screen and (max-width: 1260px) {
   .page-center{

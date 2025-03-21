@@ -104,23 +104,36 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 29px;
+  margin: 30px 0 30px;
 }
+
+.mapButtonContainer {
+  /* display: flex; */
+  flex-shrink: 0;
+}
+
+.filterContainer{
+  flex-grow: 1;
+  position: relative;
+  /* top: 6px; */
+}
+
 
 .mapButton {
   background-color: var(--Color-principal-naranja, #f4c031);
   color: var(--Negro-textos, #151820);
   font-weight: 600;
-  padding: 10px 16px;
+  padding: 11px 16px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  font: 600 16px "Source Sans Pro", sans-serif;
 }
 
-.filterContainer {
+/* .filterContainer {
   display: flex;
   gap: 14px;
-}
+} */
 
 .filterItem {
   border: 1px solid var(--Desactivado, #718295);
@@ -162,6 +175,7 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 24px;
+  flex-wrap: wrap;
 }
 
 .placeCard {
@@ -469,4 +483,17 @@
     align-items: flex-start;
     gap: 10px;
   }
+
+  .placesList{
+     flex-direction: row;
+  }
+
+  
+}
+
+@media screen and (max-width: 640px) {
+  .placesList{
+     flex-direction: column;
+  }
+  
 }
