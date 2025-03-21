@@ -1,0 +1,21 @@
+.footer {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.footerDivider {
+  border: none;
+  border-top: 1px solid #828282;
+  margin-bottom: 1.25rem;
+}
+
+.footerText {
+  color: #000;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.footerLink {
+  color: #000;
+  text-decoration: underline;
+}

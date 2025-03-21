@@ -17,6 +17,8 @@ import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { Arrow } from "../../../components/common/Images";
 import styles2 from "../../../components/common/PlaceCard.module.css"
 import { fetchItineriesInCity } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
+import FilterBar from "../../../components/common/FilterBar";
 
 
 const ItineraryList = () => {
@@ -27,9 +29,9 @@ const ItineraryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading: placesLoading, error, itineries, next } = useSelector((state) => state.itineriesInCity);
+  const { loading: itineriesLoading, error, itineries, next, count } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { loading:destinationLoading, destination } = useSelector((state) => state.destination);
+  const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next);
   const { isOpen } = useSelector((state) => state.popup);
 
@@ -41,6 +43,9 @@ const ItineraryList = () => {
   const mainRef = useRef(null);
   const gotoTopButtonRef = useRef(null);
   const placesListBreakerRef = useRef(null);
+
+  
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -80,53 +85,74 @@ const ItineraryList = () => {
     }
   };
 
-    useEffect(() => {
-      // Initial position calculation
-      updateButtonPosition();
-  
-      // Handle resize event
-      window.addEventListener('resize', updateButtonPosition);
-  
-      // Cleanup the event listener
-      return () => {
-        window.removeEventListener('resize', updateButtonPosition);
-      };
-    }, []);
+  useEffect(() => {
+    // Initial position calculation
+    updateButtonPosition();
 
-    
+    // Handle resize event
+    window.addEventListener('resize', updateButtonPosition);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', updateButtonPosition);
+    };
+  }, []);
+
+
 
   useEffect(() => {
-      let lastScrollY = window.scrollY;
-  
-      const handleScroll = () => {
-        const arrowButton = gotoTopButtonRef.current?.getBoundingClientRect();
-        const breaker = placesListBreakerRef.current?.getBoundingClientRect();
-  
-        if (arrowButton && breaker) {
-          if (
-            arrowButton.bottom >= breaker.top &&
-            window.scrollY > lastScrollY
-          ) {
-            // Scrolling down and elements meet — hide the arrow
-            setShowArrow(false);
-          } else if (
-            breaker.top > window.innerHeight &&
-            window.scrollY < lastScrollY
-          ) {
-            // Scrolling up and passed the breaker — show the arrow
-            setShowArrow(true);
-          }
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const arrowButton = gotoTopButtonRef.current?.getBoundingClientRect();
+      const breaker = placesListBreakerRef.current?.getBoundingClientRect();
+
+      if (arrowButton && breaker) {
+        if (
+          arrowButton.bottom >= breaker.top &&
+          window.scrollY > lastScrollY
+        ) {
+          // Scrolling down and elements meet — hide the arrow
+          setShowArrow(false);
+        } else if (
+          breaker.top > window.innerHeight &&
+          window.scrollY < lastScrollY
+        ) {
+          // Scrolling up and passed the breaker — show the arrow
+          setShowArrow(true);
         }
+      }
+
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
+
+  const sortOrder = [
+    { id: 1, name: "All" },
+    { id: 2, name: "Most Recent" },
+    { id: 3, name: "Highest Rated" },
+    { id: 4, name: "Our Recommendation" },
+  ];
+
+  // Define filters array
+  const filters = [
   
-        lastScrollY = window.scrollY;
-      };
-  
-      window.addEventListener('scroll', handleScroll);
-  
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, []);
+    {
+      label: "Select Order",
+      type: "select",
+      options: sortOrder,
+      selectedId: selectedOrderId,
+      onSelect: (value) => setSelectedOrderId(value),
+    },
+  ];
 
   return (
     // <div className={styles.athenasPlaces}>
@@ -135,8 +161,15 @@ const ItineraryList = () => {
       <main className="page-center" ref={mainRef}>
         <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
         <SubNavMenu activeLink="lugares" />
-        <SearchFilters />
-        <p className={commonStyle.availablePlaces}>32 lugares disponibles</p>
+        <div className={styles.searchFilters}>
+          <div className="">
+
+          </div>
+          <div className={styles.filterContainer}>
+          <FilterBar filters={filters}/>
+          </div>
+        </div>
+        <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
         <div className={styles.placesList} ref={placesListRef}>
           <button
             style={{
@@ -149,9 +182,23 @@ const ItineraryList = () => {
           >
             <img src={Arrow} alt="arrow" />
           </button>
-          {visiblePlaces.map((place, index) => (
-            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} />
-          ))}
+          {itineriesLoading ?
+            (Array.from({ length: 5 }).map((_, index) => (
+              <CardSkeleton key={index} />
+            ))
+            )  : visiblePlaces.length > 0 ? (
+              visiblePlaces.map((place, index) => (
+                <PlaceCard
+                  key={index}
+                  place={place}
+                  translate={t}
+                  isAuthenticated={isAuthenticated}
+                  handleViewMoreDetails={handleViewMoreDetails}
+                />
+              ))
+            ) : (
+              <div className="no-results-wrapper">No results</div>
+            )}
           {loading ? <Loader /> : <SeeMoreButton
             onClick={loadMore}
             loading={loading}

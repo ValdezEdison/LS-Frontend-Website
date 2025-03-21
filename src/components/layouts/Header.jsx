@@ -98,12 +98,19 @@ const Header = () => {
   return (
     <header>
       <div className="page-center">
-        <div className={styles.header}>
+      <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" ? styles.homeHeader + " authHeader" : ""}`}>
           <div className={styles.logoContainer}>
             <img
               src={LSLogo2_1}
               alt="Local Secrets Logo"
-              className={styles.logo}
+              className={`${styles.logo} ${styles.logoCommon}`}
+              onClick={() => handleNavigation("/")}
+            />
+            
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/f3b32c2b8998cb87f3022dd6929cd601c3eecf28?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+              alt="Local Secrets Logo111"
+              className={`${styles.logo} ${styles.logoAuth}`}
               onClick={() => handleNavigation("/")}
             />
             <nav className={styles.mainNav}>
@@ -152,9 +159,14 @@ const Header = () => {
 
               </div>
               <img
+                        src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/0f2b7313676b8aa46a1253a72edeac25273a7205?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+                        alt="Settings"
+                        className={`${styles.icon} ${styles.helpIcon}`}
+                      />
+              <img
                 src={Favorite}
                 alt="Notifications"
-                className={styles.icon}
+                className={`${styles.icon} ${styles.favouriteicon}`}
               />
               <nav className={styles.secondaryNav}>
                 <a
@@ -179,7 +191,7 @@ const Header = () => {
             alt="User Profile"
             className={styles.userIcon}
           /> */}
-            <button className="cta-button">{t("login")}</button>
+            <button className={styles.btnLogin + " cta-button"} onClick={() => handleNavigation("/login")}>{t("login")}</button>
             <div className="mob-nav-container">
               <div className={`icon-nav ${showNavBar ? "open" : ""}`} onClick={handleClickHamburger}>
                 <span></span>

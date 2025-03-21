@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 120px;
+  background-color: #212d94;
+}
+
+.logo,
+.helpIcon {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .header {
+    padding: 14px 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 14px 20px;
+  }
+}

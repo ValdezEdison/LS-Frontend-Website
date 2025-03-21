@@ -1,0 +1,6 @@
+.calendarIcon{
+    background: url(../../../public/images/calendar-icon.png) no-repeat 0 0;
+    background-size: 100%;
+    width: 15px;
+    height: 15px;
+}

@@ -9,11 +9,17 @@ import Events from "./pages/placesInfo/events/Events";
 import Places from "./pages/placesInfo/places/Places";
 import ItineraryList from "./pages/placesInfo/itineries/ItineraryList";
 import ItineraryDetail from "./pages/placesInfo/itineries/ItineraryDetail";
+import LoginPage from "./pages/login/LoginPage";
+import TravelerRegistration from "./pages/register/TravelerRegistration";
 const Router = () => {
     return (
         <>
             <ToastContainer />
             <Routes>
+
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<TravelerRegistration />} />
+
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />
                 <Route path="/places/details" element={<PlaceDetails />} />

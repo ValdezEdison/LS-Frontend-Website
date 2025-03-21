@@ -85,6 +85,16 @@
     display: none;
 }
 
+.mapFrame img.mapPlaceholder {
+    width: 100%;
+}
+
+
+.mapPopupPlaces .noDataFound {
+    min-height: 80px;
+    text-align: center;
+    width: 100%;
+}
 @media screen  and (max-height:1000px) {
     .mapPopupMapArea iframe,.mapPopupMapArea .mapFrame{
         height: calc(100vh - 100px);

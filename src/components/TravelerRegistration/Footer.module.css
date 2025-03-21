@@ -1,0 +1,23 @@
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font: 12px/1.4 "Source Sans Pro", sans-serif;
+}
+
+.termsAndPolicy,
+.copyright,
+.businessSignup {
+  margin-bottom: 10px;
+}
+
+.link {
+  color: #212d94;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.businessSignup {
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 20px;
+}

@@ -8,7 +8,7 @@ const PlaceService = {
     return apiService.get(`/sites/${placeId}`);
   },
 
-  getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", points = []) => {
+  getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points = []) => {
     let url = `/sites/?type=place&city_id=${cityId}&page=${page}&preview=${preview}`;
 
     if (country) {
@@ -22,6 +22,9 @@ const PlaceService = {
     }
     if (levels) {
       url += `&levels=${encodeURIComponent(levels)}`;
+    }
+    if (subcategories) {
+      url += `&levels=${encodeURIComponent(subcategories)}`;
     }
     if (points && points.length > 0) {
       // Append each point as a separate query parameter
@@ -45,6 +48,7 @@ const PlaceService = {
     avg_rating,
     categories,
     levels,
+    subcategories,
     points = [] // Accept points as an array
   ) => {
     let url = '/sites/geolocations?';
@@ -58,6 +62,7 @@ const PlaceService = {
     if (avg_rating !== undefined && avg_rating !== null && avg_rating !== "") url += `avg_rating=${encodeURIComponent(avg_rating)}&`;
     if (categories !== undefined && categories !== null && categories !== "") url += `categories=${encodeURIComponent(categories)}&`;
     if (levels !== undefined && levels !== null && levels !== "") url += `levels=${encodeURIComponent(levels)}&`;
+    if (subcategories !== undefined && subcategories !== null && subcategories !== "") url += `levels=${encodeURIComponent(subcategories)}&`;
 
     // Append points as separate query parameters
     if (points && points.length > 0) {

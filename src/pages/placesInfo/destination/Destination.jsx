@@ -8,11 +8,11 @@ import { fetchDestinationInfo } from "../../../features/places/placesInfo/destin
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { fetchNearbyPlaces } from "../../../features/places/PlaceAction";
-import WigetSkeleton from "../../../components/skeleton/common/WidgetSkeleton";
 import DestinationInfoSkeleton from "../../../components/skeleton/PlacesPage/PlacesInfo/destination/DestinationInfoSkeleton";
 import Modal from "../../../components/modal/Modal";
 import ImageGalleryPopupContent from "../../../components/PlacesDetailPage/PlacesDetailPopup/ImageGalleryPopupContent";
 import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
+import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 
 
 const Destination = () => {
@@ -56,7 +56,7 @@ const Destination = () => {
     )}
       <Header />
     {loading ? <DestinationInfoSkeleton /> : <DestinationInfo destination={destination} handleClickViewMoreDetails={handleClickViewMoreDetails} />}  
-     {NearbyPlacesLoading ? <WigetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
+     {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
       <Partners />
       <Footer />
     </>

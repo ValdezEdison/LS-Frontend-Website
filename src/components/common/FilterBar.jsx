@@ -19,6 +19,7 @@ const FilterBar = ({ filters, isLoading, isDrawer=false }) => {
               searchQuery={filter.searchQuery}
               disabled={filter.disabled}
               checkbox={filter.checkbox}
+              type={filter.type}
             />
           ))}
         </>

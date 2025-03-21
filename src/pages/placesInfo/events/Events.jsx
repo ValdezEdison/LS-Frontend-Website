@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import EventCard from "../../../components/PlacesInfo/Events/EventCard";
@@ -13,41 +13,12 @@ import useSeeMore from "../../../hooks/useSeeMore";
 import Loader from "../../../components/common/Loader";
 import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { useTranslation } from 'react-i18next';
-
-// const popularEvents = [
-//   {
-//     title: "Underdogs gallery",
-//     location: "Londres, United Kingdom",
-//     date: "Dom, 5 may, 19:00",
-//     category: "Exposiciones",
-//     image:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/e7d7f7b2b118d321a14951f0610c7d146958ec05",
-//   },
-//   {
-//     title: "Concierto música clásica",
-//     location: "Roma, Italia",
-//     date: "Dom, 5 may, 19:00",
-//     category: "Concierto",
-//     image:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/c09c31a4f2d6dd0954ed8f3c4db36f4df2bd87f1",
-//   },
-//   {
-//     title: "Amnesia Ibiza",
-//     location: "Ibiza, Islas Baleares",
-//     date: "Dom, 5 may, 19:00",
-//     category: "Vida nocturna",
-//     image:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/93a95bf48875334de43e84bcd1014d73b8f28f8a",
-//   },
-//   {
-//     title: "Teatro Piccolo",
-//     location: "Milán, Italia",
-//     date: "Dom, 5 may, 19:00",
-//     category: "Obras de teatro",
-//     image:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/2b9f21b518a6c2ed09633f72535059eb44a730fa",
-//   },
-// ];
+import EventCardSkeleton from "../../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
+import { fetchPlacesFilterCategories } from "../../../features/places/PlaceAction";
+import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
+import MapPopup from "../../../components/common/MapPopup";
+import SelectedItemList from "../../../components/common/SelectedItemList";
+import styles2 from "../../../components/PlacesPage/MainContent.module.css";
 
 const recommendedEvents = [
   {
@@ -77,70 +48,128 @@ const Events = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
-  const { loading:destinationLoading, destination } = useSelector((state) => state.destination);
+  const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
+  const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
+  const { isOpen } = useSelector((state) => state.popup);
+
+  const [showMapPopup, setShowMapPopup] = useState(false);
+
+
 
   const { t } = useTranslation('Places');
 
   const { id } = location.state || {};
   console.log(id, 'id in Events');
 
+  const [state, setState] = useState({
+    selectedLevel: "",
+    latAndLng: "",
+    selectedDateRange: { startDate: null, endDate: null },
+  })
+
   useEffect(() => {
     if (id) {
-      dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event' }));
+      dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
+      dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, state.selectedLevel]);
+
+
+
+  const handleShowMapPopup = () => {
+    setShowMapPopup(true);
+    setState({ ...state, latAndLng: "" });
+    dispatch(openPopup());
+  };
+
+  const handleCloseMapPopup = () => {
+    setShowMapPopup(false);
+    dispatch(closePopup());
+  };
+
+
+  // Define filters array
+  const filters = [
+    {
+      label: "Select Date Range",
+      type: "datePicker",
+      selectedId: state.selectedDateRange,
+      onSelect: (dates) => {
+          setState((prevState) => ({
+              ...prevState,
+              selectedDateRange: dates || { startDate: null, endDate: null }, // Fallback to default
+          }));
+      },
+  },
+    {
+      label: "Select Level",
+      type: "select",
+      options: categories.map(category => ({ id: category.id, title: category.title })),
+      selectedId: state.selectedLevel,
+      onSelect: (value) => {
+        setState((prevState) => ({
+          ...prevState,
+          selectedLevel: value,
+
+        }));
+      },
+    },
+  ];
+
+
   return (
     <>
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+
       <Header />
       <main className="page-center">
         <h1 className={styles.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
         <SubNavMenu activeLink="eventos" />
-        {/* <div className={styles.divider} /> */}
+
         <div className={styles.searchSection}>
-          <button className={styles.mapButton}>Ver mapa</button>
-          <form className={styles.searchForm}>
-            <div className={styles.inputWrapper}>
-              <label htmlFor="dateInput" className={styles.srOnly}>
-                Fechas
-              </label>
-              <input
-                id="dateInput"
-                type="text"
-                className={styles.searchInput}
-                placeholder="Selecciona un rango de fechas"
-              />
-            </div>
-            <div className={styles.inputWrapper}>
-              <label htmlFor="searchInput" className={styles.srOnly}>
-                Buscar
-              </label>
-              <input
-                id="searchInput"
-                type="text"
-                className={styles.searchInput}
-                placeholder="Selecciona una búsqueda"
-              />
-            </div>
-          </form>
+          <div className={styles.mapButtonContainer}>
+            <button className={styles.mapButton} onClick={handleShowMapPopup}>Ver mapa</button>
+          </div>
+          <div className={styles.filterContainer}>
+            <FilterBar filters={filters} />
+          </div>
+        </div>
+        <div className={styles2.placesSelectedItemsList}>
+          <SelectedItemList
+            state={state}
+            setState={setState}
+            categories={categories}
+            translate={t}
+            type="submenu-events"
+          />
         </div>
         <section className={styles.eventsSection}>
           <h2 className={styles.sectionTitle}>
             Eventos más populares en Atenas
           </h2>
           <div className={styles.eventGrid}>
-            {visibleEvents.map((event, index) => (
-              <EventCard key={index} event={event} />
-            ))}
+            {eventLoading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <EventCardSkeleton key={index} />
+              ))
+            ) : visibleEvents.length > 0 && (
+              // Render visible events if available
+              visibleEvents.map((event, index) => (
+                <EventCard key={index} event={event} />
+              ))
+            )}
           </div>
+
+         {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
           {loading ? <Loader /> : <SeeMoreButton
-        onClick={loadMore}
-        loading={loading}
-        next={hasNext}
-        translate={t}
-      />
-      }
+            onClick={loadMore}
+            loading={loading}
+            next={hasNext}
+            translate={t}
+          />
+          }
         </section>
         <div className={styles.divider} />
         <section className={styles.recommendedSection}>

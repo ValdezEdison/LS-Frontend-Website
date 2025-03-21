@@ -31,11 +31,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 30px 0;
+  margin: 30px 0 30px;
+}
+
+.mapButtonContainer {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.filterContainer{
+  flex-grow: 1;
+  position: relative;
+  /* top: 6px; */
 }
 
 .mapButton {
-  padding: 12px 16px;
+  padding: 11px 16px;
   border-radius: 12px;
   border: none;
   color: #151820;
@@ -126,10 +137,10 @@
     padding: 20px;
   }
 
-  .searchSection {
+  /* .searchSection {
     flex-direction: column;
     gap: 20px;
-  }
+  } */
 
   .searchForm {
     flex-direction: column;

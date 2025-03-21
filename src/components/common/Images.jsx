@@ -21,6 +21,7 @@ const FirstSection4 = "/images/imgen-primera-seccin-1-4@2x.png";
 const FirstSection5 = "/images/imgen-primera-seccin-1-5@2x.png";
 const FirstSection6 = "/images/imgen-primera-seccin-1-6@2x.png";
 const FirstSection7 = "/images/imgen-primera-seccin-1-7@2x.png";
+const Google = "/images/google.svg";
 const SecondSection3 = "/images/imgen-segunda-seccin-3@2x.png";
 const SecondSection3_1 = "/images/imgen-segunda-seccin-3-1@2x.png";
 const SecondSection4 = "/images/imgen-segunda-seccin-4@2x.png";
@@ -32,6 +33,7 @@ const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
 const MapsFinderDefault = "/images/mapas-buscadordefault@2x.png";
 const MapsSearchEuropeDefault = "/images/mapas-buscadoreuropa-default.svg";
 const MapsSearchAfricaDefault = "/images/mapas-buscadorfrica-default@2x.png";
+const MapPlaceHolderImage = "/images/map-placeholder-image.jpg";
 const MyWeirdLittleDesign = "/images/my-weird-little-design@3x.png";
 const Marker = "/images/marker.svg";
 const Notch = "/images/notch@2x.png";
@@ -77,6 +79,7 @@ export {
     FirstSection5,
     FirstSection6,
     FirstSection7,
+    Google,
     SecondSection3,
     SecondSection3_1,
     SecondSection4,
@@ -88,6 +91,7 @@ export {
     MapsFinderDefault,
     MapsSearchEuropeDefault,
     MapsSearchAfricaDefault,
+    MapPlaceHolderImage,
     MyWeirdLittleDesign,
     Marker,
     Notch,
