@@ -9,6 +9,12 @@
    display: flex; flex: 1;
     /* min-height: calc(100vh - 110px); */
   }
+
+  .loginPageOuter{
+    width: 100%;
+    min-height:  calc(100vh - 105px);
+    position: relative;
+  }
   .imageContainer {
     flex: 1;
     display: flex;
@@ -16,6 +22,20 @@
     align-items: center;
     overflow: hidden;
     min-height: calc(100vh - 105px);
+  }
+
+  .imageContainer img{
+    display: none;
+  }
+
+  .imageContainerWide{
+    position: absolute;
+    top:0;
+    left:0;
+    width:50vw;
+    height:100%;
+    background: url(../../../public/images/login.png) no-repeat 0 0;
+    background-size: cover;
   }
 
 .decorativeImage {
@@ -52,6 +72,16 @@
 .authPage header{
   background-color: #212d94;
   padding: 1rem 0rem;
+}
+
+@media (max-width: 1440px) {
+  .imageContainer img{
+    display: block;
+  }
+
+  .imageContainerWide{
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
