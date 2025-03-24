@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import SearchFilters from "../../../components/PlacesInfo/Places/SearchFilters";
@@ -24,12 +24,15 @@ import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles3 from "../../../components/PlacesPage/MainContent.module.css"
+import { LanguageContext } from "../../../context/LanguageContext";
 
 const Places = () => {
     const { t } = useTranslation('Places');
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+     const { language } = useContext(LanguageContext);
 
     const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
     const { isAuthenticated } = useSelector((state) => state.auth);
@@ -62,7 +65,7 @@ const Places = () => {
             dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place' }));
             dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, language]);
 
 
 
@@ -79,7 +82,7 @@ const Places = () => {
           }));
           
       }
-  }, [dispatch, id, state.page, state.selectedLevel, state.selectedCategory, state.selectedSubcategory]);
+  }, [dispatch, id, state.page, state.selectedLevel, state.selectedCategory, state.selectedSubcategory, language]);
 
 
     const handleViewMoreDetails = (id) => {

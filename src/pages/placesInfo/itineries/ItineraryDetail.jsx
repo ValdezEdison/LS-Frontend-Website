@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import ItineraryCard from "../../../components/PlacesInfo/Itineries/ItineraryCard";
@@ -12,6 +12,7 @@ import "react-loading-skeleton/dist/skeleton.css"; // Import the skeleton styles
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 import ItineraryMap from "../../../components/PlacesInfo/Itineries/ItineraryMap";
+import { LanguageContext } from "../../../context/LanguageContext";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,15 @@ const ItineraryDetail = () => {
   const navigate = useNavigate();
   const { id } = location.state;
 
+   const { language } = useContext(LanguageContext);
+
   const { loading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, language]);
 
   const handleViewMoreDetails = (id) => {
     console.log(id, 'handleViewMoreDetails');
