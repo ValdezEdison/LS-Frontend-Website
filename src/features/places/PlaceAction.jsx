@@ -45,9 +45,9 @@ export const fetchPlacesByCityId = createAsyncThunk(
 
 export const fetchGeoLocations = createAsyncThunk(
   'places/fetchGeoLocations',
-  async ({ cityId, type, country, page, preview, avg_rating, categories, levels,subcategories, points = [] }, { rejectWithValue }) => {
+  async ({ cityId, type, country, page, preview, avg_rating, categories, levels,subcategories }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, subcategories, points);
+      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, subcategories);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

@@ -9,6 +9,7 @@ import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { Marker } from './Images'; // Ensure this is the correct path to your custom marker image
 import { MapPlaceHolderImage } from './Images';
 import { useLocation } from 'react-router-dom';
+import { set } from 'lodash';
 
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) => {
     const { t } = useTranslation('Places');
@@ -28,6 +29,34 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) =
 
     const dataToMap = isEventsRoute ? events : places;
     const geoDataToMap = isEventsRoute ? events : geoLocations;
+
+    const createPolygon = (mapInstance, center) => {
+        const polygonCoords = [
+            { lat: center.lat + 0.01, lng: center.lng - 0.01 },
+            { lat: center.lat + 0.01, lng: center.lng + 0.01 },
+            { lat: center.lat - 0.01, lng: center.lng + 0.01 },
+            { lat: center.lat - 0.01, lng: center.lng - 0.01 },
+        ];
+
+        new window.google.maps.Polygon({
+            paths: polygonCoords,
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+            map: mapInstance,
+        });
+
+        const pointsQueryString = polygonCoords
+        .map(coord => `points=${coord.lat},${coord.lng}`)
+        .join('&');
+        setState((prevState) => ({
+            ...prevState,
+            points: pointsQueryString
+        }))
+    };
+    
 
     useEffect(() => {
         window.gm_authFailure = () => {
@@ -87,6 +116,9 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) =
                                 ...prevState,
                                 latAndLng: `${lat},${lng}`,
                             }));
+
+                            // Create a polygon around the marker
+                            createPolygon(mapInstance, { lat, lng });
                         });
 
                         return marker;

@@ -25,7 +25,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleNavigation = (path) => {
-    navigate(path);
+    if (path === "/login") {
+      // Pass the current location as state when navigating to /login
+      navigate(path, { state: { from: location } });
+    } else {
+      navigate(path);
+    }
   };
 
   useEffect(() => {

@@ -1,9 +1,18 @@
 import React from "react";
 import styles from "./RegistrationForm.module.css";
 
-const RegistrationForm = ({ showPassword, togglePasswordVisibility }) => {
+const RegistrationForm = ({
+  formData,
+  errors,
+  showPassword,
+  handleInputChange,
+  togglePasswordVisibility,
+  handleSubmit,
+  handleNavigate
+}) => {
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      {/* Username Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="username" className={styles.label}>
           Nombre de usuario
@@ -11,10 +20,20 @@ const RegistrationForm = ({ showPassword, togglePasswordVisibility }) => {
         <input
           type="text"
           id="username"
+          name="username"
           placeholder="Nombre y apellidos"
-          className={styles.input}
+          className={`${styles.input} ${
+            errors.username ? styles.inputError : ""
+          }`}
+          value={formData.username}
+          onChange={handleInputChange}
         />
+        {errors.username && (
+          <div className={styles.errorMessage}>{errors.username}</div>
+        )}
       </div>
+
+      {/* Email Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="email" className={styles.label}>
           Correo electrónico
@@ -22,10 +41,20 @@ const RegistrationForm = ({ showPassword, togglePasswordVisibility }) => {
         <input
           type="email"
           id="email"
+          name="email"
           placeholder="nombre@ejemplo.com"
-          className={styles.input}
+          className={`${styles.input} ${
+            errors.email ? styles.inputError : ""
+          }`}
+          value={formData.email}
+          onChange={handleInputChange}
         />
+        {errors.email && (
+          <div className={styles.errorMessage}>{errors.email}</div>
+        )}
       </div>
+
+      {/* Phone Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="phone" className={styles.label}>
           Teléfono
@@ -37,11 +66,21 @@ const RegistrationForm = ({ showPassword, togglePasswordVisibility }) => {
           <input
             type="tel"
             id="phone"
+            name="phone"
             placeholder="123 456 789"
-            className={styles.input}
+            className={`${styles.input} ${
+              errors.phone ? styles.inputError : ""
+            }`}
+            value={formData.phone}
+            onChange={handleInputChange}
           />
         </div>
+        {errors.phone && (
+          <div className={styles.errorMessage}>{errors.phone}</div>
+        )}
       </div>
+
+      {/* Password Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="password" className={styles.label}>
           Contraseña
@@ -52,31 +91,52 @@ const RegistrationForm = ({ showPassword, togglePasswordVisibility }) => {
           <strong> un número, una mayúscula y un símbolo.</strong>
         </div>
         <div className={styles.passwordInput}>
-          <div className={styles.showPassword}></div>
+          <div className={styles.showPassword} onClick={togglePasswordVisibility}></div>
           <input
             type={showPassword ? "text" : "password"}
             id="password"
+            name="password"
             placeholder="Introduce una contraseña"
-            className={styles.input}
+            className={`${styles.input} ${
+              errors.password ? styles.inputError : ""
+            }`}
+            value={formData.password}
+            onChange={handleInputChange}
           />
         </div>
+        {errors.password && (
+          <div className={styles.errorMessage}>{errors.password}</div>
+        )}
       </div>
+
+      {/* Terms and Conditions */}
       <div className={styles.termsGroup}>
-      <label className="check-container terms-check">
-          <input type="checkbox" id="terms"/>
-            <span className="checkmark"></span>
-            Acepta los 
-            <span className={styles.termsLink}>Términos y Condiciones</span>
-      </label>
-                   
-       
+        <label className="check-container terms-check">
+          <input
+            type="checkbox"
+            id="terms"
+            name="terms"
+            checked={formData.terms}
+            onChange={handleInputChange}
+          />
+          <span className="checkmark"></span>
+          Acepta los
+          <span className={styles.termsLink}>Términos y Condiciones</span>
+        </label>
+        {errors.terms && (
+          <div className={styles.errorMessage}>{errors.terms}</div>
+        )}
       </div>
+
+      {/* Submit Button */}
       <button type="submit" className={styles.submitButton}>
         Crear cuenta
       </button>
+
+      {/* Login Prompt */}
       <p className={styles.loginPrompt}>
         ¿Ya tienes cuenta?{" "}
-        <span className={styles.loginLink}>Inicia sesión</span>
+        <span className={styles.loginLink} onClick={handleNavigate}>Inicia sesión</span>
       </p>
     </form>
   );

@@ -15,7 +15,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 });
 
 // Register user
-export const register = createAsyncThunk('auth/register', async (userData, { rejectWithValue }) => {
+export const register = createAsyncThunk('users/create', async (userData, { rejectWithValue }) => {
   try {
     const response = await authService.register(userData);
     setToken(response.token); // Save token to localStorage

@@ -49,7 +49,7 @@ const PlaceService = {
     categories,
     levels,
     subcategories,
-    points = [] // Accept points as an array
+    // points = [] // Accept points as an array
   ) => {
     let url = '/sites/geolocations?';
 
@@ -65,13 +65,13 @@ const PlaceService = {
     if (subcategories !== undefined && subcategories !== null && subcategories !== "") url += `levels=${encodeURIComponent(subcategories)}&`;
 
     // Append points as separate query parameters
-    if (points && points.length > 0) {
-      points.forEach(point => {
-        if (point !== undefined && point !== null && point !== "") {
-          url += `points=${encodeURIComponent(point)}&`;
-        }
-      });
-    }
+    // if (points && points.length > 0) {
+    //   points.forEach(point => {
+    //     if (point !== undefined && point !== null && point !== "") {
+    //       url += `points=${encodeURIComponent(point)}&`;
+    //     }
+    //   });
+    // }
 
     // Remove the trailing '&' or '?' if no parameters were added
     url = url.replace(/[&?]$/, '');
