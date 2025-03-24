@@ -38,6 +38,7 @@ const PlacesPage = () => {
     ratings: "",
     subcategories: "",
     latAndLng: "",
+    points: "",
   });
 
 
@@ -130,7 +131,7 @@ const PlacesPage = () => {
       return;
     }
 
-    const points = Array(4).fill(state.latAndLng);
+    // const points = Array(4).fill(state.latAndLng);
 
     dispatch(fetchPlacesByCityId({
       cityId: state.selectedDestinationId !== null
@@ -143,7 +144,7 @@ const PlacesPage = () => {
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
       subcategories: state.subcategories,
-      points: points
+      points: state.points
 
     }));
 
@@ -158,7 +159,7 @@ const PlacesPage = () => {
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
       subcategories: state.subcategories,
-      points: points,
+      // points: points,
 
     }));
 
