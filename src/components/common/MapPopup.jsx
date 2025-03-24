@@ -28,7 +28,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) =
     const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
     const dataToMap = isEventsRoute ? events : places;
-    const geoDataToMap = isEventsRoute ? events : geoLocations;
+    const geoDataToMap = geoLocations;
 
     const createPolygon = (mapInstance, center) => {
         const polygonCoords = [
