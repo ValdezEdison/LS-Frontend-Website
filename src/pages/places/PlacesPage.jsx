@@ -148,10 +148,29 @@ const PlacesPage = () => {
 
     }));
 
+    // dispatch(fetchGeoLocations({
+    //   cityId: state.selectedDestinationId !== null
+    //     ? state.selectedDestinationId
+    //     : state.selectedDestinations,
+    //   country: state.selectedCountryName,
+    //   page: state.page,
+    //   preview: 1,
+    //   avg_rating: state.ratings,        // Pass ratings from state
+    //   categories: state.categories,    // Pass categories from state
+    //   levels: state.levels,             // Pass levels from state
+    //   subcategories: state.subcategories,
+    //   // points: points,
+
+    // }));
+
+
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.points, state.page, state.subcategories, dispatch]);
+
+  useEffect(() => {
     dispatch(fetchGeoLocations({
       cityId: state.selectedDestinationId !== null
         ? state.selectedDestinationId
-        : state.selectedDestinations,
+        : state.selectedDestinations, type: "place",
       country: state.selectedCountryName,
       page: state.page,
       preview: 1,
@@ -159,20 +178,8 @@ const PlacesPage = () => {
       categories: state.categories,    // Pass categories from state
       levels: state.levels,             // Pass levels from state
       subcategories: state.subcategories,
-      // points: points,
-
     }));
-
-
-  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.latAndLng, state.page, state.subcategories, dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchGeoLocations({
-      cityId: state.selectedDestinationId !== null
-        ? state.selectedDestinationId
-        : state.selectedDestinations, type: "place"
-    }));
-  }, [state.selectedDestinationId, state.selectedDestinations]);
+  }, [state.selectedCountryName, state.selectedDestinationId, state.selectedDestinations, state.selectedOrder, state.selectedCountryId, state.ratings, state.categories, state.levels, state.page, state.subcategories, dispatch]);
 
 
 
