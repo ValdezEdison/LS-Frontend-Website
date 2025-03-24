@@ -200,7 +200,7 @@ const PlacesPage = () => {
 
   }, [state.selectedDestinationId]);
 
-  console.log(state, 'state');
+  console.log(state, 'states');
 
   return (
     <>
