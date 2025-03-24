@@ -8,7 +8,7 @@ const PlaceService = {
     return apiService.get(`/sites/${placeId}`);
   },
 
-  getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points = []) => {
+  getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points) => {
     let url = `/sites/?type=place&city_id=${cityId}&page=${page}&preview=${preview}`;
 
     if (country) {
@@ -26,14 +26,17 @@ const PlaceService = {
     if (subcategories) {
       url += `&levels=${encodeURIComponent(subcategories)}`;
     }
-    if (points && points.length > 0) {
-      // Append each point as a separate query parameter
-      points.forEach(point => {
-        if (point !== undefined && point !== null && point !== "") {
-          url += `&points=${encodeURIComponent(point)}`;
-        }
-      });
+    if(points) {
+      url += `${encodeURIComponent(points)}`
     }
+    // if (points && points.length > 0) {
+    //   // Append each point as a separate query parameter
+    //   points.forEach(point => {
+    //     if (point !== undefined && point !== null && point !== "") {
+    //       url += `&points=${encodeURIComponent(point)}`;
+    //     }
+    //   });
+    // }
 
     return apiService.get(url);
   },
