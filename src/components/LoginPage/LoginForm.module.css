@@ -134,7 +134,7 @@
   display: block;
 }
 
-.formGroup.error input{
+.inputGroup.error input{
   border-color: #EF2215;
 }
 

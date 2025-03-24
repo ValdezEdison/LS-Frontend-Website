@@ -18,8 +18,8 @@ const LoginForm = ({
    
 
       {/* Email Input */}
-      <div className={styles.inputGroup}>
-      <div className="form-group">
+      <div className={`${styles.inputGroup} ${errorMsg.has_error_in_password && styles.error}`}>
+     
         <label htmlFor="email" className={styles.label}>
           Email
         </label>
@@ -39,15 +39,15 @@ const LoginForm = ({
         {errorMsg.has_error_in_email && (
         <div className={styles.errorMessage}>Please enter a valid email.</div>
         )}
-      </div>
+      
       </div>
 
       {/* Password Input */}
-      <div className={styles.inputGroup}>
+      <div className={`${styles.inputGroup} ${errorMsg.has_error_in_password && styles.error}`}>
         <label htmlFor="password" className={styles.label}>
           Password
         </label>
-        <div className={`${styles.formGroup} ${styles.error}`}>
+       
           <div className={styles.passwordInput}>
           <div className={`${styles.showPassword} ${styles.clicked}`} onClick={handleTogglePassword}></div>
             <input
@@ -67,7 +67,7 @@ const LoginForm = ({
         {errorMsg.has_error_in_password && (
             <div className={styles.errorMessage}>Please enter a valid password.</div>
           )}
-        </div>
+       
        
       </div>
 
