@@ -207,6 +207,19 @@ button,input,select,textarea{
   border-radius: 50%;
 }
 
+.login-check .checkmark {
+  height: 14px;
+  width: 14px;
+  border-radius: 2px;
+}
+
+.login-check.check-container .checkmark:after {
+  left: 3px;
+  top: -1px;
+  width: 4px;
+  height: 9px;
+}
+
 
 
 /* On mouse-over, add a grey background color */

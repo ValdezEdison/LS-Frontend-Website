@@ -13,19 +13,17 @@ const LoginForm = ({
   return (
     <form className={styles.loginForm} onSubmit={validateForm}>
       {/* Display error messages */}
-      {errorMsg.has_error_in_email && (
-        <div className={styles.errorMessage}>Please enter a valid email.</div>
-      )}
-      {errorMsg.has_error_in_password && (
-        <div className={styles.errorMessage}>Please enter a valid password.</div>
-      )}
+     
+      
    
 
       {/* Email Input */}
       <div className={styles.inputGroup}>
+      <div className="form-group">
         <label htmlFor="email" className={styles.label}>
           Email
         </label>
+      
         <input
           type="email"
           id="email"
@@ -38,6 +36,10 @@ const LoginForm = ({
           value={obj.email}
           onChange={handleInputChange}
         />
+        {errorMsg.has_error_in_email && (
+        <div className={styles.errorMessage}>Please enter a valid email.</div>
+        )}
+      </div>
       </div>
 
       {/* Password Input */}
@@ -45,22 +47,28 @@ const LoginForm = ({
         <label htmlFor="password" className={styles.label}>
           Password
         </label>
-        <div className={styles.passwordInput}>
-        <div className={styles.showPassword} onClick={handleTogglePassword}></div>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            name="password"
-            className={`${styles.input} ${
-              errorMsg.has_error_in_password ? styles.inputError : ""
-            }`}
-            placeholder="Enter your password"
-            aria-label="Password"
-            value={obj.password}
-            onChange={handleInputChange}
-          />
-      
+        <div className={`${styles.formGroup} ${styles.error}`}>
+          <div className={styles.passwordInput}>
+          <div className={`${styles.showPassword} ${styles.clicked}`} onClick={handleTogglePassword}></div>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              className={`${styles.input} ${
+                errorMsg.has_error_in_password ? styles.inputError : ""
+              }`}
+              placeholder="Enter your password"
+              aria-label="Password"
+              value={obj.password}
+              onChange={handleInputChange}
+            />
+            
+          </div>
+        {errorMsg.has_error_in_password && (
+            <div className={styles.errorMessage}>Please enter a valid password.</div>
+          )}
         </div>
+       
       </div>
 
       {/* Remember Me and Forgot Password */}
@@ -78,7 +86,7 @@ const LoginForm = ({
       </div>
 
       {/* Submit Button */}
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
         Log In
       </button>
 
