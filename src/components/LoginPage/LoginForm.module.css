@@ -7,7 +7,7 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap:3px;
 }
 
 .label {
@@ -15,7 +15,6 @@
   font-weight: 600;
   font-size: 0.875rem;
   display: block;
-  padding-bottom: 4px;
 }
 
 .input {
@@ -63,7 +62,7 @@
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition:all 0.3s ease;
   pointer-events: none;
   outline: none;
 }

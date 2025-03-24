@@ -13,7 +13,7 @@ const RegistrationForm = ({
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Username Input */}
-      <div className={styles.inputGroup}>
+      <div className={`${styles.inputGroup} ${styles.error}`}>
         <label htmlFor="username" className={styles.label}>
           Nombre de usuario
         </label>
@@ -30,11 +30,11 @@ const RegistrationForm = ({
         />
         {errors.username && (
           <div className={styles.errorMessage}>{errors.username}</div>
-        )}
+         )} 
       </div>
 
       {/* Email Input */}
-      <div className={styles.inputGroup}>
+      <div className={`${styles.inputGroup} ${errors.has_error_in_password && styles.error}`}>
         <label htmlFor="email" className={styles.label}>
           Correo electrónico
         </label>
@@ -60,9 +60,12 @@ const RegistrationForm = ({
           Teléfono
         </label>
         <div className={styles.phoneInput}>
-          <select className={styles.select}>
-            <option>+000</option>
-          </select>
+          <div className={styles.phoneCodeWrapper}>
+            <select className={styles.select}>
+              <option>+000</option>
+            </select>
+          </div>
+          
           <input
             type="tel"
             id="phone"
@@ -81,7 +84,7 @@ const RegistrationForm = ({
       </div>
 
       {/* Password Input */}
-      <div className={styles.inputGroup}>
+      <div className={`${styles.inputGroup} ${styles.error}`}>
         <label htmlFor="password" className={styles.label}>
           Contraseña
         </label>
@@ -91,7 +94,7 @@ const RegistrationForm = ({
           <strong> un número, una mayúscula y un símbolo.</strong>
         </div>
         <div className={styles.passwordInput}>
-          <div className={styles.showPassword} onClick={togglePasswordVisibility}></div>
+          <div className={`${styles.showPassword} ${styles.clicked}`} onClick={togglePasswordVisibility}></div>
           <input
             type={showPassword ? "text" : "password"}
             id="password"
@@ -111,7 +114,14 @@ const RegistrationForm = ({
 
       {/* Terms and Conditions */}
       <div className={styles.termsGroup}>
-        <label className="check-container terms-check">
+      <label className="radioContainer terms-check">
+        <input type="radio" id="terms" name="terms" checked={formData.terms}
+            onChange={handleInputChange}/>
+        <span className="checkmark"></span>
+        Acepta los
+        <span className={styles.termsLink}>Términos y Condiciones</span>
+      </label>
+        {/* <label className="check-container terms-check">
           <input
             type="checkbox"
             id="terms"
@@ -122,14 +132,14 @@ const RegistrationForm = ({
           <span className="checkmark"></span>
           Acepta los
           <span className={styles.termsLink}>Términos y Condiciones</span>
-        </label>
+        </label> */}
         {errors.terms && (
           <div className={styles.errorMessage}>{errors.terms}</div>
         )}
       </div>
 
       {/* Submit Button */}
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
         Crear cuenta
       </button>
 
