@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import EventCard from "../../../components/PlacesInfo/Events/EventCard";
@@ -19,6 +19,7 @@ import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles2 from "../../../components/PlacesPage/MainContent.module.css";
+import { LanguageContext } from "../../../context/LanguageContext";
 
 const recommendedEvents = [
   {
@@ -47,6 +48,7 @@ const Events = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+   const { language } = useContext(LanguageContext);
   const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
@@ -73,7 +75,7 @@ const Events = () => {
       dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
       dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
     }
-  }, [dispatch, id, state.selectedLevel]);
+  }, [dispatch, id, state.selectedLevel, language]);
 
 
 

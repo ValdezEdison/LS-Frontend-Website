@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import DestinationInfo from "../../../components/PlacesInfo/Destination/DestinationInfo";
@@ -13,11 +13,14 @@ import Modal from "../../../components/modal/Modal";
 import ImageGalleryPopupContent from "../../../components/PlacesDetailPage/PlacesDetailPopup/ImageGalleryPopupContent";
 import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
+import { LanguageContext } from "../../../context/LanguageContext";
 
 
 const Destination = () => {
 
   const dispatch = useDispatch();
+
+   const { language } = useContext(LanguageContext);
 
   const location = useLocation();
   const { id } = location.state || {};
@@ -34,7 +37,7 @@ const Destination = () => {
       // dispatch(fetchNearbyPlaces(id));
 
     }
-  }, [dispatch]);
+  }, [dispatch, language]);
 
 
     const handleClickViewMoreDetails = () => {

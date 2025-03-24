@@ -5,7 +5,7 @@ import SearchFilters from "../../../components/PlacesInfo/Places/SearchFilters";
 import RecommendedPlaces from "../../../components/PlacesInfo/Places/RecommendedPlaces";
 import commonStyle from "../Common.module.css"
 import SubNavMenu from "../../../components/common/SubNavMenu";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceCard from "../../../components/common/PlaceCard";
@@ -19,6 +19,7 @@ import styles2 from "../../../components/common/PlaceCard.module.css"
 import { fetchItineriesInCity } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import FilterBar from "../../../components/common/FilterBar";
+import { LanguageContext } from "../../../context/LanguageContext";
 
 
 const ItineraryList = () => {
@@ -28,6 +29,8 @@ const ItineraryList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+   const { language } = useContext(LanguageContext);
 
   const { loading: itineriesLoading, error, itineries, next, count } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -51,7 +54,7 @@ const ItineraryList = () => {
     if (id) {
       dispatch(fetchItineriesInCity(id));
     }
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   const handleViewMoreDetails = (id) => {
     console.log(id, 'handleViewMoreDetails');

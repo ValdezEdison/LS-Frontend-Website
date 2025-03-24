@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./PlaceDetails.module.css";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
@@ -24,9 +24,11 @@ import FeedbackModal from "../../components/PlacesDetailPage/popup/FeedbackModal
 import { useTranslation } from "react-i18next";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
+  const { language } = useContext(LanguageContext);
   const [showImgGalleryPopup, setShowImgGalleryPopup] = useState(false);
   const [showReviewDrawer, setShowReviewDrawer] = useState(false);
   const [showAlertPopup, setShowAlertPopup] = useState(false);
@@ -97,7 +99,7 @@ const PlaceDetails = () => {
       dispatch(fetchPlaceComments(id));
       dispatch(fetchNearbyPlaces(id));
     }
-  }, [id, dispatch]);
+  }, [id, dispatch, language]);
 
   const handleClickViewMoreDetails = () => {
     setShowImgGalleryPopup(true);
