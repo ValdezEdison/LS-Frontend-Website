@@ -245,48 +245,49 @@ const TravelerRegistration = () => {
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
-      <div className={styles.loginPageOuter}>
-        <div className={styles.imageContainerWide}></div>
-        <div className="login-page-center">
-          <main className={styles.mainContent}>
-            <div className={styles.bannerContainer}>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fac68f4a39f7382628bebc1d839fc16c2c5fef0"
-                alt="Traveler by lake"
-                className={styles.bannerImage}
-              />
-            </div>
-            <div className={styles.formContainer}>
-              <div className={styles.formWrapper}>
-                <h1 className={styles.formTitle}>Regístrate como viajero</h1>
-                <RegistrationForm
-                  formData={formData}
-                  fieldStates={fieldStates}
-                  showPassword={showPassword}
-                  handleInputChange={handleInputChange}
-                  togglePasswordVisibility={togglePasswordVisibility}
-                  handleSubmit={handleSubmit}
-                  handleNavigate={handleNavigate}
-                  handleFocus={handleFocus}
-                  handleBlur={handleBlur}
-                  isFormValid={isFormValid}
-                />
-                <SocialLogin />
-                <Footer />
-              </div>
-            </div>
-          </main>
-        </div>
-      </div>
-      {showConfirmation && (
+      {showConfirmation ? (
         <EmailConfirmation
           email={registeredEmail}
           onClose={handleConfirmationClose}
           onResend={handleResendEmail}
         />
+      ) : (
+        <div className={styles.loginPageOuter}>
+          <div className={styles.imageContainerWide}></div>
+          <div className="login-page-center">
+            <main className={styles.mainContent}>
+              <div className={styles.bannerContainer}>
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fac68f4a39f7382628bebc1d839fc16c2c5fef0"
+                  alt="Traveler by lake"
+                  className={styles.bannerImage}
+                />
+              </div>
+              <div className={styles.formContainer}>
+                <div className={styles.formWrapper}>
+                  <h1 className={styles.formTitle}>Regístrate como viajero</h1>
+                  <RegistrationForm
+                    formData={formData}
+                    fieldStates={fieldStates}
+                    showPassword={showPassword}
+                    handleInputChange={handleInputChange}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    handleSubmit={handleSubmit}
+                    handleNavigate={handleNavigate}
+                    handleFocus={handleFocus}
+                    handleBlur={handleBlur}
+                    isFormValid={isFormValid}
+                  />
+                  <SocialLogin />
+                  <Footer />
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
       )}
     </div>
   );
-};
-
-export default TravelerRegistration;
+}
+  export default TravelerRegistration;
+  
