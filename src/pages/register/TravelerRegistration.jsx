@@ -8,10 +8,14 @@ import RegistrationForm from "../../components/TravelerRegistration/Registration
 import SocialLogin from "../../components/TravelerRegistration/SocialLogin";
 import Footer from "../../components/TravelerRegistration/Footer";
 import { register } from "../../features/authentication/AuthActions";
+import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [showConfirmation, setShowConfirmation] = useState(true)
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -141,7 +145,7 @@ const TravelerRegistration = () => {
   const handleBlur = (field) => {
     const value = field === "terms" ? formData.terms : formData[field];
     const { error, isValid } = validateField(field, value);
-    
+
     setFieldStates(prev => ({
       ...prev,
       [field]: {
@@ -159,7 +163,7 @@ const TravelerRegistration = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === "checkbox" ? checked : value;
-    
+
     setFormData(prev => ({ ...prev, [name]: fieldValue }));
 
     // Validate the field if it's been touched
@@ -210,8 +214,9 @@ const TravelerRegistration = () => {
     dispatch(register(formData))
       .then((action) => {
         if (register.fulfilled.match(action)) {
-          toast.success("Registration successful!");
-          navigate("/login");
+          toast.success("Registration successful! Please check your email for confirmation.");
+          setRegisteredEmail(formData.email);
+          setShowConfirmation(true);
         } else if (register.rejected.match(action)) {
           toast.error(action.payload?.error_description || "Registration failed");
         }
@@ -224,6 +229,17 @@ const TravelerRegistration = () => {
 
   const handleNavigate = () => {
     navigate('/login');
+  };
+
+  const handleConfirmationClose = () => {
+    setShowConfirmation(false);
+    navigate('/login'); // Navigate to login after closing the popup
+  };
+
+  const handleResendEmail = () => {
+    // Implement your resend email logic here
+    // This would typically call your API to resend the confirmation email
+    toast.info("Confirmation email resent successfully");
   };
 
   return (
@@ -262,6 +278,13 @@ const TravelerRegistration = () => {
           </main>
         </div>
       </div>
+      {showConfirmation && (
+        <EmailConfirmation
+          email={registeredEmail}
+          onClose={handleConfirmationClose}
+          onResend={handleResendEmail}
+        />
+      )}
     </div>
   );
 };
