@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "./TravelerRegistration.module.css";
@@ -9,6 +9,8 @@ import SocialLogin from "../../components/TravelerRegistration/SocialLogin";
 import Footer from "../../components/TravelerRegistration/Footer";
 import { register } from "../../features/authentication/AuthActions";
 import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
+import Modal from "../../components/modal/Modal";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const TravelerRegistration = () => {
 
   const [showConfirmation, setShowConfirmation] = useState(true)
   const [registeredEmail, setRegisteredEmail] = useState("");
+
+  const { isOpen } = useSelector((state) => state.popup);
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -217,6 +221,7 @@ const TravelerRegistration = () => {
           toast.success("Registration successful! Please check your email for confirmation.");
           setRegisteredEmail(formData.email);
           setShowConfirmation(true);
+          dispatch(openPopup());
         } else if (register.rejected.match(action)) {
           toast.error(action.payload?.error_description || "Registration failed");
         }
@@ -245,12 +250,14 @@ const TravelerRegistration = () => {
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
-      {showConfirmation ? (
-        <EmailConfirmation
-          email={registeredEmail}
-          onClose={handleConfirmationClose}
-          onResend={handleResendEmail}
-        />
+      { showConfirmation ? (
+         <Modal onClose={handleConfirmationClose}>
+         <EmailConfirmation
+           email={registeredEmail}
+           onClose={handleConfirmationClose}
+           onResend={handleResendEmail}
+         />
+       </Modal>
       ) : (
         <div className={styles.loginPageOuter}>
           <div className={styles.imageContainerWide}></div>

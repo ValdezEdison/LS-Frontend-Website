@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const Modal = ({title="",customClass='', onClose, children }) => {
   const{isOpen}=useSelector(state=>state.popup)
   const containerClass = customClass && styles[customClass] ? styles[customClass] : "";
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay}>
