@@ -10,7 +10,7 @@ function RecoveryForm() {
         mandaremos un link al email para restablecerla.
       </p>
       <form className={styles.form}>
-        <div className={styles.inputGroup}>
+        <div className={`${styles.inputGroup} ${styles.error}`}>
           <label htmlFor="email" className={styles.inputLabel}>
             Correo electrónico
           </label>
@@ -21,8 +21,9 @@ function RecoveryForm() {
             className={styles.input}
             aria-label="Correo electrónico"
           />
+          <div className={styles.errorMessage}>test error</div>
         </div>
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
           Enviar
         </button>
       </form>

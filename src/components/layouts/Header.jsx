@@ -103,7 +103,7 @@ const Header = () => {
   return (
     <header>
       <div className="page-center">
-      <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" ? styles.homeHeader + " authHeader" : ""}`}>
+      <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/password-recovery"  ? styles.homeHeader + " authHeader" : ""}`}>
           <div className={styles.logoContainer}>
             <img
               src={LSLogo2_1}

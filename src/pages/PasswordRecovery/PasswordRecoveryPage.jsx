@@ -8,12 +8,18 @@ function PasswordRecoveryPage() {
   return (
     <div className={`${styles.pageContainer}  ${styles.authPage}`}>
       <Header />
+      <div className={styles.loginPageOuter}>
       <main className={styles.mainContent}>
-        <HeroSection />
-        <div className={styles.formWrapper}>
-          <RecoveryForm />
+        <div className={styles.imageContainerWide}></div>
+        <div className="login-page-center">
+          <HeroSection />
+          <div className={styles.formWrapper}>
+            <RecoveryForm />
+          </div>
         </div>
+       
       </main>
+      </div>
     </div>
   );
 }

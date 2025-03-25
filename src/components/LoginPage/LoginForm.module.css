@@ -51,6 +51,7 @@
 .forgotPassword {
   color: #4f4f4f;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .submitButton {
@@ -129,9 +130,6 @@
   font-size: 12px;
 }
 
-.formGroup{
-  display: block;
-}
 
 .inputGroup.error input{
   border-color: #EF2215;

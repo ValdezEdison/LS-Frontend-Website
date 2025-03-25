@@ -71,7 +71,7 @@
 
 .authPage header{
   background-color: #212d94;
-  padding: 1rem 0rem;
+  padding: 10px 0rem;
 }
 
 @media (max-width: 1440px) {
