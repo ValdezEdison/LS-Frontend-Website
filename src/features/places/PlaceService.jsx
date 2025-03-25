@@ -10,7 +10,9 @@ const PlaceService = {
 
   getPlacesByCityId: async (cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points) => {
     let url = `/sites/?type=place&city_id=${cityId}&page=${page}&preview=${preview}`;
-
+    if(cityId) {
+      url += `&city_id=${encodeURIComponent(cityId)}`;
+    }
     if (country) {
       url += `&country=${encodeURIComponent(country)}`;
     }
@@ -26,17 +28,10 @@ const PlaceService = {
     if (subcategories) {
       url += `&levels=${encodeURIComponent(subcategories)}`;
     }
-    if(points) {
-      url += `${encodeURIComponent(points)}`
+    if (points) {
+      url += `&${points}`; // Just append the already encoded points string
     }
-    // if (points && points.length > 0) {
-    //   // Append each point as a separate query parameter
-    //   points.forEach(point => {
-    //     if (point !== undefined && point !== null && point !== "") {
-    //       url += `&points=${encodeURIComponent(point)}`;
-    //     }
-    //   });
-    // }
+
 
     return apiService.get(url);
   },

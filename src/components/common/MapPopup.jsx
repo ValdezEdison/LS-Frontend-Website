@@ -51,10 +51,11 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState }) =
         const pointsQueryString = polygonCoords
         .map(coord => `points=${coord.lat},${coord.lng}`)
         .join('&');
-        setState((prevState) => ({
-            ...prevState,
-            points: pointsQueryString
-        }))
+        
+    setState(prevState => ({
+        ...prevState,
+        points: pointsQueryString
+    }));
     };
     
 

@@ -32,22 +32,23 @@ const Map = ({ onOpenPopup }) => {
             setMap(mapInstance);
 
             // Create markers with AdvancedMarkerElement
-            const markers = geoLocations
-                .filter(location => location.address.latitude !== 0 && location.address.longitude !== 0)
-                .map(location => {
-                    const markerElement = document.createElement('div');
-                    markerElement.className = styles.marker;
-                    markerElement.innerText = '';
+            if (geoLocations.length > 0) {
+                const markers = geoLocations.filter(location => location.address.latitude !== 0 && location.address.longitude !== 0)
+                    .map(location => {
+                        const markerElement = document.createElement('div');
+                        markerElement.className = styles.marker;
+                        markerElement.innerText = '';
 
-                    return new google.maps.marker.AdvancedMarkerElement({
-                        position: { lat: location.address.latitude, lng: location.address.longitude },
-                        map: mapInstance,
-                        content: markerElement,
+                        return new google.maps.marker.AdvancedMarkerElement({
+                            position: { lat: location.address.latitude, lng: location.address.longitude },
+                            map: mapInstance,
+                            content: markerElement,
+                        });
                     });
-                });
 
-            // Add marker clustering
-            new MarkerClusterer({ map: mapInstance, markers });
+                // Add marker clustering
+                new MarkerClusterer({ map: mapInstance, markers });
+            }
         });
     }, [geoLocations, apiKey]);
 
