@@ -14,6 +14,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log(location, 'location');
+
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
@@ -164,9 +166,20 @@ const LoginPage = () => {
       .then((action) => {
         if (login.fulfilled.match(action)) {
           toast.success("Login successful!");
-          const from = location.state?.from?.pathname || "/";
-          navigate(from, { replace: true });
-        } else if (login.rejected.match(action)) {
+          
+          const fromLocation = location.state?.from;
+          const fromPath = fromLocation?.pathname || "/";
+          
+          // Preserve all original navigation properties
+          const navigationOptions = {
+            replace: true,
+            ...(fromLocation?.state && { state: fromLocation.state }),
+            ...(fromLocation?.search && { search: fromLocation.search }),
+            ...(fromLocation?.hash && { hash: fromLocation.hash })
+          };
+        
+          navigate(fromPath, navigationOptions);
+        }else if (login.rejected.match(action)) {
           toast.error(action.payload?.error_description || "Login failed");
         }
       })

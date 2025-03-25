@@ -11,6 +11,7 @@ import { register } from "../../features/authentication/AuthActions";
 import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
 import Modal from "../../components/modal/Modal";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { set } from "lodash";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
@@ -238,7 +239,9 @@ const TravelerRegistration = () => {
 
   const handleConfirmationClose = () => {
     setShowConfirmation(false);
-    navigate('/login'); // Navigate to login after closing the popup
+    dispatch(closePopup());
+    setRegisteredEmail('');
+    navigate('/register'); // Navigate to login after closing the popup
   };
 
   const handleResendEmail = () => {

@@ -2,21 +2,38 @@
 
 // Save token to localStorage
 export const setToken = (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('access_token', token);
   };
   
   // Get token from localStorage
   export const getToken = () => {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
   };
   
-  // Remove token from localStorage
-  export const removeToken = () => {
-    localStorage.removeItem('token');
-  };
+ // Remove token from localStorage
+export const removeToken = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('tokenExpiresAt');
+};
+
+// Save tokens from login/refresh response
+export const setAuthTokens = (response) => {
+  const { access_token, refresh_token, expires_in } = response;
+  setToken(access_token);
+  localStorage.setItem('refreshToken', refresh_token);
+  const expiresAt = new Date().getTime() + (expires_in * 1000);
+  localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+};
+
+// Check if token is expired
+export const isTokenExpired = () => {
+  const expiresAt = localStorage.getItem('tokenExpiresAt');
+  if (!expiresAt) return true;
+  return new Date().getTime() > parseInt(expiresAt);
+};
   
   // Handle API errors
-// src/utils/handleApiError.js
 export const handleApiError = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code

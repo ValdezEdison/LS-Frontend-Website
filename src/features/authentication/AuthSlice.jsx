@@ -1,13 +1,15 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { login, register, getProfile, logout } from "./AuthActions";
-
+const userToken = localStorage.getItem('access_token')
+  ? localStorage.getItem('access_token'): null
+console.log(userToken, "userToken")
 const initialState = {
   user: null,
   token: null,
   loading: false,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: userToken?true: false,
 };
 
 const authSlice = createSlice({

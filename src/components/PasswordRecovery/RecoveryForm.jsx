@@ -1,7 +1,15 @@
 import React from "react";
 import styles from "./RecoveryForm.module.css";
 
-function RecoveryForm() {
+function RecoveryForm({
+  formData,
+  fieldStates,
+  handleInputChange,
+  handleSubmit,
+  handleFocus,
+  handleBlur,
+  isFormValid
+}) {
   return (
     <div className={styles.formContainer}>
       <h1 className={styles.formTitle}>Recuperar contraseña</h1>
@@ -9,21 +17,36 @@ function RecoveryForm() {
         Para recuperar tu contraseña introduce tu correo electrónico y te
         mandaremos un link al email para restablecerla.
       </p>
-      <form className={styles.form}>
-        <div className={`${styles.inputGroup} ${styles.error}`}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.inputGroup}>
           <label htmlFor="email" className={styles.inputLabel}>
             Correo electrónico
           </label>
           <input
             type="email"
             id="email"
-            defaultValue="pablogomez@gmail.com"
-            className={styles.input}
+            name="email"
+            className={`${styles.input} ${
+              fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
+            }`}
+            value={formData.email}
+            onChange={handleInputChange}
+            onFocus={() => handleFocus('email')}
+            onBlur={() => handleBlur('email')}
             aria-label="Correo electrónico"
           />
-          <div className={styles.errorMessage}>test error</div>
+          {!fieldStates.email.isValid && fieldStates.email.focused && (
+            <div className={styles.infoMessage}>{fieldStates.email.info}</div>
+          )}
+          {fieldStates.email.error && fieldStates.email.touched && (
+            <div className={styles.errorMessage}>{fieldStates.email.error}</div>
+          )}
         </div>
-        <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
+        <button 
+          type="submit" 
+          className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+          disabled={!isFormValid}
+        >
           Enviar
         </button>
       </form>
