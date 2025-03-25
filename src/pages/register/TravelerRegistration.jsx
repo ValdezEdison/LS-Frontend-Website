@@ -254,7 +254,7 @@ const TravelerRegistration = () => {
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
       { showConfirmation ? (
-         <Modal onClose={handleConfirmationClose}>
+         <Modal onClose={handleConfirmationClose} customClass="modal-md">
          <EmailConfirmation
            email={registeredEmail}
            onClose={handleConfirmationClose}

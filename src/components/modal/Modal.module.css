@@ -26,6 +26,17 @@
     background-color: #fff;
 }
 
+.modal.modal-md {
+    max-width: 825px;
+    border-radius: 25px;
+}
+
+.modal.modal-sm {
+    max-width: 625px;
+    border-radius: 25px;
+}
+
+
 .modalHeader {
     padding: 18px;
     display: flex;
