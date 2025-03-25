@@ -7,7 +7,7 @@ const Modal = ({title="",customClass='', onClose, children }) => {
 
   return (
     <div className={styles.modalOverlay}>
-      <div className={styles.modal}>
+      <div className={`${styles.modal} ${containerClass}`}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{title}</h2>
           <button className={styles.closeButton} aria-label="Close modal" onClick={onClose}>

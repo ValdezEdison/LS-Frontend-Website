@@ -27,12 +27,12 @@ function EmailConfirmation({ email, onClose, onResend }) {
         <span className={styles.resendNormal}>
           Si no has recibido ningún email haz click en
         </span>{" "}
-        <button
+        <span
           className={styles.resendLink}
           onClick={onResend}
         >
           reenviar email de confirmación
-        </button>
+        </span>
       </p>
     </div>
   );
