@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./UserMenu.module.css";
 
-const UserMenuItem = ({ icon, label }) => {
+
+const UserMenuItem = ({ icon, label, onClick }) => {
   return (
-    <div className={styles.menuItem}>
-      <div className={styles.icon} dangerouslySetInnerHTML={{ __html: icon }} />
-      <div className={styles.label}>{label}</div>
+    <div className={styles.menuItem} onClick={onClick}>
+      <div dangerouslySetInnerHTML={{ __html: icon }} />
+      <span>{label}</span>
     </div>
   );
 };

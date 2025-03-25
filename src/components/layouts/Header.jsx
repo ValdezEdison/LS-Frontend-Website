@@ -11,6 +11,7 @@ import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { fetchHeaderBlocks } from "../../features/cms/Blocks/BlockAction";
 import UserMenu from "../UserMenu/UserMenu";
+import { logout } from "../../features/authentication/AuthActions";
 
 const Header = () => {
 
@@ -102,7 +103,7 @@ const Header = () => {
 
   } else {
     console.log('No language data found in localStorage.');
-    setLanguage("es", "images/spain.png", "Español");
+    setLanguage("es", "/images/spain.png", "Español");
   }
 
   const handleClickOutsideUserMenu = (event) => {
@@ -124,6 +125,11 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutsideUserMenu);
     };
   }, [showUserMenu]);
+
+  const handleLogout = () => {
+    console.log("logout")
+    dispatch(logout());
+  }
 
   return (
     <header>
@@ -224,7 +230,7 @@ const Header = () => {
                   className={styles.userIcon}
                   onClick={handleUserIconClick}
                 />
-                {showUserMenu && <UserMenu />}
+                {showUserMenu && <UserMenu logout={handleLogout} />}
               </div>
             ) : (
               <button className={styles.btnLogin + " cta-button"} onClick={() => handleNavigation("/login")}>
