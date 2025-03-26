@@ -1,6 +1,6 @@
 .nearbyPlaces {
   margin: 26px auto;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   border-top: solid 1px #BDBDBD;
 }
 
@@ -73,6 +73,13 @@
   font-size: 14px;
   color: #000;
   margin-top: 12px;
+}
+
+.nearbyPlaceTitle{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
 @media (max-width: 991px) {
