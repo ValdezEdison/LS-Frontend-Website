@@ -32,8 +32,11 @@ const Widget = ({ data = [], title, count}) => {
 
   return (
     <section className={styles.nearbyPlaces}>
+      <div className={styles.nearbyPlaceTitle}>
+        <h2 className={styles.sectionTitle}>{title}</h2>
+        <div className="seeMoreLink">See More</div>
+      </div>
       
-      <h2 className={styles.sectionTitle}>{title}</h2>
       {data.length > 0 ? 
       <Slider {...settings}>
         {data.map((place, index) => (

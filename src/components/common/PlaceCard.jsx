@@ -35,12 +35,15 @@ const PlaceCard = forwardRef(
             className={`${styles.placeCard} ${isPopup ? styles.popupPlaceCard : ""}`}
             onClick={handleCardClick}
         >
-               {isFavoriteToggling && (
-                <div className={styles.loaderOverlay}>
-                    <Loader />
-                </div>
-            )}
+              
             <div className={styles.placeImageContainer}>
+                {isFavoriteToggling && (
+                    <div className={styles.loaderOverlay}>
+                        <div className={styles.loaderToCenter}>
+                            <Loader />
+                        </div>
+                    </div>
+                 )}
                 <img
                     src={place?.images?.[0]?.midsize || place?.image?.midsize || PlaceHolderImg2}
                     alt={place?.display_text || place?.title || translate("placeCard.place_image")}

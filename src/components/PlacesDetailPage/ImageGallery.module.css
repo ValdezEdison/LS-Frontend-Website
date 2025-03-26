@@ -10,7 +10,7 @@
 .mainImage img {
   width: 290px;
   border-radius: 6px;
-  aspect-ratio: 1.05;
+  aspect-ratio: 1;
   object-fit: cover;
 }
 

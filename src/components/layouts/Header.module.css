@@ -114,6 +114,12 @@
 .navLink {
   text-decoration: none;
   color: inherit;
+  transition: all ease .3s;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  color: #212d94;
 }
 
 .divider {
@@ -126,6 +132,7 @@
   width: 34px;
   height: 34px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .languageContainer{
@@ -133,9 +140,17 @@
   cursor: pointer;
 }
 
-.navItemActive {
+.navItemActive  {
   background-color: rgba(232, 234, 244, 1);
   color: rgba(21, 24, 32, 1);
+}
+
+.navButton:hover{
+  color: #212d94;
+}
+
+.profileIconWrapper{
+  position: relative;
 }
 
 @media (max-width: 991px) {

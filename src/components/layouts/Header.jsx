@@ -223,13 +223,17 @@ const Header = () => {
             </div>
             {isAuthenticated ? (
               <div className={styles.userMenuContainer} ref={userMenuRef}>
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e55a5f6259eb4c04889d83edcb17bc65673cf93782c1c2c40272b91d103518?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-                  alt="User Profile"
-                  className={styles.userIcon}
-                  onClick={handleUserIconClick}
-                />
-                {showUserMenu && <UserMenu logout={handleLogout} />}
+                <div className={styles.profileIconWrapper}>
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e55a5f6259eb4c04889d83edcb17bc65673cf93782c1c2c40272b91d103518?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+                    alt="User Profile"
+                    className={styles.userIcon}
+                    onClick={handleUserIconClick}
+                  />
+                  {showUserMenu && <UserMenu logout={handleLogout} />}
+                </div>
+               
+                
               </div>
             ) : (
               <button className={styles.btnLogin + " cta-button"} onClick={() => handleNavigation("/login")}>
