@@ -108,7 +108,7 @@ function PasswordRecoveryPage() {
 
     // Here you would typically call your API to send the recovery email
     toast.success("Recovery email sent successfully!");
-    console.log("Recovery email would be sent to:", formData.email);
+    ;
   };
 
   return (

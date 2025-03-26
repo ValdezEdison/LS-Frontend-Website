@@ -20,7 +20,7 @@ import FilterBar from "../common/FilterBar";
 import styles4 from "../common/FilterBar.module.css";
 import SelectedItemList from "../common/SelectedItemList";
 
-const MainContent = ({ state, setState, countries, cities }) => {
+const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
   const { places, loading: placesLoading, error: placesError, next, count } = useSelector((state) => state.places);
 
@@ -129,8 +129,8 @@ const MainContent = ({ state, setState, countries, cities }) => {
     };
   }, [showSuggestionDropDown]);
 
-  const handleViewMoreDetails = (id) => {
-    console.log(id, 'handleViewMoreDetails');
+  const handleViewMoreDetails = (e,id) => {
+    ;
     navigate('/places/details', { state: { id } });
   };
 
@@ -271,7 +271,7 @@ const MainContent = ({ state, setState, countries, cities }) => {
         </button>
         {visiblePlaces?.length > 0 ? (
           visiblePlaces?.map((place, index) => (
-            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} />
+            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
           ))
         ) : (
           <div className="no-results-wrapper">No results</div>

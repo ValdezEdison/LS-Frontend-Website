@@ -52,8 +52,7 @@ const PlacesSelectedItemList = ({ state, setState, countries, cities, styles, tr
         const city = cities.find(city => city.id === id);
         return city ? city.name : null;
     }).filter(name => name !== null);
-    console.log(selectedOrder, 'selectedOrder')
-
+    
     // If no country, destinations, or order is selected, return null
     if (!selectedCountryId && destinationIds.length === 0 && !selectedOrder) return null;
 

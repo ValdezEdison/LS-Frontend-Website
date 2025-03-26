@@ -11,7 +11,9 @@ const LoginForm = ({
   handleNavigate,
   isFormValid,
   handleFocus,
-  handleBlur
+  handleBlur,
+  rememberMe,
+  setRememberMe,
 }) => {
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
@@ -77,7 +79,7 @@ const LoginForm = ({
       <div className={styles.optionsRow}>
         <div className={styles.rememberMe}>
           <label className="check-container login-check">
-            <input type="checkbox" id="remember" />
+            <input type="checkbox" id="remember" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}/>
             <span className="checkmark"></span>
             Remember Me
           </label>

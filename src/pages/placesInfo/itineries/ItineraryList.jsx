@@ -57,7 +57,7 @@ const ItineraryList = () => {
   }, [dispatch, language]);
 
   const handleViewMoreDetails = (id) => {
-    console.log(id, 'handleViewMoreDetails');
+    ;
     navigate('/places/itineraries-details', { state: { id } });
   };
 

@@ -17,7 +17,7 @@ const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [showConfirmation, setShowConfirmation] = useState(true)
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
 
   const { isOpen } = useSelector((state) => state.popup);
@@ -253,7 +253,7 @@ const TravelerRegistration = () => {
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
-      { showConfirmation ? (
+      { isOpen && showConfirmation ? (
          <Modal onClose={handleConfirmationClose} customClass="modal-md">
          <EmailConfirmation
            email={registeredEmail}

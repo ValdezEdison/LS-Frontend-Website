@@ -5,8 +5,7 @@ import { PlaceHolderImg2 } from "../common/Images";
 import { useTranslation } from "react-i18next";
 
 const EventsSection = ({ events = [] }) => {
-  console.log(events, 'events')
-  const { t } = useTranslation("EventsSection");
+    const { t } = useTranslation("EventsSection");
 
   const renderEvent = (event) => (
     <div key={event.id} className={styles.placeCard}>

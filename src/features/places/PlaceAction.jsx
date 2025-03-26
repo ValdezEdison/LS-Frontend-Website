@@ -91,6 +91,19 @@ export const fetchPlacesFilterCategories = createAsyncThunk(
   }
 );
 
+export const toggleFavorite = createAsyncThunk(
+  'places/toggleFavorite',
+  async (placeId, { rejectWithValue }) => {
+    try {
+      const response = await placeService.toggleFavorite(placeId);
+      return { id: placeId, response: response };
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+)
+
 // Create a new place
 export const createPlace = createAsyncThunk(
   'places/createPlace',

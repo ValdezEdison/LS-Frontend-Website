@@ -22,11 +22,11 @@ export const setCurrentLanguage = (language) => {
 let refreshTokenRequest = null;
 
 const getAccessToken = () => {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 };
 
 const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken');
+  return localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken');
 };
 
 const setTokens = (accessToken, refreshToken) => {
@@ -38,7 +38,7 @@ const setTokens = (accessToken, refreshToken) => {
 };
 
 const isTokenExpired = () => {
-  const expiresAt = localStorage.getItem('tokenExpiresAt');
+  const expiresAt = localStorage.getItem('tokenExpiresAt') || sessionStorage.getItem('tokenExpiresAt');
   if (!expiresAt) return true;
   return new Date().getTime() > parseInt(expiresAt);
 };
@@ -50,7 +50,6 @@ const refreshAuthToken = async () => {
       throw new Error('No refresh token available');
     }
 
-    // Use a separate axios instance without interceptors to avoid infinite loops
     const refreshInstance = axios.create({
       baseURL: config.api.baseUrl,
     });
@@ -60,14 +59,17 @@ const refreshAuthToken = async () => {
     });
 
     const { access_token, refresh_token, expires_in } = response.data;
-    setTokens(access_token, refresh_token);
+    
+    // Determine which storage to use based on where the original token was
+    const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
+    storage.setItem('access_token', access_token);
+    storage.setItem('refreshToken', refresh_token);
+    storage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
+    
     return access_token;
   } catch (error) {
-    // If refresh fails, clear all tokens and redirect to login
     removeToken();
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('tokenExpiresAt');
-    window.location.href = '/login'; // Adjust based on your routing
+    window.location.href = '/login';
     throw error;
   }
 };

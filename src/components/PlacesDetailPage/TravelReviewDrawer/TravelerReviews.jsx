@@ -24,7 +24,7 @@ const TravelerReviews = ({ onClose, isOpen, showReviewDrawer, filters, isLoading
   useEffect(() => {
     if (showReviewDrawer && ratingPopupTopRef.current && reviewListRef.current) {
       const screenHeight = window.innerHeight;
-      console.log(screenHeight, 'screenHeight');
+      ;
       const ratingPopupTopHeight = ratingPopupTopRef.current.offsetHeight;
       const calculatedMaxHeight = screenHeight - ratingPopupTopHeight;
       setMaxHeight(calculatedMaxHeight);

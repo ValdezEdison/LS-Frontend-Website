@@ -7,8 +7,7 @@ import styles from "../HomePage/PlacesSection.module.css";
 import { useTranslation } from "react-i18next";
 
 const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCarousel }) => {
-    console.log(items, 'items')
-
+    
     const { t } = useTranslation("Common");
 
     const carouselSettings = {
