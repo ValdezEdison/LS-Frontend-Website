@@ -1,6 +1,6 @@
-.imageGallery {
+/* .imageGallery {
   margin-bottom: 26px;
-}
+} */
 
 .imageGalleryTop{
   display: flex;
@@ -8,7 +8,7 @@
 }
 
 .mainImage img {
-  width: 100%;
+  width: 290px;
   border-radius: 6px;
   aspect-ratio: 1.05;
   object-fit: cover;
@@ -49,5 +49,11 @@
   .imageGalleryTop{
     flex-direction: column;
     gap: 10px;
+  }
+
+  .mainImage img {
+    width: 100%;
+    height: max-content;
+    aspect-ratio: 2.06;
   }
 }

@@ -110,6 +110,7 @@ body {
 
 .mob-nav-container {
   position: relative;
+  display: none;
 }
 
 .mob-nav {
@@ -124,6 +125,8 @@ body {
   display: none;
   padding: 0;
   width: 140px;
+  padding: 8px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 }
 .mob-nav li:hover {
@@ -473,6 +476,10 @@ button,input,select,textarea{
   }
 
   .mob-nav.open {
+    display: block;
+  }
+
+  .mob-nav-container {
     display: block;
   }
 

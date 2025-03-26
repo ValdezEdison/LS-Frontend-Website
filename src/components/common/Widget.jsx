@@ -32,7 +32,7 @@ console.log(data, 'data');
 
   return (
     <section className={styles.nearbyPlaces}>
-      <div className="page-center">
+      
       <h2 className={styles.sectionTitle}>{title}</h2>
       {data.length > 0 ? 
       <Slider {...settings}>
@@ -49,7 +49,7 @@ console.log(data, 'data');
       </Slider>
       : <p>No hay lugares cercanos</p>
 }
-</div>
+
     </section>
   );
 };

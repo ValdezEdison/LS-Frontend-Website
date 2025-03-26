@@ -177,15 +177,17 @@ const PlaceDetails = () => {
                     images={place?.images}
                   />
                 )}
-                {isLoading ? (
+                
+              </div>
+            </div>
+
+            {isLoading ? (
                   <Skeleton count={5} />
                 ) : (
                   <p className={styles.museumDescription}>
                     {place?.description}
                   </p>
                 )}
-              </div>
-            </div>
 
             {isLoading ? (
               <ReviewSectionSkeleton />

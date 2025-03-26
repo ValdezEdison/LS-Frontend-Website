@@ -1,6 +1,6 @@
 .reviewSection {
   margin: 26px 0;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 
 .reviewHeader {
@@ -13,7 +13,7 @@
 .reviewTitle {
   font-size: 20px;
   color: #000;
-  margin-bottom: 14px;
+  margin: 0 0 14px;
 }
 
 .ratingBlock {
@@ -128,9 +128,9 @@
   -webkit-box-orient: vertical;
 }
 
-.reviewWrapper {
+/* .reviewWrapper {
   padding-bottom: 24px;
-}
+} */
 
 .reviewCardWrapper {
   padding: 0 7px !important;
@@ -141,6 +141,11 @@
 .reviewWrapper :global(.slick-prev) {
 
   top: 50% !important;
+}
+
+.reviewWrapper :global(.slick-track){
+  margin-left: 0 !important; 
+  margin-right: 0 !important;
 }
 
 

@@ -10,6 +10,7 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
   const sliderSettings = {
     // dots: true,
     infinite: false,
+    centerMode: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,

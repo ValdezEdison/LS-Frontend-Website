@@ -28,6 +28,7 @@ const SecondSection4 = "/images/imgen-segunda-seccin-4@2x.png";
 const SecondSection4_1 = "/images/imgen-segunda-seccin-4-1@2x.png";
 const InstagramWhite = "/images/instagramwhite@2x.png";
 const LinkedinWhite = "/images/linkedinwhite@2x.png";
+const MapIcon = "/images/map-icon.png";
 const MapsSearchAmericaDefault = "/images/mapas-buscadoramerica-default.svg";
 const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
 const MapsFinderDefault = "/images/mapas-buscadordefault@2x.png";
@@ -86,6 +87,7 @@ export {
     SecondSection4_1,
     InstagramWhite,
     LinkedinWhite,
+    MapIcon,
     MapsSearchAmericaDefault,
     MapsFindersiaDefault,
     MapsFinderDefault,
