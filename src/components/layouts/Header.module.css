@@ -126,6 +126,7 @@
   width: 34px;
   height: 34px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .languageContainer{
@@ -136,6 +137,10 @@
 .navItemActive {
   background-color: rgba(232, 234, 244, 1);
   color: rgba(21, 24, 32, 1);
+}
+
+.profileIconWrapper{
+  position: relative;
 }
 
 @media (max-width: 991px) {

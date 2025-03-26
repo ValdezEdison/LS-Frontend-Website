@@ -57,6 +57,7 @@
 .navLink {
   color: #151820;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .divider {
