@@ -58,8 +58,11 @@ const Destination = () => {
       </Modal>
     )}
       <Header />
-    {loading ? <DestinationInfoSkeleton /> : <DestinationInfo destination={destination} handleClickViewMoreDetails={handleClickViewMoreDetails} />}  
-     {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
+      <div className="page-center">
+        {loading ? <DestinationInfoSkeleton /> : <DestinationInfo destination={destination} handleClickViewMoreDetails={handleClickViewMoreDetails} />}  
+        {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
+      </div>
+    
       <Partners />
       <Footer />
     </>

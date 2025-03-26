@@ -1,7 +1,7 @@
 .nearbyPlaces {
   margin: 26px auto;
   /* padding: 0 20px; */
-  border-top: solid 1px #BDBDBD;
+  /* border-top: solid 1px #BDBDBD; */
 }
 
 .sectionTitle {
@@ -80,6 +80,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  border-top: solid 1px #BDBDBD;
 }
 
 @media (max-width: 991px) {

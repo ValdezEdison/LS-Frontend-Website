@@ -4,7 +4,7 @@
   border: 1px solid #828282;
   border-radius: 12px;
   padding: 8px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .popupPlaceCard{
@@ -122,6 +122,22 @@
 
 .placeImageContainer{
   position: relative;
+}
+
+.loaderOverlay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% - 16px);
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.loaderToCenter{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
 .favIcon{
