@@ -22,7 +22,7 @@ import SelectedItemList from "../common/SelectedItemList";
 
 const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
-  const { places, loading: placesLoading, error: placesError, next, count } = useSelector((state) => state.places);
+  const { places, loading: placesLoading, error: placesError, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
 
   const { loading: countriesLoading } = useSelector((state) => state.countries);
   const { loading: citiesLoading } = useSelector((state) => state.cities);
@@ -271,7 +271,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
         </button>
         {visiblePlaces?.length > 0 ? (
           visiblePlaces?.map((place, index) => (
-            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
+            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id} />
           ))
         ) : (
           <div className="no-results-wrapper">No results</div>

@@ -37,6 +37,7 @@ const MapsSearchAfricaDefault = "/images/mapas-buscadorfrica-default@2x.png";
 const MapPlaceHolderImage = "/images/map-placeholder-image.jpg";
 const MyWeirdLittleDesign = "/images/my-weird-little-design@3x.png";
 const Marker = "/images/marker.svg";
+const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
 const Oceana = "/images/oceana@2x.png";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
@@ -96,6 +97,7 @@ export {
     MapPlaceHolderImage,
     MyWeirdLittleDesign,
     Marker,
+    MarkerYellow,
     Notch,
     Oceana,
     PlaceHolderImg1,

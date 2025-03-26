@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
+import MapPopup from "../../components/common/MapPopup";
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const PlaceDetails = () => {
     selectedSortBy: null,
     scoreSearchQuery: "",
     languageSearchQuery: "",
+    points: "",
   });
 
   const updateState = (key, value) => {
@@ -138,8 +140,39 @@ const PlaceDetails = () => {
     }
   };
 
+
+    const [showMapPopup, setShowMapPopup] = useState(false);
+  
+    const handleShowMapPopup = () => {
+      console.log("handleShowMapPopup");
+      setShowMapPopup(true);
+      dispatch(openPopup());
+    };
+
+     const handleCloseMapPopup = () => {
+        setShowMapPopup(false);
+        dispatch(closePopup());
+      };
+
+       const handleActions = (e,action, id) => {
+          e.stopPropagation();
+          if (action === 'addToFavorites') {
+            handleFavClick(e, id);
+          } else if (action === 'addToTrip') {
+            handleTripClick(e, id);
+          }
+        };
+      
+        const handleFavClick = (e, id) => {
+          e.stopPropagation();
+          if (isAuthenticated) {
+            dispatch(toggleFavorite(id));
+          }
+        };
+
   return (
     <>
+    {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={{}} ratings={{}} state={state} setState={setState} handleActions={handleActions}/>}
       {isOpen && showImgGalleryPopup && (
         <Modal title={place.title} customClass="galleryReviewPopup"  onClose={closeModal}>
           <ImageGalleryPopupContent images={place.images} />
@@ -161,7 +194,7 @@ const PlaceDetails = () => {
               {isLoading ? (
                 <MapSectionSkeleton />
               ) : (
-                <MapSection place={place} />
+                <MapSection place={place} handleShowMapPopup={handleShowMapPopup}/>
               )}
               <div className={styles.infoSection}>
                 {isLoading ? (

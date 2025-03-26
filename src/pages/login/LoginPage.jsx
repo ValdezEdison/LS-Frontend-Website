@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header";
@@ -8,13 +8,14 @@ import SocialLogin from "../../components/LoginPage/SocialLogin";
 import Footer from "../../components/LoginPage/Footer";
 import styles from "./LoginPage.module.css";
 import { login } from "../../features/authentication/AuthActions";
+import Loader from "../../components/common/Loader";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  ;
+  const { loading } = useSelector((state) => state.auth);
 
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
@@ -201,6 +202,8 @@ const LoginPage = () => {
   };
 
   return (
+    <>
+    {loading && <Loader />}
     <div className={`${styles.loginPage} ${styles.authPage}`}>
       <Header />
       <div className={styles.loginPageOuter}>
@@ -239,6 +242,7 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

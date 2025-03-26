@@ -14,7 +14,7 @@ import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
 import Newsletter from "../../components/common/Newsletter";
 import MapPopup from "../../components/common/MapPopup";
-import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
 
@@ -217,9 +217,17 @@ const PlacesPage = () => {
     }
   };
 
+  const handleTripClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(openAddToTripPopup());
+      navigate('/places/itineraries', { state: { id } });
+    }
+  };
+
   return (
     <>
-      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />}
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} handleActions={handleActions}/>}
       <div className={styles.placesPage}>
         <Header />
         {(filterLoading) ? (

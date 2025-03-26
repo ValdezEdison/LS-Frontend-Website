@@ -1,0 +1,476 @@
+.container {
+  max-width: none;
+  font-family: "Source Sans Pro", sans-serif;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+  .container {
+    max-width: 991px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 120px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+@media (max-width: 991px) {
+  .header {
+    padding: 16px 40px;
+  }
+}
+
+.logo {
+  width: 60px;
+  height: 50px;
+}
+
+.nav {
+  display: flex;
+  gap: 28px;
+  margin-left: 42px;
+}
+
+@media (max-width: 640px) {
+  .nav {
+    display: none;
+  }
+}
+
+.navItem {
+  color: #151820;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .headerRight {
+    gap: 10px;
+  }
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.headerText {
+  color: #151820;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.divider {
+  width: 20px;
+  height: 1px;
+  border-left: 1px solid #151820;
+  margin: 40px 0;
+  background-color: #e0e0e0;
+}
+
+.profilePic {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.mainContent {
+  padding: 40px 120px;
+}
+
+@media (max-width: 991px) {
+  .mainContent {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mainContent {
+    padding: 20px;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mapImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mapOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mapMarker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #151820;
+  font-size: 20px;
+  font-weight: 700;
+  background-color: #f4c031;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.itineraryInfo {
+  margin-top: 30px;
+}
+
+.itineraryName {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.itineraryTag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #151820;
+  font-size: 14px;
+  margin-bottom: 10px;
+  background-color: #e1e4ff;
+}
+
+.itineraryDetails {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.actionIcons {
+  display: flex;
+  gap: 10px;
+}
+
+.actionIcon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  color: #151820;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #f4c031;
+}
+
+.locationList {
+  margin-top: 40px;
+}
+
+.locationItem {
+  display: flex;
+  padding: 20px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 640px) {
+  .locationItem {
+    flex-direction: column;
+  }
+}
+
+.locationImage {
+  width: 180px;
+  height: 124px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .locationImage {
+    width: 100%;
+  }
+}
+
+.locationInfo {
+  margin-left: 16px;
+}
+
+@media (max-width: 640px) {
+  .locationInfo {
+    margin-top: 16px;
+  }
+}
+
+.locationName {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.locationAddress {
+  font-size: 12px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingScore {
+  width: 40px;
+  height: 30px;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #212d94;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ratingText {
+  font-size: 10px;
+  color: #000;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modalContent {
+  width: 480px;
+  height: 100%;
+  padding: 50px 20px;
+  border-radius: 6px 0 0 6px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+@media (max-width: 991px) {
+  .modalContent {
+    width: 100%;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modalDescription {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.tripList {
+  margin-bottom: 40px;
+}
+
+.tripItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tripName {
+  font-size: 16px;
+}
+
+.formSection {
+  margin-bottom: 40px;
+}
+
+.formDescription {
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.inputWithIcon {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addDestination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #000;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.suggestionSection {
+  margin-top: 40px;
+}
+
+.suggestionTitle {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.suggestionList {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .suggestionList {
+    flex-direction: column;
+  }
+}
+
+.suggestionItem {
+  width: 380px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+@media (max-width: 640px) {
+  .suggestionItem {
+    width: 100%;
+  }
+}
+
+.suggestionImage {
+  width: 100%;
+  height: 124px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.suggestionInfo {
+  margin-left: 16px;
+}
+
+@media (max-width: 640px) {
+  .suggestionInfo {
+    margin-top: 16px;
+  }
+}
+
+.suggestionName {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.confirmButton {
+  width: 146px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  color: #151820;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 40px auto;
+  cursor: pointer;
+  background-color: #f4c031;
+  display: block;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

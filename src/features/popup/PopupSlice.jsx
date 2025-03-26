@@ -6,6 +6,7 @@ export const popupSlice = createSlice({
     isOpen: false,
     isWarningOpen: false,
     isPopUpOpen: false,
+    isAddToPopupOpen: false,
   },
   reducers: {
     openPopup: (state) => {
@@ -27,6 +28,14 @@ export const popupSlice = createSlice({
     closePasswordPopup: (state) => {
       state.isPopUpOpen = false;
     },
+    openAddToTripPopup: (state) => {
+      state.isOpen = true;
+      state.isAddToPopupOpen = true;
+    },
+    closeAddToTripPopup: (state) => {
+      state.isOpen = false;
+      state.isAddToPopupOpen = false;
+    },
   },
 });
 
@@ -37,5 +46,7 @@ export const {
   closeWarningPopup,
   openPasswordPopup,
   closePasswordPopup,
+  openAddToTripPopup,
+  closeAddToTripPopup,
 } = popupSlice.actions;
 export default popupSlice.reducer;
