@@ -102,7 +102,7 @@ const Header = () => {
   if (languageData) {
 
   } else {
-    console.log('No language data found in localStorage.');
+    ;
     setLanguage("es", "/images/spain.png", "Español");
   }
 
@@ -127,8 +127,7 @@ const Header = () => {
   }, [showUserMenu]);
 
   const handleLogout = () => {
-    console.log("logout")
-    dispatch(logout());
+        dispatch(logout());
   }
 
   return (

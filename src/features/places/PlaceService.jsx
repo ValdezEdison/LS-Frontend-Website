@@ -93,6 +93,10 @@ const PlaceService = {
     return apiService.get('/sites/categories', { params });
   },
 
+  toggleFavorite: async (placeId) => {
+    return apiService.post(`/sites/${placeId}/check_fav`);
+  },
+
   createPlace: async (placeData) => {
     return apiService.post('/places', placeData);
   },

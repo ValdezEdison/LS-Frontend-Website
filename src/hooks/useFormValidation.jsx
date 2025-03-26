@@ -93,7 +93,7 @@ const useFormValidation = (initialValues, validationRules) => {
 
             // Ensure there's an error entry for the specific row (index) and field (fieldName)
             if (updatedErrors.values[index] && updatedErrors.values[index][fieldName]) {
-                // console.log(updatedErrors[index][fieldName], 'updatedErrors[index][fieldName]');
+                // ;
                 delete updatedErrors.values[index][fieldName]; // Remove the specific error for the field
 
                 // If there are no more errors for this row, remove the entire row's error

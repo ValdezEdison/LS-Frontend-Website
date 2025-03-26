@@ -18,13 +18,14 @@ import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { Arrow } from "../../../components/common/Images";
 import styles2 from "../../../components/common/PlaceCard.module.css";
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
-import { fetchPlacesFilterCategories } from "../../../features/places/PlaceAction";
+import { fetchPlacesFilterCategories, toggleFavorite } from "../../../features/places/PlaceAction";
 import FilterBar from "../../../components/common/FilterBar";
 import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles3 from "../../../components/PlacesPage/MainContent.module.css"
 import { LanguageContext } from "../../../context/LanguageContext";
+import { setFavTogglingId } from "../../../features/places/placesInfo/places/PlacesSlice";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -34,7 +35,7 @@ const Places = () => {
 
      const { language } = useContext(LanguageContext);
 
-    const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
+    const { loading: placesLoading, error, placesList, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.placesInCity);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
     const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
@@ -200,6 +201,24 @@ const Places = () => {
           setShowMapPopup(false);
           dispatch(closePopup());
         };
+
+
+         const handleActions = (e,action, id) => {
+            e.stopPropagation();
+            if (action === 'addToFavorites') {
+              handleFavClick(e, id);
+            } else if (action === 'addToTrip') {
+              handleTripClick(e, id);
+            }
+          };
+        
+          const handleFavClick = (e, id) => {
+            e.stopPropagation();
+            if (isAuthenticated) {
+                dispatch(toggleFavorite(id));
+                dispatch(setFavTogglingId(id));
+            }
+          };
     
 
     return (
@@ -250,6 +269,8 @@ const Places = () => {
                             translate={t}
                             isAuthenticated={isAuthenticated}
                             handleViewMoreDetails={handleViewMoreDetails}
+                            handleActions={handleActions}
+                            isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id}
                           />
                         ))
                       ) : (

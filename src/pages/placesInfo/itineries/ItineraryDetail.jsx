@@ -31,7 +31,7 @@ const ItineraryDetail = () => {
   }, [dispatch, id, language]);
 
   const handleViewMoreDetails = (id) => {
-    console.log(id, 'handleViewMoreDetails');
+    ;
     navigate('/places/details', { state: { id } });
   };
 

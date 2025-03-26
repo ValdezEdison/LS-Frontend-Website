@@ -14,7 +14,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location, 'location');
+  ;
 
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
@@ -43,6 +43,9 @@ const LoginPage = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(
+    localStorage.getItem('rememberMe') === 'true'
+  );
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -154,12 +157,16 @@ const LoginPage = () => {
 
     if (!formIsValid) return;
 
+      // Save rememberMe preference
+    localStorage.setItem('rememberMe', rememberMe.toString());
+      
     const payload = {
       client_id: clientId,
       client_secret: clientSecret,
       email: formData.email,
       grant_type: "password",
       password: formData.password,
+      rememberMe: rememberMe
     };
 
     dispatch(login(payload))
@@ -221,6 +228,8 @@ const LoginPage = () => {
                   isFormValid={isFormValid}
                   handleFocus={handleFocus}
                   handleBlur={handleBlur}
+                  rememberMe={rememberMe}
+                  setRememberMe={setRememberMe}
                 />
                 <SocialLogin />
                 <Footer />

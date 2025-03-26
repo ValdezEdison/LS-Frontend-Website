@@ -62,7 +62,7 @@ const Events = () => {
   const { t } = useTranslation('Places');
 
   const { id } = location.state || {};
-  console.log(id, 'id in Events');
+  ;
 
   const [state, setState] = useState({
     selectedLevel: "",

@@ -54,7 +54,7 @@ const ItineraryMap = ({ geoLocations, places }) => {
 
                             if (matchedPlace) {
                                 // You can add additional logic here to handle the place card focus
-                                console.log("Place focused:", matchedPlace);
+                                ;
                             }
                         });
 

@@ -7,7 +7,7 @@ import { setAuthTokens, removeToken, handleApiError } from '../../utils/Helper';
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await authService.login(credentials);
-    setAuthTokens(response); // Save token to localStorage
+    setAuthTokens(response, credentials.rememberMe);// Save token to localStorage
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
@@ -18,7 +18,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 export const register = createAsyncThunk('users/create', async (userData, { rejectWithValue }) => {
   try {
     const response = await authService.register(userData);
-    setAuthTokens(response); // Save token to localStorage
+    setAuthTokens(response, false); // Default to session-only for new registrations
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));

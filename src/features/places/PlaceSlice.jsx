@@ -10,8 +10,10 @@ import {
     fetchGeoLocations,
     fetchPlaceComments, 
     fetchNearbyPlaces,
-    fetchPlacesFilterCategories
+    fetchPlacesFilterCategories,
+    toggleFavorite
 } from './PlaceAction';
+import { Favorite } from '../../components/common/Images';
 
 const initialState = {
     places: [],
@@ -24,7 +26,9 @@ const initialState = {
     comments: [],
     NearbyPlaces: [],
     categories: [],
-    filterLoading: false
+    filterLoading: false,
+    isFavoriteToggling: false,
+    favTogglingId : null
 };
 
 const placeSlice = createSlice({
@@ -32,6 +36,9 @@ const placeSlice = createSlice({
     initialState,
     reducers: {
         // You can add synchronous reducers here if needed
+        setFavTogglingId: (state, action) => {
+            state.favTogglingId = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -137,6 +144,36 @@ const placeSlice = createSlice({
                 state.error = action.payload;
             })
 
+            // Toggle favorite
+            .addCase(toggleFavorite.pending, (state) => {
+                state.isFavoriteToggling = true;
+                state.error = null;
+            })
+            .addCase(toggleFavorite.fulfilled, (state, action) => {
+                ;
+                state.isFavoriteToggling = false;
+                state.favTogglingId = null;
+                // if (!Array.isArray(state.placesList)) return;
+               
+
+                const updatedPlaces = state.places.map(place => {
+                  if (place.id === action.payload.id) {
+                    return {
+                      ...place,
+                      is_fav: action.payload.response.detail === "Marked as favorite"
+                    };
+                  }
+                  return place;
+                });
+                ;
+                state.places = updatedPlaces;
+
+            })
+            .addCase(toggleFavorite.rejected, (state, action) => {
+                state.isFavoriteToggling = false;
+                state.error = action.payload;
+            })
+
             // Create a new place
             .addCase(createPlace.pending, (state) => {
                 state.loading = true;
@@ -184,4 +221,5 @@ const placeSlice = createSlice({
     },
 });
 
+export const { setFavTogglingId } = placeSlice.actions;
 export default placeSlice.reducer;

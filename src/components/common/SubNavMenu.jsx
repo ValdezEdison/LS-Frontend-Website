@@ -10,7 +10,7 @@ const SubNavMenu = ({ activeLink }) => {
   const dispatch = useDispatch();
   const { id } = location.state || {};
 
-  console.log(id, 'id in SubNavMenu');
+  ;
 
   const handleNavigation = (path) => {
     navigate(path, { state: { id } });

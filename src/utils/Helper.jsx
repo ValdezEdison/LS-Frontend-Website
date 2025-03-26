@@ -7,23 +7,43 @@ export const setToken = (token) => {
   
   // Get token from localStorage
   export const getToken = () => {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
   };
   
  // Remove token from localStorage
-export const removeToken = () => {
+ export const removeToken = () => {
   localStorage.removeItem('access_token');
   localStorage.removeItem('refreshToken');
   localStorage.removeItem('tokenExpiresAt');
+  sessionStorage.removeItem('access_token');
+  sessionStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('tokenExpiresAt');
+  localStorage.removeItem('rememberMe');
 };
 
 // Save tokens from login/refresh response
-export const setAuthTokens = (response) => {
+// export const setAuthTokens = (response) => {
+//   const { access_token, refresh_token, expires_in } = response;
+//   setToken(access_token);
+//   localStorage.setItem('refreshToken', refresh_token);
+//   const expiresAt = new Date().getTime() + (expires_in * 1000);
+//   localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+// };
+
+export const setAuthTokens = (response, rememberMe = false) => {
   const { access_token, refresh_token, expires_in } = response;
-  setToken(access_token);
-  localStorage.setItem('refreshToken', refresh_token);
-  const expiresAt = new Date().getTime() + (expires_in * 1000);
-  localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+  
+  if (rememberMe) {
+    // Store in localStorage for persistent sessions
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refreshToken', refresh_token);
+    localStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
+  } else {
+    // Store in sessionStorage for session-only
+    sessionStorage.setItem('access_token', access_token);
+    sessionStorage.setItem('refreshToken', refresh_token);
+    sessionStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
+  }
 };
 
 // Check if token is expired

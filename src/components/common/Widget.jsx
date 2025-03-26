@@ -7,7 +7,7 @@ import { PlaceHolderImg2 } from "./Images";
 
 const Widget = ({ data = [], title, count}) => {
   
-console.log(data, 'data');
+;
   const settings = {
     // dots: true,
     infinite: true,
