@@ -104,6 +104,18 @@ export const toggleFavorite = createAsyncThunk(
   }
 )
 
+export const addComment = createAsyncThunk(
+  'places/addComment',
+  async ({ placeId, commentData }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.addComment(placeId, commentData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+)
+
 // Create a new place
 export const createPlace = createAsyncThunk(
   'places/createPlace',

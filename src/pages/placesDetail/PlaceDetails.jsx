@@ -11,7 +11,7 @@ import ImageGalleryPopupContent from "../../components/PlacesDetailPage/PlacesDe
 import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ReviewSectionPopupContent";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces } from "../../features/places/PlaceAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
@@ -20,19 +20,23 @@ import ReviewSectionSkeleton from "../../components/skeleton/PlacesDetailPage/Re
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import TravelerReviews from "../../components/PlacesDetailPage/TravelReviewDrawer/TravelerReviews";
-import FeedbackModal from "../../components/PlacesDetailPage/popup/FeedbackModal";
+import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import { useTranslation } from "react-i18next";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
+import CommentPopup from "../../components/popup/Comment/CommentPopup";
+
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
   const [showImgGalleryPopup, setShowImgGalleryPopup] = useState(false);
   const [showReviewDrawer, setShowReviewDrawer] = useState(false);
   const [showAlertPopup, setShowAlertPopup] = useState(false);
+  const [showCommentPopup, setShowCommentPopup] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments } = useSelector((state) => state.places);
@@ -62,6 +66,8 @@ const PlaceDetails = () => {
     languageSearchQuery: "",
     points: "",
   });
+
+  
 
   const updateState = (key, value) => {
     setState((prevState) => ({ ...prevState, [key]: value }));
@@ -128,6 +134,9 @@ const PlaceDetails = () => {
     if (!isAuthenticated) {
       setShowAlertPopup(true);
       dispatch(openPopup());
+    }else{
+      setShowCommentPopup(true);
+      dispatch(openPopup());
     }
   
   };
@@ -170,6 +179,16 @@ const PlaceDetails = () => {
           }
         };
 
+        const handleNavigateToLogin = () => {
+          navigate('/login', { state: { from: location } });
+        }
+
+        const handleCloseCommentPopup = () => {
+          setShowCommentPopup(false);
+          setShowAlertPopup(false);
+          dispatch(closePopup());
+        }
+
   return (
     <>
     {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={{}} ratings={{}} state={state} setState={setState} handleActions={handleActions}/>}
@@ -183,7 +202,12 @@ const PlaceDetails = () => {
 
 
       {isOpen && showAlertPopup && (
-        <FeedbackModal onClose={() => setShowAlertPopup(false)} />
+      <Modal onClose={() => handleCloseCommentPopup()}>  <AlertPopup  handleNavigateToLogin={handleNavigateToLogin}/></Modal>
+      )}
+
+      {isOpen && showCommentPopup && (
+       <Modal title="Añadir comentario" customClass="commentPopup" onClose={() => handleCloseCommentPopup()}><CommentPopup  placeDetails={place} />
+       </Modal> 
       )}
    <div className={`${styles.lugaresContainer} ${showReviewDrawer ? styles.overflowHide : ''}`}>
 

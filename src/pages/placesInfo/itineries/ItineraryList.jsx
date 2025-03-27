@@ -22,7 +22,7 @@ import FilterBar from "../../../components/common/FilterBar";
 import { LanguageContext } from "../../../context/LanguageContext";
 import { toggleFavorite } from "../../../features/places/PlaceAction";
 import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
-import AddToTripModal from "../../../components/popup/AddToTrip/AddToTripModal";
+import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 
 
 const ItineraryList = () => {
@@ -180,7 +180,7 @@ const ItineraryList = () => {
   return (
     // <div className={styles.athenasPlaces}>
     <>
-    {isOpen && isAddToPopupOpen && <AddToTripModal />}
+    {isOpen && isAddToPopupOpen && <AddToTripPopup />}
       <Header />
       <main className="page-center" ref={mainRef}>
         <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>

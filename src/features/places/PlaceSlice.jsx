@@ -11,7 +11,8 @@ import {
     fetchPlaceComments, 
     fetchNearbyPlaces,
     fetchPlacesFilterCategories,
-    toggleFavorite
+    toggleFavorite, 
+    addComment
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
 
@@ -171,6 +172,20 @@ const placeSlice = createSlice({
             })
             .addCase(toggleFavorite.rejected, (state, action) => {
                 state.isFavoriteToggling = false;
+                state.error = action.payload;
+            })
+
+            // add comment
+            .addCase(addComment.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addComment.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments.push(action.payload);
+            })
+            .addCase(addComment.rejected, (state, action) => {
+                state.loading = false;
                 state.error = action.payload;
             })
 
