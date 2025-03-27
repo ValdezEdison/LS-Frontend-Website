@@ -12,7 +12,7 @@ import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesD
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite } from "../../features/places/PlaceAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
 import ImageGallerySkeleton from "../../components/skeleton/PlacesDetailPage/ImageGallerySkeleton";
@@ -27,6 +27,7 @@ import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton"
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
 import CommentPopup from "../../components/popup/Comment/CommentPopup";
+import { setFavTogglingId } from "../../features/places/PlaceSlice";
 
 
 const PlaceDetails = () => {
@@ -39,7 +40,7 @@ const PlaceDetails = () => {
   const [showCommentPopup, setShowCommentPopup] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const { isOpen } = useSelector((state) => state.popup);
-  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments } = useSelector((state) => state.places);
+  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
   
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -163,21 +164,17 @@ const PlaceDetails = () => {
         dispatch(closePopup());
       };
 
-       const handleActions = (e,action, id) => {
-          e.stopPropagation();
-          if (action === 'addToFavorites') {
-            handleFavClick(e, id);
-          } else if (action === 'addToTrip') {
-            handleTripClick(e, id);
-          }
-        };
-      
-        const handleFavClick = (e, id) => {
-          e.stopPropagation();
-          if (isAuthenticated) {
-            dispatch(toggleFavorite(id));
-          }
-        };
+      const handleFavClick = (e, id) => {
+        console.log("handleFavClick");
+        // e.stopPropagation();
+        if (!isAuthenticated) {
+          setShowAlertPopup(true);
+          dispatch(openPopup());
+        } else {
+          dispatch(setFavTogglingId(id)); // Set the loading state for this specific ID
+          dispatch(toggleFavorite(id));
+        }
+      };
 
         const handleNavigateToLogin = () => {
           navigate('/login', { state: { from: location } });
@@ -224,7 +221,8 @@ const PlaceDetails = () => {
                 {isLoading ? (
                   <MuseumInfoSkeleton />
                 ) : (
-                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite}/>
+                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite}  handleActions={handleFavClick}
+                  isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id}/>
                 )}
                 {isLoading ? (
                   <ImageGallerySkeleton />

@@ -151,24 +151,28 @@ const placeSlice = createSlice({
                 state.error = null;
             })
             .addCase(toggleFavorite.fulfilled, (state, action) => {
-                ;
                 state.isFavoriteToggling = false;
                 state.favTogglingId = null;
-                // if (!Array.isArray(state.placesList)) return;
-               
-
+                
+                // Update places list if we're not on the details page
                 const updatedPlaces = state.places.map(place => {
-                  if (place.id === action.payload.id) {
-                    return {
-                      ...place,
-                      is_fav: action.payload.response.detail === "Marked as favorite"
-                    };
-                  }
-                  return place;
+                    if (place.id === action.payload.id) {
+                        return {
+                            ...place,
+                            is_fav: action.payload.response.detail === "Marked as favorite"
+                        };
+                    }
+                    return place;
                 });
-                ;
                 state.places = updatedPlaces;
-
+            
+                // Also update the single place if it's the one being toggled
+                if (state.place && state.place.id === action.payload.id) {
+                    state.place = {
+                        ...state.place,
+                        is_fav: action.payload.response.detail === "Marked as favorite"
+                    };
+                }
             })
             .addCase(toggleFavorite.rejected, (state, action) => {
                 state.isFavoriteToggling = false;

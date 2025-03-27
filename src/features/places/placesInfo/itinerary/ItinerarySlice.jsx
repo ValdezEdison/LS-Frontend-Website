@@ -72,6 +72,14 @@ const itineriesInCitySlice = createSlice({
         });
         
         state.itineries = updatedPlaces;
+
+         // Also update the single place if it's the one being toggled
+         if (state.itineraryDetails && state.itineraryDetails.id === action.payload.id) {
+          state.itineraryDetails = {
+              ...state.itineraryDetails,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+          };
+      }
       })
       .addCase(toggleFavorite.rejected, (state, action) => {
         state.isFavoriteToggling = false;
