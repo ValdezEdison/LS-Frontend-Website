@@ -99,15 +99,32 @@
   align-items: center;
   gap: 9px;
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.reviewCard .reviewHeader {
-  justify-content: flex-start;
+.reviewHeaderLeft{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+}
+
+.reviewerNameDetails{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stars img{
+  width: 12px;
 }
 
 .avatar {
   width: 30px;
   height: 30px;
+  object-fit: contain;
   border-radius: 50%;
 }
 
@@ -154,15 +171,31 @@
   margin-right: 0 !important;
 }
 
+.editIcon{
+  width: 14px;
+  height: 14px;
+  background: url(../../../public/images/edit-icon.svg) no-repeat 0 0;
+  background-size: 100%;
+  cursor: pointer;
+}
 
+.deleteIcon{
+  width: 14px;
+  height: 14px;
+  background: url(../../../public/images/delete-icon.svg) no-repeat 0 0;
+  background-size: 100%;
+  cursor: pointer;
+}
 
+.reviewHeaderRight{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 
 
 @media (max-width: 991px) {
-  .reviewHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  
 
   .addReviewButton {
     margin-top: 10px;

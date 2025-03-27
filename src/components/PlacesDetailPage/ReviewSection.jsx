@@ -255,14 +255,20 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
             <div className={styles.reviewCardWrapper}>
               <div key={comment.id || index} className={styles.reviewCard}>
                 <div className={styles.reviewHeader}>
+                  <div className={styles.reviewHeaderLeft}>
                   <img
                     src={comment.user?.profile_picture?.thumbnail || "default-avatar.png"}
                     alt="User avatar"
                     className={styles.avatar}
                   />
-                  <div>
+                  <div className={styles.reviewerNameDetails}>
                     <h3 className={styles.reviewerName}>{comment.user?.username}</h3>
                     <span className={styles.reviewDate}>{new Date(comment.created_at).toLocaleDateString()}</span>
+                  </div>
+                  </div>
+                  <div className={styles.reviewHeaderRight}>
+                    <div className={styles.editIcon}></div>
+                    <div className={styles.deleteIcon}></div>
                   </div>
                 </div>
                 <div className={styles.stars}>
