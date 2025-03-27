@@ -55,6 +55,12 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.addReviewButton:hover,
+.viewAllButton:hover {
+  background-color: #e5b22e;
 }
 
 .tagContainer {

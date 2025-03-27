@@ -18,6 +18,14 @@
   position: relative;
 }
 
+.CommentPopupMain{
+  max-width: 610px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 @media (max-width: 991px) {
   .modal {
     width: 90%;
@@ -51,8 +59,8 @@
 
 .subtitle {
   color: #000;
-  margin-bottom: 16px;
-  font: 700 25px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  margin: 8px 0 16px;
+  font: 600 25px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
 }
 
 .ratingLabel {
@@ -62,7 +70,7 @@
 }
 
 .ratingContainer {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .commentLabel {
@@ -81,10 +89,16 @@
   border-radius: 6px;
   border: 1px solid #bdbdbd;
   padding: 10px;
-  color: #bdbdbd;
+  color: #000;
   resize: none;
   font: 12px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  outline: none;
 }
+
+.textarea::placeholder {
+  color: #bdbdbd;
+}
+
 
 .characterCount {
   color: #828282;
@@ -102,7 +116,23 @@
   background-color: #f4c031;
   border-radius: 12px;
   color: #151820;
-  font: 700 16px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  font: 600 16px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
   border: none;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.submitButton:hover {
+  background-color: #e5b22e;
+}
+
+@media (max-width:640px) {
+.subtitle {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.ratingContainer{
+  margin-bottom: 5px;
+}
 }
