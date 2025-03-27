@@ -5,6 +5,7 @@ import CloseIcon from "./CloseIcon";
 const AlertPopup = ({ handleNavigateToLogin }) => {
   return (
     <>
+      <div className={styles.alertPopupMain}>
         <h2 className={styles.title}>¿Quieres darnos tu opinión?</h2>
         <p className={styles.description}>
           Regístrate o inicia sesión para escribir un comentario sobre el local
@@ -14,6 +15,7 @@ const AlertPopup = ({ handleNavigateToLogin }) => {
           <button className={styles.actionButton} onClick={handleNavigateToLogin}>
             Inicia sesión o crea una cuenta
           </button>
+        </div>
         </div>
         </>
   );

@@ -202,11 +202,11 @@ const PlaceDetails = () => {
 
 
       {isOpen && showAlertPopup && (
-      <Modal onClose={() => handleCloseCommentPopup()}>  <AlertPopup  handleNavigateToLogin={handleNavigateToLogin}/></Modal>
+      <Modal onClose={() => handleCloseCommentPopup()}customClass="modalSmTypeOne" >  <AlertPopup  handleNavigateToLogin={handleNavigateToLogin}/></Modal>
       )}
 
       {isOpen && showCommentPopup && (
-       <Modal title="Añadir comentario" customClass="commentPopup" onClose={() => handleCloseCommentPopup()}><CommentPopup  placeDetails={place} />
+       <Modal title="Añadir comentario"  onClose={() => handleCloseCommentPopup()} customClass="commentPopup"><CommentPopup  placeDetails={place} />
        </Modal> 
       )}
    <div className={`${styles.lugaresContainer} ${showReviewDrawer ? styles.overflowHide : ''}`}>

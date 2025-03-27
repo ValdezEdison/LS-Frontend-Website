@@ -32,10 +32,10 @@
 
 .title {
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 600;
   color: #000;
   text-align: center;
-  margin-bottom: 24px;
+  margin: 4px 0 24px;
 }
 
 .description {
@@ -43,12 +43,13 @@
   font-weight: 700;
   color: #000;
   text-align: center;
-  margin-bottom: 36px;
+  margin: 0 0 36px;
 }
 
 .buttonWrapper {
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .actionButton {
@@ -61,6 +62,12 @@
   color: #151820;
   border: none;
   cursor: pointer;
+}
+
+.alertPopupMain{
+  display: flex;
+  flex-direction: column;
+  padding: 0 35px;
 }
 
 @media (max-width: 991px) {
@@ -76,12 +83,23 @@
   }
 
   .title {
-    font-size: 22px;
+    font-size: 21px;
+    margin-bottom: 12px;
   }
 
   .description {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 24px;
+  }
+
+  
+
+  
+}
+
+@media (max-width:480px) {
+  .alertPopupMain {
+    padding: 0 20px;
   }
 
   .actionButton {
