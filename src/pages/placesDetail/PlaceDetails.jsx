@@ -206,7 +206,7 @@ const PlaceDetails = () => {
       )}
 
       {isOpen && showCommentPopup && (
-       <Modal title="Añadir comentario"  onClose={() => handleCloseCommentPopup()} customClass="commentPopup"><CommentPopup  placeDetails={place} />
+       <Modal title="Añadir comentario"  onClose={() => handleCloseCommentPopup()} customClass="modalMdTypeOne"><CommentPopup  placeDetails={place} />
        </Modal> 
       )}
    <div className={`${styles.lugaresContainer} ${showReviewDrawer ? styles.overflowHide : ''}`}>

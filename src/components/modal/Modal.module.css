@@ -31,6 +31,15 @@
     border-radius: 25px;
 }
 
+.modal.modalMdTypeOne {
+    max-width: 761px;
+    border-radius: 6px;
+}
+
+.modalContent.modalMdTypeOne{
+    justify-content: center;
+}
+
 .modal.modal-sm {
     max-width: 625px;
     border-radius: 25px;

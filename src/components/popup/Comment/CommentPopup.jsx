@@ -17,6 +17,7 @@ const CommentPopup = ({ }) => {
 
   return (
     <>
+        <div className={styles.CommentPopupMain}>
         <h3 className={styles.subtitle}>National historical museum</h3>
         <label htmlFor="rating" className={styles.ratingLabel}>
           Puntuación general:
@@ -43,7 +44,8 @@ const CommentPopup = ({ }) => {
             Enviar
           </button>
         </div>
-        </>
+        </div>
+    </>
   );
 };
 
