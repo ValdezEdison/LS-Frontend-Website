@@ -97,6 +97,10 @@ const PlaceService = {
     return apiService.post(`/sites/${placeId}/check_fav`);
   },
 
+  addComment: async (placeId, commentData) => {
+    return apiService.post(`/sites/${placeId}/comment`, commentData);
+  },
+
   createPlace: async (placeData) => {
     return apiService.post('/places', placeData);
   },

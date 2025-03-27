@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./MainContent.module.css";
 import { useTranslation } from "react-i18next";
 
-const LoginBanner = () => {
+const LoginBanner = ({handleNavigateToLogin}) => {
 
   const { t } = useTranslation("Places");
 
@@ -18,7 +18,7 @@ const LoginBanner = () => {
         {t("loginBanner.message")}
         </p>
       </div>
-      <button className={styles.loginButton}>{t("loginBanner.button")}</button>
+      <button className={styles.loginButton} onClick={handleNavigateToLogin}>{t("loginBanner.button")}</button>
     </div>
   );
 };

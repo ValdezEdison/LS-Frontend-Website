@@ -12,7 +12,7 @@ import styles2 from "../common/SearchBar.module.css";
 import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Arrow } from "../common/Images";
 import styles3 from "../common/PlaceCard.module.css";
 import Loader from "../common/Loader";
@@ -41,6 +41,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const [showArrow, setShowArrow] = useState(true);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const updateState = (key, value) => {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -208,6 +209,9 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   }, []);
 
 
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
+  }
 
 
 
@@ -238,7 +242,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
           isLoading={citiesLoading || countriesLoading}
         />
       </div>
-      {!isAuthenticated && <LoginBanner />}
+      {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin}/>}
       <div className={styles.placesSelectedItemsList}>
         {/* <PlacesSelectedItemList
           state={state}
