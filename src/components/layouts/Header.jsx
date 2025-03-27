@@ -133,11 +133,11 @@ const Header = () => {
 
   return (
     <>
-    <div className="fullPageOverlay">
+    {/* <div className="fullPageOverlay">
       <div className="loaderBtnWrapper">
           <Loader /> 
           </div>
-      </div>
+      </div> */}
     <header> 
       <div className="page-center">
         <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/password-recovery" ? styles.homeHeader + " authHeader" : ""}`}>

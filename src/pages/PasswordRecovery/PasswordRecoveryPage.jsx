@@ -4,7 +4,6 @@ import RecoveryForm from "../../components/PasswordRecovery/RecoveryForm";
 import styles from "./PasswordRecoveryPage.module.css";
 import HeroSection from "../../components/PasswordRecovery/HeroSection";
 import { toast } from "react-toastify";
-import Loader from "../../components/common/Loader";
 
 function PasswordRecoveryPage() {
   const [formData, setFormData] = useState({
@@ -126,7 +125,7 @@ function PasswordRecoveryPage() {
               {/* { loading && */}
                <div className="loaderOverlay">
                   <div className="loaderBtnWrapper">
-                  <Loader /> 
+                  {/* <Loader />  */}
                   </div>
                 </div>
               {/* } */}

@@ -279,9 +279,6 @@ const TravelerRegistration = () => {
               <div className={styles.formContainer}>
               { loading &&
                 <div className="loaderOverlay">
-                  <div className="loaderBtnWrapper">
-                  <Loader /> 
-                  </div>
                 </div>
               }
                 <div className={styles.formWrapper}>

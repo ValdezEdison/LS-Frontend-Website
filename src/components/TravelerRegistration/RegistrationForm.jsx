@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./RegistrationForm.module.css";
+import Loader from "../common/Loader";
 
 const RegistrationForm = ({
   formData,
@@ -164,6 +165,15 @@ const RegistrationForm = ({
         disabled={!isFormValid}
       >
         Crear cuenta
+      </button>
+      <button 
+        className="submitLoadingButton" 
+        disabled={!isFormValid}
+      >
+        <div className="loaderBtnWrapper">
+          <Loader/>
+        </div>
+       
       </button>
 
       {/* Login Prompt */}

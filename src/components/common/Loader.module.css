@@ -20,7 +20,7 @@
   }
 
   .loadingButton{
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: center;
     width: 146px;
@@ -32,5 +32,5 @@
     color: #000001;
     cursor: pointer;
     transition: all ease .3s;
-    padding: 20px 0;
+    padding: 20px 0; */
   }
