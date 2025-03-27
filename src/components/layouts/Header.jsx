@@ -12,6 +12,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 import { fetchHeaderBlocks } from "../../features/cms/Blocks/BlockAction";
 import UserMenu from "../UserMenu/UserMenu";
 import { logout } from "../../features/authentication/AuthActions";
+import Loader from "../../components/common/Loader";
 
 const Header = () => {
 
@@ -131,7 +132,13 @@ const Header = () => {
   }
 
   return (
-    <header>
+    <>
+    <div className="fullPageOverlay">
+      <div className="loaderBtnWrapper">
+          <Loader /> 
+          </div>
+      </div>
+    <header> 
       <div className="page-center">
         <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/password-recovery" ? styles.homeHeader + " authHeader" : ""}`}>
           <div className={styles.logoContainer}>
@@ -297,6 +304,7 @@ const Header = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 

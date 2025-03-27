@@ -203,7 +203,7 @@ const LoginPage = () => {
 
   return (
     <>
-    {loading && <Loader />}
+    
     <div className={`${styles.loginPage} ${styles.authPage}`}>
       <Header />
       <div className={styles.loginPageOuter}>
@@ -218,6 +218,13 @@ const LoginPage = () => {
               />
             </div>
             <div className={styles.formContainer}>
+            { loading &&
+                <div className="loaderOverlay">
+                  <div className="loaderBtnWrapper">
+                  <Loader /> 
+                  </div>
+                </div>
+              }
               <div className={styles.formWrapper}>
                 <h1 className={styles.formTitle}>Inicia sesión o crea una cuenta</h1>
                 <LoginForm

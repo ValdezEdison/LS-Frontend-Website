@@ -12,10 +12,13 @@ import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailCon
 import Modal from "../../components/modal/Modal";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { set } from "lodash";
+import Loader from "../../components/common/Loader";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading } = useSelector((state) => state.auth);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
@@ -274,6 +277,13 @@ const TravelerRegistration = () => {
                 />
               </div>
               <div className={styles.formContainer}>
+              { loading &&
+                <div className="loaderOverlay">
+                  <div className="loaderBtnWrapper">
+                  <Loader /> 
+                  </div>
+                </div>
+              }
                 <div className={styles.formWrapper}>
                   <h1 className={styles.formTitle}>Regístrate como viajero</h1>
                   <RegistrationForm
