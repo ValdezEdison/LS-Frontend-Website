@@ -5,7 +5,6 @@ import TickIcon from "./TickIcon";
 
 const SuccessMessagePopup = ({ }) => {
   return (
-    // <div className={styles.container}>
       <div className={styles.messageBox}>
      
         <div className={styles.icon}>
@@ -16,7 +15,6 @@ const SuccessMessagePopup = ({ }) => {
           Recuerda que una vez se valide podrás editar o eliminar tu comentario.
         </p>
       </div>
-    // </div>
   );
 };
 
