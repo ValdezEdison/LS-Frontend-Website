@@ -30,22 +30,20 @@ import CommentPopup from "../../components/popup/Comment/CommentPopup";
 import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { toast } from "react-toastify";
 
 
 const PlaceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
-  const [showImgGalleryPopup, setShowImgGalleryPopup] = useState(false);
-  const [showReviewDrawer, setShowReviewDrawer] = useState(false);
-  const [showAlertPopup, setShowAlertPopup] = useState(false);
-  const [showCommentPopup, setShowCommentPopup] = useState(false);
+
+
   const [isEditing, setIsEditing] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [successTitle, setSuccessTitle] = useState("");
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
 
@@ -78,6 +76,19 @@ const PlaceDetails = () => {
   const [comment, setComment] = useState({
     text: "",
     rating: 0,
+  });
+
+  const [commentForm, setCommentForm] = useState({
+    text: "",
+    rating: 0,
+    errors: {
+      text: '',
+      rating: ''
+    },
+    touched: {
+      text: false,
+      rating: false
+    }
   });
 
 
@@ -185,8 +196,6 @@ const PlaceDetails = () => {
   };
 
 
-  const [showMapPopup, setShowMapPopup] = useState(false);
-
   const handleShowMapPopup = () => {
     togglePopup("map", true);
   };
@@ -207,21 +216,29 @@ const PlaceDetails = () => {
   }
 
 
-  const handleCommentChange = (e) => {
-    setComment(prev => ({ ...prev, text: e.target.value }));
-  };
+  // const handleCommentChange = (e) => {
+  //   setComment(prev => ({ ...prev, text: e.target.value }));
+  // };
 
-  const handleRatingChange = (rating) => {
-    setComment(prev => ({ ...prev, rating }));
-  };
+  // const handleRatingChange = (rating) => {
+  //   setComment(prev => ({ ...prev, rating }));
+  // };
 
   const handleClickEditComment = (comment) => {
     if (!isAuthenticated) {
       togglePopup("alert", true);
     } else {
-      setComment({
+      setCommentForm({
         text: comment.body,
-        rating: comment.rating
+        rating: comment.rating,
+        errors: {
+          text: '',
+          rating: ''
+        },
+        touched: {
+          text: true,  // Mark as touched to show validation immediately
+          rating: true
+        }
       });
       setIsEditing(true);
       setEditingCommentId(comment.id);
@@ -229,40 +246,40 @@ const PlaceDetails = () => {
     }
   };
 
-  const handleSubmitComment = () => {
-    if (comment.text.trim() && comment.rating > 0) {
-      const action = isEditing
-        ? dispatch(editComment({
-          commentId: editingCommentId,
-          commentData: {
-            body: comment.text,
-            rating: comment.rating,
-          }
-        }))
-        : dispatch(addComment({
-          placeId: id,
-          commentData: {
-            body: comment.text,
-            rating: comment.rating,
-          }
-        }));
+  // const handleSubmitComment = () => {
+  //   if (comment.text.trim() && comment.rating > 0) {
+  //     const action = isEditing
+  //       ? dispatch(editComment({
+  //         commentId: editingCommentId,
+  //         commentData: {
+  //           body: comment.text,
+  //           rating: comment.rating,
+  //         }
+  //       }))
+  //       : dispatch(addComment({
+  //         placeId: id,
+  //         commentData: {
+  //           body: comment.text,
+  //           rating: comment.rating,
+  //         }
+  //       }));
 
-      action
-        .unwrap()
-        .then(() => {
-          setComment({ text: "", rating: 0 });
-          setSuccessMessage(editingCommentId ? "Comment updated successfully!" : "Comment added successfully!");
-          togglePopup("comment", false);
-          togglePopup("success", true);
-          setIsEditing(false);
-          setEditingCommentId(null);
-          dispatch(fetchPlaceComments(id)); // Refresh comments
-        })
-        .catch((error) => {
-          console.error("Failed to submit comment:", error);
-        });
-    }
-  };
+  //     action
+  //       .unwrap()
+  //       .then(() => {
+  //         setComment({ text: "", rating: 0 });
+  //         setSuccessMessage(editingCommentId ? "Comment updated successfully!" : "Comment added successfully!");
+  //         togglePopup("comment", false);
+  //         togglePopup("success", true);
+  //         setIsEditing(false);
+  //         setEditingCommentId(null);
+  //         dispatch(fetchPlaceComments(id)); // Refresh comments
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to submit comment:", error);
+  //       });
+  //   }
+  // };
 
 
   const handleClickDeleteComment = (commentId) => {
@@ -279,7 +296,8 @@ const PlaceDetails = () => {
       .unwrap()
       .then(() => {
         dispatch(fetchPlaceComments(id));
-        setSuccessMessage("Comment deleted successfully!");
+        setSuccessMessage("The comment has been deleted successfully.");
+        setSuccessTitle("Comment Removed");
         togglePopup("deleteConfirm", false);
         togglePopup("success", true);
         setCommentToDelete(null);
@@ -298,8 +316,164 @@ const PlaceDetails = () => {
     togglePopup("success", false);
   };
 
-  console.log(isOpen, 'isOpen')
-  console.log(popupState, 'popupState')
+
+
+  const validateCommentForm = () => {
+    const errors = {
+      text: '',
+      rating: ''
+    };
+
+    if (!commentForm.text.trim()) {
+      errors.text = 'Comment is required';
+    } else if (commentForm.text.trim().length < 0) {
+      errors.text = 'Comment must be at least 10 characters';
+    }
+
+    if (commentForm.rating === 0) {
+      errors.rating = 'Please select a rating';
+    }
+
+    setCommentForm(prev => ({
+      ...prev,
+      errors
+    }));
+
+    return Object.values(errors).every(error => !error);
+  };
+
+  const handleCommentChange = (e) => {
+    const { value } = e.target;
+    setCommentForm(prev => ({
+      ...prev,
+      text: value,
+      touched: {
+        ...prev.touched,
+        text: true
+      }
+    }));
+  };
+
+  const handleRatingChange = (clickedRating) => {
+    setCommentForm(prev => {
+      // If clicking the current rating, reduce by 1
+      // Otherwise set to the clicked rating
+      const newRating = prev.rating === clickedRating ? clickedRating - 1 : clickedRating;
+      
+      return {
+        ...prev,
+        rating: newRating,
+        touched: {
+          ...prev.touched,
+          rating: true
+        }
+      };
+    });
+  };
+
+  const handleFieldBlur = (field) => {
+    setCommentForm(prev => ({
+      ...prev,
+      touched: {
+        ...prev.touched,
+        [field]: true
+      }
+    }));
+  };
+
+  const handleSubmitComment = () => {
+    console.log("commentForm", commentForm);
+    // Mark all fields as touched
+    setCommentForm(prev => ({
+      ...prev,
+      touched: {
+        text: true,
+        rating: true
+      }
+    }));
+
+    if (validateCommentForm()) {
+      const action = isEditing
+        ? dispatch(editComment({
+          commentId: editingCommentId,
+          commentData: {
+            body: commentForm.text,
+            rating: commentForm.rating,
+          }
+        }))
+        : dispatch(addComment({
+          placeId: id,
+          commentData: {
+            body: commentForm.text,
+            rating: commentForm.rating,
+          }
+        }));
+
+      action
+        .unwrap()
+        .then(() => {
+          setCommentForm({
+            text: "",
+            rating: 0,
+            errors: {
+              text: '',
+              rating: ''
+            },
+            touched: {
+              text: false,
+              rating: false
+            }
+          });
+          setSuccessMessage(isEditing ? "Remember that once it's validated, you can edit or delete your comment." : "Remember that once it's validated, you can edit or delete your comment.");
+          setSuccessTitle(isEditing ? "Comment updated successfully!" : "Comment Sent successfully!");
+          togglePopup("comment", false);
+          togglePopup("success", true);
+          setIsEditing(false);
+          setEditingCommentId(null);
+          dispatch(fetchPlaceComments(id));
+        })
+        .catch((error) => {
+          console.error("Failed to submit comment:", error);
+          togglePopup("comment", false);
+          setCommentForm({
+            text: "",
+            rating: 0,
+            errors: {
+              text: '',
+              rating: ''
+            },
+            touched: {
+              text: false,
+              rating: false
+            }
+          });
+          console.log("error", error);
+          // Check for the specific error about already posted review
+          if (error.error === "An error ocurred" && error.detail === "You have already posted a review") {
+            // Show toast message
+            toast.warning(error.detail, "Error");
+          } else {
+            // Show generic error message for other errors
+            toast.error(error.error_description || "Failed to submit comment", error.error || "Error");
+          }
+        });
+    }
+  };
+
+  useEffect(() => {
+    let timer;
+    if (popupState.success) {
+      timer = setTimeout(() => {
+        togglePopup("success", false);
+      }, 5000); // 5 seconds in milliseconds
+    }
+    
+    // Clean up the timer when the component unmounts or when popupState.success changes
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [popupState.success]);
+
   return (
     <>
       {isOpen && popupState.map && (
@@ -346,15 +520,35 @@ const PlaceDetails = () => {
       {isOpen && popupState.comment && (
         <Modal
           title="Añadir comentario"
-          onClose={() => togglePopup("comment", false)}
+          onClose={() => {
+            togglePopup("comment", false);
+            setCommentForm({
+              text: "",
+              rating: 0,
+              errors: {
+                text: '',
+                rating: ''
+              },
+              touched: {
+                text: false,
+                rating: false
+              }
+            });
+            setIsEditing(false);
+            setEditingCommentId(null);
+          }}
           customClass="modalMdTypeOne"
         >
           <CommentPopup
-            comment={comment.text}
-            rating={comment.rating}
+            comment={commentForm.text}
+            rating={commentForm.rating}
+            errors={commentForm.errors}
+            touched={commentForm.touched}
             onCommentChange={handleCommentChange}
             onRatingChange={handleRatingChange}
+            onFieldBlur={handleFieldBlur}
             onSubmit={handleSubmitComment}
+            isEditing={isEditing}
           />
         </Modal>
       )}
@@ -382,12 +576,13 @@ const PlaceDetails = () => {
           hideCloseButton={true}
         >
           <SuccessMessagePopup
+            title={successTitle}
             message={successMessage}
             onClose={() => togglePopup("success", false)}
           />
         </Modal>
       )}
-      <div className={`${styles.lugaresContainer} ${showReviewDrawer ? styles.overflowHide : ''}`}>
+      <div className={`${styles.lugaresContainer} ${popupState.reviewDrawer ? styles.overflowHide : ''}`}>
 
         <Header />
         <main className={styles.mainContent}>

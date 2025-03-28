@@ -3,16 +3,16 @@ import styles from "./SuccessMessagePopup.module.css";
 import CloseIcon from "./CloseIcon";
 import TickIcon from "./TickIcon";
 
-const SuccessMessagePopup = ({ }) => {
+const SuccessMessagePopup = ({title, message }) => {
   return (
       <div className={styles.messageBox}>
      
         <div className={styles.icon}>
           <TickIcon />
         </div>
-        <h2 className={styles.title}>¡Comentario enviado correctamente!</h2>
+        <h2 className={styles.title}>{title}</h2>
         <p className={styles.description}>
-          Recuerda que una vez se valide podrás editar o eliminar tu comentario.
+          {message}
         </p>
       </div>
   );

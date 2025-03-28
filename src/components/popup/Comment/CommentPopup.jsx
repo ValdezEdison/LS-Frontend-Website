@@ -5,23 +5,32 @@ import StarRating from "./StarRating";
 const CommentPopup = ({ 
   comment, 
   rating, 
+  errors,
+  touched,
   onCommentChange, 
-  onRatingChange, 
-  onSubmit 
+  onRatingChange,
+  onFieldBlur,
+  onSubmit,
+  isEditing
 }) => {
   return (
     <div className={styles.CommentPopupMain}>
-      <h3 className={styles.subtitle}>National historical museum</h3>
+      <h3 className={styles.subtitle}>{isEditing ? "Edit your comment" : "Add a new comment"}</h3>
       
       <label htmlFor="rating" className={styles.ratingLabel}>
         Rating:
       </label>
-      <div className={styles.ratingContainer} id="rating">
+      <div 
+        className={`${styles.ratingContainer} ${errors.rating && touched.rating ? styles.error : ''}`} 
+        id="rating"
+      >
         <StarRating 
           rating={rating} 
           onRatingChange={onRatingChange} 
         />
-        <div className="errorMessage">test message</div>
+        {errors.rating && touched.rating && (
+          <div className={styles.errorMessage}>{errors.rating}</div>
+        )}
       </div>
       
       <label htmlFor="commentText" className={styles.commentLabel}>
@@ -30,26 +39,28 @@ const CommentPopup = ({
       <div className={styles.textareaContainer}>
         <textarea
           id="commentText"
-          className={styles.textarea +  " error"} 
+          className={`${styles.textarea} ${errors.text && touched.text ? styles.error : ''}`}
           placeholder="Write your comment here"
           value={comment}
           onChange={onCommentChange}
+          onBlur={() => onFieldBlur('text')}
           maxLength={400}
         />
 
         <div className={styles.characterCount}>
           {comment.length}/400
         </div>
-        <div className="errorMessage">test message</div>
+        {errors.text && touched.text && (
+          <div className={styles.errorMessage}>{errors.text}</div>
+        )}
       </div>
       
       <div className={styles.submitContainer}>
         <button 
           className={styles.submitButton} 
           onClick={onSubmit}
-          disabled={!comment.trim() || rating === 0}
         >
-          Submit
+          {isEditing ? "Update" : "Submit"}
         </button>
       </div>
     </div>
