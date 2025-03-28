@@ -40,8 +40,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
     };
   }, []);
 
-  console.log(selectedId, 'selectedId')
-
+  
   return (
     <div className={`${styles.dropdown} ${disabled ? styles.disabled : ""}`} ref={dropdownRef}>
       <div className={styles.filterBlock} onClick={toggleDropdown}>

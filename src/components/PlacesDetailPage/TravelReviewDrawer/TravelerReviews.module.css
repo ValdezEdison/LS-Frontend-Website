@@ -8,10 +8,12 @@
   width: 720px;
   transition: all ease-in-out .6s;
   right: -720px;
+ visibility: hidden;
 }
 
 .container.active {
     right: 0;
+    visibility: visible;
 }
 
 .ratingPopupTop{

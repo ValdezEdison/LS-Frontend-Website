@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./MapSection.module.css";
 import Map from "../PlacesPage/Map";
-const MapSection = ({ place }) => {
+const MapSection = ({ place, handleShowMapPopup }) => {
   return (
     <div className={styles.mapSection}>
-      <Map />
+      <Map onOpenPopup={handleShowMapPopup} />
       <div className={styles.openingHours}>
         <h3 className={styles.openingHoursTitle}>Horario de apertura:</h3>
         <ul className={styles.hoursList}>

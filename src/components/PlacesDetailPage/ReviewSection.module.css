@@ -1,6 +1,6 @@
 .reviewSection {
   margin: 26px 0;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 
 .reviewHeader {
@@ -13,7 +13,7 @@
 .reviewTitle {
   font-size: 20px;
   color: #000;
-  margin-bottom: 14px;
+  margin: 0 0 14px;
 }
 
 .ratingBlock {
@@ -55,6 +55,12 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.addReviewButton:hover,
+.viewAllButton:hover {
+  background-color: #e5b22e;
 }
 
 .tagContainer {
@@ -93,15 +99,32 @@
   align-items: center;
   gap: 9px;
   margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.reviewCard .reviewHeader {
-  justify-content: flex-start;
+.reviewHeaderLeft{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+}
+
+.reviewerNameDetails{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stars img{
+  width: 12px;
 }
 
 .avatar {
   width: 30px;
   height: 30px;
+  object-fit: contain;
   border-radius: 50%;
 }
 
@@ -128,9 +151,9 @@
   -webkit-box-orient: vertical;
 }
 
-.reviewWrapper {
+/* .reviewWrapper {
   padding-bottom: 24px;
-}
+} */
 
 .reviewCardWrapper {
   padding: 0 7px !important;
@@ -143,15 +166,36 @@
   top: 50% !important;
 }
 
+.reviewWrapper :global(.slick-track){
+  margin-left: 0 !important; 
+  margin-right: 0 !important;
+}
 
+.editIcon{
+  width: 14px;
+  height: 14px;
+  background: url(../../../public/images/edit-icon.svg) no-repeat 0 0;
+  background-size: 100%;
+  cursor: pointer;
+}
 
+.deleteIcon{
+  width: 14px;
+  height: 14px;
+  background: url(../../../public/images/delete-icon.svg) no-repeat 0 0;
+  background-size: 100%;
+  cursor: pointer;
+}
+
+.reviewHeaderRight{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 
 
 @media (max-width: 991px) {
-  .reviewHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  
 
   .addReviewButton {
     margin-top: 10px;

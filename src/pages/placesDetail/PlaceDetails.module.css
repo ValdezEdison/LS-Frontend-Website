@@ -29,7 +29,10 @@
   color: #000;
   font-size: 14px;
   line-height: 25px;
-  margin-top: 26px;
+  margin-top: 15px;
+  border-top: solid 1px #BDBDBD;
+  border-bottom: solid 1px #BDBDBD;
+  padding: 20px 0;
 }
 
 @media (max-width: 991px) {

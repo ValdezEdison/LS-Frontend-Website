@@ -1,0 +1,205 @@
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  height: 99px;
+  padding: 14px 120px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #212d94;
+}
+
+@media (max-width: 991px) {
+  .header {
+    padding: 0 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 0 20px;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  /* padding: 254px 308px 192px 308px; */
+}
+
+
+
+
+
+.modalContent {
+  position: relative;
+  width: 825px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 72px 0 38px 0;
+}
+
+
+
+.modalInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 38px;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.confirmationContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 59px; */
+  width: 100%;
+}
+
+.confirmationBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 42px;
+  width: 499px;
+}
+
+
+
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  width: 100%;
+}
+
+.title {
+  color: #151820;
+  text-align: center;
+  font: 700 32px Source Sans Pro;
+  margin: 0;
+}
+
+
+
+.description {
+  text-align: center;
+  font: normal 16px/25px Source Sans Pro;
+}
+
+.description strong {
+  color: #212D94;
+  font-weight: 700;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #bdbdbd;
+}
+
+.resendText {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.resendNormal {
+  color: #151820;
+  font: 16px Source Sans Pro;
+}
+
+.resendLink {
+  color: #212d94;
+  text-decoration-line: underline;
+  cursor: pointer;
+  font: 600 16px Source Sans Pro;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.closeButton{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.emailImg{
+  width: 70px;
+}
+
+@media  (max-width:1400px) {
+  .textContent{
+    gap: 0px;
+  }
+}
+
+@media (max-width: 991px) {
+  .confirmationBox {
+    width: 80%;
+  }
+
+  .modalContent {
+    width:80%;
+    padding: 32px 25px 32px 25px;
+  }
+
+  .modalInner{
+    gap: 20px;
+  }
+
+  .description {
+    font: normal 14px / 21px Source Sans Pro;
+}
+
+  .confirmationBox {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .confirmationBox {
+    gap: 25px;
+    width: 95%;
+  }
+
+  .modalContent {
+    /* padding: 40px 0 20px 0; */
+  }
+ 
+    
+  
+}

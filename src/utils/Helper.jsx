@@ -2,28 +2,71 @@
 
 // Save token to localStorage
 export const setToken = (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('access_token', token);
   };
   
   // Get token from localStorage
   export const getToken = () => {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
   };
   
-  // Remove token from localStorage
-  export const removeToken = () => {
-    localStorage.removeItem('token');
-  };
+ // Remove token from localStorage
+ export const removeToken = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('tokenExpiresAt');
+  sessionStorage.removeItem('access_token');
+  sessionStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('tokenExpiresAt');
+  localStorage.removeItem('rememberMe');
+  localStorage.removeItem('authUser');
+};
+
+// Save tokens from login/refresh response
+// export const setAuthTokens = (response) => {
+//   const { access_token, refresh_token, expires_in } = response;
+//   setToken(access_token);
+//   localStorage.setItem('refreshToken', refresh_token);
+//   const expiresAt = new Date().getTime() + (expires_in * 1000);
+//   localStorage.setItem('tokenExpiresAt', expiresAt.toString());
+// };
+
+export const setAuthTokens = (response, rememberMe = false) => {
+  const { access_token, refresh_token, expires_in } = response;
+  
+  if (rememberMe) {
+    // Store in localStorage for persistent sessions
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refreshToken', refresh_token);
+    localStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
+  } else {
+    // Store in sessionStorage for session-only
+    sessionStorage.setItem('access_token', access_token);
+    sessionStorage.setItem('refreshToken', refresh_token);
+    sessionStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
+  }
+};
+
+export const setAuthUser = (user) => {
+  localStorage.setItem('authUser', JSON.stringify(user));
+};
+
+// Check if token is expired
+export const isTokenExpired = () => {
+  const expiresAt = localStorage.getItem('tokenExpiresAt');
+  if (!expiresAt) return true;
+  return new Date().getTime() > parseInt(expiresAt);
+};
   
   // Handle API errors
-// src/utils/handleApiError.js
 export const handleApiError = (error) => {
   if (error.response) {
+    console.log(error.response, "error response");
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     return {
       error: error.response.data.error || "Unknown error",
-      error_description: error.response.data.error_description || "An error occurred. Please try again.",
+      error_description: error.response.data.detail || "An error occurred. Please try again.",
     };
   } else if (error.request) {
     // The request was made but no response was received

@@ -1,0 +1,33 @@
+.heroContainer {
+  width: 50%;
+}
+
+.heroImage {
+  width: 100%;
+  /* height: 924px; */
+  height: calc(100vh - 92px);
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .heroContainer {
+    width: 100%;
+  }
+
+  .heroImage {
+    height: calc(100vh - 62px);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroImage {
+    /* height: 300px; */
+  }
+}

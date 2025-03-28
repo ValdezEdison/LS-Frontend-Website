@@ -1,0 +1,138 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  width: 761px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 24px;
+  position: relative;
+}
+
+.CommentPopupMain{
+  max-width: 610px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (max-width: 991px) {
+  .modal {
+    width: 90%;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal {
+    width: 95%;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.title {
+  color: #000;
+  font: 700 25px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.closeButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.subtitle {
+  color: #000;
+  margin: 8px 0 16px;
+  font: 600 25px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.ratingLabel {
+  color: #000;
+  margin-bottom: 4px;
+  font: 400 14px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.ratingContainer {
+  margin-bottom: 14px;
+}
+
+.commentLabel {
+  color: #000;
+  margin-bottom: 10px;
+  font: 400 14px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.textareaContainer {
+  width: 100%;
+}
+
+.textarea {
+  width: 100%;
+  height: 167px;
+  border-radius: 6px;
+  border: 1px solid #bdbdbd;
+  padding: 10px;
+  color: #000;
+  resize: none;
+  font: 12px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  outline: none;
+}
+
+.textarea::placeholder {
+  color: #bdbdbd;
+}
+
+
+.characterCount {
+  color: #828282;
+  margin-top: 4px;
+  font: 400 12px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.submitContainer {
+  margin-top: 20px;
+}
+
+.submitButton {
+  width: 146px;
+  height: 40px;
+  background-color: #f4c031;
+  border-radius: 12px;
+  color: #151820;
+  font: 600 16px Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all ease .3s;
+}
+
+.submitButton:hover {
+  background-color: #e5b22e;
+}
+
+@media (max-width:640px) {
+.subtitle {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.ratingContainer{
+  margin-bottom: 5px;
+}
+}

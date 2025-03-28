@@ -46,8 +46,7 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
 
   const visibleThumbnails = getVisibleThumbnails();
 
-  console.log(images.length, 'images.length')
-
+  
   return (
     <div className={`${styles.gallerySection} ${isWide ? styles.destinationImageContainer : ""}`}>
       {images.length > 1 ? (

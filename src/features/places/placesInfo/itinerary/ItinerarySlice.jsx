@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchItineriesInCity, fetchItineraryDetails } from './ItineraryAction';
+import { toggleFavorite } from '../../PlaceAction';
 
 const initialState = {
   itineries: [],
@@ -8,13 +9,19 @@ const initialState = {
   error: null,
   next: null,
   count: 0,
-  itineraryDetails: null
+  itineraryDetails: null,
+  isFavoriteToggling: false,
+  favTogglingId: null
 };
 
 const itineriesInCitySlice = createSlice({
   name: 'itineriesInCity',
   initialState,
-  reducers: {},
+  reducers: {
+    setFavTogglingId: (state, action) => {
+      state.favTogglingId = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Fetch all places
@@ -46,7 +53,41 @@ const itineriesInCitySlice = createSlice({
         state.error = action.payload;
       })
 
+      .addCase(toggleFavorite.pending, (state) => {
+        state.isFavoriteToggling = true;
+        state.error = null;
+      })
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        state.isFavoriteToggling = false;
+        state.favTogglingId = null;
+        
+        const updatedPlaces = state.itineries.map(place => {
+          if (place.id === action.payload.id) {
+            return {
+              ...place,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+            };
+          }
+          return place;
+        });
+        
+        state.itineries = updatedPlaces;
+
+         // Also update the single place if it's the one being toggled
+         if (state.itineraryDetails && state.itineraryDetails.id === action.payload.id) {
+          state.itineraryDetails = {
+              ...state.itineraryDetails,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+          };
+      }
+      })
+      .addCase(toggleFavorite.rejected, (state, action) => {
+        state.isFavoriteToggling = false;
+        state.error = action.payload;
+      })
+
   },
 });
 
+export const { setFavTogglingId } = itineriesInCitySlice.actions;
 export default itineriesInCitySlice.reducer;

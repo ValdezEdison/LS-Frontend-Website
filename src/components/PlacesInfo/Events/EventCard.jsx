@@ -3,8 +3,7 @@ import styles from "./EventCard.module.css";
 import { PlaceHolderImg2 } from "../../common/Images";
 
 function EventCard({ event }) {
-  console.log(event, 'event')
-  const { title, images, next_schedule, levels, city } = event;
+    const { title, images, next_schedule, levels, city } = event;
 
   // Extract relevant data
   const eventImage = images.length > 0 ? images[0].original : PlaceHolderImg2;

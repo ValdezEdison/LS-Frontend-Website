@@ -1,0 +1,116 @@
+.modal {
+  width: 572px;
+  height: 316px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background-color: #fff;
+}
+
+@media (max-width: 991px) {
+  .modal {
+    width: 90%;
+    max-width: 572px;
+    height: auto;
+    min-height: 316px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal {
+    width: 95%;
+    height: auto;
+    min-height: 300px;
+    padding: 20px;
+  }
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.modalTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 170px;
+  width: 397px;
+  color: #151820;
+  text-align: center;
+  font:
+    700 25px "Source Sans Pro",
+    sans-serif;
+}
+
+@media (max-width: 991px) {
+  .modalTitle {
+    width: 90%;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .modalTitle {
+    font-size: 20px;
+    top: 160px;
+  }
+}
+
+.modalDescription {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 211px;
+  width: 376px;
+  color: #000;
+  text-align: center;
+  font:
+    400 14px "Source Sans Pro",
+    sans-serif;
+}
+
+@media (max-width: 991px) {
+  .modalDescription {
+    width: 90%;
+    top: 220px;
+  }
+}
+
+@media (max-width: 640px) {
+  .modalDescription {
+    font-size: 13px;
+    top: 210px;
+    padding: 0 10px;
+  }
+}
+
+.checkIcon {
+  position: absolute;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
+}
+
+.closeIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

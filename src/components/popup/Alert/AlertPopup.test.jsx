@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import FeedbackModal from "./FeedbackModal";
+import Alertpopup from "./AlertPopup";
 
-describe("FeedbackModal", () => {
+describe("Alertpopup", () => {
   test("renders modal content correctly", () => {
-    render(<FeedbackModal onClose={() => {}} />);
+    render(<Alertpopup onClose={() => {}} />);
 
     expect(screen.getByText("¿Quieres darnos tu opinión?")).toBeInTheDocument();
     expect(screen.getByText(/Regístrate o inicia sesión/)).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe("FeedbackModal", () => {
 
   test("calls onClose when close button is clicked", () => {
     const mockOnClose = jest.fn();
-    render(<FeedbackModal onClose={mockOnClose} />);
+    render(<Alertpopup onClose={mockOnClose} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
     expect(mockOnClose).toHaveBeenCalledTimes(1);

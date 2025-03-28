@@ -14,7 +14,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
   };
 
   const handleFilterChange = (subcategoryId, subcategoryTitle, categoryTitle = null, levelId, parentCategoryId = null, isSubcategory = false) => {
-    console.log(subcategoryId, subcategoryTitle, categoryTitle, levelId, parentCategoryId, isSubcategory, 'handleFilterChange');
+    ;
   
     // Update selected filters
     setSelectedFilters((prev) =>

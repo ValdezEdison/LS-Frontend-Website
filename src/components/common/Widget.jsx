@@ -7,7 +7,7 @@ import { PlaceHolderImg2 } from "./Images";
 
 const Widget = ({ data = [], title, count}) => {
   
-console.log(data, 'data');
+;
   const settings = {
     // dots: true,
     infinite: true,
@@ -32,8 +32,11 @@ console.log(data, 'data');
 
   return (
     <section className={styles.nearbyPlaces}>
-      <div className="page-center">
-      <h2 className={styles.sectionTitle}>{title}</h2>
+      <div className={styles.nearbyPlaceTitle}>
+        <h2 className={styles.sectionTitle}>{title}</h2>
+        <div className="seeMoreLink">See More</div>
+      </div>
+      
       {data.length > 0 ? 
       <Slider {...settings}>
         {data.map((place, index) => (
@@ -49,7 +52,7 @@ console.log(data, 'data');
       </Slider>
       : <p>No hay lugares cercanos</p>
 }
-</div>
+
     </section>
   );
 };

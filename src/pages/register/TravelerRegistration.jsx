@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styles from "./TravelerRegistration.module.css";
@@ -8,9 +8,22 @@ import RegistrationForm from "../../components/TravelerRegistration/Registration
 import SocialLogin from "../../components/TravelerRegistration/SocialLogin";
 import Footer from "../../components/TravelerRegistration/Footer";
 import { register } from "../../features/authentication/AuthActions";
+import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
+import Modal from "../../components/modal/Modal";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { set } from "lodash";
+import Loader from "../../components/common/Loader";
+
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading } = useSelector((state) => state.auth);
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+
+  const { isOpen } = useSelector((state) => state.popup);
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -21,136 +34,277 @@ const TravelerRegistration = () => {
     terms: false,
   });
 
-  // State for error messages
-  const [errors, setErrors] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    password: "",
-    terms: "",
+  // State for field validation and messages
+  const [fieldStates, setFieldStates] = useState({
+    username: {
+      error: "",
+      info: "Please enter your full name",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
+    email: {
+      error: "",
+      info: "Please enter a valid email address",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
+    phone: {
+      error: "",
+      info: "Please enter your phone number with country code",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
+    password: {
+      error: "",
+      info: "Password must be at least 8 characters with a number, uppercase letter, and symbol",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
+    terms: {
+      error: "",
+      info: "",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
   });
 
-  // State for password visibility
+  const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Validate individual field
+  const validateField = (name, value) => {
+    let error = "";
+    let isValid = false;
+
+    switch (name) {
+      case "username":
+        if (!value.trim()) {
+          error = "Please enter your username";
+        } else {
+          isValid = true;
+        }
+        break;
+      case "email":
+        if (!value.trim()) {
+          error = "Please enter your email";
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
+          error = "Please enter a valid email address";
+        } else {
+          isValid = true;
+        }
+        break;
+      case "phone":
+        if (!value.trim()) {
+          error = "Please enter your phone number";
+        } else if (!/^\d{9,}$/.test(value)) {
+          error = "Please enter a valid phone number";
+        } else {
+          isValid = true;
+        }
+        break;
+      case "password":
+        if (!value.trim()) {
+          error = "Please enter a password";
+        } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/.test(value)) {
+          error = "Password must be at least 8 characters with a number, uppercase letter, and symbol";
+        } else {
+          isValid = true;
+        }
+        break;
+      case "terms":
+        if (!value) {
+          error = "You must accept the terms and conditions";
+        } else {
+          isValid = true;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return { error, isValid };
+  };
+
+  // Update form validity when fields change
+  useEffect(() => {
+    const allValid = Object.values(fieldStates).every(field => field.isValid);
+    setIsFormValid(allValid);
+  }, [fieldStates]);
+
+  // Handle field focus
+  const handleFocus = (field) => {
+    if (!fieldStates[field].isValid) {
+      setFieldStates(prev => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          focused: true,
+        }
+      }));
+    }
+  };
+
+  // Handle field blur
+  const handleBlur = (field) => {
+    const value = field === "terms" ? formData.terms : formData[field];
+    const { error, isValid } = validateField(field, value);
+
+    setFieldStates(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        error: isValid ? "" : error,
+        touched: true,
+        focused: false,
+        isValid,
+        info: isValid ? "" : prev[field].info
+      }
+    }));
+  };
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+
+    setFormData(prev => ({ ...prev, [name]: fieldValue }));
+
+    // Validate the field if it's been touched
+    if (fieldStates[name].touched || name === "password") {
+      const { error, isValid } = validateField(name, fieldValue);
+      setFieldStates(prev => ({
+        ...prev,
+        [name]: {
+          ...prev[name],
+          error: isValid ? "" : error,
+          isValid,
+          info: isValid ? "" : prev[name].info
+        }
+      }));
+    }
+  };
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  // Validate form inputs
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Validate username
-    if (!formData.username.trim()) {
-      newErrors.username = "Please enter your username.";
-    }
-
-    // Validate email
-    if (!formData.email.trim()) {
-      newErrors.email = "Please enter your email.";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    // Validate phone
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Please enter your phone number.";
-    } else if (!/^\d{9,}$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number.";
-    }
-
-    // Validate password
-    if (!formData.password.trim()) {
-      newErrors.password = "Please enter a password.";
-    } else if (
-      !/^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/.test(formData.password)
-    ) {
-      newErrors.password =
-        "Password must be at least 8 characters long and contain a number, an uppercase letter, and a symbol.";
-    }
-
-    // Validate terms
-    if (!formData.terms) {
-      newErrors.terms = "You must accept the terms and conditions.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
-
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      // Dispatch the register action
-      dispatch(register(formData))
-        .then((action) => {
-          if (register.fulfilled.match(action)) {
-            // Handle successful registration
-            toast.success("Registration successful!");
-            navigate("/login"); // Redirect to the login page
-          } else if (register.rejected.match(action)) {
-            // Handle registration error
-            const errorMessage =
-              action.payload?.error_description || "Registration failed. Please try again.";
-            toast.error(errorMessage);
-          }
-        })
-        .catch((err) => {
-          console.error("Unexpected Error:", err); // Debugging
-          toast.error("An unexpected error occurred. Please try again.");
-        });
-    }
+    // Validate all fields on submit
+    const newFieldStates = { ...fieldStates };
+    let allValid = true;
+
+    Object.keys(formData).forEach(key => {
+      const value = key === "terms" ? formData.terms : formData[key];
+      const { error, isValid } = validateField(key, value);
+      newFieldStates[key] = {
+        ...newFieldStates[key],
+        error: isValid ? "" : error,
+        touched: true,
+        isValid,
+        info: isValid ? "" : newFieldStates[key].info
+      };
+      allValid = allValid && isValid;
+    });
+
+    setFieldStates(newFieldStates);
+
+    if (!allValid) return;
+
+    dispatch(register(formData))
+      .then((action) => {
+        if (register.fulfilled.match(action)) {
+          toast.success("Registration successful! Please check your email for confirmation.");
+          setRegisteredEmail(formData.email);
+          setShowConfirmation(true);
+          dispatch(openPopup());
+        } else if (register.rejected.match(action)) {
+          toast.error(action.payload?.error_description || "Registration failed");
+        }
+      })
+      .catch((err) => {
+        toast.error("An unexpected error occurred");
+        console.error(err);
+      });
   };
 
   const handleNavigate = () => {
-     navigate('/login');
-  }
+    navigate('/login');
+  };
+
+  const handleConfirmationClose = () => {
+    setShowConfirmation(false);
+    dispatch(closePopup());
+    setRegisteredEmail('');
+    navigate('/register'); // Navigate to login after closing the popup
+  };
+
+  const handleResendEmail = () => {
+    // Implement your resend email logic here
+    // This would typically call your API to resend the confirmation email
+    toast.info("Confirmation email resent successfully");
+  };
 
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
-      <div className="login-page-center">
-        <main className={styles.mainContent}>
-          <div className={styles.bannerContainer}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fac68f4a39f7382628bebc1d839fc16c2c5fef0"
-              alt="Traveler by lake"
-              className={styles.bannerImage}
-            />
+      { isOpen && showConfirmation ? (
+         <Modal onClose={handleConfirmationClose} customClass="modalMd">
+         <EmailConfirmation
+           email={registeredEmail}
+           onClose={handleConfirmationClose}
+           onResend={handleResendEmail}
+         />
+       </Modal>
+      ) : (
+        <div className={styles.loginPageOuter}>
+          <div className={styles.imageContainerWide}></div>
+          <div className="login-page-center">
+            <main className={styles.mainContent}>
+              <div className={styles.bannerContainer}>
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fac68f4a39f7382628bebc1d839fc16c2c5fef0"
+                  alt="Traveler by lake"
+                  className={styles.bannerImage}
+                />
+              </div>
+              <div className={styles.formContainer}>
+              { loading &&
+                <div className="loaderOverlay">
+                </div>
+              }
+                <div className={styles.formWrapper}>
+                  <h1 className={styles.formTitle}>Regístrate como viajero</h1>
+                  <RegistrationForm
+                    formData={formData}
+                    fieldStates={fieldStates}
+                    showPassword={showPassword}
+                    handleInputChange={handleInputChange}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    handleSubmit={handleSubmit}
+                    handleNavigate={handleNavigate}
+                    handleFocus={handleFocus}
+                    handleBlur={handleBlur}
+                    isFormValid={isFormValid}
+                  />
+                  <SocialLogin />
+                  <Footer />
+                </div>
+              </div>
+            </main>
           </div>
-          <div className={styles.formContainer}>
-            <div className={styles.formWrapper}>
-              <h1 className={styles.formTitle}>Regístrate como viajero</h1>
-              <RegistrationForm
-                formData={formData}
-                errors={errors}
-                showPassword={showPassword}
-                handleInputChange={handleInputChange}
-                togglePasswordVisibility={togglePasswordVisibility}
-                handleSubmit={handleSubmit}
-                handleNavigate={handleNavigate}
-              />
-              <SocialLogin />
-              <Footer />
-            </div>
-          </div>
-        </main>
-      </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default TravelerRegistration;
+}
+  export default TravelerRegistration;
+  

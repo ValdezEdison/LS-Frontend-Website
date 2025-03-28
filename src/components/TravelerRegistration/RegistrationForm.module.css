@@ -7,7 +7,7 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
 }
 
 .label {
@@ -35,13 +35,34 @@
 
 .phoneInput input{
   border: none;
+  padding-left: 0;
 }
 
 .select {
   border: none;
   outline: none;
-  color: #bdbdbd;
+  color: #151820;
   font: 14px "Source Sans Pro", sans-serif;
+  width: 50px;
+  flex-shrink: 0;
+  appearance: none;
+  padding: 5px;
+  background: transparent;
+}
+
+.phoneCodeWrapper{
+  position: relative;
+}
+
+.phoneCodeWrapper::after{
+  position: absolute;
+  content: '';
+  background: url(../../../public/images/down.svg) no-repeat 0 0;
+  height: 7px;
+  width: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
 }
 
 .passwordRequirements {
@@ -99,12 +120,26 @@
 .submitButton {
   width: 100%;
   height: 40px;
-  border: none;
+  border: solid 1px transparent;
   border-radius: 12px;
   color: #fff;
+  transition:all 0.3s ease;
   background-color: #bdbdbd;
   font: 600 15px "Source Sans Pro", sans-serif;
+  pointer-events: none;
+  outline: none;
+}
+
+.submitButton.active{
+  background-color: #212D94;
   cursor: pointer;
+  pointer-events: visible;
+}
+
+.submitButton.active:hover{
+  background-color: transparent;
+  border-color: #212D94;
+  color: #212D94;
 }
 
 .loginPrompt {
@@ -116,4 +151,29 @@
   color: #212d94;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.showPassword.clicked::after{
+  position: absolute;
+  content: '';
+  top:-3px;
+  left: 0;
+  width: 2px;
+  height: 23px;
+  background: #151820;
+  transform: rotate(45deg) translateX(-50%);
+  left: 50%;
+}
+
+.errorMessage{
+  color: #EF2215;
+  font-size: 12px;
+}
+
+.inputGroup.error input{
+  border-color: #EF2215;
+}
+
+.inputGroup.error .passwordRequirements{
+  color: #EF2215;
 }

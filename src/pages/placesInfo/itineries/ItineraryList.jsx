@@ -20,6 +20,9 @@ import { fetchItineriesInCity } from "../../../features/places/placesInfo/itiner
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import FilterBar from "../../../components/common/FilterBar";
 import { LanguageContext } from "../../../context/LanguageContext";
+import { toggleFavorite } from "../../../features/places/PlaceAction";
+import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 
 
 const ItineraryList = () => {
@@ -32,11 +35,11 @@ const ItineraryList = () => {
 
    const { language } = useContext(LanguageContext);
 
-  const { loading: itineriesLoading, error, itineries, next, count } = useSelector((state) => state.itineriesInCity);
+  const { loading: itineriesLoading, error, itineries, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next);
-  const { isOpen } = useSelector((state) => state.popup);
+  const { isOpen, isAddToPopupOpen } = useSelector((state) => state.popup);
 
   const [showArrow, setShowArrow] = useState(true);
 
@@ -56,8 +59,8 @@ const ItineraryList = () => {
     }
   }, [dispatch, language]);
 
-  const handleViewMoreDetails = (id) => {
-    console.log(id, 'handleViewMoreDetails');
+  const handleViewMoreDetails = (e, id) => {
+    
     navigate('/places/itineraries-details', { state: { id } });
   };
 
@@ -157,9 +160,27 @@ const ItineraryList = () => {
     },
   ];
 
+    const handleActions = (e,action, id) => {
+          e.stopPropagation();
+          if (action === 'addToFavorites') {
+            handleFavClick(e, id);
+          } else if (action === 'addToTrip') {
+            handleTripClick(e, id);
+          }
+        };
+      
+        const handleFavClick = (e, id) => {
+          e.stopPropagation();
+          if (isAuthenticated) {
+              dispatch(toggleFavorite(id));
+              dispatch(setFavTogglingId(id));
+          }
+        };
+
   return (
     // <div className={styles.athenasPlaces}>
     <>
+    {isOpen && isAddToPopupOpen && <AddToTripPopup />}
       <Header />
       <main className="page-center" ref={mainRef}>
         <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
@@ -197,6 +218,8 @@ const ItineraryList = () => {
                   translate={t}
                   isAuthenticated={isAuthenticated}
                   handleViewMoreDetails={handleViewMoreDetails}
+                  handleActions={handleActions}
+                  isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id}
                 />
               ))
             ) : (

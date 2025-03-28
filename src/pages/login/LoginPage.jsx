@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../components/layouts/Header";
@@ -7,142 +7,258 @@ import LoginForm from "../../components/LoginPage/LoginForm";
 import SocialLogin from "../../components/LoginPage/SocialLogin";
 import Footer from "../../components/LoginPage/Footer";
 import styles from "./LoginPage.module.css";
-import { login } from "../../features/authentication/AuthActions"; // Import your login action
+import { login, getProfile } from "../../features/authentication/AuthActions";
+import Loader from "../../components/common/Loader";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location, 'location')
+  const { loading } = useSelector((state) => state.auth);
 
-  // Environment variables for client credentials
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
-  // State for form inputs
-  const [obj, setObj] = useState({
-    email: "", // Updated to match API payload
+  const [formData, setFormData] = useState({
+    email: "",
     password: "",
   });
 
-  // State for error messages
-  const [errorMsg, setError] = useState({
-    has_error_in_email: false,
-    has_error_in_password: false,
-    has_error_in_account_locked: false,
+  const [fieldStates, setFieldStates] = useState({
+    email: {
+      error: "",
+      info: "Please enter a valid email address",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
+    password: {
+      error: "",
+      info: "Please enter a password",
+      touched: false,
+      focused: false,
+      isValid: false,
+    },
   });
 
-  const [isLocked, setIsLocked] = useState(false); // State for account lock
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(
+    localStorage.getItem('rememberMe') === 'true'
+  );
 
-  // Toggle password visibility
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validateField = (name, value) => {
+    let error = "";
+    let isValid = false;
+
+    switch (name) {
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!validateEmail(value)) {
+          error = "Please enter a valid email";
+        } else {
+          isValid = true;
+        }
+        break;
+      case "password":
+        if (!value) {
+          error = "Password is required";
+        }else {
+          isValid = true;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return { error, isValid };
+  };
+
+  useEffect(() => {
+    const emailValid = fieldStates.email.isValid;
+    const passwordValid = fieldStates.password.isValid;
+    setIsFormValid(emailValid && passwordValid);
+  }, [fieldStates.email.isValid, fieldStates.password.isValid]);
+
+  const handleFocus = (field) => {
+    if (!fieldStates[field].isValid) {
+      setFieldStates(prev => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          focused: true,
+        }
+      }));
+    }
+  };
+
+  const handleBlur = (field) => {
+    const { error, isValid } = validateField(field, formData[field]);
+    setFieldStates(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        error: isValid ? "" : error,
+        touched: true,
+        focused: false,
+        isValid,
+        info: isValid ? "" : prev[field].info
+      }
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    const { error, isValid } = validateField(name, value);
+    setFieldStates(prev => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        error: isValid ? "" : error,
+        isValid,
+        info: isValid ? "" : prev[name].info
+      }
+    }));
+  };
+
   const handleTogglePassword = (e) => {
     e.stopPropagation();
     setShowPassword(!showPassword);
   };
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setObj((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Validate form and submit
-  const validateForm = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate all fields on submit
+    const newFieldStates = { ...fieldStates };
+    let formIsValid = true;
   
-    // Validate inputs
-    const newError = {
-      has_error_in_email: obj.email.length === 0,
-      has_error_in_password: obj.password.length === 0,
-      has_error_in_account_locked: isLocked,
+    Object.keys(formData).forEach(key => {
+      const { error, isValid } = validateField(key, formData[key]);
+      newFieldStates[key] = {
+        ...newFieldStates[key],
+        error: isValid ? "" : error,
+        touched: true,
+        isValid,
+        info: isValid ? "" : newFieldStates[key].info
+      };
+      formIsValid = formIsValid && isValid;
+    });
+  
+    setFieldStates(newFieldStates);
+  
+    if (!formIsValid) return;
+  
+    // Save rememberMe preference
+    localStorage.setItem('rememberMe', rememberMe.toString());
+      
+    const payload = {
+      client_id: clientId,
+      client_secret: clientSecret,
+      email: formData.email,
+      grant_type: "password",
+      password: formData.password,
+      rememberMe: rememberMe
     };
   
-    setError(newError);
-  
-    // Check if there are any errors
-    const hasError = Object.values(newError).some((item) => item === true);
-  
-    if (!hasError) {
-      // Prepare payload for API
-      const payload = {
-        client_id: clientId,
-        client_secret: clientSecret,
-        email: obj.email,
-        grant_type: "password",
-        password: obj.password,
-      };
-  
-      // Dispatch login action
-      dispatch(login(payload))
-        .then((action) => {
-          if (login.fulfilled.match(action)) {
-            // Handle successful login
-            toast.success("Login successful!");
-            const from = location.state?.from?.pathname || "/";
-            navigate(from, { replace: true });
-
-          } else if (login.rejected.match(action)) {
-            // Handle rejected action (API error)
-            const errorMessage = action.payload.error_description || "An error occurred. Please try again.";
-            toast.error(errorMessage);
-  
-            // Update error state for specific fields
-            if (action.payload.error === "invalid_grant") {
-              setError((prev) => ({
-                ...prev,
-                has_error_in_email: true,
-                has_error_in_password: true,
-              }));
-            }
-          }
-        })
-        .catch((err) => {
-          console.error("Unexpected Error:", err); // Debugging
-          toast.error("An unexpected error occurred. Please try again.");
-        });
-    }
+    dispatch(login(payload))
+      .then((action) => {
+        if (login.fulfilled.match(action)) {
+          toast.success("Login successful!");
+          
+          // Dispatch getProfile after successful login
+          return dispatch(getProfile())
+            .then((profileAction) => {
+              if (getProfile.fulfilled.match(profileAction)) {
+                // Profile fetched successfully
+                const fromLocation = location.state?.from;
+                const fromPath = fromLocation?.pathname || "/";
+                
+                // Preserve all original navigation properties
+                const navigationOptions = {
+                  replace: true,
+                  ...(fromLocation?.state && { state: fromLocation.state }),
+                  ...(fromLocation?.search && { search: fromLocation.search }),
+                  ...(fromLocation?.hash && { hash: fromLocation.hash })
+                };
+              
+                navigate(fromPath, navigationOptions);
+              } else {
+                throw new Error("Failed to fetch profile");
+              }
+            });
+        } else if (login.rejected.match(action)) {
+          toast.error(action.payload?.error_description || "Login failed");
+          throw new Error("Login failed");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message || "An unexpected error occurred");
+        console.error(err);
+      });
   };
 
-  const handleNavigate = () => {
-    navigate('/register')
-  }
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   return (
+    <>
+    
     <div className={`${styles.loginPage} ${styles.authPage}`}>
       <Header />
-      <div className="login-page-center">
-        <div className={styles.contentWrapper}>
-          <div className={styles.imageContainer}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/49bebf84406b700c1b9c1bb3a9744dbf366034f8?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-              alt="Login page decorative image"
-              className={styles.decorativeImage}
-            />
-          </div>
-          <div className={styles.formContainer}>
-            <div className={styles.formWrapper}>
-              <h1 className={styles.formTitle}>Inicia sesión o crea una cuenta</h1>
-              <LoginForm
-                obj={obj}
-                errorMsg={errorMsg}
-                showPassword={showPassword}
-                handleInputChange={handleInputChange}
-                handleTogglePassword={handleTogglePassword}
-                validateForm={validateForm}
-                handleNavigate={handleNavigate}
+      <div className={styles.loginPageOuter}>
+        <div className={styles.imageContainerWide}></div>
+        <div className="login-page-center">
+          <div className={styles.contentWrapper}>
+            <div className={styles.imageContainer}>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/49bebf84406b700c1b9c1bb3a9744dbf366034f8?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+                alt="Login page decorative image"
+                className={styles.decorativeImage}
               />
-              <SocialLogin />
-              <Footer />
+            </div>
+            <div className={styles.formContainer}>
+            { loading &&
+                <div className="loaderOverlay">
+                  <div className="loaderBtnWrapper">
+                  </div>
+                </div>
+               }
+              <div className={styles.formWrapper}>
+                <h1 className={styles.formTitle}>Inicia sesión o crea una cuenta</h1>
+                <LoginForm
+                  formData={formData}
+                  fieldStates={fieldStates}
+                  showPassword={showPassword}
+                  handleInputChange={handleInputChange}
+                  handleTogglePassword={handleTogglePassword}
+                  handleSubmit={handleSubmit}
+                  handleNavigate={handleNavigate}
+                  isFormValid={isFormValid}
+                  handleFocus={handleFocus}
+                  handleBlur={handleBlur}
+                  rememberMe={rememberMe}
+                  setRememberMe={setRememberMe}
+                />
+                <SocialLogin />
+                <Footer />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

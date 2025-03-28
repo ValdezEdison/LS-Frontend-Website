@@ -1,6 +1,7 @@
 const LSLogo2_1 = "/images/app-local-secrets-logo-2-1.svg";
 const LSLogo2 = "/images/app-local-secrets-logo-2.svg";
 const LSLogo2_2 = "/images/app-local-secrets-logo-2-2.svg";
+const AddCircle = "/images/add-circle.svg"
 const Africa = "/images/africa.svg";
 const America = "/images/america.svg";
 const AppPromotion = "/images/app-promotion.png";
@@ -10,6 +11,7 @@ const ArrowRight1 = "/images/arrowright-1.svg";
 const Banner = "/images/banner.png";
 const Flag = "/images/bandera-idioma@2x.png";
 const Cap = "/images/cap.svg";
+const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
 const QR = "/images/QR.png";
@@ -28,14 +30,16 @@ const SecondSection4 = "/images/imgen-segunda-seccin-4@2x.png";
 const SecondSection4_1 = "/images/imgen-segunda-seccin-4-1@2x.png";
 const InstagramWhite = "/images/instagramwhite@2x.png";
 const LinkedinWhite = "/images/linkedinwhite@2x.png";
+const MapIcon = "/images/map-icon.png";
 const MapsSearchAmericaDefault = "/images/mapas-buscadoramerica-default.svg";
 const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
 const MapsFinderDefault = "/images/mapas-buscadordefault@2x.png";
 const MapsSearchEuropeDefault = "/images/mapas-buscadoreuropa-default.svg";
-const MapsSearchAfricaDefault = "/images/mapas-buscadorfrica-default@2x.png";
+const MapsSearchAfricaDefault = "/imag  es/mapas-buscadorfrica-default@2x.png";
 const MapPlaceHolderImage = "/images/map-placeholder-image.jpg";
 const MyWeirdLittleDesign = "/images/my-weird-little-design@3x.png";
 const Marker = "/images/marker.svg";
+const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
 const Oceana = "/images/oceana@2x.png";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
@@ -43,8 +47,10 @@ const PlaceHolderImg2 = "/images/placeholder2.jpg"
 const PlaceHolderImg3 = "/images/placeholder3.jpg"
 const PlaceHolderImg4 = "/images/placeholder4.jpg"
 const PhoneMockup = "/images/Phone Mockup.png";
+const Profilecircle = "/images/profile-circle.svg";
 const Rectangle = "/images/rectangle-19290@2x.png";
 const SearchBlack = "/images/search-black-24dp-1.svg";
+const Search = "/images/search.svg";
 const Spain = "/images/spain.png";
 const Star = "/images/star.svg";
 const StarFill = "/images/star-fill.svg";
@@ -58,6 +64,7 @@ export {
     LSLogo2_1,
     LSLogo2,
     LSLogo2_2,
+    AddCircle,
     Africa,
     America,
     AppPromotion,
@@ -66,6 +73,7 @@ export {
     ArrowRight1,
     Banner,
     Flag,
+    CalendarIcon,
     Cap,
     CellularConnection,
     FacebookWhite,
@@ -84,8 +92,10 @@ export {
     SecondSection3_1,
     SecondSection4,
     SecondSection4_1,
+    Search,
     InstagramWhite,
     LinkedinWhite,
+    MapIcon,
     MapsSearchAmericaDefault,
     MapsFindersiaDefault,
     MapsFinderDefault,
@@ -94,6 +104,7 @@ export {
     MapPlaceHolderImage,
     MyWeirdLittleDesign,
     Marker,
+    MarkerYellow,
     Notch,
     Oceana,
     PlaceHolderImg1,
@@ -101,6 +112,7 @@ export {
     PlaceHolderImg3,
     PlaceHolderImg4,
     PhoneMockup,
+    Profilecircle,
     Rectangle,
     SearchBlack,
     Subtract,

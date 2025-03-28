@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 import { Banner } from "../common/Images";
 import { useSelector } from "react-redux";
 
-const HeroSection = () => {
+const HeroSection = ({handleNavigateToLogin}) => {
   const { t } = useTranslation("HeroSection");
 
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <section className="hero-section">
@@ -20,7 +21,7 @@ const HeroSection = () => {
         <p className="hero-subtitle">
         {t("subtitle")}
         </p>
-        <button className="cta-button">{t("button")}</button>
+      {!isAuthenticated && <button className="cta-button" onClick={handleNavigateToLogin}>{t("button")}</button>}
       </div>
       <style jsx>{`
         .hero-section {

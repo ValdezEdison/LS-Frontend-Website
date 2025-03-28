@@ -8,7 +8,7 @@
 
 .searchBar {
   border-radius: 12px 12px 12px 12px;
-  border: 2px solid var(--Desactivado, #718295);
+  border: 1px solid var(--Desactivado, #718295);
   background-color: #fff;
   display: flex;
   gap: 8px;
@@ -24,7 +24,7 @@
 
 .searchBar.open{
   border-radius: 12px 12px 0 0;
-  border: 2px solid var(--Desactivado, #212D94);
+  border: 1px solid var(--Desactivado, #212D94);
 }
 
 .searchIcon {
@@ -47,7 +47,7 @@
 
 .suggestionsContainer {
   border-radius: 0 0 12px 12px;
-  border: 2px solid var(--Color-principal-azul, #212d94);
+  border: 1px solid var(--Color-principal-azul, #212d94);
   background-color: #fff;
   display: flex;
   width: 100%;

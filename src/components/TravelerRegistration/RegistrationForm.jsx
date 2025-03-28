@@ -1,14 +1,18 @@
 import React from "react";
 import styles from "./RegistrationForm.module.css";
+import Loader from "../common/Loader";
 
 const RegistrationForm = ({
   formData,
-  errors,
+  fieldStates,
   showPassword,
   handleInputChange,
   togglePasswordVisibility,
   handleSubmit,
-  handleNavigate
+  handleNavigate,
+  handleFocus,
+  handleBlur,
+  isFormValid
 }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -23,13 +27,18 @@ const RegistrationForm = ({
           name="username"
           placeholder="Nombre y apellidos"
           className={`${styles.input} ${
-            errors.username ? styles.inputError : ""
+            fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
           }`}
           value={formData.username}
           onChange={handleInputChange}
+          onFocus={() => handleFocus('username')}
+          onBlur={() => handleBlur('username')}
         />
-        {errors.username && (
-          <div className={styles.errorMessage}>{errors.username}</div>
+        {!fieldStates.username.isValid && fieldStates.username.focused && (
+          <div className={styles.infoMessage}>{fieldStates.username.info}</div>
+        )}
+        {fieldStates.username.error && fieldStates.username.touched && (
+          <div className={styles.errorMessage}>{fieldStates.username.error}</div>
         )}
       </div>
 
@@ -44,13 +53,18 @@ const RegistrationForm = ({
           name="email"
           placeholder="nombre@ejemplo.com"
           className={`${styles.input} ${
-            errors.email ? styles.inputError : ""
+            fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
           }`}
           value={formData.email}
           onChange={handleInputChange}
+          onFocus={() => handleFocus('email')}
+          onBlur={() => handleBlur('email')}
         />
-        {errors.email && (
-          <div className={styles.errorMessage}>{errors.email}</div>
+        {!fieldStates.email.isValid && fieldStates.email.focused && (
+          <div className={styles.infoMessage}>{fieldStates.email.info}</div>
+        )}
+        {fieldStates.email.error && fieldStates.email.touched && (
+          <div className={styles.errorMessage}>{fieldStates.email.error}</div>
         )}
       </div>
 
@@ -60,23 +74,30 @@ const RegistrationForm = ({
           Teléfono
         </label>
         <div className={styles.phoneInput}>
-          <select className={styles.select}>
-            <option>+000</option>
-          </select>
+          <div className={styles.phoneCodeWrapper}>
+            <select className={styles.select}>
+              <option>+000</option>
+            </select>
+          </div>
           <input
             type="tel"
             id="phone"
             name="phone"
             placeholder="123 456 789"
             className={`${styles.input} ${
-              errors.phone ? styles.inputError : ""
+              fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
             }`}
             value={formData.phone}
             onChange={handleInputChange}
+            onFocus={() => handleFocus('phone')}
+            onBlur={() => handleBlur('phone')}
           />
         </div>
-        {errors.phone && (
-          <div className={styles.errorMessage}>{errors.phone}</div>
+        {!fieldStates.phone.isValid && fieldStates.phone.focused && (
+          <div className={styles.infoMessage}>{fieldStates.phone.info}</div>
+        )}
+        {fieldStates.phone.error && fieldStates.phone.touched && (
+          <div className={styles.errorMessage}>{fieldStates.phone.error}</div>
         )}
       </div>
 
@@ -87,56 +108,80 @@ const RegistrationForm = ({
         </label>
         <div className={styles.passwordRequirements}>
           Debe de constar <strong>al menos de 8 caracteres</strong> y contener
-          mínimo
-          <strong> un número, una mayúscula y un símbolo.</strong>
+          mínimo <strong>un número, una mayúscula y un símbolo.</strong>
         </div>
         <div className={styles.passwordInput}>
-          <div className={styles.showPassword} onClick={togglePasswordVisibility}></div>
+          <div 
+            className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`} 
+            onClick={togglePasswordVisibility}
+          ></div>
           <input
             type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             placeholder="Introduce una contraseña"
             className={`${styles.input} ${
-              errors.password ? styles.inputError : ""
+              fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
             }`}
             value={formData.password}
             onChange={handleInputChange}
+            onFocus={() => handleFocus('password')}
+            onBlur={() => handleBlur('password')}
           />
         </div>
-        {errors.password && (
-          <div className={styles.errorMessage}>{errors.password}</div>
+        {!fieldStates.password.isValid && fieldStates.password.focused && (
+          <div className={styles.infoMessage}>{fieldStates.password.info}</div>
+        )}
+        {fieldStates.password.error && fieldStates.password.touched && (
+          <div className={styles.errorMessage}>{fieldStates.password.error}</div>
         )}
       </div>
 
       {/* Terms and Conditions */}
       <div className={styles.termsGroup}>
-        <label className="check-container terms-check">
+        <label className={styles.radioContainer}>
           <input
             type="checkbox"
             id="terms"
             name="terms"
             checked={formData.terms}
             onChange={handleInputChange}
+            onFocus={() => handleFocus('terms')}
+            onBlur={() => handleBlur('terms')}
           />
-          <span className="checkmark"></span>
+          <span className={styles.checkmark}></span>
           Acepta los
           <span className={styles.termsLink}>Términos y Condiciones</span>
         </label>
-        {errors.terms && (
-          <div className={styles.errorMessage}>{errors.terms}</div>
+        {fieldStates.terms.error && fieldStates.terms.touched && (
+          <div className={styles.errorMessage}>{fieldStates.terms.error}</div>
         )}
       </div>
 
       {/* Submit Button */}
-      <button type="submit" className={styles.submitButton}>
+      <button 
+        type="submit" 
+        className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+        disabled={!isFormValid}
+      >
         Crear cuenta
+      </button>
+      <button 
+        className="submitLoadingButton" 
+        disabled={!isFormValid}
+      >
+        <div className="loaderBtnWrapper">
+          <Loader/>
+        </div>
+       
       </button>
 
       {/* Login Prompt */}
       <p className={styles.loginPrompt}>
         ¿Ya tienes cuenta?{" "}
-        <span className={styles.loginLink} onClick={handleNavigate}>Inicia sesión</span>
+        <span className={styles.loginLink} onClick={handleNavigate}>
+          Inicia sesión
+        </span>
       </p>
     </form>
   );

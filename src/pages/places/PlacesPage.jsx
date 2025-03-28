@@ -8,13 +8,13 @@ import Footer from "../../components/layouts/Footer";
 import PromotionalBanner from "../../components/PlacesPage/PromotionalBanner";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
-import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations, fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
+import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations, fetchPlacesFilterCategories, toggleFavorite } from "../../features/places/PlaceAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import styles from "./PlacesPage.module.css";
 import Newsletter from "../../components/common/Newsletter";
 import MapPopup from "../../components/common/MapPopup";
-import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
 
@@ -59,6 +59,7 @@ const PlacesPage = () => {
   const { countries, loading: countriesLoading } = useSelector((state) => state.countries);
   const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
   const { isOpen } = useSelector((state) => state.popup);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
@@ -200,11 +201,33 @@ const PlacesPage = () => {
 
   }, [state.selectedDestinationId]);
 
-  console.log(state, 'states');
+  const handleActions = (e,action, id) => {
+    e.stopPropagation();
+    if (action === 'addToFavorites') {
+      handleFavClick(e, id);
+    } else if (action === 'addToTrip') {
+      handleTripClick(e, id);
+    }
+  };
+
+  const handleFavClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(toggleFavorite(id));
+    }
+  };
+
+  const handleTripClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(openAddToTripPopup());
+      navigate('/places/itineraries', { state: { id } });
+    }
+  };
 
   return (
     <>
-      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />}
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} handleActions={handleActions}/>}
       <div className={styles.placesPage}>
         <Header />
         {(filterLoading) ? (
@@ -215,7 +238,7 @@ const PlacesPage = () => {
               <div className={styles.content}>
                 <Sidebar handleShowMapPopup={handleShowMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} />
                 {!filterLoading && placesLoading ? <MainContentSkeleton /> :
-                  <MainContent state={state} setState={setState} countries={countries} cities={cities} />
+                  <MainContent state={state} setState={setState} countries={countries} cities={cities} handleActions={handleActions} />
                 }
               </div>
               <div className={styles.content}>

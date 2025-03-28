@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./MuseumInfo.module.css";
+import { MapIcon } from "../common/Images";
 
-const MuseumInfo = ({ place, handleNavigateToWebsite }) => {
+const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, isFavoriteToggling = false }) => {
  
   return (
     <div className={styles.museumInfo}>
@@ -9,7 +10,7 @@ const MuseumInfo = ({ place, handleNavigateToWebsite }) => {
         <h1 className={styles.museumName}>{place?.title}</h1>
         <div className={styles.location}>
           <img
-            src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/76d52ff2de34200eee33b27954820431397650bbcc422e761da492eb05ba93ac?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+            src={MapIcon}
             alt="Location icon"
             className={styles.locationIcon}
           />
@@ -19,7 +20,9 @@ const MuseumInfo = ({ place, handleNavigateToWebsite }) => {
         </div>
       </div>
       <div className={styles.museumInfoRight}>
+        
         <div className={styles.contactInfo}>
+        <div className={`${styles.favIcon} ${place?.is_fav ? styles.active : ''}`} onClick={(e) => handleActions(e,place?.id)}></div>
           <img
             src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/3ef4f075a0deb02b772bf1fe5266b0e789697ca3a6ba3ea75c950a14406974bf?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
             alt="Web icon"

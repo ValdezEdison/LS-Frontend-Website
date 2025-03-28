@@ -7,13 +7,14 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap:3px;
 }
 
 .label {
   color: #151820;
   font-weight: 600;
   font-size: 0.875rem;
+  display: block;
 }
 
 .input {
@@ -22,6 +23,7 @@
   padding: 0.625rem 2.45rem 0.625rem 0.875rem;
   font-size: 0.875rem;
   outline: none;
+  width: 100%;
 }
 
 .optionsRow {
@@ -49,22 +51,33 @@
 .forgotPassword {
   color: #4f4f4f;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .submitButton {
   background-color: #bdbdbd;
   color: #fff;
-  border: none;
+  border: solid 1px transparent;
   border-radius: 12px;
   padding: 0.625rem;
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition:all 0.3s ease;
+  pointer-events: none;
+  outline: none;
 }
 
-.submitButton:hover {
-  background-color: #a0a0a0;
+.submitButton.active{
+  background-color: #212D94;
+  cursor: pointer;
+  pointer-events: visible;
+}
+
+.submitButton.active:hover{
+  background-color: transparent;
+  border-color: #212D94;
+  color: #212D94;
 }
 
 .registerPrompt {
@@ -77,6 +90,7 @@
   color: #212d94;
   font-weight: 600;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 
@@ -96,6 +110,29 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.showPassword.clicked::after{
+  position: absolute;
+  content: '';
+  top:-3px;
+  left: 0;
+  width: 2px;
+  height: 23px;
+  background: #151820;
+  transform: rotate(45deg) translateX(-50%);
+  left: 50%;
+}
+
+.errorMessage{
+  color: #EF2215;
+  font-size: 12px;
+}
+
+
+.inputGroup.error input{
+  border-color: #EF2215;
 }
 
 @media screen and (max-width:480px){

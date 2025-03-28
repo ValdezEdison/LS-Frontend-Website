@@ -32,6 +32,16 @@ const ApiService = {
     }
   },
 
+  patch: async (url, data, config = {}) => {
+    try {
+      const response = await ApiInstance.patch(url, data, config);
+      return response.data;
+    } catch (error) {
+      console.error('PATCH request failed:', error);
+      throw error;
+    }
+  },
+
   delete: async (url, config = {}) => {
     try {
       const response = await ApiInstance.delete(url, config);

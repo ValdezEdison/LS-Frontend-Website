@@ -11,8 +11,12 @@ const authService = {
   },
 
   getProfile: async () => {
-    return apiService.get('/auth/profile');
+    return apiService.get('/users/me');
   },
+
+  logout: async () => { 
+    return apiService.post('/users/logout');
+  }
 };
 
-export default authService;
+export default authService; 

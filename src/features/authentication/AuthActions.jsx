@@ -1,13 +1,13 @@
 // src/features/auth/authActions.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './AuthService';
-import { setToken, removeToken, handleApiError } from '../../utils/Helper';
+import { setAuthTokens, removeToken, handleApiError, setAuthUser } from '../../utils/Helper';
 
 // Login user
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await authService.login(credentials);
-    setToken(response.token); // Save token to localStorage
+    setAuthTokens(response, credentials.rememberMe);// Save token to localStorage
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
@@ -18,7 +18,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 export const register = createAsyncThunk('users/create', async (userData, { rejectWithValue }) => {
   try {
     const response = await authService.register(userData);
-    setToken(response.token); // Save token to localStorage
+    setAuthTokens(response, false); // Default to session-only for new registrations
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
@@ -29,6 +29,7 @@ export const register = createAsyncThunk('users/create', async (userData, { reje
 export const getProfile = createAsyncThunk('auth/getProfile', async (_, { rejectWithValue }) => {
   try {
     const response = await authService.getProfile();
+    setAuthUser(response);
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
@@ -38,6 +39,7 @@ export const getProfile = createAsyncThunk('auth/getProfile', async (_, { reject
 // Logout user
 export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
+    const response = await authService.logout();
     removeToken(); // Remove token from localStorage
     return null;
   } catch (error) {

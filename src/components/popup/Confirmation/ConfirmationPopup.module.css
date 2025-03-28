@@ -1,0 +1,74 @@
+.deleteConfirmationMain{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.modalTitle {
+  color: #000;
+  text-align: center;
+  margin: 4px 0 24px;
+  font:
+    700 25px "Source Sans Pro",
+    sans-serif;
+}
+
+.modalDescription {
+  color: #000;
+  text-align: center;
+  margin: 0 0 34px;
+  font:
+    400 20px "Source Sans Pro",
+    sans-serif;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.button {
+  color: #151820;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 0 16px;
+  font:
+    700 15px "Source Sans Pro",
+    sans-serif;
+  border: none;
+}
+
+.cancelButton {
+  background-color: #e0e0e0;
+}
+
+.deleteButton {
+  background-color: #f4c031;
+}
+
+@media (max-width: 640px) {
+  .modalTitle {
+    font-size: 21px;
+  }
+
+  .modalDescription {
+    font-size: 17px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .modalTitle {
+    margin-bottom: 12px;
+  }
+}

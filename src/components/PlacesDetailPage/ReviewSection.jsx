@@ -5,11 +5,17 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./ReviewSection.module.css";
 import { Star, StarFill } from "../common/Images"
 import { startsWith } from "lodash";
+import { useSelector } from "react-redux";
 
-const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comments, placeDetails }) => {
+const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handleClickEditComment, handleClickDeleteComment, comments, placeDetails }) => {
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth)
+console.log("user", user);
+console.log(comments, "comments");
   const sliderSettings = {
     // dots: true,
     infinite: false,
+    centerMode: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -254,15 +260,23 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
             <div className={styles.reviewCardWrapper}>
               <div key={comment.id || index} className={styles.reviewCard}>
                 <div className={styles.reviewHeader}>
+                  <div className={styles.reviewHeaderLeft}>
                   <img
                     src={comment.user?.profile_picture?.thumbnail || "default-avatar.png"}
                     alt="User avatar"
                     className={styles.avatar}
                   />
-                  <div>
+                  <div className={styles.reviewerNameDetails}>
                     <h3 className={styles.reviewerName}>{comment.user?.username}</h3>
                     <span className={styles.reviewDate}>{new Date(comment.created_at).toLocaleDateString()}</span>
                   </div>
+                  </div>
+                  {comment.user?.username === user?.username &&
+                  <div className={styles.reviewHeaderRight}>
+                    <div className={styles.editIcon} onClick={() => handleClickEditComment(comment)}></div>
+                    <div className={styles.deleteIcon} onClick={() => handleClickDeleteComment(comment.id)}></div>
+                  </div>
+                  }
                 </div>
                 <div className={styles.stars}>
                   {renderStars(comment?.rating)}
