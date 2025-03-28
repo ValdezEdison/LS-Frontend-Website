@@ -15,7 +15,7 @@ import PageLoader from "../../components/common/Loader";
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
-    const { places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
+    const { loading, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
 
     const location = useLocation();
@@ -183,11 +183,13 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                         </div>
                     )}
                     <div className={styles2.mapPopupMapArea}>
+                        {loading &&
                         <div className="loaderOverlay">
                             <div className="loaderBtnWrapper">
                                 <PageLoader /> 
                             </div>
                         </div>
+                        }
                         {!isMapLoaded && 
                             <div className={styles2.mapFrame}>
                                 <img

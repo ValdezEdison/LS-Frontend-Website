@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./LoginForm.module.css";
 import Loader from "../common/Loader";
+import { useSelector } from "react-redux";
 
 const LoginForm = ({
   formData,
@@ -16,6 +17,8 @@ const LoginForm = ({
   rememberMe,
   setRememberMe,
 }) => {
+
+  const { loading } = useSelector((state) => state.auth);
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
       {/* Email Input */}
@@ -91,14 +94,8 @@ const LoginForm = ({
       </div>
 
       {/* Submit Button */}
-      <button 
-        type="submit" 
-        className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
-        disabled={!isFormValid}
-      >
-        Log In
-      </button>
-      <button 
+      {loading ? (
+        <button 
         className="submitLoadingButton" 
         disabled={!isFormValid}
       >
@@ -107,6 +104,17 @@ const LoginForm = ({
         </div>
        
       </button>
+      ): (
+        <button 
+        type="submit" 
+        className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+        disabled={!isFormValid}
+      >
+        Log In
+      </button>
+      )}
+   
+      
 
       {/* Register Prompt */}
       <p className={styles.registerPrompt}>

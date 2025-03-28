@@ -29,7 +29,7 @@ import MapPopup from "../../components/common/MapPopup";
 import CommentPopup from "../../components/popup/Comment/CommentPopup";
 import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
-import SuccessPopup from "../../components/popup/Success/SuccessPopup";
+import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 
 
 const PlaceDetails = () => {
@@ -376,12 +376,12 @@ const PlaceDetails = () => {
 
       {isOpen && popupState.success && (
         <Modal
-          title="Success"
+          title=""
           onClose={() => togglePopup("success", false)}
           customClass="modalSmTypeOne"
           hideCloseButton={true}
         >
-          <SuccessPopup
+          <SuccessMessagePopup
             message={successMessage}
             onClose={() => togglePopup("success", false)}
           />
