@@ -88,7 +88,7 @@
 }
 
 
-.favIcon{
+.favIcon {
   position: absolute;
   width: 24px;
   height: 24px;
@@ -99,7 +99,7 @@
   transition: all ease .3s;
 }
 
-.favIcon::after{
+.favIcon::after {
   position: absolute;
   content: '';
   background: url(../../../images/heart.svg) no-repeat 0 0;
@@ -111,13 +111,29 @@
   cursor: pointer;
 }
 
-.favIcon.clicked::after{
+.favIcon.clicked::after {
   background: url(../../../images/heart-fill.png) no-repeat 0 0;
 }
 
-.eventImageContainer{
+.eventImageContainer {
   position: relative;
   margin-right: 16px;
+}
+
+.loaderOverlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100% - 16px);
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.loaderToCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 640px) {
@@ -127,7 +143,7 @@
     /* text-align: center; */
   }
 
-  .eventImageContainer{
+  .eventImageContainer {
     width: 100%;
   }
 
