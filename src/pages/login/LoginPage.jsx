@@ -7,7 +7,7 @@ import LoginForm from "../../components/LoginPage/LoginForm";
 import SocialLogin from "../../components/LoginPage/SocialLogin";
 import Footer from "../../components/LoginPage/Footer";
 import styles from "./LoginPage.module.css";
-import { login } from "../../features/authentication/AuthActions";
+import { login, getProfile } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
 
 const LoginPage = () => {
@@ -141,7 +141,7 @@ const LoginPage = () => {
     // Validate all fields on submit
     const newFieldStates = { ...fieldStates };
     let formIsValid = true;
-
+  
     Object.keys(formData).forEach(key => {
       const { error, isValid } = validateField(key, formData[key]);
       newFieldStates[key] = {
@@ -153,12 +153,12 @@ const LoginPage = () => {
       };
       formIsValid = formIsValid && isValid;
     });
-
+  
     setFieldStates(newFieldStates);
-
+  
     if (!formIsValid) return;
-
-      // Save rememberMe preference
+  
+    // Save rememberMe preference
     localStorage.setItem('rememberMe', rememberMe.toString());
       
     const payload = {
@@ -169,30 +169,40 @@ const LoginPage = () => {
       password: formData.password,
       rememberMe: rememberMe
     };
-
+  
     dispatch(login(payload))
       .then((action) => {
         if (login.fulfilled.match(action)) {
           toast.success("Login successful!");
           
-          const fromLocation = location.state?.from;
-          const fromPath = fromLocation?.pathname || "/";
-          
-          // Preserve all original navigation properties
-          const navigationOptions = {
-            replace: true,
-            ...(fromLocation?.state && { state: fromLocation.state }),
-            ...(fromLocation?.search && { search: fromLocation.search }),
-            ...(fromLocation?.hash && { hash: fromLocation.hash })
-          };
-        
-          navigate(fromPath, navigationOptions);
-        }else if (login.rejected.match(action)) {
+          // Dispatch getProfile after successful login
+          return dispatch(getProfile())
+            .then((profileAction) => {
+              if (getProfile.fulfilled.match(profileAction)) {
+                // Profile fetched successfully
+                const fromLocation = location.state?.from;
+                const fromPath = fromLocation?.pathname || "/";
+                
+                // Preserve all original navigation properties
+                const navigationOptions = {
+                  replace: true,
+                  ...(fromLocation?.state && { state: fromLocation.state }),
+                  ...(fromLocation?.search && { search: fromLocation.search }),
+                  ...(fromLocation?.hash && { hash: fromLocation.hash })
+                };
+              
+                navigate(fromPath, navigationOptions);
+              } else {
+                throw new Error("Failed to fetch profile");
+              }
+            });
+        } else if (login.rejected.match(action)) {
           toast.error(action.payload?.error_description || "Login failed");
+          throw new Error("Login failed");
         }
       })
       .catch((err) => {
-        toast.error("An unexpected error occurred");
+        toast.error(err.message || "An unexpected error occurred");
         console.error(err);
       });
   };

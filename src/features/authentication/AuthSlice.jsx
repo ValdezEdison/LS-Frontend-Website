@@ -2,8 +2,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, register, getProfile, logout } from "./AuthActions";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+const authUser = JSON.parse(localStorage.getItem('authUser'));
 const initialState = {
-  user: null,
+  user: authUser ? authUser : null,
   token: null,
   loading: false,
   error: null,
@@ -67,6 +68,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true; // Set authenticated to true
         state.error = null; // Clear any previous errors
+
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.loading = false;

@@ -116,6 +116,30 @@ export const addComment = createAsyncThunk(
   }
 )
 
+export const editComment = createAsyncThunk(
+  'places/editComment',
+  async ({ commentId, commentData }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.editComment( commentId, commentData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+)
+
+export const deleteComment = createAsyncThunk(
+  'places/deleteComment',
+  async (commentId, { rejectWithValue }) => {
+    try {
+      const response = await placeService.deleteComment(commentId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+)
+
 // Create a new place
 export const createPlace = createAsyncThunk(
   'places/createPlace',

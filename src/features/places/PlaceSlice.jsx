@@ -12,7 +12,9 @@ import {
     fetchNearbyPlaces,
     fetchPlacesFilterCategories,
     toggleFavorite, 
-    addComment
+    addComment,
+    editComment,
+    deleteComment
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
 
@@ -189,6 +191,37 @@ const placeSlice = createSlice({
                 state.comments.push(action.payload);
             })
             .addCase(addComment.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // edit comment
+            .addCase(editComment.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editComment.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.comments.findIndex(comment => comment.id === action.payload.id);
+                if (index !== -1) {
+                    state.comments[index] = action.payload;
+                }
+            })
+            .addCase(editComment.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // delete comment
+            .addCase(deleteComment.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteComment.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments = state.comments.filter(comment => comment.id !== action.payload.id);
+            })
+            .addCase(deleteComment.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

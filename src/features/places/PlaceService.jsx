@@ -101,6 +101,14 @@ const PlaceService = {
     return apiService.post(`/sites/${placeId}/comment`, commentData);
   },
 
+  editComment: async ( commentId, commentData) => {
+    return apiService.patch(`/sites/comments/${commentId}`, commentData);
+  },
+
+  deleteComment: async (commentId) => {
+    return apiService.delete(`/sites/comments/${commentId}`);
+  },
+
   createPlace: async (placeData) => {
     return apiService.post('/places', placeData);
   },

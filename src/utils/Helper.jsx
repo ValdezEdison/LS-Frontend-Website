@@ -19,6 +19,7 @@ export const setToken = (token) => {
   sessionStorage.removeItem('refreshToken');
   sessionStorage.removeItem('tokenExpiresAt');
   localStorage.removeItem('rememberMe');
+  localStorage.removeItem('authUser');
 };
 
 // Save tokens from login/refresh response
@@ -44,6 +45,10 @@ export const setAuthTokens = (response, rememberMe = false) => {
     sessionStorage.setItem('refreshToken', refresh_token);
     sessionStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
   }
+};
+
+export const setAuthUser = (user) => {
+  localStorage.setItem('authUser', JSON.stringify(user));
 };
 
 // Check if token is expired

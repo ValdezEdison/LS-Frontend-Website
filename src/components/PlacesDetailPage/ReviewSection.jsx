@@ -5,8 +5,13 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./ReviewSection.module.css";
 import { Star, StarFill } from "../common/Images"
 import { startsWith } from "lodash";
+import { useSelector } from "react-redux";
 
-const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comments, placeDetails }) => {
+const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handleClickEditComment, handleClickDeleteComment, comments, placeDetails }) => {
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth)
+console.log("user", user);
+console.log(comments, "comments");
   const sliderSettings = {
     // dots: true,
     infinite: false,
@@ -266,10 +271,12 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, comme
                     <span className={styles.reviewDate}>{new Date(comment.created_at).toLocaleDateString()}</span>
                   </div>
                   </div>
+                  {comment.user?.username === user?.username &&
                   <div className={styles.reviewHeaderRight}>
-                    <div className={styles.editIcon}></div>
-                    <div className={styles.deleteIcon}></div>
+                    <div className={styles.editIcon} onClick={() => handleClickEditComment(comment)}></div>
+                    <div className={styles.deleteIcon} onClick={() => handleClickDeleteComment(comment.id)}></div>
                   </div>
+                  }
                 </div>
                 <div className={styles.stars}>
                   {renderStars(comment?.rating)}

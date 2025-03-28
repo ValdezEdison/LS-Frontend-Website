@@ -1,7 +1,7 @@
 // src/features/auth/authActions.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './AuthService';
-import { setAuthTokens, removeToken, handleApiError } from '../../utils/Helper';
+import { setAuthTokens, removeToken, handleApiError, setAuthUser } from '../../utils/Helper';
 
 // Login user
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
@@ -29,6 +29,7 @@ export const register = createAsyncThunk('users/create', async (userData, { reje
 export const getProfile = createAsyncThunk('auth/getProfile', async (_, { rejectWithValue }) => {
   try {
     const response = await authService.getProfile();
+    setAuthUser(response);
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
