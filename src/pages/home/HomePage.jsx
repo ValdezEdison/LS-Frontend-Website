@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { LSLogo2_2 } from "../../components/common/Images";
 import { CommonWidgetSkeleton } from "../../components/skeleton/HomePage/CommonWidgetSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   
@@ -28,6 +29,8 @@ const HomePage = () => {
 
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   // Access the state from the Redux store
   const { places, loading: placesLoading, error: placesError } = useSelector((state) => state.places);
@@ -40,11 +43,13 @@ const HomePage = () => {
       dispatch(fetchEvents());
   }, [dispatch, language]);
 
-
+const handleNavigateToLogin = () => {
+  navigate('/login', { state: { from: '/' } });
+}
   return (
     <div className={styles.homePage}>
       <Header />
-      <HeroSection />
+      <HeroSection handleNavigateToLogin={handleNavigateToLogin}/>
       <SearchComponent />
     {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={places} />}  
     {eventsLoading ? <CommonWidgetSkeleton /> : <EventsSection events={events} />} 
