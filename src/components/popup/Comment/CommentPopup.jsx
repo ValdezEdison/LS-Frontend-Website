@@ -3,6 +3,7 @@ import styles from "./CommentPopup.module.css";
 import StarRating from "./StarRating";
 
 const CommentPopup = ({ 
+  title,
   comment, 
   rating, 
   errors,
@@ -15,7 +16,7 @@ const CommentPopup = ({
 }) => {
   return (
     <div className={styles.CommentPopupMain}>
-      <h3 className={styles.subtitle}>{isEditing ? "Edit your comment" : "Add a new comment"}</h3>
+      <h3 className={styles.subtitle}>{title}</h3>
       
       <label htmlFor="rating" className={styles.ratingLabel}>
         Rating:

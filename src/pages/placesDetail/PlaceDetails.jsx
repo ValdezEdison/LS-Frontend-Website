@@ -324,11 +324,11 @@ const PlaceDetails = () => {
       rating: ''
     };
 
-    if (!commentForm.text.trim()) {
-      errors.text = 'Comment is required';
-    } else if (commentForm.text.trim().length < 0) {
-      errors.text = 'Comment must be at least 10 characters';
-    }
+    // if (!commentForm.text.trim()) {
+    //   errors.text = 'Comment is required';
+    // } else if (commentForm.text.trim().length < 0) {
+    //   errors.text = 'Comment must be at least 10 characters';
+    // }
 
     if (commentForm.rating === 0) {
       errors.rating = 'Please select a rating';
@@ -519,7 +519,7 @@ const PlaceDetails = () => {
 
       {isOpen && popupState.comment && (
         <Modal
-          title="Añadir comentario"
+          title={isEditing ? "Edit Comment" : "Add Comment"}
           onClose={() => {
             togglePopup("comment", false);
             setCommentForm({
@@ -540,6 +540,7 @@ const PlaceDetails = () => {
           customClass="modalMdTypeOne"
         >
           <CommentPopup
+            title={place?.title}
             comment={commentForm.text}
             rating={commentForm.rating}
             errors={commentForm.errors}
