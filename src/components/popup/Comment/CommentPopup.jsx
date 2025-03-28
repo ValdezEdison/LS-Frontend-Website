@@ -21,6 +21,7 @@ const CommentPopup = ({
           rating={rating} 
           onRatingChange={onRatingChange} 
         />
+        <div className="errorMessage">test message</div>
       </div>
       
       <label htmlFor="commentText" className={styles.commentLabel}>
@@ -29,15 +30,17 @@ const CommentPopup = ({
       <div className={styles.textareaContainer}>
         <textarea
           id="commentText"
-          className={styles.textarea}
+          className={styles.textarea +  " error"} 
           placeholder="Write your comment here"
           value={comment}
           onChange={onCommentChange}
           maxLength={400}
         />
+
         <div className={styles.characterCount}>
           {comment.length}/400
         </div>
+        <div className="errorMessage">test message</div>
       </div>
       
       <div className={styles.submitContainer}>

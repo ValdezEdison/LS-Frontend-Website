@@ -3,8 +3,7 @@ import styles from "./ConfirmationPopup.module.css";
 
 const ConfirmationPopup = ({ title, description, onCancel, onConfirm }) => {
   return (
-    // <div className={styles.modalContainer}>
-      <div className={styles.modalContent}>
+      <div className={styles.deleteConfirmationMain}>
         <h2 className={styles.modalTitle}>{title}</h2>
         <p className={styles.modalDescription}>{description}</p>
         <div className={styles.buttonContainer}>
@@ -21,8 +20,7 @@ const ConfirmationPopup = ({ title, description, onCancel, onConfirm }) => {
             Eliminar
           </button>
         </div>
-      </div>
-    // </div>
+        </div>
   );
 };
 
