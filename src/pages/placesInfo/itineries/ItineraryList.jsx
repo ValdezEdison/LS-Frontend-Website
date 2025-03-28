@@ -23,6 +23,9 @@ import { LanguageContext } from "../../../context/LanguageContext";
 import { toggleFavorite } from "../../../features/places/PlaceAction";
 import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
+import Modal from "../../../components/modal/Modal";
+import AlertPopup from "../../../components/popup/Alert/AlertPopup";
+import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 
 
 const ItineraryList = () => {
@@ -33,7 +36,7 @@ const ItineraryList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-   const { language } = useContext(LanguageContext);
+  const { language } = useContext(LanguageContext);
 
   const { loading: itineriesLoading, error, itineries, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -50,8 +53,23 @@ const ItineraryList = () => {
   const gotoTopButtonRef = useRef(null);
   const placesListBreakerRef = useRef(null);
 
-  
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [popupState, setPopupState] = useState({
+    map: false,
+    gallery: false,
+    reviewDrawer: false,
+    alert: false,
+    comment: false,
+    deleteConfirm: false,
+    success: false,
+  });
+
+  const togglePopup = (name, state) => {
+    setPopupState((prev) => ({ ...prev, [name]: state }));
+    state ? dispatch(openPopup()) : dispatch(closePopup());
+  };
+
+
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -60,7 +78,7 @@ const ItineraryList = () => {
   }, [dispatch, language]);
 
   const handleViewMoreDetails = (e, id) => {
-    
+
     navigate('/places/itineraries-details', { state: { id } });
   };
 
@@ -150,7 +168,7 @@ const ItineraryList = () => {
 
   // Define filters array
   const filters = [
-  
+
     {
       label: "Select Order",
       type: "select",
@@ -160,27 +178,50 @@ const ItineraryList = () => {
     },
   ];
 
-    const handleActions = (e,action, id) => {
-          e.stopPropagation();
-          if (action === 'addToFavorites') {
-            handleFavClick(e, id);
-          } else if (action === 'addToTrip') {
-            handleTripClick(e, id);
-          }
-        };
-      
-        const handleFavClick = (e, id) => {
-          e.stopPropagation();
-          if (isAuthenticated) {
-              dispatch(toggleFavorite(id));
-              dispatch(setFavTogglingId(id));
-          }
-        };
+
+  const handleActions = (e, action, id) => {
+    e.stopPropagation();
+    if (action === 'addToFavorites') {
+      handleFavClick(e, id);
+    } else if (action === 'addToTrip') {
+      handleTripClick(e, id);
+    }
+  };
+
+  const handleFavClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(toggleFavorite(id));
+      dispatch(setFavTogglingId(id));
+    }
+  };
+
+  const handleTripClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(openAddToTripPopup());
+      navigate('/places/itineraries', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+    }
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
+  }
 
   return (
     // <div className={styles.athenasPlaces}>
     <>
-    {isOpen && isAddToPopupOpen && <AddToTripPopup />}
+      {isOpen && isAddToPopupOpen && <AddToTripPopup />}
+      {isOpen && popupState.alert && (
+        <Modal
+          onClose={() => togglePopup("alert", false)}
+          customClass="modalSmTypeOne"
+        >
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+        </Modal>
+      )}
       <Header />
       <main className="page-center" ref={mainRef}>
         <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
@@ -190,7 +231,7 @@ const ItineraryList = () => {
 
           </div>
           <div className={styles.filterContainer}>
-          <FilterBar filters={filters}/>
+            <FilterBar filters={filters} />
           </div>
         </div>
         <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
@@ -210,7 +251,7 @@ const ItineraryList = () => {
             (Array.from({ length: 5 }).map((_, index) => (
               <CardSkeleton key={index} />
             ))
-            )  : visiblePlaces.length > 0 ? (
+            ) : visiblePlaces.length > 0 ? (
               visiblePlaces.map((place, index) => (
                 <PlaceCard
                   key={index}

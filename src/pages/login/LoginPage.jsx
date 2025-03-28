@@ -9,6 +9,7 @@ import Footer from "../../components/LoginPage/Footer";
 import styles from "./LoginPage.module.css";
 import { login, getProfile } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
+import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -211,6 +212,43 @@ const LoginPage = () => {
     navigate(path);
   };
 
+
+   // Social Login Handler
+   const handleSocialLogin = async (provider) => {
+    try {
+      let token;
+      
+      // Google Login
+      if (provider === 'google') {
+        token = await handleGoogleLogin();
+      } 
+      // Facebook Login
+      else if (provider === 'facebook') {
+        token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
+      }
+
+      if (token) {
+        const result = await dispatch(socialLogin({
+          grant_type: "convert_token",
+          client_id: clientId,
+          client_secret: clientSecret,
+          backend: provider,
+          token,
+        })).unwrap();
+
+        if (result) {
+          toast.success("Login successful!");
+          await dispatch(getProfile()).unwrap();
+          const from = location.state?.from?.pathname || "/";
+          navigate(from, { replace: true });
+        }
+      }
+    } catch (error) {
+      toast.error(error.message || "Social login failed");
+      console.error("Social login error:", error);
+    }
+  };
+
   return (
     <>
     
@@ -228,12 +266,12 @@ const LoginPage = () => {
               />
             </div>
             <div className={styles.formContainer}>
-            { loading &&
+            {/* { loading &&
                 <div className="loaderOverlay">
                   <div className="loaderBtnWrapper">
                   </div>
                 </div>
-               }
+               } */}
               <div className={styles.formWrapper}>
                 <h1 className={styles.formTitle}>Inicia sesión o crea una cuenta</h1>
                 <LoginForm
@@ -250,7 +288,7 @@ const LoginPage = () => {
                   rememberMe={rememberMe}
                   setRememberMe={setRememberMe}
                 />
-                <SocialLogin />
+                <SocialLogin onSocialLogin={handleSocialLogin}/>
                 <Footer />
               </div>
             </div>

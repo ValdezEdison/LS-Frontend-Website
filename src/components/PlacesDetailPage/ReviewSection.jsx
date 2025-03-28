@@ -10,8 +10,7 @@ import { useSelector } from "react-redux";
 const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handleClickEditComment, handleClickDeleteComment, comments, placeDetails }) => {
 
   const { isAuthenticated, user } = useSelector((state) => state.auth)
-console.log("user", user);
-console.log(comments, "comments");
+
   const sliderSettings = {
     // dots: true,
     infinite: false,

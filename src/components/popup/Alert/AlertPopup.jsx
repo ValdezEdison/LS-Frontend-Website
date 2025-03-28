@@ -2,18 +2,17 @@ import React from "react";
 import styles from "./AlertPopup.module.css";
 import CloseIcon from "./CloseIcon";
 
-const AlertPopup = ({ handleNavigateToLogin }) => {
+const AlertPopup = ({ handleNavigateToLogin, title="", description="", buttonText="" }) => {
   return (
     <>
       <div className={styles.alertPopupMain}>
-        <h2 className={styles.title}>¿Quieres darnos tu opinión?</h2>
+        <h2 className={styles.title}>{title}</h2>
         <p className={styles.description}>
-          Regístrate o inicia sesión para escribir un comentario sobre el local
-          secrets o evento al que has acudido.
+          {description}
         </p>
         <div className={styles.buttonWrapper}>
           <button className={styles.actionButton} onClick={handleNavigateToLogin}>
-            Inicia sesión o crea una cuenta
+            {buttonText}
           </button>
         </div>
         </div>

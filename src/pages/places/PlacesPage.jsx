@@ -17,6 +17,8 @@ import MapPopup from "../../components/common/MapPopup";
 import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import { useNavigate } from "react-router-dom";
+import AlertPopup from "../../components/popup/Alert/AlertPopup";
+import Modal from "../../components/modal/Modal";
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -40,6 +42,22 @@ const PlacesPage = () => {
     latAndLng: "",
     points: "",
   });
+
+  const [popupState, setPopupState] = useState({
+    map: false,
+    gallery: false,
+    reviewDrawer: false,
+    alert: false,
+    comment: false,
+    deleteConfirm: false,
+    success: false,
+  });
+
+  const togglePopup = (name, state) => {
+    setPopupState((prev) => ({ ...prev, [name]: state }));
+    state ? dispatch(openPopup()) : dispatch(closePopup());
+  };
+
 
 
   const removeDuplicates = (str) => {
@@ -201,7 +219,7 @@ const PlacesPage = () => {
 
   }, [state.selectedDestinationId]);
 
-  const handleActions = (e,action, id) => {
+  const handleActions = (e, action, id) => {
     e.stopPropagation();
     if (action === 'addToFavorites') {
       handleFavClick(e, id);
@@ -214,6 +232,8 @@ const PlacesPage = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
+    }else{
+      togglePopup("alert", true);
     }
   };
 
@@ -222,12 +242,28 @@ const PlacesPage = () => {
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
       navigate('/places/itineraries', { state: { id } });
+    }else{
+      togglePopup("alert", true);
     }
   };
 
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
+  }
+
   return (
     <>
-      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} handleActions={handleActions}/>}
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} categories={categories} ratings={ratings} state={state} setState={setState} handleActions={handleActions} />}
+
+      {isOpen && popupState.alert && (
+        <Modal
+          onClose={() => togglePopup("alert", false)}
+          customClass="modalSmTypeOne"
+        >
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account"/>
+        </Modal>
+      )}
+
       <div className={styles.placesPage}>
         <Header />
         {(filterLoading) ? (

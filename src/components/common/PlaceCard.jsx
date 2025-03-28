@@ -110,7 +110,6 @@ const PlaceCard = forwardRef(
                     >
                         {translate("placeCard.view_more")}
                     </button>
-                    {isAuthenticated && (
                         <button 
                             className={styles.addToTripButton} 
                             onClick={handleTripClick}
@@ -118,7 +117,6 @@ const PlaceCard = forwardRef(
                             <span className={styles.addIcon}></span>
                             {translate("placeCard.add_to_trip")}
                         </button>
-                    )}
                 </div>
             )}
         </div>

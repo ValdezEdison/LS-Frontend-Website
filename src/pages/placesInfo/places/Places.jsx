@@ -20,12 +20,14 @@ import styles2 from "../../../components/common/PlaceCard.module.css";
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import { fetchPlacesFilterCategories, toggleFavorite } from "../../../features/places/PlaceAction";
 import FilterBar from "../../../components/common/FilterBar";
-import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
+import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles3 from "../../../components/PlacesPage/MainContent.module.css"
 import { LanguageContext } from "../../../context/LanguageContext";
 import { setFavTogglingId } from "../../../features/places/placesInfo/places/PlacesSlice";
+import Modal from "../../../components/modal/Modal";
+import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -33,7 +35,7 @@ const Places = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-     const { language } = useContext(LanguageContext);
+    const { language } = useContext(LanguageContext);
 
     const { loading: placesLoading, error, placesList, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.placesInCity);
     const { isAuthenticated } = useSelector((state) => state.auth);
@@ -42,7 +44,7 @@ const Places = () => {
     const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next);
     const { isOpen } = useSelector((state) => state.popup);
 
-      const [showMapPopup, setShowMapPopup] = useState(false);
+    const [showMapPopup, setShowMapPopup] = useState(false);
 
     // Consolidated state for all relevant states in the Places page
     const [state, setState] = useState({
@@ -51,8 +53,23 @@ const Places = () => {
         selectedSubcategory: null, // For filter subcategory
         showArrow: true, // For scroll-to-top button visibility
         page: 1, // For pagination
-        latAndLng:""
+        latAndLng: ""
     });
+
+    const [popupState, setPopupState] = useState({
+        map: false,
+        gallery: false,
+        reviewDrawer: false,
+        alert: false,
+        comment: false,
+        deleteConfirm: false,
+        success: false,
+    });
+
+    const togglePopup = (name, state) => {
+        setPopupState((prev) => ({ ...prev, [name]: state }));
+        state ? dispatch(openPopup()) : dispatch(closePopup());
+    };
 
     const placesListRef = useRef(null);
     const mainRef = useRef(null);
@@ -72,21 +89,21 @@ const Places = () => {
 
 
     useEffect(() => {
-      if (id) {
-          dispatch(fetchPlacesInCity({
-              cityId: id,
-              page: state.page,
-              type: 'place',
-              levels: state.selectedLevel,
-              categories: state.selectedCategory,
-              subcategories: state.selectedSubcategory,
-          }));
-          
-      }
-  }, [dispatch, id, state.page, state.selectedLevel, state.selectedCategory, state.selectedSubcategory, language]);
+        if (id) {
+            dispatch(fetchPlacesInCity({
+                cityId: id,
+                page: state.page,
+                type: 'place',
+                levels: state.selectedLevel,
+                categories: state.selectedCategory,
+                subcategories: state.selectedSubcategory,
+            }));
+
+        }
+    }, [dispatch, id, state.page, state.selectedLevel, state.selectedCategory, state.selectedSubcategory, language]);
 
 
-    const handleViewMoreDetails = (id) => {
+    const handleViewMoreDetails = (e, id) => {
         navigate('/places/details', { state: { id } });
     };
 
@@ -191,39 +208,61 @@ const Places = () => {
     ];
 
 
-     const handleShowMapPopup = () => {
+    const handleShowMapPopup = () => {
         setShowMapPopup(true);
         setState({ ...state, latAndLng: "" });
         dispatch(openPopup());
-      };
-    
-        const handleCloseMapPopup = () => {
-          setShowMapPopup(false);
-          dispatch(closePopup());
-        };
+    };
+
+    const handleCloseMapPopup = () => {
+        setShowMapPopup(false);
+        dispatch(closePopup());
+    };
 
 
-         const handleActions = (e,action, id) => {
-            e.stopPropagation();
-            if (action === 'addToFavorites') {
-              handleFavClick(e, id);
-            } else if (action === 'addToTrip') {
-              handleTripClick(e, id);
-            }
-          };
-        
-          const handleFavClick = (e, id) => {
-            e.stopPropagation();
-            if (isAuthenticated) {
-                dispatch(toggleFavorite(id));
-                dispatch(setFavTogglingId(id));
-            }
-          };
+    const handleActions = (e, action, id) => {
+        e.stopPropagation();
+        if (action === 'addToFavorites') {
+            handleFavClick(e, id);
+        } else if (action === 'addToTrip') {
+            handleTripClick(e, id);
+        }
+    };
+
+    const handleFavClick = (e, id) => {
+        e.stopPropagation();
+        if (isAuthenticated) {
+            dispatch(toggleFavorite(id));
+            dispatch(setFavTogglingId(id));
+        }
+    };
+
+    const handleTripClick = (e, id) => {
+        e.stopPropagation();
+        if (isAuthenticated) {
+            dispatch(openAddToTripPopup());
+            navigate('/places/itineraries', { state: { id } });
+        } else {
+            togglePopup("alert", true);
+        }
+    };
+
+    const handleNavigateToLogin = () => {
+        navigate('/login', { state: { from: location } });
+      }
     
 
     return (
         <>
-          {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+            {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+            {isOpen && popupState.alert && (
+                <Modal
+                    onClose={() => togglePopup("alert", false)}
+                    customClass="modalSmTypeOne"
+                >
+                    <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+                </Modal>
+            )}
             <Header />
             <main className="page-center" ref={mainRef}>
                 <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
@@ -237,13 +276,13 @@ const Places = () => {
                     </div>
                 </div>
                 <div className={styles3.placesSelectedItemsList}>
-                <SelectedItemList
-                    state={state}
-                    setState={setState}
-                    categories={categories}
-                    translate={t}
-                    type="submenu-places"
-                />
+                    <SelectedItemList
+                        state={state}
+                        setState={setState}
+                        categories={categories}
+                        translate={t}
+                        type="submenu-places"
+                    />
                 </div>
                 <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
                 <div className={styles.placesList} ref={placesListRef}>
@@ -261,21 +300,21 @@ const Places = () => {
                         Array.from({ length: 5 }).map((_, index) => (
                             <CardSkeleton key={index} />
                         ))
-                    )  : visiblePlaces.length > 0 ? (
+                    ) : visiblePlaces.length > 0 ? (
                         visiblePlaces.map((place, index) => (
-                          <PlaceCard
-                            key={index}
-                            place={place}
-                            translate={t}
-                            isAuthenticated={isAuthenticated}
-                            handleViewMoreDetails={handleViewMoreDetails}
-                            handleActions={handleActions}
-                            isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id}
-                          />
+                            <PlaceCard
+                                key={index}
+                                place={place}
+                                translate={t}
+                                isAuthenticated={isAuthenticated}
+                                handleViewMoreDetails={handleViewMoreDetails}
+                                handleActions={handleActions}
+                                isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id}
+                            />
                         ))
-                      ) : (
+                    ) : (
                         <div className="no-results-wrapper">No results</div>
-                      )}
+                    )}
                     {loading ? <Loader /> : <SeeMoreButton
                         onClick={loadMore}
                         loading={loading}

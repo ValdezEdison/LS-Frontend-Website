@@ -4,8 +4,7 @@ import CheckIcon from "./CheckIcon";
 import CloseIcon from "./CloseIcon";
 
 const SuccessPopup = ({message, onClose }) => {
-  console.log("message", message);
-  console.log('SuccessPopup')
+
   return (
     // <div className={styles.modal}>
       <div className={styles.modalContent}>
