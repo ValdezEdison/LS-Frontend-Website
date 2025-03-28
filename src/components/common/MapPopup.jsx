@@ -10,6 +10,7 @@ import { Marker, MarkerYellow } from './Images'; // Both marker images imported
 import { MapPlaceHolderImage } from './Images';
 import { useLocation } from 'react-router-dom';
 import { set } from 'lodash';
+import PageLoader from "../../components/common/Loader";
 
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
@@ -182,6 +183,11 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                         </div>
                     )}
                     <div className={styles2.mapPopupMapArea}>
+                        <div className="loaderOverlay">
+                            <div className="loaderBtnWrapper">
+                                <PageLoader /> 
+                            </div>
+                        </div>
                         {!isMapLoaded && 
                             <div className={styles2.mapFrame}>
                                 <img

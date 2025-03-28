@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./RecoveryForm.module.css";
+import Loader from "../common/Loader";
 
 function RecoveryForm({
   formData,
@@ -49,6 +50,15 @@ function RecoveryForm({
         >
           Enviar
         </button>
+        <button 
+        className="submitLoadingButton" 
+        disabled={!isFormValid}
+      >
+        <div className="loaderBtnWrapper">
+          <Loader/>
+        </div>
+       
+      </button>
       </form>
       <p className={styles.helpText}>¿No te ha llegado ningún correo?</p>
     </div>

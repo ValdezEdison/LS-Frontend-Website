@@ -10,6 +10,8 @@ function PasswordRecoveryPage() {
     email: "",
   });
 
+  // const { loading } = useSelector((state) => state.auth);
+
   const [fieldStates, setFieldStates] = useState({
     email: {
       error: "",
@@ -120,6 +122,13 @@ function PasswordRecoveryPage() {
           <div className="login-page-center">
             <HeroSection />
             <div className={styles.formWrapper}>
+              {/* { loading && */}
+               <div className="loaderOverlay">
+                  <div className="loaderBtnWrapper">
+                  {/* <Loader />  */}
+                  </div>
+                </div>
+              {/* } */}
               <RecoveryForm 
                 formData={formData}
                 fieldStates={fieldStates}
