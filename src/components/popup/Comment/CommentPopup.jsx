@@ -29,7 +29,7 @@ const CommentPopup = ({
           onRatingChange={onRatingChange} 
         />
         {errors.rating && touched.rating && (
-          <div className={styles.errorMessage}>{errors.rating}</div>
+          <div className="errorMessage">{errors.rating}</div>
         )}
       </div>
       
@@ -39,7 +39,7 @@ const CommentPopup = ({
       <div className={styles.textareaContainer}>
         <textarea
           id="commentText"
-          className={`${styles.textarea} ${errors.text && touched.text ? styles.error : ''}`}
+          className={`${styles.textarea}  ${errors.text && touched.text ? 'error' : ''}`}
           placeholder="Write your comment here"
           value={comment}
           onChange={onCommentChange}
@@ -51,7 +51,7 @@ const CommentPopup = ({
           {comment.length}/400
         </div>
         {errors.text && touched.text && (
-          <div className={styles.errorMessage}>{errors.text}</div>
+          <div className="errorMessage">{errors.text}</div>
         )}
       </div>
       
