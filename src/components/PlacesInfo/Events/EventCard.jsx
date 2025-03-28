@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./EventCard.module.css";
 import { PlaceHolderImg2 } from "../../common/Images";
+import Loader from "../../common/Loader";
+import { useSelector } from "react-redux";
 
-function EventCard({ event }) {
-    const { title, images, next_schedule, levels, city } = event;
+function EventCard({ event, handleActions, isFavoriteToggling = false }) {
+  const { title, images, next_schedule, levels, city } = event;
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   // Extract relevant data
   const eventImage = images.length > 0 ? images[0].original : PlaceHolderImg2;
@@ -14,10 +18,17 @@ function EventCard({ event }) {
   return (
     <div className={styles.eventCard}>
       <div className={styles.eventImageContainer}>
+        {isFavoriteToggling && (
+          <div className={styles.loaderOverlay}>
+            <div className={styles.loaderToCenter}>
+              <Loader />
+            </div>
+          </div>
+        )}
         <img src={eventImage} alt={title} className={styles.eventImage} />
-        <div className={styles.favIcon}></div>
+      {isAuthenticated &&  <div className={`${styles.favIcon} ${event?.is_fav ? styles.clicked : ''}`} onClick={(e) => handleActions(e, 'addToFavorites', event?.id)}></div>}
       </div>
-      
+
       <div className={styles.eventInfo}>
         <h3 className={styles.eventTitle}>{title}</h3>
         <p className={styles.eventLocation}>{eventLocation}</p>
@@ -26,7 +37,7 @@ function EventCard({ event }) {
       </div>
       <div className={styles.eventActions}>
         <button className={styles.viewMoreButton}>Ver más</button>
-        <button className={styles.addToTripButton}>
+        <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', event?.id)}>
           <span className={styles.addIcon}></span>
           Añadir a viaje
         </button>

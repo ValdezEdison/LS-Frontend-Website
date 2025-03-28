@@ -382,7 +382,7 @@ const PlaceDetails = () => {
   };
 
   const handleSubmitComment = () => {
-    console.log("commentForm", commentForm);
+
     // Mark all fields as touched
     setCommentForm(prev => ({
       ...prev,
@@ -447,7 +447,7 @@ const PlaceDetails = () => {
               rating: false
             }
           });
-          console.log("error", error);
+          
           // Check for the specific error about already posted review
           if (error.error === "An error ocurred" && error.detail === "You have already posted a review") {
             // Show toast message
@@ -513,7 +513,7 @@ const PlaceDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Do you want to give us your opinion?" description="Sign up or log in to leave a review about the local secrets or event you attended." buttonText="Sign in or create an account"/>
         </Modal>
       )}
 

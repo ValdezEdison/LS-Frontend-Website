@@ -7,19 +7,22 @@ import styles from "./Events.module.css";
 import SubNavMenu from "../../../components/common/SubNavMenu";
 import { fetchEventsByCityId } from "../../../features/places/placesInfo/events/EventAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FilterBar from "../../../components/common/FilterBar";
 import useSeeMore from "../../../hooks/useSeeMore";
 import Loader from "../../../components/common/Loader";
 import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { useTranslation } from 'react-i18next';
 import EventCardSkeleton from "../../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
-import { fetchPlacesFilterCategories } from "../../../features/places/PlaceAction";
-import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
+import { fetchPlacesFilterCategories, toggleFavorite } from "../../../features/places/PlaceAction";
+import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles2 from "../../../components/PlacesPage/MainContent.module.css";
 import { LanguageContext } from "../../../context/LanguageContext";
+import { setFavTogglingId } from "../../../features/places/placesInfo/events/EventSlice";
+import AlertPopup from "../../../components/popup/Alert/AlertPopup";
+import Modal from "../../../components/modal/Modal";
 
 const recommendedEvents = [
   {
@@ -48,11 +51,15 @@ const Events = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
-   const { language } = useContext(LanguageContext);
-  const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
+  const navigate = useNavigate();
+  
+  const { language } = useContext(LanguageContext);
+  const { loading: eventLoading, error, events, next, isFavoriteToggling, favTogglingId } = useSelector((state) => state.eventsByCity);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   const { isOpen } = useSelector((state) => state.popup);
 
   const [showMapPopup, setShowMapPopup] = useState(false);
@@ -69,6 +76,21 @@ const Events = () => {
     latAndLng: "",
     selectedDateRange: { startDate: null, endDate: null },
   })
+
+  const [popupState, setPopupState] = useState({
+    map: false,
+    gallery: false,
+    reviewDrawer: false,
+    alert: false,
+    comment: false,
+    deleteConfirm: false,
+    success: false,
+  });
+
+  const togglePopup = (name, state) => {
+    setPopupState((prev) => ({ ...prev, [name]: state }));
+    state ? dispatch(openPopup()) : dispatch(closePopup());
+  };
 
   useEffect(() => {
     if (id) {
@@ -98,12 +120,12 @@ const Events = () => {
       type: "datePicker",
       selectedId: state.selectedDateRange,
       onSelect: (dates) => {
-          setState((prevState) => ({
-              ...prevState,
-              selectedDateRange: dates || { startDate: null, endDate: null }, // Fallback to default
-          }));
+        setState((prevState) => ({
+          ...prevState,
+          selectedDateRange: dates || { startDate: null, endDate: null }, // Fallback to default
+        }));
       },
-  },
+    },
     {
       label: "Select Level",
       type: "select",
@@ -120,9 +142,50 @@ const Events = () => {
   ];
 
 
+  const handleActions = (e, action, id) => {
+    e.stopPropagation();
+    if (action === 'addToFavorites') {
+      handleFavClick(e, id);
+    } else if (action === 'addToTrip') {
+      handleTripClick(e, id);
+    }
+  };
+
+  const handleFavClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(toggleFavorite(id));
+      dispatch(setFavTogglingId(id));
+    }
+  };
+
+  const handleTripClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(openAddToTripPopup());
+      navigate('/places/itineraries', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+    }
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
+  }
+
+
   return (
     <>
       {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+
+      {isOpen && popupState.alert && (
+        <Modal
+          onClose={() => togglePopup("alert", false)}
+          customClass="modalSmTypeOne"
+        >
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account"/>
+        </Modal>
+      )}
 
       <Header />
       <main className="page-center">
@@ -158,12 +221,13 @@ const Events = () => {
             ) : visibleEvents.length > 0 && (
               // Render visible events if available
               visibleEvents.map((event, index) => (
-                <EventCard key={index} event={event} />
+                <EventCard key={index} event={event} handleActions={handleActions}
+                  isFavoriteToggling={isFavoriteToggling && favTogglingId === event.id} />
               ))
             )}
           </div>
 
-         {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
+          {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
           {loading ? <Loader /> : <SeeMoreButton
             onClick={loadMore}

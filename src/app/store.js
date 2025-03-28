@@ -14,6 +14,7 @@ import destinationReducer from "../features/places/placesInfo/destination/Destin
 import eventByCityReducer from "../features/places/placesInfo/events/EventSlice.jsx"
 import placesInCityReducer from "../features/places/placesInfo/places/PlacesSlice.jsx"
 import itineriesInCityReducer from "../features/places/placesInfo/itinerary/ItinerarySlice.jsx"
+import socialAuthReducer from "../features/authentication/socialLogin/SocialAuthSlice.jsx"
 
 
 // cms reducer
@@ -33,6 +34,7 @@ const store = configureStore({
   reducer: {
     // main api reducers
     auth: authReducer,
+    socialAuth: socialAuthReducer,
     places: placeReducer,
     events: eventReducer,
     languages: languageReducer,
