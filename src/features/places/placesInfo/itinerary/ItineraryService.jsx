@@ -23,6 +23,10 @@ const itineraryService = {
         return ApiService.get(`routes/${travelId}/directions`, {params});
     },
 
+    addTrip: async (trip) => {
+        return ApiService.post('/travels', trip);
+    },
+
 }
 
 export default itineraryService

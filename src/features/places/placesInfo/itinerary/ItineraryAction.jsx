@@ -50,3 +50,15 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const addTrip = createAsyncThunk(
+    'places/addTrip',
+    async (trip, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.addTrip(trip);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

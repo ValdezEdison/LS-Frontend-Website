@@ -17,7 +17,7 @@ import Modal from "../../../components/modal/Modal";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
-import { fetchTravelLiteList, fetchTravelTime } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import { fetchTravelLiteList, fetchTravelTime, addTrip } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -40,6 +40,13 @@ const ItineraryDetail = () => {
     comment: false,
     deleteConfirm: false,
     success: false,
+  });
+
+  const [newTripData, setNewTripData] = useState({
+    name: '',
+    destination: '',
+    startDate: '',
+    endDate: ''
   });
 
   const togglePopup = (name, state) => {
@@ -81,7 +88,16 @@ const ItineraryDetail = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      navigate('/places/itineraries-details', { state: { id } });
+      // Reset states when opening the popup
+      setSelectedTrip(null);
+      setNewTripData({
+        name: '',
+        destination: '',
+        startDate: '',
+        endDate: ''
+      });
+      setTripError(null);
+      setTripSuccess(false);
     } else {
       togglePopup("alert", true);
     }
@@ -138,7 +154,7 @@ const ItineraryDetail = () => {
 
   return (
     <>
-     {isOpen && isAddToPopupOpen && <AddToTripPopup />}
+     {isOpen && isAddToPopupOpen && <AddToTripPopup newTripData={newTripData} setNewTripData={setNewTripData} />}
      {isOpen && popupState.alert && (
           <Modal
             onClose={() => togglePopup("alert", false)}
