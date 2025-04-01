@@ -123,6 +123,11 @@
   padding: 10px 16px;
   border: none;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.addToTripButton:hover {
+  background-color: #e5b22e;
 }
 
 .addIcon {
