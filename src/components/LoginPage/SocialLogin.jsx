@@ -1,8 +1,18 @@
 import React from "react";
 import styles from "./SocialLogin.module.css";
 import { Google } from "../common/Images";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const SocialLogin = ({ onSocialLogin }) => {
+
+  const handleGoogleSuccess = (response) => {
+    onSocialLogin('google', response.token);
+  };
+
+  const handleGoogleFailure = (error) => {
+    onSocialLogin('google', null, error);
+  };
+
   return (
     <div className={styles.socialLogin}>
       <div className={styles.divider}>
@@ -18,9 +28,14 @@ const SocialLogin = ({ onSocialLogin }) => {
             className={styles.socialIcon}
           />
         </button>
-        <button className={styles.socialButton} onClick={() => onSocialLogin('google')}>
+        {/* <button className={styles.socialButton} onClick={() => onSocialLogin('google')}>
           <img src={Google}/>
-        </button>
+        </button> */}
+          <GoogleLoginButton 
+          onSuccess={handleGoogleSuccess}
+          onFailure={handleGoogleFailure}
+          // disabled={loading}
+        />
         <button className={styles.socialButton} >
           <img
             src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/7a85e1276dbb1f964a5470fa9883b0403ecb3ee0?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"

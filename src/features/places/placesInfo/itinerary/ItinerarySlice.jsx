@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
 
 const initialState = {
@@ -110,6 +110,19 @@ const itineriesInCitySlice = createSlice({
         state.travelTime = action.payload;
       })
       .addCase(fetchTravelTime.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(addTrip.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addTrip.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(addTrip.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
