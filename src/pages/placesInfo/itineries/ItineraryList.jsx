@@ -200,7 +200,7 @@ const ItineraryList = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      navigate('/places/itineraries', { state: { id } });
+      navigate('/places/itineraries-details', { state: { id } });
     } else {
       togglePopup("alert", true);
     }
@@ -213,7 +213,7 @@ const ItineraryList = () => {
   return (
     // <div className={styles.athenasPlaces}>
     <>
-      {isOpen && isAddToPopupOpen && <AddToTripPopup />}
+      {/* {isOpen && isAddToPopupOpen && <AddToTripPopup />} */}
       {isOpen && popupState.alert && (
         <Modal
           onClose={() => togglePopup("alert", false)}

@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity, fetchItineraryDetails } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
 
 const initialState = {
@@ -11,7 +11,9 @@ const initialState = {
   count: 0,
   itineraryDetails: null,
   isFavoriteToggling: false,
-  favTogglingId: null
+  favTogglingId: null,
+  travelLiteList: [],
+  travelTime: null
 };
 
 const itineriesInCitySlice = createSlice({
@@ -83,6 +85,32 @@ const itineriesInCitySlice = createSlice({
       })
       .addCase(toggleFavorite.rejected, (state, action) => {
         state.isFavoriteToggling = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchTravelLiteList.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTravelLiteList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.travelLiteList = action.payload;
+      })
+      .addCase(fetchTravelLiteList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchTravelTime.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTravelTime.fulfilled, (state, action) => {
+        state.loading = false;
+        state.travelTime = action.payload;
+      })
+      .addCase(fetchTravelTime.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       })
 

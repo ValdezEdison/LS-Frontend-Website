@@ -1,91 +1,216 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "./ItineraryMap.module.css";
 import { Loader } from "@googlemaps/js-api-loader";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { Marker, PlaceHolderImg1 } from '../../common/Images';
+import { PlaceHolderImg1 } from '../../common/Images';
 
-const ItineraryMap = ({ geoLocations, places }) => {
-    const mapContainerRef = useRef(null);
-    const [map, setMap] = useState(null);
-    const [mapLoaded, setMapLoaded] = useState(false); // State to track if the map is loaded
-    const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-    const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
-    useEffect(() => {
-        const loader = new Loader({
-            apiKey: apiKey,
-            version: "weekly",
-            libraries: ["marker"],
-        });
 
-        loader.load().then(() => {
-            const google = window.google;
-            const mapInstance = new google.maps.Map(mapContainerRef.current, {
-                center: { lat: 0, lng: 0 },
-                zoom: 2,
-                mapId: mapId,
-                fullscreenControl: false,
-            });
+const ItineraryMap = ({ places }) => {
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState(false);
+  const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
-            setMap(mapInstance);
-            setMapLoaded(true); // Set mapLoaded to true once the map is loaded
+  const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
+const loader = new Loader({
+  apiKey: apiKey,
+  version: "weekly",
+  libraries: ["maps", "marker", "core", "geometry"], // Include all needed libraries
+});
 
-            if (geoLocations.length > 0) {
-                const markers = geoLocations
-                    .filter(location => location.address?.latitude !== 0 && location.address?.longitude !== 0)
-                    .map(location => {
-                        const customContent = document.createElement("div");
-                        customContent.innerHTML = `
-                            <img src="${Marker}" alt="Marker" style="width: 40px; height: 40px;" />
-                        `;
+  const createCustomMarkerElement = (number) => {
+    const element = document.createElement("div");
+    element.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+        <circle cx="15" cy="15" r="14" fill="#FFD700" stroke="#FFFFFF" stroke-width="2"/>
+        <text x="15" y="20" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#4285F4">${number}</text>
+      </svg>
+    `;
+    return element;
+  };
 
-                        const marker = new google.maps.marker.AdvancedMarkerElement({
-                            position: { lat: location.address.latitude, lng: location.address.longitude },
-                            map: mapInstance,
-                            content: customContent,
-                        });
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
 
-                        // Focus place card on marker click
-                        marker.addListener("click", () => {
-                            const matchedPlace = places.find(place =>
-                                place.address?.latitude === location.address.latitude &&
-                                place.address?.longitude === location.address.longitude
-                            );
+    const loadMap = async () => {
+      try {
+        const { Map } = await loader.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await loader.importLibrary("marker");
 
-                            if (matchedPlace) {
-                                // You can add additional logic here to handle the place card focus
-                                ;
-                            }
-                        });
-
-                        return marker;
-                    });
-
-                // Add marker clustering
-                new MarkerClusterer({ map: mapInstance, markers });
+        mapInstanceRef.current = new Map(mapContainerRef.current, {
+          center: { lat: 0, lng: 0 },
+          zoom: 14,
+          mapId: mapId,
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          styles: [
+            {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }]
+            },
+            {
+              featureType: "transit",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }]
             }
-        }).catch((error) => {
-            console.error("Failed to load Google Maps:", error);
-            setMapLoaded(false); // Set mapLoaded to false if the map fails to load
+          ]
         });
-    }, [geoLocations, apiKey, places]);
 
-    return (
-        <div className={styles.itenaryMapFrame}>
-            {mapLoaded ? (
-                <div
-                    ref={mapContainerRef}
-                    style={{ width: '100%', height: '100%' }}
-                ></div>
-            ) : (
-                <img
-                    src={PlaceHolderImg1}
-                    alt="Placeholder"
-                    className={styles.placeholderImage}
-                />
-            )}
+        setMapLoaded(true);
+      } catch (error) {
+        console.error("Failed to load Google Maps:", error);
+        setMapError(true);
+      }
+    };
+
+    loadMap();
+
+     return () => {
+    // Clear all markers
+    markersRef.current.forEach(marker => {
+      if (marker) {
+        marker.map = null;
+        if (marker.content && marker.content.parentNode) {
+          marker.content.parentNode.removeChild(marker.content);
+        }
+      }
+    });
+    markersRef.current = [];
+
+    // Remove all polylines
+    const existingPolylines = document.querySelectorAll('.itinerary-polyline');
+    existingPolylines.forEach(el => el.remove());
+
+    // Clean up the map instance
+    if (mapInstanceRef.current) {
+      // Remove all event listeners
+      google.maps.event.clearInstanceListeners(mapInstanceRef.current);
+      // Remove the map from DOM
+      const mapContainer = mapContainerRef.current;
+      if (mapContainer) {
+        mapContainer.innerHTML = '';
+      }
+      mapInstanceRef.current = null;
+    }
+
+    // Reset state
+    setMapLoaded(false);
+    setMapError(false);
+  };
+  }, [mapId]);
+
+  useEffect(() => {
+    if (!mapLoaded || !places || places.length === 0 || !mapInstanceRef.current) return;
+
+    const updateMarkers = async () => {
+      try {
+        const google = window.google;
+        const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+        const { LatLngBounds } = await loader.importLibrary("core");
+
+        // Clear existing markers and polylines
+        markersRef.current.forEach(marker => marker.map = null);
+        markersRef.current = [];
+
+        // Remove existing polylines
+        const existingPolylines = document.querySelectorAll('.itinerary-polyline');
+        existingPolylines.forEach(el => el.remove());
+
+        // Create new markers
+        const newMarkers = places.map((place, index) => {
+          if (!place.address?.latitude || !place.address?.longitude) {
+            console.warn('Place missing coordinates:', place);
+            return null;
+          }
+
+          return new AdvancedMarkerElement({
+            position: {
+              lat: place.address.latitude,
+              lng: place.address.longitude
+            },
+            map: mapInstanceRef.current,
+            title: `${index + 1}. ${place.title}`,
+            content: createCustomMarkerElement(index + 1)
+          });
+        }).filter(Boolean);
+
+        markersRef.current = newMarkers;
+
+        // Draw connecting lines between markers
+        if (newMarkers.length > 1) {
+          const path = newMarkers.map(marker => marker.position);
+          new google.maps.Polyline({
+            path: path,
+            geodesic: true,
+            strokeColor: "#4285F4",
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            map: mapInstanceRef.current,
+            className: 'itinerary-polyline' // Add class for easier removal
+          });
+        }
+
+        // Adjust map view
+        if (newMarkers.length > 0) {
+          const bounds = new LatLngBounds();
+          newMarkers.forEach(marker => bounds.extend(marker.position));
+          
+          mapInstanceRef.current.fitBounds(bounds, {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50
+          });
+
+          if (places.length === 1) {
+            mapInstanceRef.current.setZoom(16);
+          }
+        }
+      } catch (error) {
+        console.error("Error updating markers:", error);
+      }
+    };
+
+    updateMarkers();
+  }, [places, mapLoaded]);
+
+  return (
+    <div className={styles.itenaryMapFrame}>
+      <div 
+        ref={mapContainerRef} 
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          minHeight: '400px',
+          borderRadius: '12px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+        }}
+      />
+      
+      {!mapLoaded && !mapError && (
+        <img
+          src={PlaceHolderImg1}
+          alt="Placeholder"
+          className={styles.placeholderImage}
+          style={{
+            width: '100%',
+            borderRadius: '12px',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+          }}
+        />
+      )}
+      
+      {mapError && (
+        <div className={styles.errorMessage}>
+          Failed to load the map. Please try again later.
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default ItineraryMap;

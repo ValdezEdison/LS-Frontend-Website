@@ -20,6 +20,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
 
     const location = useLocation();
     const isEventsRoute = location.pathname === '/places/events';
+    const isDetailsRoute = location.pathname === '/places/details';
 
     const mapContainerRef = useRef(null);
     const placeRefs = useRef({});
@@ -85,7 +86,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
 
         // Zoom to marker position (15 is the zoom level)
         mapInstance.setCenter(marker.position);
-        mapInstance.setZoom(5);
+        mapInstance.setZoom(15);
 
         // Find and scroll to corresponding place card
         const matchedPlace = dataToMap.find(place =>
@@ -121,7 +122,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
         const loader = new Loader({
             apiKey: apiKey,
             version: "weekly",
-            libraries: ["marker"],
+            libraries: ["maps", "marker", "core", "geometry"],
         });
 
         loader.load().then(() => {
@@ -136,7 +137,24 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
             setMap(mapInstance);
             setIsMapLoaded(true);
 
-            if (geoDataToMap.length > 0) {
+            if (isDetailsRoute && state?.latitude && state?.longitude) {
+                // For details page, show only one marker
+                const defaultContent = document.createElement("div");
+                defaultContent.innerHTML = `
+                    <img src="${MarkerYellow}" alt="Marker" style="width: 40px; height: 40px;" />
+                `;
+
+                const marker = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: state.latitude, lng: state.longitude },
+                    map: mapInstance,
+                    content: defaultContent,
+                });
+
+                setMarkers([marker]);
+                mapInstance.setCenter(marker.position);
+                mapInstance.setZoom(5);
+            } else if (geoDataToMap.length > 0) {
+                // For other pages, show all markers
                 const newMarkers = geoDataToMap
                     .filter(location => location.address?.latitude !== 0 && location.address?.longitude !== 0)
                     .map(location => {
@@ -171,13 +189,13 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
             setMarkers([]);
             setActiveMarker(null);
         };
-    }, [geoDataToMap, apiKey]);
+    }, [geoDataToMap, apiKey, isDetailsRoute, state?.latitude, state?.longitude]);
 
     return (
         <div className={styles2.popupOverlay}>
             <div className={styles2.popupContent}>
                 <div className={styles2.mapPopupWrapper}>
-                    {categories.length > 0 && ratings.length > 0 && (
+                    {!isDetailsRoute && categories.length > 0 && ratings.length > 0 && (
                         <div className={styles2.mapPopupFilter}>
                             <Filter categories={categories} ratings={ratings} state={state} setState={setState} />
                         </div>
@@ -204,30 +222,32 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                             className={styles2.mapFrame}
                             style={{ width: '100%', display: isMapLoaded ? 'block' : 'none' }}
                         />
-                        <div className={styles2.mapPopupPlaces}>
-                            {dataToMap?.length > 0 ? (
-                                dataToMap.map((item, index) => (
-                                    <PlaceCard
-                                        key={item.id || index}
-                                        place={item}
-                                        translate={t}
-                                        isAuthenticated={isAuthenticated}
-                                        isPopup={true}
-                                        handleActions={handleActions}
-                                        isFavoriteToggling={isFavoriteToggling && favTogglingId === item.id}
-                                        ref={(el) => {
-                                            if (el) {
-                                                placeRefs.current[item.id] = el;
-                                            }
-                                        }}
-                                    />
-                                ))
-                            ) : (
-                                <div className={styles2.noDataFound}>
-                                    No data found
-                                </div>
-                            )}
-                        </div>
+                        {!isDetailsRoute && (
+                            <div className={styles2.mapPopupPlaces}>
+                                {dataToMap?.length > 0 ? (
+                                    dataToMap.map((item, index) => (
+                                        <PlaceCard
+                                            key={item.id || index}
+                                            place={item}
+                                            translate={t}
+                                            isAuthenticated={isAuthenticated}
+                                            isPopup={true}
+                                            handleActions={handleActions}
+                                            isFavoriteToggling={isFavoriteToggling && favTogglingId === item.id}
+                                            ref={(el) => {
+                                                if (el) {
+                                                    placeRefs.current[item.id] = el;
+                                                }
+                                            }}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className={styles2.noDataFound}>
+                                        No data found
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <button

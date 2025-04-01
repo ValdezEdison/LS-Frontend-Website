@@ -16,6 +16,8 @@ import { LanguageContext } from "../../../context/LanguageContext";
 import Modal from "../../../components/modal/Modal";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
+import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
+import { fetchTravelLiteList, fetchTravelTime } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -28,8 +30,8 @@ const ItineraryDetail = () => {
   const { loading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { isOpen } = useSelector((state) => state.popup);
-
+  const { isOpen, isAddToPopupOpen } = useSelector((state) => state.popup);
+  const { geoLocations } = useSelector((state) => state.places);
   const [popupState, setPopupState] = useState({
     map: false,
     gallery: false,
@@ -48,6 +50,8 @@ const ItineraryDetail = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
+      dispatch(fetchTravelLiteList());
+      // dispatch(fetchTravelTime(id));
     }
   }, [dispatch, id, language]);
 
@@ -77,7 +81,7 @@ const ItineraryDetail = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      navigate('/places/itineraries', { state: { id } });
+      navigate('/places/itineraries-details', { state: { id } });
     } else {
       togglePopup("alert", true);
     }
@@ -134,6 +138,7 @@ const ItineraryDetail = () => {
 
   return (
     <>
+     {isOpen && isAddToPopupOpen && <AddToTripPopup />}
      {isOpen && popupState.alert && (
           <Modal
             onClose={() => togglePopup("alert", false)}
@@ -142,12 +147,12 @@ const ItineraryDetail = () => {
             <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Want to add a trip to your list?" description="Sign up or log in to add a trip and create itineraries to your liking." buttonText="Sign in or create an account" />
           </Modal>
         )}
-      <div className={styles.itineraryDetailContainer}>
+      <div className={`${styles.itineraryDetailContainer} ${isAddToPopupOpen ? styles.overflowHide : ''}`}>
         <Header />
         <main className="page-center">
           <section className={styles.itineraryHeader}>
             <div className={styles.itenaryDetailTitle}>Detalle itinerario</div>
-            <ItineraryMap />
+            <ItineraryMap places={itineraryDetails?.stops}/>
             <div className={styles.itineraryInfo}>
               <h1 className={styles.itineraryTitle}>{itineraryDetails?.title}</h1>
               <div className={styles.itineraryActions}>

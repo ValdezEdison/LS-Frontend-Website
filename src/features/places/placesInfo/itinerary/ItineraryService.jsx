@@ -13,6 +13,16 @@ const itineraryService = {
         return ApiService.get(`/routes/${routeId}`);
     },
 
+    getTravelLiteList: async () => {
+        return ApiService.get(`travels/list_lite`);
+    },
+
+    getTravelTime: async (travelId, mode) => {
+        const params = {}
+        if (mode !== undefined && mode !== null && mode !== "") params.mode = mode;
+        return ApiService.get(`routes/${travelId}/directions`, {params});
+    },
+
 }
 
 export default itineraryService

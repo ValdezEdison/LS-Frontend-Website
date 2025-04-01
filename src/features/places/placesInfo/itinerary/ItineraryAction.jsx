@@ -26,3 +26,27 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+    export const fetchTravelLiteList = createAsyncThunk(
+      'places/fetchTravelLiteList',
+      async (cityId, { rejectWithValue }) => {
+        try {
+          const response = await itineraryService.getTravelLiteList(cityId);
+          return response;
+        } catch (error) {
+          return rejectWithValue(handleApiError(error));
+        }
+      }
+  );
+
+  export const fetchTravelTime = createAsyncThunk(
+    'places/fetchTravelTimeLine',
+    async (cityId, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.getTravelTime(cityId);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

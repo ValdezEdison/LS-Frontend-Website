@@ -12,7 +12,7 @@ import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesD
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite, addComment, editComment, deleteComment } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite, addComment, editComment, deleteComment, fetchGeoLocations } from "../../features/places/PlaceAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
 import ImageGallerySkeleton from "../../components/skeleton/PlacesDetailPage/ImageGallerySkeleton";
@@ -31,6 +31,7 @@ import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
+import { use } from "react";
 
 
 const PlaceDetails = () => {
@@ -71,6 +72,8 @@ const PlaceDetails = () => {
     scoreSearchQuery: "",
     languageSearchQuery: "",
     points: "",
+    latitude: "",
+    longitude: "",
   });
 
   const [comment, setComment] = useState({
@@ -474,6 +477,21 @@ const PlaceDetails = () => {
     };
   }, [popupState.success]);
 
+
+  useEffect(() => {
+    if (place) {
+      setState({
+        ...state,
+       
+          latitude: place.address.latitude,
+          longitude: place.address.longitude
+      
+      })
+      // dispatch(fetchGeoLocations({ type: "place"}));
+    }
+    
+  }, [place]);
+  console.log(state, "state")
   return (
     <>
       {isOpen && popupState.map && (

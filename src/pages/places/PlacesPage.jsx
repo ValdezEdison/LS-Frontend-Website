@@ -241,7 +241,7 @@ const PlacesPage = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      navigate('/places/itineraries', { state: { id } });
+      navigate('/places/itineraries-details', { state: { id } });
     }else{
       togglePopup("alert", true);
     }
