@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./RegistrationForm.module.css";
 import Loader from "../common/Loader";
+import { useSelector } from "react-redux";
 
 const RegistrationForm = ({
   formData,
@@ -14,6 +15,8 @@ const RegistrationForm = ({
   handleBlur,
   isFormValid
 }) => {
+
+  const { loading } = useSelector((state) => state.auth);
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Username Input */}
@@ -26,9 +29,8 @@ const RegistrationForm = ({
           id="username"
           name="username"
           placeholder="Nombre y apellidos"
-          className={`${styles.input} ${
-            fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
-          }`}
+          className={`${styles.input} ${fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
+            }`}
           value={formData.username}
           onChange={handleInputChange}
           onFocus={() => handleFocus('username')}
@@ -52,9 +54,8 @@ const RegistrationForm = ({
           id="email"
           name="email"
           placeholder="nombre@ejemplo.com"
-          className={`${styles.input} ${
-            fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
-          }`}
+          className={`${styles.input} ${fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
+            }`}
           value={formData.email}
           onChange={handleInputChange}
           onFocus={() => handleFocus('email')}
@@ -84,9 +85,8 @@ const RegistrationForm = ({
             id="phone"
             name="phone"
             placeholder="123 456 789"
-            className={`${styles.input} ${
-              fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
+              }`}
             value={formData.phone}
             onChange={handleInputChange}
             onFocus={() => handleFocus('phone')}
@@ -111,8 +111,8 @@ const RegistrationForm = ({
           mínimo <strong>un número, una mayúscula y un símbolo.</strong>
         </div>
         <div className={styles.passwordInput}>
-          <div 
-            className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`} 
+          <div
+            className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`}
             onClick={togglePasswordVisibility}
           ></div>
           <input
@@ -120,9 +120,8 @@ const RegistrationForm = ({
             id="password"
             name="password"
             placeholder="Introduce una contraseña"
-            className={`${styles.input} ${
-              fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
+              }`}
             value={formData.password}
             onChange={handleInputChange}
             onFocus={() => handleFocus('password')}
@@ -159,22 +158,25 @@ const RegistrationForm = ({
       </div>
 
       {/* Submit Button */}
-      <button 
-        type="submit" 
-        className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
-        disabled={!isFormValid}
-      >
-        Crear cuenta
-      </button>
-      <button 
-        className="submitLoadingButton" 
+      {loading ? <button
+        className="submitLoadingButton"
         disabled={!isFormValid}
       >
         <div className="loaderBtnWrapper">
-          <Loader/>
+          <Loader />
         </div>
-       
-      </button>
+
+      </button> :
+        <button
+          type="submit"
+          className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+          disabled={!isFormValid}
+        >
+          Crear cuenta
+        </button>
+      }
+
+
 
       {/* Login Prompt */}
       <p className={styles.loginPrompt}>
