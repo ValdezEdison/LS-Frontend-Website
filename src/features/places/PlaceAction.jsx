@@ -178,3 +178,15 @@ export const deletePlace = createAsyncThunk(
     }
   }
 );
+
+export const generateLink = createAsyncThunk(
+  'places/generateLink',
+  async (placeId, { rejectWithValue }) => {
+    try {
+      const response = await placeService.generateLink(placeId);            
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
