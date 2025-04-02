@@ -20,6 +20,7 @@ import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import { fetchTravelLiteList, fetchTravelTime, addTrip } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../../features/common/cities/CityAction";
 import { debounce } from 'lodash';
+import { t } from "i18next";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const ItineraryDetail = () => {
     endDate: null,
     destinationSearchQuery: "",
     destinationId: null,
-    mode: 'car',
+    mode: 'driving',
   });
 
   const togglePopup = (name, formState) => {
@@ -69,7 +70,7 @@ const ItineraryDetail = () => {
       dispatch(fetchItineraryDetails(id));
       dispatch(fetchTravelLiteList());
        dispatch(fetchCities({}));
-      // dispatch(fetchTravelTime(id));
+      dispatch(fetchTravelTime({travelId: id, mode: formState.mode }));
     }
   }, [dispatch, id, language]);
 
@@ -187,7 +188,13 @@ const ItineraryDetail = () => {
       }
     };
   
-   
+   console.log("formState",formState);
+
+   useEffect(() => {
+     if(formState.mode) {
+       dispatch(fetchTravelTime({travelId: id, mode: formState.mode }));
+     }
+   },[formState.mode, dispatch, id]);
 
   if (loading) {
     return (

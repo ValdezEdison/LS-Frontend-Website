@@ -221,15 +221,15 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
            <div className={styles.itenaryMapOptionsListWrapper}>
            <div
              className={`${styles.itenaryMapOptionItem} ${styles.bike} `}
-             onClick={() => handleModeChange('bike')}
+             onClick={() => handleModeChange('bicycling')}
            ></div>
            <div
              className={`${styles.itenaryMapOptionItem} ${styles.walk} `}
-             onClick={() => handleModeChange('walk')}
+             onClick={() => handleModeChange('walking')}
            ></div>
            <div
              className={`${styles.itenaryMapOptionItem} ${styles.car} `}
-             onClick={() => handleModeChange('car')}
+             onClick={() => handleModeChange('driving')}
            ></div>
          </div>
         ) :

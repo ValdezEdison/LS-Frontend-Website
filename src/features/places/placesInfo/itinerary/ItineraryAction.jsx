@@ -41,9 +41,9 @@ export const fetchItineriesInCity = createAsyncThunk(
 
   export const fetchTravelTime = createAsyncThunk(
     'places/fetchTravelTimeLine',
-    async (cityId, { rejectWithValue }) => {
+    async ({ travelId, mode }, { rejectWithValue }) => {
       try {
-        const response = await itineraryService.getTravelTime(cityId);
+        const response = await itineraryService.getTravelTime(travelId, mode);
         return response;
       } catch (error) {
         return rejectWithValue(handleApiError(error));

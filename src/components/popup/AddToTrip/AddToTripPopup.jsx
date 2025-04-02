@@ -3,6 +3,7 @@ import styles from './ItineraryDetail.module.css';
 import { Search, AddCircle, CalendarIcon } from '../../common/Images';
 import SearchInput from '../../common/SearchInput';
 import { useTranslation } from 'react-i18next';
+import DatePicker from 'react-datepicker';
 
 const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors }) => {
   const { t } = useTranslation('Places');
@@ -20,6 +21,15 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
 
   const suggestionRef = useRef(null);
    const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
+   const [dateRange, setDateRange] = useState([null, null]);
+   const [startDate, endDate] = dateRange;
+
+   const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setDateRange(dates);
+    updateState("startDate", start);
+    updateState("endDate", end);
+  };
 
   const updateState = (key, value) => {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -64,16 +74,14 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
             {trips.map((trip, index) => (
               <div key={index} className={styles.tripItem}>
                 <div className={styles.tripName}>{trip}</div>
-                {/* <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg> */}
+             
                 <label className="radioContainer">
                   <input
                     type="radio"
                     id="terms"
                     name="terms"
                     value={trip}
-                    checked={state.selectedTrip === trip}
+                    checked={state.tripType === trip}
                     onChange={(e) => updateState("tripType", e.target.value)}
                   />
                   <span className="checkmark"></span>
@@ -112,10 +120,7 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                     selectedValue={state.destinationId}
                   />
                   <div className={styles.addDestination}>
-                    {/* <svg className={styles.plusIcon} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 3.33333V12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                    <path d="M3.33333 8H12.6667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg> */}
+                 
                     <img src={AddCircle} />
                     <span>Añade otro destino</span>
                   </div>
@@ -125,13 +130,19 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                   <label htmlFor="dates" className={styles.label}>Fechas</label>
                   <div className={styles.inputWithIcon}>
                     <img src={CalendarIcon} />
-                    {/* <svg className={styles.calendarIcon} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.6667 2.66667H3.33333C2.59695 2.66667 2 3.26362 2 4V13.3333C2 14.0697 2.59695 14.6667 3.33333 14.6667H12.6667C13.403 14.6667 14 14.0697 14 13.3333V4C14 3.26362 13.403 2.66667 12.6667 2.66667Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 6.66667H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M5.33333 1.33333V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M10.6667 1.33333V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg> */}
-                    <input type="text" id="dates" placeholder="Fecha inicio - fecha fin" className={styles.input} />
+                   
+                    {/* <input type="text" id="dates" placeholder="Fecha inicio - fecha fin" className={styles.input} /> */}
+                    <DatePicker
+                      selectsRange={true}
+                      startDate={startDate}
+                      endDate={endDate}
+                      onChange={handleDateChange}
+                      placeholderText="Fecha inicio - fecha fin"
+                      className={styles.datePickerInput}
+                      minDate={new Date()}
+                      dateFormat="dd/MM/yyyy"
+                      isClearable={true}
+                    />
                   </div>
                 </div>
               </form>
