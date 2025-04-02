@@ -12,7 +12,7 @@ import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesD
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite, addComment, editComment, deleteComment, fetchGeoLocations } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
 import ImageGallerySkeleton from "../../components/skeleton/PlacesDetailPage/ImageGallerySkeleton";
@@ -31,7 +31,7 @@ import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
-import { use } from "react";
+import ShareOptions from "../../components/common/ShareOptions";
 
 
 const PlaceDetails = () => {
@@ -46,7 +46,7 @@ const PlaceDetails = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [successTitle, setSuccessTitle] = useState("");
   const { isOpen } = useSelector((state) => state.popup);
-  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
+  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId, shareableLink } = useSelector((state) => state.places);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -362,7 +362,7 @@ const PlaceDetails = () => {
       // If clicking the current rating, reduce by 1
       // Otherwise set to the clicked rating
       const newRating = prev.rating === clickedRating ? clickedRating - 1 : clickedRating;
-      
+
       return {
         ...prev,
         rating: newRating,
@@ -450,7 +450,7 @@ const PlaceDetails = () => {
               rating: false
             }
           });
-          
+
           // Check for the specific error about already posted review
           if (error.error === "An error ocurred" && error.detail === "You have already posted a review") {
             // Show toast message
@@ -470,7 +470,7 @@ const PlaceDetails = () => {
         togglePopup("success", false);
       }, 5000); // 5 seconds in milliseconds
     }
-    
+
     // Clean up the timer when the component unmounts or when popupState.success changes
     return () => {
       if (timer) clearTimeout(timer);
@@ -482,16 +482,36 @@ const PlaceDetails = () => {
     if (place) {
       setState({
         ...state,
-       
-          latitude: place.address.latitude,
-          longitude: place.address.longitude
-      
+
+        latitude: place.address.latitude,
+        longitude: place.address.longitude
+
       })
       // dispatch(fetchGeoLocations({ type: "place"}));
     }
-    
+
   }, [place]);
-  console.log(state, "state")
+
+  const handleGenerateLink = () => {
+    if (id) {
+      dispatch(generateLink(id));
+    }
+  }
+
+  const [showShareOptions, setShowShareOptions] = useState(false);
+
+  const toggleShareOptions = () => {
+    setShowShareOptions(!showShareOptions);
+  };
+
+  useEffect(() => {
+    if (shareableLink) {
+      setShowShareOptions(true);
+    }
+    
+  },[shareableLink])
+
+
   return (
     <>
       {isOpen && popupState.map && (
@@ -531,7 +551,7 @@ const PlaceDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Do you want to give us your opinion?" description="Sign up or log in to leave a review about the local secrets or event you attended." buttonText="Sign in or create an account"/>
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Do you want to give us your opinion?" description="Sign up or log in to leave a review about the local secrets or event you attended." buttonText="Sign in or create an account" />
         </Modal>
       )}
 
@@ -617,8 +637,17 @@ const PlaceDetails = () => {
                   <MuseumInfoSkeleton />
                 ) : (
                   <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
-                    isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} />
+                    isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink}
+                   />
                 )}
+                {showShareOptions && (
+                    <ShareOptions
+                      url={shareableLink}
+                      title={place?.title}
+                      description={place?.description}
+                      onClose={toggleShareOptions}
+                    />
+                  )}
                 {isLoading ? (
                   <ImageGallerySkeleton />
                 ) : (

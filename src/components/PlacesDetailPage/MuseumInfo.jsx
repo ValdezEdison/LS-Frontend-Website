@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./MuseumInfo.module.css";
 import { MapIcon } from "../common/Images";
 
-const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, isFavoriteToggling = false }) => {
+const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, isFavoriteToggling = false, handleGenerateLink }) => {
  
   return (
     <div className={styles.museumInfo}>
@@ -27,6 +27,7 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, 
             src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/3ef4f075a0deb02b772bf1fe5266b0e789697ca3a6ba3ea75c950a14406974bf?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
             alt="Web icon"
             className={styles.webIcon}
+            onClick={() => handleGenerateLink()}
           />
           <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>Ir a la web</button>
         </div>
