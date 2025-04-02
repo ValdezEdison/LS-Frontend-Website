@@ -102,6 +102,8 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                 <div className={styles.formGroup}>
                   <label htmlFor="tripName" className={styles.label}>Nombre del viaje</label>
                   <input type="text" id="tripName" placeholder="Text input" className={styles.input} value={state.tripName} onChange={(e) => updateState("tripName", e.target.value)}/>
+                  <div className="errorMessage">Required</div>
+                        
                 </div>
 
                 <div className={styles.formGroup}>
@@ -121,12 +123,6 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                       selectedValue={state.destinationId}
                     />
                   </div>
-                  
-                  <div className={styles.addDestination}>
-                 
-                    <img src={AddCircle} />
-                    <span>Añade otro destino</span>
-                  </div>
                   <div className={styles.searchItemsList}>
                     <div className={styles.searchItem}>
                       <span>France</span>
@@ -137,6 +133,12 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                       <div className={styles.searchItemClose}></div>
                     </div>
                   </div>
+                  <div className={styles.addDestination}>
+                 
+                    <img src={AddCircle} />
+                    <span>Añade otro destino</span>
+                  </div>
+                 
                 </div>
 
                 <div className={styles.formGroup}>
@@ -157,6 +159,7 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                       isClearable={true}
                     />
                   </div>
+                  <div className="errorMessage">Required</div>
                 </div>
               </form>
             </div>
