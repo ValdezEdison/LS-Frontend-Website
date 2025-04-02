@@ -102,28 +102,43 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                 <div className={styles.formGroup}>
                   <label htmlFor="tripName" className={styles.label}>Nombre del viaje</label>
                   <input type="text" id="tripName" placeholder="Text input" className={styles.input} value={state.tripName} onChange={(e) => updateState("tripName", e.target.value)}/>
+                  <div className="errorMessage">Required</div>
+                        
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="destination" className={styles.label}>Destino</label>
-                  <SearchInput
-                    handleSearchClick={() => setShowSuggestionDropDown(true)}
-                    suggestionRef={suggestionRef}
-                    handleSearch={handleSearch}
-                    showSuggestionDropDown={showSuggestionDropDown}
-                    handleSearchClose={handleSearchClose}
-                    searchValue={state.destinationSearchQuery}
-                    suggestionsList={cities}
-                    placeholder={t("search.placeholder")}
-                    onSelect={(value) => updateState("destinationId", value)}
-                    customClassName="placesSearchInputContainer"
-                    selectedValue={state.destinationId}
-                  />
+                  <div className={styles.itenarysearchContainer}>
+                    <SearchInput
+                      handleSearchClick={() => setShowSuggestionDropDown(true)}
+                      suggestionRef={suggestionRef}
+                      handleSearch={handleSearch}
+                      showSuggestionDropDown={showSuggestionDropDown}
+                      handleSearchClose={handleSearchClose}
+                      searchValue={state.destinationSearchQuery}
+                      suggestionsList={cities}
+                      placeholder={t("search.placeholder")}
+                      onSelect={(value) => updateState("destinationId", value)}
+                      customClassName="placesSearchInputContainer"
+                      selectedValue={state.destinationId}
+                    />
+                  </div>
+                  <div className={styles.searchItemsList}>
+                    <div className={styles.searchItem}>
+                      <span>France</span>
+                      <div className={styles.searchItemClose}></div>
+                    </div>
+                    <div className={styles.searchItem}>
+                      <span>test</span>
+                      <div className={styles.searchItemClose}></div>
+                    </div>
+                  </div>
                   <div className={styles.addDestination}>
                  
                     <img src={AddCircle} />
                     <span>Añade otro destino</span>
                   </div>
+                 
                 </div>
 
                 <div className={styles.formGroup}>
@@ -144,6 +159,7 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                       isClearable={true}
                     />
                   </div>
+                  <div className="errorMessage">Required</div>
                 </div>
               </form>
             </div>

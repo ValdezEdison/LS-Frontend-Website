@@ -32,7 +32,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
         {(searchValue?.length > 0 || selectedValue) && (
           <span className={styles.searchClose} onClick={handleSearchClose}></span>
         )}      </div>
-      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""}`} ref={suggestionRef}>
+      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""} ${styles.suggestionsContainerSm}`} ref={suggestionRef}>
         {/* {Array.isArray(suggestions) && suggestions.map((suggestion, index) => (
           <SuggestionItem
             key={index}
@@ -41,6 +41,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
             onSelect={onSelect}
           />
         ))} */}
+        <div className={styles.suggestionsContainerInner}>
         {Array.isArray(suggestions) && suggestions.length > 0 ? (
           // Render suggestions if available
           suggestions.map((suggestion, index) => (
@@ -55,6 +56,8 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           // Show "No results" message if no suggestions are found
           <div className={styles.filterNoResults}>No results</div>
         )}
+        </div>
+       
       </div>
     </div>
   );

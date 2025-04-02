@@ -206,17 +206,17 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
           boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
         }}
       />
-      {/* <div className={styles.itenaryMapOptions}>
-        <span className={`${styles.dots} ${styles.close}`}></span>
-        <div className={styles.itenaryMapOptionsListWrapper}>
-          <div className={`${styles.itenaryMapOptionItem} ${styles.bike}`}></div>
-          <div className={`${styles.itenaryMapOptionItem} ${styles.walk}`}></div>
-          <div className={`${styles.itenaryMapOptionItem} ${styles.car}`}></div>
-        </div>
-      </div> */}
+      
 
       <div className={styles.itenaryMapOptions} onClick={toggleOptions}>
         <span className={`${styles.dots} ${isOptionsVisible ? styles.close : ''}`}></span>
+        <div className={styles.itenaryMapOptionsSelectedListWrapper}>
+          <div
+              className={`${styles.itenaryMapOptionItem} ${styles.car} `}
+              onClick={() => handleModeChange('driving')}
+            ></div>
+        </div>
+        
         {isOptionsVisible ? (
            <div className={styles.itenaryMapOptionsListWrapper}>
            <div

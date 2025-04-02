@@ -501,6 +501,10 @@ button,input,select,textarea{
   border-color: #EF2215;
 }
 
+.react-datepicker-wrapper{
+  width: 100% !important;
+}
+
 @media screen and (max-width: 1260px) {
   .page-center{
     max-width: 100%;
