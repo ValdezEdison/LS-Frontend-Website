@@ -13,3 +13,15 @@ export const fetchCountries = createAsyncThunk(
         }
     }
 );
+
+export const fetchCountriesPhonecodes = createAsyncThunk(
+    "countries/fetchCountriesPhonecodes",
+    async (searchQuery = "", { rejectWithValue }) => {
+        try {
+            const response = await CountryService.getCountriesPhonecodes(searchQuery);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);  
