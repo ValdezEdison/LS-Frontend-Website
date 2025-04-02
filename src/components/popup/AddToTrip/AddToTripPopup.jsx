@@ -20,11 +20,23 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
   ];
 
   const suggestionRef = useRef(null);
-   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
-   const [dateRange, setDateRange] = useState([null, null]);
-   const [startDate, endDate] = dateRange;
+  const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
+  const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
-   const handleDateChange = (dates) => {
+  // Initialize destinations array in state if it doesn't exist
+  if (!state.destinations) {
+    setState(prev => ({
+      ...prev,
+      destinations: [{
+        destinationSearchQuery: '',
+        destinationId: null
+      }]
+    }));
+  }
+
+  const handleDateChange = (dates) => {
     const [start, end] = dates;
     setDateRange(dates);
     updateState("startDate", start);
@@ -37,12 +49,10 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
     if(key === "destinationId" && value) {
       setShowSuggestionDropDown(false);
     }
-    // setShowSuggestionDropDown(false);
   };
 
   const handleSearch = (value) => {
     updateState("destinationSearchQuery", value);
-
   };
 
   const handleSearchClose = (e) => {
@@ -51,6 +61,59 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
     updateState("destinationId", null);
     setShowSuggestionDropDown(false);
   };
+
+  const addDestination = () => {
+    setState(prev => ({
+      ...prev,
+      destinations: [
+        ...prev.destinations,
+        {
+          destinationSearchQuery: '',
+          destinationId: null
+        }
+      ]
+    }));
+    setActiveDestinationIndex(state.destinations.length);
+  };
+
+    // Handle adding a new destination
+    const handleAddDestination = (value) => {
+      if (!value) return;
+      
+      const currentDestinations = state.destinationId ? state.destinationId.split(',') : [];
+      
+      // Check if destination already exists
+      if (!currentDestinations.includes(value)) {
+        const newDestinations = [...currentDestinations, value].join(',');
+        updateState("destinationId", newDestinations);
+        updateState("destinationSearchQuery", ""); // Clear search input
+      }
+    };
+  
+    // Handle removing a destination
+    const handleRemoveDestination = (idToRemove) => {
+      const currentDestinations = state.destinationId ? state.destinationId.split(',') : [];
+      const newDestinations = currentDestinations.filter(id => id !== idToRemove).join(',');
+      updateState("destinationId", newDestinations);
+    };
+
+    const removeDestination = (index) => {
+      if (state.destinations.length <= 1) return; // Don't remove the last destination
+      
+      setState(prev => {
+        const newDestinations = [...prev.destinations];
+        newDestinations.splice(index, 1);
+        return {
+          ...prev,
+          destinations: newDestinations
+        };
+      });
+      
+      // Update active index if needed
+      if (activeDestinationIndex >= index) {
+        setActiveDestinationIndex(Math.max(0, activeDestinationIndex - 1));
+      }
+    };
 
   return (
     <div className={styles.modalOverlay}>
@@ -103,50 +166,54 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                   <label htmlFor="tripName" className={styles.label}>Nombre del viaje</label>
                   <input type="text" id="tripName" placeholder="Text input" className={styles.input} value={state.tripName} onChange={(e) => updateState("tripName", e.target.value)}/>
                   <div className="errorMessage">Required</div>
-                        
                 </div>
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="destination" className={styles.label}>Destino</label>
-                  <div className={styles.itenarysearchContainer}>
-                    <SearchInput
-                      handleSearchClick={() => setShowSuggestionDropDown(true)}
-                      suggestionRef={suggestionRef}
-                      handleSearch={handleSearch}
-                      showSuggestionDropDown={showSuggestionDropDown}
-                      handleSearchClose={handleSearchClose}
-                      searchValue={state.destinationSearchQuery}
-                      suggestionsList={cities}
-                      placeholder={t("search.placeholder")}
-                      onSelect={(value) => updateState("destinationId", value)}
-                      customClassName="placesSearchInputContainer"
-                      selectedValue={state.destinationId}
-                    />
-                  </div>
-                  <div className={styles.searchItemsList}>
-                    <div className={styles.searchItem}>
-                      <span>France</span>
-                      <div className={styles.searchItemClose}></div>
+                {state.destinations?.map((destination, index) => (
+                  <div key={index} className={styles.formGroup}>
+                    <label htmlFor={`destination-${index}`} className={styles.label}>
+                      {index === 0 ? 'Destino' : ""}
+                    </label>
+                    {index > 0 && (
+                        <button 
+                          type="button" 
+                          className={styles.removeDestinationButton}
+                          onClick={() => removeDestination(index)}
+                          aria-label={`Eliminar destino ${index + 1}`}
+                        >
+                          {/* <img src={CloseIcon} alt="Eliminar" /> */}
+                        </button>
+                      )}
+                    <div className={styles.itenarysearchContainer}>
+                      <SearchInput
+                        handleSearchClick={() => {
+                          setActiveDestinationIndex(index);
+                          setShowSuggestionDropDown(true);
+                        }}
+                        suggestionRef={suggestionRef}
+                        handleSearch={handleSearch}
+                        showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
+                        handleSearchClose={handleSearchClose}
+                        searchValue={destination.destinationSearchQuery}
+                        suggestionsList={cities}
+                        placeholder={t("search.placeholder")}
+                        onSelect={(value) => handleAddDestination(value)}
+                        customClassName="placesSearchInputContainer"
+                        selectedValue={destination.destinationId}
+                        customClassNameForSuggestions="suggestionsContainerSm"
+                      />
                     </div>
-                    <div className={styles.searchItem}>
-                      <span>test</span>
-                      <div className={styles.searchItemClose}></div>
-                    </div>
                   </div>
-                  <div className={styles.addDestination}>
-                 
-                    <img src={AddCircle} />
-                    <span>Añade otro destino</span>
-                  </div>
-                 
+                ))}
+
+                <div className={styles.addDestination} onClick={addDestination}>
+                  <img src={AddCircle} />
+                  <span>Añade otro destino</span>
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="dates" className={styles.label}>Fechas</label>
                   <div className={styles.inputWithIcon}>
                     <img src={CalendarIcon} />
-                   
-                    {/* <input type="text" id="dates" placeholder="Fecha inicio - fecha fin" className={styles.input} /> */}
                     <DatePicker
                       selectsRange={true}
                       startDate={startDate}
@@ -163,12 +230,9 @@ const AddToTripModal = ({closeModal, state, setState, cities, onSubmit, formErro
                 </div>
               </form>
             </div>
-
           </div>
 
           <div className={styles.divider} />
-
-       
 
           <button className={styles.confirmButton} onClick={onSubmit}>Confirmar</button>
         </div>

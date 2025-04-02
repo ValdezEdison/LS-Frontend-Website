@@ -31,7 +31,7 @@ import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
-import ShareOptions from "../../components/common/ShareOptions";
+import { resetShareableLink } from "../../features/places/PlaceSlice";
 
 
 const PlaceDetails = () => {
@@ -45,6 +45,8 @@ const PlaceDetails = () => {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [successTitle, setSuccessTitle] = useState("");
+  const [showShareOptions, setShowShareOptions] = useState(false);
+
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId, shareableLink } = useSelector((state) => state.places);
 
@@ -494,11 +496,12 @@ const PlaceDetails = () => {
 
   const handleGenerateLink = () => {
     if (id) {
+      dispatch(resetShareableLink());
       dispatch(generateLink(id));
     }
   }
 
-  const [showShareOptions, setShowShareOptions] = useState(false);
+
 
   const toggleShareOptions = () => {
     setShowShareOptions(!showShareOptions);
@@ -638,6 +641,7 @@ const PlaceDetails = () => {
                 ) : (
                   <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
                     isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
+                    toggleShareOptions={toggleShareOptions}
                    />
                 )}
                 

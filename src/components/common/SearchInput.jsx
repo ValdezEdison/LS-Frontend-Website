@@ -5,7 +5,7 @@ import { SearchBlack } from "../common/Images";
 import { useTranslation } from "react-i18next";
 import CustomInput from "./CustomInput";
 
-const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "" }) => {
+const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "", customClassNameForSuggestions = "" }) => {
   const [defaultSuggestions] = useState([
 
   ]);
@@ -16,6 +16,8 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
   const suggestions = Array.isArray(suggestionsList) && suggestionsList.length > 0 ? suggestionsList : defaultSuggestions;
 
   const containerClass = customClassName && styles[customClassName] ? styles[customClassName] : "";
+
+  const suggestionsContainerClass = customClassNameForSuggestions && styles[customClassNameForSuggestions] ? styles[customClassNameForSuggestions] : "";
 
   return (
     <div className={`${containerClass}`}>
@@ -32,7 +34,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
         {(searchValue?.length > 0 || selectedValue) && (
           <span className={styles.searchClose} onClick={handleSearchClose}></span>
         )}      </div>
-      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""} ${styles.suggestionsContainerSm}`} ref={suggestionRef}>
+      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""} ${styles.suggestionsContainerClass}`} ref={suggestionRef}>
         {/* {Array.isArray(suggestions) && suggestions.map((suggestion, index) => (
           <SuggestionItem
             key={index}

@@ -44,6 +44,9 @@ const placeSlice = createSlice({
         // You can add synchronous reducers here if needed
         setFavTogglingId: (state, action) => {
             state.favTogglingId = action.payload
+        },
+        resetShareableLink: (state) => {
+            state.shareableLink = null
         }
     },
     extraReducers: (builder) => {
@@ -289,5 +292,5 @@ const placeSlice = createSlice({
     },
 });
 
-export const { setFavTogglingId } = placeSlice.actions;
+export const { setFavTogglingId, resetShareableLink } = placeSlice.actions;
 export default placeSlice.reducer;

@@ -27,6 +27,14 @@ const itineraryService = {
         return ApiService.post('/travels', trip);
     },
 
+    generateLink: async (tripId) => {
+        return ApiService.get(`/routes/${tripId}/generate_link`);
+    },
+
+    downloadTrip: async (tripId) => {
+        return ApiService.get(`/routes/${tripId}/pdf`);
+    },
+
 }
 
 export default itineraryService

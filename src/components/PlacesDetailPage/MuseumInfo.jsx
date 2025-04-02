@@ -4,7 +4,7 @@ import ShareOptions from "../common/ShareOptions";
 import { useSelector } from "react-redux";
 import { MapIcon } from "../common/Images";
 
-const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, isFavoriteToggling = false, handleGenerateLink,showShareOptions }) => {
+const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, isFavoriteToggling = false, handleGenerateLink, showShareOptions, toggleShareOptions }) => {
 
   const {shareableLink}  = useSelector((state) => state.places);
  
@@ -39,7 +39,7 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => {}, 
                       url={shareableLink}
                       title={place?.title}
                       description={place?.description}
-                      // onClose={toggleShareOptions}
+                      onClose={toggleShareOptions}
                     />
                   )}
         </div>

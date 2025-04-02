@@ -62,3 +62,27 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const generateLink = createAsyncThunk(
+    'places/generateLink',
+    async (tripId, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.generateLink(tripId);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );
+
+  export const downloadTrip = createAsyncThunk(
+    'places/downloadTrip',
+    async (tripId, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.downloadTrip(tripId);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

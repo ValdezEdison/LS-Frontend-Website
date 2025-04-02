@@ -212,7 +212,7 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
         <span className={`${styles.dots} ${isOptionsVisible ? styles.close : ''}`}></span>
         <div className={styles.itenaryMapOptionsSelectedListWrapper}>
           <div
-              className={`${styles.itenaryMapOptionItem} ${styles.car} `}
+              className={`${styles.itenaryMapOptionItem} ${formState.mode === 'driving' ? styles.car : formState.mode === 'walking' ? styles.walk : styles.bike} `}
               onClick={() => handleModeChange('driving')}
             ></div>
         </div>

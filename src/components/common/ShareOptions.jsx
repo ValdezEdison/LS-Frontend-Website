@@ -30,13 +30,12 @@ import {
           </FacebookShareButton>
           {/* <span>Facebook</span> */}
         </div>
-        
+{/*         
         <div className={styles.shareOption}>
           <TwitterShareButton url={url} title={title}>
             <TwitterIcon size={32} round />
           </TwitterShareButton>
-          {/* <span>Twitter</span> */}
-        </div>
+        </div> */}
         
         <div className={styles.shareOption}>
           <WhatsappShareButton url={url} title={title}>
