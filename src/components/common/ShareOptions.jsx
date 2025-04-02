@@ -28,28 +28,28 @@ import {
           <FacebookShareButton url={url} quote={description}>
             <FacebookIcon size={32} round />
           </FacebookShareButton>
-          <span>Facebook</span>
+          {/* <span>Facebook</span> */}
         </div>
         
         <div className={styles.shareOption}>
           <TwitterShareButton url={url} title={title}>
             <TwitterIcon size={32} round />
           </TwitterShareButton>
-          <span>Twitter</span>
+          {/* <span>Twitter</span> */}
         </div>
         
         <div className={styles.shareOption}>
           <WhatsappShareButton url={url} title={title}>
             <WhatsappIcon size={32} round />
           </WhatsappShareButton>
-          <span>WhatsApp</span>
+          {/* <span>WhatsApp</span> */}
         </div>
         
         <div className={styles.shareOption}>
           <EmailShareButton url={url} subject={title} body={description}>
             <EmailIcon size={32} round />
           </EmailShareButton>
-          <span>Email</span>
+          {/* <span>Email</span> */}
         </div>
         
         <div className={styles.shareOption}>
@@ -61,11 +61,10 @@ import {
               </svg>
             </button>
           </CopyToClipboard>
-          <span>{copied ? 'Copied!' : 'Copy link'}</span>
+          <span className={styles.copyText}>{copied ? 'Copied!' : ''}</span>
         </div>
         
         <button className={styles.closeShareButton} onClick={onClose}>
-          Close
         </button>
       </div>
     );

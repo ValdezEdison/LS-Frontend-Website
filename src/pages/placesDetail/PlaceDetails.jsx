@@ -637,17 +637,10 @@ const PlaceDetails = () => {
                   <MuseumInfoSkeleton />
                 ) : (
                   <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
-                    isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink}
+                    isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
                    />
                 )}
-                {showShareOptions && (
-                    <ShareOptions
-                      url={shareableLink}
-                      title={place?.title}
-                      description={place?.description}
-                      onClose={toggleShareOptions}
-                    />
-                  )}
+                
                 {isLoading ? (
                   <ImageGallerySkeleton />
                 ) : (
