@@ -13,17 +13,21 @@ import Modal from "../../components/modal/Modal";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { set } from "lodash";
 import Loader from "../../components/common/Loader";
+import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
+import { use } from "react";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { loading } = useSelector((state) => state.auth);
+  const { phoneCodes } = useSelector((state) => state.countries);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
 
   const { isOpen } = useSelector((state) => state.popup);
+  
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -32,6 +36,7 @@ const TravelerRegistration = () => {
     phone: "",
     password: "",
     terms: false,
+    phone_prefix: "+000",
   });
 
   // State for field validation and messages
@@ -57,6 +62,13 @@ const TravelerRegistration = () => {
       focused: false,
       isValid: false,
     },
+    phone_prefix: {
+      error: "",
+      info: "",
+      touched: false,
+      focused: false,
+      isValid: true,
+    },
     password: {
       error: "",
       info: "Password must be at least 8 characters with a number, uppercase letter, and symbol",
@@ -75,6 +87,10 @@ const TravelerRegistration = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchCountriesPhonecodes());
+  }, []);
 
   // Validate individual field
   const validateField = (name, value) => {
@@ -253,6 +269,7 @@ const TravelerRegistration = () => {
     toast.info("Confirmation email resent successfully");
   };
 
+console.log(formData, 'formData')
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
@@ -294,6 +311,7 @@ const TravelerRegistration = () => {
                     handleFocus={handleFocus}
                     handleBlur={handleBlur}
                     isFormValid={isFormValid}
+                    phoneCodes={phoneCodes}
                   />
                   <SocialLogin />
                   <Footer />

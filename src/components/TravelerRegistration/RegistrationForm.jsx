@@ -13,10 +13,22 @@ const RegistrationForm = ({
   handleNavigate,
   handleFocus,
   handleBlur,
-  isFormValid
+  isFormValid,
+  phoneCodes
 }) => {
 
   const { loading } = useSelector((state) => state.auth);
+
+  const handlePhonePrefixChange = (e) => {
+    handleInputChange({
+      target: {
+        name: "phone_prefix",
+        value: e.target.value
+      }
+    });
+  };
+
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Username Input */}
@@ -76,8 +88,11 @@ const RegistrationForm = ({
         </label>
         <div className={styles.phoneInput}>
           <div className={styles.phoneCodeWrapper}>
-            <select className={styles.select}>
-              <option>+000</option>
+            <select className={styles.select}   value={formData.phone_prefix}
+              onChange={handlePhonePrefixChange}>
+              {phoneCodes.map((code) => (
+                <option key={code.code}  value={`+${code.phone_code}`} >+{code.phone_code} {code.name}</option>
+              ))}
             </select>
           </div>
           <input

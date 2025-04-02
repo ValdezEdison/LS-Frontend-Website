@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCountries } from "./CountryAction";
+import { fetchCountries, fetchCountriesPhonecodes } from "./CountryAction";
 
 const initialState = {
     countries: [],
     loading: false,
     error: null,
+    phoneCodes: []
 };  
 
 const countrySlice = createSlice({
@@ -24,6 +25,19 @@ const countrySlice = createSlice({
                 state.countries = action.payload;
             })
             .addCase(fetchCountries.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            .addCase(fetchCountriesPhonecodes.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchCountriesPhonecodes.fulfilled, (state, action) => {
+                state.loading = false;
+                state.phoneCodes = action.payload;
+            })
+            .addCase(fetchCountriesPhonecodes.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });
