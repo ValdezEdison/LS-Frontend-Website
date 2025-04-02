@@ -86,15 +86,29 @@ const RegistrationForm = ({
         <label htmlFor="phone" className={styles.label}>
           Teléfono
         </label>
-        <div className={styles.phoneInput}>
+        <div className={`${styles.phoneInput} ${styles.open}`}>
           <div className={styles.phoneCodeWrapper}>
-            <select className={styles.select}   value={formData.phone_prefix}
+            {/* <select className={styles.select}   value={formData.phone_prefix}
               onChange={handlePhonePrefixChange}>
               {phoneCodes.map((code) => (
                 <option key={code.code}  value={`+${code.phone_code}`} >+{code.phone_code} {code.name}</option>
               ))}
-            </select>
+            </select> */}
+            <span className={styles.placeholderText}>111</span>
+            <span className=""></span>
           </div>
+          <div className={styles.phoneCodeDropdownWrapperOuter}>
+            <div className={styles.phoneCodeinputWrapper}>
+              <input type="text" accept="" placeholder="Search Select Country" class={styles.selectedItem} name="search" />
+              </div>
+              <ul className={styles.droplist}>
+              {phoneCodes.map((code) => (
+                <li  key={code.code} > + {code.phone_code} {code.name}</li>             
+                ))}
+              </ul>
+            
+          </div>
+          
           <input
             type="tel"
             id="phone"

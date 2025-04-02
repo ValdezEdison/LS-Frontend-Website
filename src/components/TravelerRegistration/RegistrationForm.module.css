@@ -31,7 +31,13 @@
   gap: 10px;
   border: 1px solid #828282;
   border-radius: 12px;
+  position: relative;
 }
+
+.phoneInput.open {
+  border-radius: 12px 12px 0 0;
+}
+
 
 .phoneInput input{
   border: none;
@@ -52,6 +58,9 @@
 
 .phoneCodeWrapper{
   position: relative;
+  width: max-content;
+  padding: 0 15px 0 10px;
+  font-size: 14px;
 }
 
 .phoneCodeWrapper::after{
@@ -65,6 +74,65 @@
   right: 0;
 }
 
+.phoneCodeinputWrapper{
+  padding: 8px 14px 8px;
+}
+
+
+
+
+.phoneCodeDropdownWrapperOuter .selectedItem {
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  border: 0.5px solid var(--Gray-3, #828282);
+  background-color: #fdfdfd;
+  display: flex;
+  min-height: 36px;
+  width: 100%;
+  gap: 40px;
+  font-size: 14px;
+  padding: 5px 26px 5px 16px;
+  outline: none;
+}
+
+.phoneCodeDropdownWrapperOuter{
+  /* padding: 8px 14px; */
+  position: absolute;
+  top: calc(100% + 1px);
+  left: -1px;
+  width: calc(100% + 2px);
+  border-radius: 0 0 5px 5px;
+  border: 1px solid var(--Desactivado, #718295);
+  border-top: none;
+  background-color: #fff;
+  
+  z-index: 3;
+}
+
+.droplist {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0;
+  font-size: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+  width: calc(100% - 3px);
+}
+
+.droplist li {
+  transition: all 0.3s ease-in-out;
+  padding: 8px 14px;
+}
+
+.droplist li:hover {
+  background-color: #EBEEF2;
+}
+
+.placeholderText{
+  color: #151820;
+  opacity: 0.5;
+}
 .passwordRequirements {
   color: #151820;
   font: 12px/1.2 "Source Sans Pro", sans-serif;
