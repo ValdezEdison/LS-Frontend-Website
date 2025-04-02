@@ -5,20 +5,35 @@ import { PlaceHolderImg1 } from '../../common/Images';
 
 
 
-const ItineraryMap = ({ places }) => {
+const ItineraryMap = ({ places, formState, setFormState }) => {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(false);
+
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+
+  const handleModeChange = (mode) => {
+    setFormState(prev => ({
+      ...prev,
+      mode: mode
+    }));
+    setIsOptionsVisible(false); // Close options after selection
+  };
+
+  const toggleOptions = () => {
+    setIsOptionsVisible(!isOptionsVisible);
+  };
+
   const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
   const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-const loader = new Loader({
-  apiKey: apiKey,
-  version: "weekly",
-  libraries: ["maps", "marker", "core", "geometry"], // Include all needed libraries
-});
+  const loader = new Loader({
+    apiKey: apiKey,
+    version: "weekly",
+    libraries: ["maps", "marker", "core", "geometry"], // Include all needed libraries
+  });
 
   const createCustomMarkerElement = (number) => {
     const element = document.createElement("div");
@@ -44,7 +59,7 @@ const loader = new Loader({
           zoom: 14,
           mapId: mapId,
           disableDefaultUI: true,
-          zoomControl: false, 
+          zoomControl: false,
           streetViewControl: false,
           mapTypeControl: false,
           styles: [
@@ -70,38 +85,38 @@ const loader = new Loader({
 
     loadMap();
 
-     return () => {
-    // Clear all markers
-    markersRef.current.forEach(marker => {
-      if (marker) {
-        marker.map = null;
-        if (marker.content && marker.content.parentNode) {
-          marker.content.parentNode.removeChild(marker.content);
+    return () => {
+      // Clear all markers
+      markersRef.current.forEach(marker => {
+        if (marker) {
+          marker.map = null;
+          if (marker.content && marker.content.parentNode) {
+            marker.content.parentNode.removeChild(marker.content);
+          }
         }
+      });
+      markersRef.current = [];
+
+      // Remove all polylines
+      const existingPolylines = document.querySelectorAll('.itinerary-polyline');
+      existingPolylines.forEach(el => el.remove());
+
+      // Clean up the map instance
+      if (mapInstanceRef.current) {
+        // Remove all event listeners
+        google.maps.event.clearInstanceListeners(mapInstanceRef.current);
+        // Remove the map from DOM
+        const mapContainer = mapContainerRef.current;
+        if (mapContainer) {
+          mapContainer.innerHTML = '';
+        }
+        mapInstanceRef.current = null;
       }
-    });
-    markersRef.current = [];
 
-    // Remove all polylines
-    const existingPolylines = document.querySelectorAll('.itinerary-polyline');
-    existingPolylines.forEach(el => el.remove());
-
-    // Clean up the map instance
-    if (mapInstanceRef.current) {
-      // Remove all event listeners
-      google.maps.event.clearInstanceListeners(mapInstanceRef.current);
-      // Remove the map from DOM
-      const mapContainer = mapContainerRef.current;
-      if (mapContainer) {
-        mapContainer.innerHTML = '';
-      }
-      mapInstanceRef.current = null;
-    }
-
-    // Reset state
-    setMapLoaded(false);
-    setMapError(false);
-  };
+      // Reset state
+      setMapLoaded(false);
+      setMapError(false);
+    };
   }, [mapId]);
 
   useEffect(() => {
@@ -159,7 +174,7 @@ const loader = new Loader({
         if (newMarkers.length > 0) {
           const bounds = new LatLngBounds();
           newMarkers.forEach(marker => bounds.extend(marker.position));
-          
+
           mapInstanceRef.current.fitBounds(bounds, {
             top: 50,
             bottom: 50,
@@ -181,24 +196,51 @@ const loader = new Loader({
 
   return (
     <div className={styles.itenaryMapFrame}>
-      <div 
-        ref={mapContainerRef} 
-        style={{ 
-          width: '100%', 
+      <div
+        ref={mapContainerRef}
+        style={{
+          width: '100%',
           height: '100%',
           minHeight: '400px',
           borderRadius: '12px',
           boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
         }}
       />
-      <div className={styles.itenaryMapOptions}>
+      {/* <div className={styles.itenaryMapOptions}>
         <span className={`${styles.dots} ${styles.close}`}></span>
         <div className={styles.itenaryMapOptionsListWrapper}>
           <div className={`${styles.itenaryMapOptionItem} ${styles.bike}`}></div>
           <div className={`${styles.itenaryMapOptionItem} ${styles.walk}`}></div>
           <div className={`${styles.itenaryMapOptionItem} ${styles.car}`}></div>
         </div>
+      </div> */}
+
+      <div className={styles.itenaryMapOptions} onClick={toggleOptions}>
+        <span className={`${styles.dots} ${isOptionsVisible ? styles.close : ''}`}></span>
+        {isOptionsVisible ? (
+           <div className={styles.itenaryMapOptionsListWrapper}>
+           <div
+             className={`${styles.itenaryMapOptionItem} ${styles.bike} `}
+             onClick={() => handleModeChange('bike')}
+           ></div>
+           <div
+             className={`${styles.itenaryMapOptionItem} ${styles.walk} `}
+             onClick={() => handleModeChange('walk')}
+           ></div>
+           <div
+             className={`${styles.itenaryMapOptionItem} ${styles.car} `}
+             onClick={() => handleModeChange('car')}
+           ></div>
+         </div>
+        ) :
+        <></>
+         }
+       
+
+        {/* Render your map here with the selected mode */}
+        {/* You can use formState.mode to determine routing options */}
       </div>
+
       {!mapLoaded && !mapError && (
         <img
           src={PlaceHolderImg1}
@@ -211,7 +253,7 @@ const loader = new Loader({
           }}
         />
       )}
-      
+
       {mapError && (
         <div className={styles.errorMessage}>
           Failed to load the map. Please try again later.

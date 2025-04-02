@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useCallback } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import ItineraryCard from "../../../components/PlacesInfo/Itineries/ItineraryCard";
@@ -14,10 +14,12 @@ import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkelet
 import ItineraryMap from "../../../components/PlacesInfo/Itineries/ItineraryMap";
 import { LanguageContext } from "../../../context/LanguageContext";
 import Modal from "../../../components/modal/Modal";
-import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
+import { openPopup, closePopup, openAddToTripPopup, closeAddToTripPopup } from "../../../features/popup/PopupSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import { fetchTravelLiteList, fetchTravelTime, addTrip } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import { fetchCities } from "../../../features/common/cities/CityAction";
+import { debounce } from 'lodash';
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -27,11 +29,13 @@ const ItineraryDetail = () => {
 
   const { language } = useContext(LanguageContext);
 
-  const { loading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, itineraryDetails } = useSelector((formState) => formState.itineriesInCity);
+  const { isAuthenticated } = useSelector((formState) => formState.auth);
 
-  const { isOpen, isAddToPopupOpen } = useSelector((state) => state.popup);
-  const { geoLocations } = useSelector((state) => state.places);
+  const { isOpen, isAddToPopupOpen } = useSelector((formState) => formState.popup);
+  const { geoLocations } = useSelector((formState) => formState.places);
+  const { cities, loading: citiesLoading } = useSelector((formState) => formState.cities);
+
   const [popupState, setPopupState] = useState({
     map: false,
     gallery: false,
@@ -42,29 +46,36 @@ const ItineraryDetail = () => {
     success: false,
   });
 
-  const [newTripData, setNewTripData] = useState({
-    name: '',
+
+
+  const [formState, setFormState] = useState({
+    tripType: '',
+    tripName: '',
     destination: '',
-    startDate: '',
-    endDate: ''
+    startDate: null,
+    endDate: null,
+    destinationSearchQuery: "",
+    destinationId: null,
+    mode: 'car',
   });
 
-  const togglePopup = (name, state) => {
-    setPopupState((prev) => ({ ...prev, [name]: state }));
-    state ? dispatch(openPopup()) : dispatch(closePopup());
+  const togglePopup = (name, formState) => {
+    setPopupState((prev) => ({ ...prev, [name]: formState }));
+    formState ? dispatch(openPopup()) : dispatch(closePopup());
   };
 
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
       dispatch(fetchTravelLiteList());
+       dispatch(fetchCities({}));
       // dispatch(fetchTravelTime(id));
     }
   }, [dispatch, id, language]);
 
   const handleViewMoreDetails = (id) => {
     ;
-    navigate('/places/details', { state: { id } });
+    navigate('/places/details', { formState: { id } });
   };
 
   const handleActions = (e, action, id) => {
@@ -88,24 +99,95 @@ const ItineraryDetail = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      // Reset states when opening the popup
-      setSelectedTrip(null);
-      setNewTripData({
-        name: '',
+      // Reset formStates when opening the popup
+      
+      setFormState({
+        tripName: '',
         destination: '',
-        startDate: '',
-        endDate: ''
+        startDate: null,
+        endDate: null,
+        destinationSearchQuery: "",
+        destinationId: null,
+        tripType: '',
       });
-      setTripError(null);
-      setTripSuccess(false);
+      setFormErrors({});
+      setSelectedTripId(null);
+      setIsCreatingNewTrip(false);
+   
     } else {
       togglePopup("alert", true);
     }
   };
 
   const handleNavigateToLogin = () => {
-    navigate('/login', { state: { from: location } });
+    navigate('/login', { formState: { from: location } });
   }
+
+    const debouncedFetchCities = useCallback(
+      debounce(( query ) => {
+        dispatch(fetchCities({ searchQuery: query }));
+      }, 500),
+      [dispatch]
+    );
+  
+    useEffect(() => {
+      if (formState?.destinationSearchQuery?.trim()) {
+        debouncedFetchCities( formState.destinationSearchQuery );
+      } else {
+        dispatch(fetchCities({}));
+      }
+    
+      return () => debouncedFetchCities.cancel();
+    }, [formState?.destinationSearchQuery, debouncedFetchCities, dispatch]);
+
+    const [formErrors, setFormErrors] = useState({});
+    const [isCreatingNewTrip, setIsCreatingNewTrip] = useState(false);
+    const [selectedTripId, setSelectedTripId] = useState(null);
+
+    const validateForm = () => {
+      const errors = {};
+      
+      if (isCreatingNewTrip) {
+        if (!formState.name) errors.name = 'Trip name is required';
+        if (!formState.destinationId) errors.destination = 'Destination is required';
+        if (!formState.startDate) errors.startDate = 'Start date is required';
+        if (!formState.endDate) errors.endDate = 'End date is required';
+      } else {
+        if (!selectedTripId) errors.trip = 'Please select a trip';
+      }
+      
+      setFormErrors(errors);
+      return Object.keys(errors).length === 0;
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      if (!validateForm()) return;
+      
+      try {
+        if (isCreatingNewTrip) {
+          const tripData = {
+            name: formState.name,
+            destination_id: formState.destinationId,
+            start_date: formState.startDate.toISOString().split('T')[0],
+            end_date: formState.endDate.toISOString().split('T')[0],
+            itinerary_ids: [id]
+          };
+          await dispatch(addTrip(tripData));
+        } else {
+          // Logic to add itinerary to existing trip would go here
+          console.log('Adding to existing trip:', selectedTripId);
+        }
+        
+        dispatch(closeAddToTripPopup());
+        dispatch(closePopup());
+      } catch (error) {
+        console.error('Error adding trip:', error);
+      }
+    };
+  
+   
 
   if (loading) {
     return (
@@ -154,7 +236,10 @@ const ItineraryDetail = () => {
 
   return (
     <>
-     {isOpen && isAddToPopupOpen && <AddToTripPopup newTripData={newTripData} setNewTripData={setNewTripData} />}
+     {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => { 
+    dispatch(closeAddToTripPopup()); 
+    dispatch(closePopup()); 
+}} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors}/>}
      {isOpen && popupState.alert && (
           <Modal
             onClose={() => togglePopup("alert", false)}
@@ -168,7 +253,7 @@ const ItineraryDetail = () => {
         <main className="page-center">
           <section className={styles.itineraryHeader}>
             <div className={styles.itenaryDetailTitle}>Detalle itinerario</div>
-            <ItineraryMap places={itineraryDetails?.stops}/>
+            <ItineraryMap places={itineraryDetails?.stops} formState={formState} setFormState={setFormState}/>
             <div className={styles.itineraryInfo}>
               <h1 className={styles.itineraryTitle}>{itineraryDetails?.title}</h1>
               <div className={styles.itineraryActions}>

@@ -29,7 +29,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           onChange={(e) => handleSearch(e.target.value)}
           value={selectedValue ? suggestions.find((suggestion) => suggestion.id === selectedValue).name : searchValue}
         />
-        {(searchValue.length > 0 || selectedValue) && (
+        {(searchValue?.length > 0 || selectedValue) && (
           <span className={styles.searchClose} onClick={handleSearchClose}></span>
         )}      </div>
       <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""}`} ref={suggestionRef}>
