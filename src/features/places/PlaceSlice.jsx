@@ -14,7 +14,8 @@ import {
     toggleFavorite, 
     addComment,
     editComment,
-    deleteComment
+    deleteComment,
+    generateLink
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
 
@@ -31,7 +32,9 @@ const initialState = {
     categories: [],
     filterLoading: false,
     isFavoriteToggling: false,
-    favTogglingId : null
+    favTogglingId : null,
+    generateLinkLoading: false,
+    shareableLink: null
 };
 
 const placeSlice = createSlice({
@@ -41,6 +44,9 @@ const placeSlice = createSlice({
         // You can add synchronous reducers here if needed
         setFavTogglingId: (state, action) => {
             state.favTogglingId = action.payload
+        },
+        resetShareableLink: (state) => {
+            state.shareableLink = null
         }
     },
     extraReducers: (builder) => {
@@ -269,9 +275,22 @@ const placeSlice = createSlice({
             .addCase(deletePlace.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            });
+            })
+            .addCase(generateLink.pending, (state) => {
+                state.generateLinkLoading = true;
+                state.error = null;
+            })
+            .addCase(generateLink.fulfilled, (state, action) => {
+                state.generateLinkLoading = false;
+                state.shareableLink = action.payload?.detail;
+            })
+            .addCase(generateLink.rejected, (state, action) => {
+                state.generateLinkLoading = false;
+                state.error = action.payload;
+            })
+            ;
     },
 });
 
-export const { setFavTogglingId } = placeSlice.actions;
+export const { setFavTogglingId, resetShareableLink } = placeSlice.actions;
 export default placeSlice.reducer;

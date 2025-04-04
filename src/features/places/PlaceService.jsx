@@ -1,4 +1,5 @@
 import apiService from "../../services/ApiService";
+import { generateLink } from "./PlaceAction";
 
 const PlaceService = {
   getPlaces: async () => {
@@ -117,6 +118,9 @@ const PlaceService = {
   },
   deletePlace: async (placeId) => {
     return apiService.delete(`/places/${placeId}`);
+  },
+  generateLink: async (placeId) => {  
+    return apiService.get(`/sites/${placeId}/generate_link`);
   },
 };
 

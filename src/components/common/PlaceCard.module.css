@@ -196,8 +196,24 @@
   margin: 0;
 }
 
-@media screen and (max-width:1400px) {
+.placeTitleMain{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap:6px
+}
 
+.placeCardAdd{
+  background: url(../../../public/images/add-circle.svg) no-repeat 0 0;
+  width: 24px;
+  height: 24px;
+}
+
+.addTripPlaceName{
+ width: 150px;
+ text-overflow: ellipsis;
+ overflow: hidden;
+ white-space: nowrap;
 }
 
 
@@ -245,6 +261,10 @@
   .favIcon {
     top: 10px;
     right: 25px;
+}
+
+.addTripPlaceName{
+  width: 85%;
 }
 
 }

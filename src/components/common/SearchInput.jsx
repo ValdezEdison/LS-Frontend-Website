@@ -5,7 +5,7 @@ import { SearchBlack } from "../common/Images";
 import { useTranslation } from "react-i18next";
 import CustomInput from "./CustomInput";
 
-const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "" }) => {
+const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "", customClassNameForSuggestions = "" }) => {
   const [defaultSuggestions] = useState([
 
   ]);
@@ -17,6 +17,8 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
 
   const containerClass = customClassName && styles[customClassName] ? styles[customClassName] : "";
 
+  const suggestionsContainerClass = customClassNameForSuggestions && styles[customClassNameForSuggestions] ? styles[customClassNameForSuggestions] : "";
+
   return (
     <div className={`${containerClass}`}>
       <div className={`${styles.searchBar} ${showRegionDropDown || showSuggestionDropDown ? styles.open : ""}`} onClick={handleSearchClick}>
@@ -27,12 +29,12 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           placeholder={inputPlaceholder}
           aria-label={t("ariaLabel")}
           onChange={(e) => handleSearch(e.target.value)}
-          value={selectedValue ? suggestions.find((suggestion) => suggestion.id === selectedValue).name : searchValue}
+          value={selectedValue ? suggestions.find((suggestion) => suggestion.id === selectedValue)?.name : searchValue}
         />
-        {(searchValue.length > 0 || selectedValue) && (
+        {(searchValue?.length > 0 || selectedValue) && (
           <span className={styles.searchClose} onClick={handleSearchClose}></span>
         )}      </div>
-      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""}`} ref={suggestionRef}>
+      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""} ${styles.suggestionsContainerClass}`} ref={suggestionRef}>
         {/* {Array.isArray(suggestions) && suggestions.map((suggestion, index) => (
           <SuggestionItem
             key={index}
@@ -41,6 +43,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
             onSelect={onSelect}
           />
         ))} */}
+        <div className={styles.suggestionsContainerInner}>
         {Array.isArray(suggestions) && suggestions.length > 0 ? (
           // Render suggestions if available
           suggestions.map((suggestion, index) => (
@@ -55,6 +58,8 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           // Show "No results" message if no suggestions are found
           <div className={styles.filterNoResults}>No results</div>
         )}
+        </div>
+       
       </div>
     </div>
   );

@@ -35,8 +35,65 @@
   padding: 20px 0;
 }
 
+.shareOptions{
+  position: absolute;
+  width: max-content;
+  background: #fff;
+  top: 25px;
+  right: 0;
+  display: flex;
+  padding: 25px 10px 8px;
+  gap: 12px;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+}
+
+.shareOption{
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  position: relative;
+}
+
+.copyButton{
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.closeShareButton{
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: url(/public/images/close.png) no-repeat 0 0;
+  width: 14px;
+  height: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.copyText{
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media (max-width: 991px) {
   .contentWrapper {
     flex-direction: column;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .shareOptions{
+    right: unset;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
 }

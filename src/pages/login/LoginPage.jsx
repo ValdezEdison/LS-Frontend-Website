@@ -10,6 +10,8 @@ import styles from "./LoginPage.module.css";
 import { login, getProfile } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
 import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
+import { handleFacebookLogin } from "../../utils/FacebookLogin";
+import { initializeGoogleSDK, handleGoogleLogin } from "../../utils/GoogleLogin";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -214,18 +216,33 @@ const LoginPage = () => {
 
 
    // Social Login Handler
-   const handleSocialLogin = async (provider) => {
+   const handleSocialLogin = async (provider, token, error) => {
+
+    if (error) {
+      toast.error(error.message || "Social login failed");
+      return;
+    }
+
     try {
-      let token;
+      // let token;
       
-      // Google Login
-      if (provider === 'google') {
-        token = await handleGoogleLogin();
-      } 
-      // Facebook Login
-      else if (provider === 'facebook') {
-        token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
-      }
+      // // Google Login
+      // // if (provider === 'google') {
+      // //   await initializeGoogleSDK();
+      // //   token = await handleGoogleLogin();
+      // // } 
+      // // Facebook Login
+      //  if (provider === 'facebook') {
+
+      //   // if (window.location.protocol !== 'https:') {
+      //   //   throw new Error('Facebook login requires HTTPS');
+      //   // }
+      
+        
+      //   const facebookResponse = await handleFacebookLogin();
+      //   token = facebookResponse.accessToken;
+      //   // token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
+      // }
 
       if (token) {
         const result = await dispatch(socialLogin({
@@ -238,7 +255,7 @@ const LoginPage = () => {
 
         if (result) {
           toast.success("Login successful!");
-          await dispatch(getProfile()).unwrap();
+          // await dispatch(getProfile()).unwrap();
           const from = location.state?.from?.pathname || "/";
           navigate(from, { replace: true });
         }

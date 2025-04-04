@@ -82,6 +82,10 @@
   background: url(../../../public/images/heart-fill.png) no-repeat 0 0;
 }
 
+.shareIconWrapper{
+  position: relative;
+}
+
 @media (max-width: 991px) {
   /* .museumInfo {
     text-align: center;

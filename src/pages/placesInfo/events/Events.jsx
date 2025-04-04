@@ -14,7 +14,7 @@ import Loader from "../../../components/common/Loader";
 import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { useTranslation } from 'react-i18next';
 import EventCardSkeleton from "../../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
-import { fetchPlacesFilterCategories, toggleFavorite } from "../../../features/places/PlaceAction";
+import { fetchPlacesFilterCategories, toggleFavorite, fetchGeoLocations } from "../../../features/places/PlaceAction";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
@@ -96,6 +96,7 @@ const Events = () => {
     if (id) {
       dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
       dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
+      dispatch(fetchGeoLocations({ cityId: id, type: "event" }));
     }
   }, [dispatch, id, state.selectedLevel, language]);
 
@@ -163,7 +164,7 @@ const Events = () => {
     e.stopPropagation();
     if (isAuthenticated) {
       dispatch(openAddToTripPopup());
-      navigate('/places/itineraries', { state: { id } });
+      navigate('/places/itineraries-details', { state: { id } });
     } else {
       togglePopup("alert", true);
     }

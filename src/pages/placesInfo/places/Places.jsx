@@ -18,7 +18,7 @@ import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { Arrow } from "../../../components/common/Images";
 import styles2 from "../../../components/common/PlaceCard.module.css";
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
-import { fetchPlacesFilterCategories, toggleFavorite } from "../../../features/places/PlaceAction";
+import { fetchPlacesFilterCategories, toggleFavorite, fetchGeoLocations } from "../../../features/places/PlaceAction";
 import FilterBar from "../../../components/common/FilterBar";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
@@ -53,7 +53,8 @@ const Places = () => {
         selectedSubcategory: null, // For filter subcategory
         showArrow: true, // For scroll-to-top button visibility
         page: 1, // For pagination
-        latAndLng: ""
+        latAndLng: "",
+        points: "",
     });
 
     const [popupState, setPopupState] = useState({
@@ -82,6 +83,7 @@ const Places = () => {
         if (id) {
             dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place' }));
             dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
+            dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
         }
     }, [dispatch, id, language]);
 
@@ -241,7 +243,7 @@ const Places = () => {
         e.stopPropagation();
         if (isAuthenticated) {
             dispatch(openAddToTripPopup());
-            navigate('/places/itineraries', { state: { id } });
+            navigate('/places/itineraries-details', { state: { id } });
         } else {
             togglePopup("alert", true);
         }
@@ -250,7 +252,13 @@ const Places = () => {
     const handleNavigateToLogin = () => {
         navigate('/login', { state: { from: location } });
       }
-    
+
+      useEffect(() => {
+        if (id) {
+            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place',points: state.points }));
+            
+        }
+    }, [dispatch, id, state.points]);
 
     return (
         <>

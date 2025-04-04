@@ -1,7 +1,8 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity, fetchItineraryDetails } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
+import { set } from 'lodash';
 
 const initialState = {
   itineries: [],
@@ -11,7 +12,21 @@ const initialState = {
   count: 0,
   itineraryDetails: null,
   isFavoriteToggling: false,
-  favTogglingId: null
+  favTogglingId: null,
+  travelLiteList: [],
+  travelTime: null,
+  tripModeLoading: false,
+  generatedLink: null,
+  generateLinkLoading: false,
+  downloadTripLoading: false,
+  downloadedTrip: null,
+  tripType: JSON.parse(localStorage.getItem('tripType')) || {
+    id: null,
+    type: null
+  },
+  stops: [],
+  stopsLoading: false,
+  addTripLoading: false
 };
 
 const itineriesInCitySlice = createSlice({
@@ -20,6 +35,24 @@ const itineriesInCitySlice = createSlice({
   reducers: {
     setFavTogglingId: (state, action) => {
       state.favTogglingId = action.payload;
+    },
+    resetShareableLink: (state) => {
+      state.generateLinkLoading = null
+    },
+    resetDownloadedTrip: (state) => {
+      state.downloadedTrip = null
+    },
+    setTripType: (state, action) => {
+      state.tripType = action.payload
+      localStorage.setItem('tripType', JSON.stringify(action.payload))
+
+    },
+    resetTripType: (state) => {
+      state.tripType = {
+        id: null,
+        name: null
+      }
+      localStorage.removeItem('tripType')
     }
   },
   extraReducers: (builder) => {
@@ -73,6 +106,18 @@ const itineriesInCitySlice = createSlice({
         
         state.itineries = updatedPlaces;
 
+        const updatedStops = state.stops.map(stop => {
+          if (stop.id === action.payload.id) {
+            return {
+              ...stop,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+            };
+          }
+          return stop;
+        });
+        
+        state.stops = updatedStops;
+
          // Also update the single place if it's the one being toggled
          if (state.itineraryDetails && state.itineraryDetails.id === action.payload.id) {
           state.itineraryDetails = {
@@ -86,8 +131,86 @@ const itineriesInCitySlice = createSlice({
         state.error = action.payload;
       })
 
+      .addCase(fetchTravelLiteList.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTravelLiteList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.travelLiteList = action.payload;
+      })
+      .addCase(fetchTravelLiteList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchTravelTime.pending, (state) => {
+        state.tripModeLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTravelTime.fulfilled, (state, action) => {
+        state.tripModeLoading = false;
+        state.travelTime = action.payload;
+      })
+      .addCase(fetchTravelTime.rejected, (state, action) => {
+        state.tripModeLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(addTrip.pending, (state) => {
+        state.addTripLoading = true;
+        state.error = null;
+      })
+      .addCase(addTrip.fulfilled, (state, action) => {
+        state.addTripLoading = false;
+        state.error = null;
+      })
+      .addCase(addTrip.rejected, (state, action) => {
+        state.addTripLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(generateLink.pending, (state) => {
+        state.generateLinkLoading = true;
+        state.error = null;
+      })
+      .addCase(generateLink.fulfilled, (state, action) => { 
+        state.generateLinkLoading = false;
+        state.generatedLink = action.payload;
+      })
+      .addCase(generateLink.rejected, (state, action) => {
+        state.generateLinkLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(downloadTrip.pending, (state) => {
+        state.downloadTripLoading = true;
+        state.error = null;
+      })
+      .addCase(downloadTrip.fulfilled, (state, action) => {
+        state.downloadTripLoading = false;
+        state.downloadedTrip = action.payload;
+      })
+      .addCase(downloadTrip.rejected, (state, action) => {
+        state.downloadTripLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchStops.pending, (state) => {
+        state.stopsLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchStops.fulfilled, (state, action) => {
+        state.stopsLoading = false;
+        state.stops = action.payload?.results || [];
+      })
+      .addCase(fetchStops.rejected, (state, action) => {
+        state.stopsLoading = false;
+        state.error = action.payload;
+      })
+
   },
 });
 
-export const { setFavTogglingId } = itineriesInCitySlice.actions;
+export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } = itineriesInCitySlice.actions;
 export default itineriesInCitySlice.reducer;

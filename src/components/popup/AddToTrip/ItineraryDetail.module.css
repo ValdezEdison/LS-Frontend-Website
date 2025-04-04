@@ -12,6 +12,37 @@
   border: none;
 }
 
+.itenarysearchContainer{
+  position: relative;
+  width: 100%;
+}
+
+.searchItemsList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.searchItem {
+  border: solid 1px #F4C031;
+  border-radius: 8px;
+  padding: 6px 12px 6px 12px;
+  font-size: 12px;
+  color: #151820;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.searchItemClose {
+  background: url(../../../../public/images/close.png) no-repeat 0 0;
+  background-size: 100%;
+  width: 10px;
+  height: 9px;
+  cursor: pointer;
+}
+
 @media (max-width: 991px) {
   .container {
     max-width: 991px;
@@ -391,6 +422,7 @@
   border: none;
   padding-left: 0;
   padding-right: 0;
+  outline: none;
 }
 
 
@@ -425,7 +457,8 @@ input::placeholder{
   gap: 4px;
   font-size: 14px;
   color: #000;
-  margin-top: 10px;
+  margin-top: 8px;
+  margin-bottom: 20px;
   cursor: pointer;
 }
 
@@ -437,13 +470,48 @@ input::placeholder{
 
 .suggestionTitle {
   font-size: 14px;
-  margin:0 0 15px;
+  font-weight: normal;
+  margin:0;
 }
 
 .suggestionList {
   display: flex;
   gap: 14px;
   overflow-x: auto;
+}
+
+.removeDestinationButton{
+  width: 14px;
+  height: 14px;
+  background: url(../../../../public/images/delete-icon.svg) no-repeat 0 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.addSearchItems{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.destinationItem .formGroup:last-child{
+  margin-bottom: 0;
+}
+
+.suggestionAdd{
+  background: url(../../../../public/images/add-icon.png) no-repeat 0 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.suggestionTitleMain{
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 640px) {

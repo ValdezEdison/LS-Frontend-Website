@@ -10,6 +10,7 @@ const PlaceCard = forwardRef(
         
     const location = useLocation();
     const isItineraryPage = location.pathname.includes("itineraries");
+    const isItineraryDetailsPage = location.pathname.includes("itineraries-details");
 
     const hasStopsOrTags = place?.num_of_stops !== undefined || (place?.tags && place?.tags.length > 0);
     const hasComments = place?.comments_count !== undefined;
@@ -23,6 +24,11 @@ const PlaceCard = forwardRef(
     const handleTripClick = (e) => {
         e.stopPropagation();
         handleActions(e, 'addToTrip', place?.id);
+    };
+
+    const handleStopClick = (e) => {
+        e.stopPropagation();
+        handleActions(e, 'addToStop', place?.id);
     };
 
     const handleCardClick = (e) => {
@@ -58,7 +64,14 @@ const PlaceCard = forwardRef(
             </div>
 
             <div className={styles.placeInfo}>
-                <h3 className={styles.placeName}>{place?.display_text || place?.title || ""}</h3>
+                <div className={styles.placeTitleMain}>
+                    <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
+                    {isItineraryDetailsPage && (
+                        <div className={styles.placeCardAdd} onClick={handleStopClick}></div>
+                    )}
+                    
+                </div>
+                
                 <p className={styles.placeLocation}>
                     {place?.city?.name}
                     {place?.city?.name && place?.city?.country?.name && ", "}

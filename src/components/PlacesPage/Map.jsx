@@ -17,7 +17,7 @@ const Map = ({ onOpenPopup }) => {
         const loader = new Loader({
             apiKey: apiKey,
             version: "weekly",
-            libraries: ["marker"] // Load the marker library
+            libraries: ["maps", "marker", "core", "geometry"], // Load the marker library
         });
 
         loader.load().then(() => {

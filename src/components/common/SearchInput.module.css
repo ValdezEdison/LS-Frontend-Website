@@ -53,12 +53,16 @@
   width: 100%;
   flex-direction: column;
   color: #000000;
-  padding: 3px 2px;
+  padding: 5px 12px 5px 2px;
   position: absolute;
   top: 60px;
   display: none;
   z-index: 2;
-  max-height: 320px;
+ 
+}
+
+.suggestionsContainerInner{
+  max-height: 280px;
   overflow-y: scroll;
 }
 
@@ -107,6 +111,10 @@
   width: 14px;
   height: 14px;
   cursor: pointer;
+}
+
+ .suggestionsContainerSm .suggestionsContainerInner{
+  max-height: 180px;
 }
 
 @media (max-width: 991px) {

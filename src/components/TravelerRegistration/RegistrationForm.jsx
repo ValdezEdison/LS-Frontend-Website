@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./RegistrationForm.module.css";
 import Loader from "../common/Loader";
+import { useSelector } from "react-redux";
 
 const RegistrationForm = ({
   formData,
@@ -12,8 +13,58 @@ const RegistrationForm = ({
   handleNavigate,
   handleFocus,
   handleBlur,
-  isFormValid
+  isFormValid,
+  phoneCodes
 }) => {
+
+  const { loading } = useSelector((state) => state.auth);
+
+  const handlePhonePrefixChange = (e) => {
+    handleInputChange({
+      target: {
+        name: "phone_prefix",
+        value: e.target.value
+      }
+    });
+  };
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef(null);
+
+  // Filter phone codes based on search term
+  const filteredPhoneCodes = phoneCodes.filter(
+    code =>
+      code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      code.phone_code.includes(searchTerm)
+  );
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handlePhonePrefixSelect = (code) => {
+    handleInputChange({
+      target: {
+        name: "phone_prefix",
+        value: `+${code.phone_code}`
+      }
+    });
+    setIsDropdownOpen(false);
+    setSearchTerm("");
+  };
+
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Username Input */}
@@ -26,9 +77,8 @@ const RegistrationForm = ({
           id="username"
           name="username"
           placeholder="Nombre y apellidos"
-          className={`${styles.input} ${
-            fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
-          }`}
+          className={`${styles.input} ${fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
+            }`}
           value={formData.username}
           onChange={handleInputChange}
           onFocus={() => handleFocus('username')}
@@ -52,9 +102,8 @@ const RegistrationForm = ({
           id="email"
           name="email"
           placeholder="nombre@ejemplo.com"
-          className={`${styles.input} ${
-            fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
-          }`}
+          className={`${styles.input} ${fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
+            }`}
           value={formData.email}
           onChange={handleInputChange}
           onFocus={() => handleFocus('email')}
@@ -73,20 +122,62 @@ const RegistrationForm = ({
         <label htmlFor="phone" className={styles.label}>
           Teléfono
         </label>
-        <div className={styles.phoneInput}>
-          <div className={styles.phoneCodeWrapper}>
-            <select className={styles.select}>
-              <option>+000</option>
-            </select>
+        <div className={`${styles.phoneInput} ${isDropdownOpen ? styles.open : ""}`}>
+        <div 
+            className={styles.phoneCodeWrapper} 
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            {formData.phone_prefix ? (
+              <span className={styles.placeholderText}>{formData.phone_prefix}</span>
+            ) : (
+              <span className={styles.placeholderText}>Code</span>
+            )}
+            <span className={isDropdownOpen ? styles.arrowUp : styles.arrowDown}></span>
           </div>
+          {isDropdownOpen && (
+            <div 
+              className={styles.phoneCodeDropdownWrapperOuter}
+              ref={dropdownRef}
+            >
+              <div className={styles.phoneCodeinputWrapper}>
+                <input
+                  type="text"
+                  placeholder="Search country"
+                  className={styles.selectedItem}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  autoFocus
+                />
+              </div>
+              <ul className={styles.droplist}>
+                {filteredPhoneCodes.length > 0 ? (
+                  filteredPhoneCodes.map((code) => (
+                    <li
+                      key={code.code}
+                      onClick={() => handlePhonePrefixSelect(code)}
+                      className={
+                        formData.phone_prefix === `+${code.phone_code}`
+                          ? styles.selectedItem
+                          : ""
+                      }
+                    >
+                      +{code.phone_code} {code.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className={styles.selectedItem}>No countries found</li>
+                )}
+              </ul>
+            </div>
+          )}
+          
           <input
             type="tel"
             id="phone"
             name="phone"
             placeholder="123 456 789"
-            className={`${styles.input} ${
-              fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
+              }`}
             value={formData.phone}
             onChange={handleInputChange}
             onFocus={() => handleFocus('phone')}
@@ -111,8 +202,8 @@ const RegistrationForm = ({
           mínimo <strong>un número, una mayúscula y un símbolo.</strong>
         </div>
         <div className={styles.passwordInput}>
-          <div 
-            className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`} 
+          <div
+            className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`}
             onClick={togglePasswordVisibility}
           ></div>
           <input
@@ -120,9 +211,8 @@ const RegistrationForm = ({
             id="password"
             name="password"
             placeholder="Introduce una contraseña"
-            className={`${styles.input} ${
-              fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
+              }`}
             value={formData.password}
             onChange={handleInputChange}
             onFocus={() => handleFocus('password')}
@@ -159,22 +249,25 @@ const RegistrationForm = ({
       </div>
 
       {/* Submit Button */}
-      <button 
-        type="submit" 
-        className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
-        disabled={!isFormValid}
-      >
-        Crear cuenta
-      </button>
-      <button 
-        className="submitLoadingButton" 
+      {loading ? <button
+        className="submitLoadingButton"
         disabled={!isFormValid}
       >
         <div className="loaderBtnWrapper">
-          <Loader/>
+          <Loader />
         </div>
-       
-      </button>
+
+      </button> :
+        <button
+          type="submit"
+          className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+          disabled={!isFormValid}
+        >
+          Crear cuenta
+        </button>
+      }
+
+
 
       {/* Login Prompt */}
       <p className={styles.loginPrompt}>

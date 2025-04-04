@@ -8,6 +8,10 @@ const CountryService = {
             return ApiService.get("/cities/countries");
         }
     },
+
+    getCountriesPhonecodes: async () => {
+        return ApiService.get("/cities/countries/phone_codes");
+    },
 };
 
 export default CountryService;
