@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
+import { set } from 'lodash';
 
 const initialState = {
   itineries: [],
@@ -18,7 +19,11 @@ const initialState = {
   generatedLink: null,
   generateLinkLoading: false,
   downloadTripLoading: false,
-  downloadedTrip: null
+  downloadedTrip: null,
+  tripType: JSON.parse(localStorage.getItem('tripType')) || {
+    id: null,
+    type: null
+  }
 };
 
 const itineriesInCitySlice = createSlice({
@@ -33,6 +38,18 @@ const itineriesInCitySlice = createSlice({
     },
     resetDownloadedTrip: (state) => {
       state.downloadedTrip = null
+    },
+    setTripType: (state, action) => {
+      state.tripType = action.payload
+      localStorage.setItem('tripType', JSON.stringify(action.payload))
+
+    },
+    resetTripType: (state) => {
+      state.tripType = {
+        id: null,
+        name: null
+      }
+      localStorage.removeItem('tripType')
     }
   },
   extraReducers: (builder) => {
@@ -167,5 +184,5 @@ const itineriesInCitySlice = createSlice({
   },
 });
 
-export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip } = itineriesInCitySlice.actions;
+export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } = itineriesInCitySlice.actions;
 export default itineriesInCitySlice.reducer;

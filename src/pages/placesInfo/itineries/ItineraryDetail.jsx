@@ -19,10 +19,11 @@ import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import { fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../../features/common/cities/CityAction";
-import { debounce } from 'lodash';
+import { debounce, set } from 'lodash';
 import { t } from "i18next";
 import ShareOptions from "../../../components/common/ShareOptions";
-import { resetShareableLink, resetDownloadedTrip } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -40,28 +41,36 @@ const ItineraryDetail = () => {
   const { cities, loading: citiesLoading } = useSelector((formState) => formState.cities);
 
   const [popupState, setPopupState] = useState({
-    map: false,
-    gallery: false,
-    reviewDrawer: false,
+
     alert: false,
-    comment: false,
     deleteConfirm: false,
     success: false,
   });
 
 
   const [showShareOptions, setShowShareOptions] = useState(false);
-
+  const tripType = localStorage.getItem('tripType') 
+  ? JSON.parse(localStorage.getItem('tripType')).type 
+  : "solo";
   const [formState, setFormState] = useState({
-    tripType: '',
+    tripType: tripType,
     tripName: '',
-    destination: '',
     startDate: null,
     endDate: null,
     destinationSearchQuery: "",
-    destinationId: null,
     mode: 'driving',
+    destinations: [{
+      destinationSearchQuery: '',
+      destinationId: null,
+      destinationName: ''
+    }]
   });
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successTitle, setSuccessTitle] = useState("");
+  const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
+  const [citiesSearchResults, setCitiesSearchResults] = useState([]);
+  const [isSearchingCities, setIsSearchingCities] = useState(false);
 
   const togglePopup = (name, formState) => {
     setPopupState((prev) => ({ ...prev, [name]: formState }));
@@ -75,6 +84,10 @@ const ItineraryDetail = () => {
       dispatch(fetchCities({}));
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
     }
+    return () => {
+      dispatch(resetTripType());
+    };
+
   }, [dispatch, id, language]);
 
   const handleViewMoreDetails = (id) => {
@@ -107,12 +120,15 @@ const ItineraryDetail = () => {
 
       setFormState({
         tripName: '',
-        destination: '',
         startDate: null,
         endDate: null,
         destinationSearchQuery: "",
-        destinationId: null,
-        tripType: '',
+        tripType: tripType,
+        destinations: [{
+          destinationSearchQuery: '',
+          destinationId: null,
+          destinationName: ''
+        }]
       });
       setFormErrors({});
       setSelectedTripId(null);
@@ -127,22 +143,63 @@ const ItineraryDetail = () => {
     navigate('/login', { formState: { from: location } });
   }
 
-  const debouncedFetchCities = useCallback(
-    debounce((query) => {
-      dispatch(fetchCities({ searchQuery: query }));
-    }, 500),
-    [dispatch]
-  );
+  // const debouncedFetchCities = useCallback(
+  //   debounce((query) => {
+  //     dispatch(fetchCities({ searchQuery: query }));
+  //   }, 500),
+  //   [dispatch]
+  // );
 
-  useEffect(() => {
-    if (formState?.destinationSearchQuery?.trim()) {
-      debouncedFetchCities(formState.destinationSearchQuery);
-    } else {
-      dispatch(fetchCities({}));
-    }
+  // useEffect(() => {
+  //   if (formState?.destinationSearchQuery?.trim()) {
+  //     debouncedFetchCities(formState.destinationSearchQuery);
+  //   } else {
+  //     dispatch(fetchCities({}));
+  //   }
 
-    return () => debouncedFetchCities.cancel();
-  }, [formState?.destinationSearchQuery, debouncedFetchCities, dispatch]);
+  //   return () => debouncedFetchCities.cancel();
+  // }, [formState?.destinationSearchQuery, debouncedFetchCities, dispatch]);
+
+    // Debounced search function
+    const debouncedFetchCities = useCallback(
+      debounce(async (query) => {
+        if (query.trim()) {
+          setIsSearchingCities(true);
+          try {
+            const result = await dispatch(fetchCities({ searchQuery: query }));
+            setCitiesSearchResults(result.payload || []);
+          } catch (error) {
+            console.error('Search error:', error);
+            setCitiesSearchResults([]);
+          } finally {
+            setIsSearchingCities(false);
+          }
+        } else {
+          setCitiesSearchResults([]);
+        }
+      }, 500),
+      [dispatch]
+    );
+  
+    // Search effect
+    useEffect(() => {
+      const activeQuery = formState.destinations?.[activeDestinationIndex]?.destinationSearchQuery;
+      debouncedFetchCities(activeQuery);
+  
+      return () => debouncedFetchCities.cancel();
+    }, [formState.destinations, activeDestinationIndex, debouncedFetchCities]);
+  
+    // Update destination handler
+    const updateDestination = (index, field, value) => {
+      setFormState(prev => {
+        const newDestinations = [...prev.destinations];
+        newDestinations[index] = {
+          ...newDestinations[index],
+          [field]: value
+        };
+        return { ...prev, destinations: newDestinations };
+      });
+    };
 
   const [formErrors, setFormErrors] = useState({});
   const [isCreatingNewTrip, setIsCreatingNewTrip] = useState(false);
@@ -150,33 +207,69 @@ const ItineraryDetail = () => {
 
   const validateForm = () => {
     const errors = {};
-
-    if (isCreatingNewTrip) {
-      if (!formState.name) errors.name = 'Trip name is required';
-      if (!formState.destinationId) errors.destination = 'Destination is required';
-      if (!formState.startDate) errors.startDate = 'Start date is required';
-      if (!formState.endDate) errors.endDate = 'End date is required';
-    } else {
-      if (!selectedTripId) errors.trip = 'Please select a trip';
+  
+    // Validate trip name
+    if (!formState.tripName.trim()) {
+      errors.tripName = 'Trip name is required';
     }
-
+  
+    // Validate dates
+    if (!formState.startDate) {
+      errors.startDate = 'Start date is required';
+    }
+    if (!formState.endDate) {
+      errors.endDate = 'End date is required';
+    }
+  
+    // Validate that end date is not before start date
+    if (formState.startDate && formState.endDate && formState.endDate < formState.startDate) {
+      errors.endDate = 'End date cannot be before start date';
+    }
+  
+    // Validate destinations
+    if (formState.destinations.length === 0) {
+      errors.destinations = 'At least one destination is required';
+    } else {
+      // Check each destination for validity
+      formState.destinations.forEach((dest, index) => {
+        if (!dest.destinationName.trim()) {
+          errors[`destinations[${index}]`] = 'Destination is required';
+        }
+        // Add more destination validations as needed
+      });
+    }
+  
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  const storedTripType = localStorage.getItem('tripType')
+
   const handleSubmit = async (e) => {
+    console.log("storedTripType submit", storedTripType)
+    if (!storedTripType) {
+      dispatch(setTripType({  id: id, type: formState.tripType }))
+      dispatch(closeAddToTripPopup())
+      togglePopup("success", true);
+      setSuccessMessage(`A new stop has been added to your trip ${itineraryDetails.title}. Continue adding destinations and events as you wish.`);
+      setSuccessTitle("Route added!");
+      return
+    }
+
     e.preventDefault();
 
     if (!validateForm()) return;
 
     try {
+      dispatch(setTripType({  id: id, type: formState.tripType }))
       if (isCreatingNewTrip) {
         const tripData = {
-          name: formState.name,
-          destination_id: formState.destinationId,
-          start_date: formState.startDate.toISOString().split('T')[0],
+          title: formState.name,
+          type: formState.tripType,
+          cities: formState.destinations.map((destination) => destination.destinationId),
+          initial_date: formState.startDate.toISOString().split('T')[0],
           end_date: formState.endDate.toISOString().split('T')[0],
-          itinerary_ids: [id]
+          stops: [id]
         };
         dispatch(addTrip(tripData));
       } else {
@@ -231,22 +324,49 @@ const ItineraryDetail = () => {
     if (downloadedTrip) {
       // Create a blob from the PDF data
       const blob = new Blob([downloadedTrip], { type: 'application/pdf' });
-      
+
       // Create a URL for the blob
       const url = window.URL.createObjectURL(blob);
-      
+
       // Create a temporary anchor element to trigger the download
       const a = document.createElement('a');
       a.href = url;
       a.download = `${itineraryDetails?.title || 'itinerary'}.pdf`;
       document.body.appendChild(a);
       a.click();
-      
+
       // Clean up
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     }
   }, [downloadedTrip, itineraryDetails?.title]);
+
+  useEffect(() => {
+    let timer;
+    if (popupState.success) {
+      timer = setTimeout(() => {
+        togglePopup("success", false);
+        setSuccessMessage("");
+        setSuccessTitle("");
+      }, 5000); // 5 seconds in milliseconds
+    }
+
+    // Clean up the timer when the component unmounts or when popupState.success changes
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [popupState.success]);
+
+
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
+
+  console.log("formErrors", formErrors);
 
   if (loading) {
     return (
@@ -298,13 +418,29 @@ const ItineraryDetail = () => {
       {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
         dispatch(closeAddToTripPopup());
         dispatch(closePopup());
-      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} />}
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} />}
       {isOpen && popupState.alert && (
         <Modal
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
           <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Want to add a trip to your list?" description="Sign up or log in to add a trip and create itineraries to your liking." buttonText="Sign in or create an account" />
+        </Modal>
+      )}
+
+
+      {isOpen && popupState.success && (
+        <Modal
+          title=""
+          onClose={() => togglePopup("success", false)}
+          customClass="modalSmTypeOne"
+          hideCloseButton={true}
+        >
+          <SuccessMessagePopup
+            title={successTitle}
+            message={successMessage}
+            onClose={() => togglePopup("success", false)}
+          />
         </Modal>
       )}
       <div className={`${styles.itineraryDetailContainer} ${isAddToPopupOpen ? styles.overflowHide : ''}`}>

@@ -470,6 +470,8 @@ const PlaceDetails = () => {
     if (popupState.success) {
       timer = setTimeout(() => {
         togglePopup("success", false);
+        setSuccessMessage("");
+        setSuccessTitle("");
       }, 5000); // 5 seconds in milliseconds
     }
 

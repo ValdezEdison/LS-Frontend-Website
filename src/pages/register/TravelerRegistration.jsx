@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import styles from "./TravelerRegistration.module.css";
 import Header from "../../components/layouts/Header";
 import RegistrationForm from "../../components/TravelerRegistration/RegistrationForm";
-import SocialLogin from "../../components/TravelerRegistration/SocialLogin";
+// import SocialLogin from "../../components/TravelerRegistration/SocialLogin";
 import Footer from "../../components/TravelerRegistration/Footer";
 import { register } from "../../features/authentication/AuthActions";
 import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
@@ -14,7 +14,8 @@ import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { set } from "lodash";
 import Loader from "../../components/common/Loader";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
-import { use } from "react";
+import SocialLogin from "../../components/LoginPage/SocialLogin";
+import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
@@ -269,6 +270,57 @@ const TravelerRegistration = () => {
     toast.info("Confirmation email resent successfully");
   };
 
+  // Social Login Handler
+     const handleSocialLogin = async (provider, token, error) => {
+  
+      if (error) {
+        toast.error(error.message || "Social login failed");
+        return;
+      }
+  
+      try {
+        // let token;
+        
+        // // Google Login
+        // // if (provider === 'google') {
+        // //   await initializeGoogleSDK();
+        // //   token = await handleGoogleLogin();
+        // // } 
+        // // Facebook Login
+        //  if (provider === 'facebook') {
+  
+        //   // if (window.location.protocol !== 'https:') {
+        //   //   throw new Error('Facebook login requires HTTPS');
+        //   // }
+        
+          
+        //   const facebookResponse = await handleFacebookLogin();
+        //   token = facebookResponse.accessToken;
+        //   // token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
+        // }
+  
+        if (token) {
+          const result = await dispatch(socialLogin({
+            grant_type: "convert_token",
+            client_id: clientId,
+            client_secret: clientSecret,
+            backend: provider,
+            token,
+          })).unwrap();
+  
+          if (result) {
+            toast.success("Login successful!");
+            await dispatch(getProfile()).unwrap();
+            const from = location.state?.from?.pathname || "/";
+            navigate(from, { replace: true });
+          }
+        }
+      } catch (error) {
+        toast.error(error.message || "Social login failed");
+        console.error("Social login error:", error);
+      }
+    };
+
 console.log(formData, 'formData')
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
@@ -313,7 +365,7 @@ console.log(formData, 'formData')
                     isFormValid={isFormValid}
                     phoneCodes={phoneCodes}
                   />
-                  <SocialLogin />
+                  <SocialLogin onSocialLogin={handleSocialLogin}/>
                   <Footer />
                 </div>
               </div>

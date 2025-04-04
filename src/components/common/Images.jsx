@@ -13,6 +13,7 @@ const Flag = "/images/bandera-idioma@2x.png";
 const Cap = "/images/cap.svg";
 const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
+const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
 const QR = "/images/QR.png";
 const FirstSection = "/images/imgen-primera-seccin-1@2x.png";
@@ -76,6 +77,7 @@ export {
     CalendarIcon,
     Cap,
     CellularConnection,
+    Delete,
     FacebookWhite,
     QR,
     Favorite,

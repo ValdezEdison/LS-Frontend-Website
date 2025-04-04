@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./RegistrationForm.module.css";
 import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
@@ -26,6 +26,42 @@ const RegistrationForm = ({
         value: e.target.value
       }
     });
+  };
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef(null);
+
+  // Filter phone codes based on search term
+  const filteredPhoneCodes = phoneCodes.filter(
+    code =>
+      code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      code.phone_code.includes(searchTerm)
+  );
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handlePhonePrefixSelect = (code) => {
+    handleInputChange({
+      target: {
+        name: "phone_prefix",
+        value: `+${code.phone_code}`
+      }
+    });
+    setIsDropdownOpen(false);
+    setSearchTerm("");
   };
 
 
@@ -86,28 +122,54 @@ const RegistrationForm = ({
         <label htmlFor="phone" className={styles.label}>
           Teléfono
         </label>
-        <div className={`${styles.phoneInput} ${styles.open}`}>
-          <div className={styles.phoneCodeWrapper}>
-            {/* <select className={styles.select}   value={formData.phone_prefix}
-              onChange={handlePhonePrefixChange}>
-              {phoneCodes.map((code) => (
-                <option key={code.code}  value={`+${code.phone_code}`} >+{code.phone_code} {code.name}</option>
-              ))}
-            </select> */}
-            <span className={styles.placeholderText}>111</span>
-            <span className=""></span>
+        <div className={`${styles.phoneInput} ${isDropdownOpen ? styles.open : ""}`}>
+        <div 
+            className={styles.phoneCodeWrapper} 
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            {formData.phone_prefix ? (
+              <span className={styles.placeholderText}>{formData.phone_prefix}</span>
+            ) : (
+              <span className={styles.placeholderText}>Code</span>
+            )}
+            <span className={isDropdownOpen ? styles.arrowUp : styles.arrowDown}></span>
           </div>
-          <div className={styles.phoneCodeDropdownWrapperOuter}>
-            <div className={styles.phoneCodeinputWrapper}>
-              <input type="text" accept="" placeholder="Search Select Country" class={styles.selectedItem} name="search" />
+          {isDropdownOpen && (
+            <div 
+              className={styles.phoneCodeDropdownWrapperOuter}
+              ref={dropdownRef}
+            >
+              <div className={styles.phoneCodeinputWrapper}>
+                <input
+                  type="text"
+                  placeholder="Search country"
+                  className={styles.selectedItem}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  autoFocus
+                />
               </div>
               <ul className={styles.droplist}>
-              {phoneCodes.map((code) => (
-                <li  key={code.code} > + {code.phone_code} {code.name}</li>             
-                ))}
+                {filteredPhoneCodes.length > 0 ? (
+                  filteredPhoneCodes.map((code) => (
+                    <li
+                      key={code.code}
+                      onClick={() => handlePhonePrefixSelect(code)}
+                      className={
+                        formData.phone_prefix === `+${code.phone_code}`
+                          ? styles.selectedItem
+                          : ""
+                      }
+                    >
+                      +{code.phone_code} {code.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className={styles.selectedItem}>No countries found</li>
+                )}
               </ul>
-            
-          </div>
+            </div>
+          )}
           
           <input
             type="tel"

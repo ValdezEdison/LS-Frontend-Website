@@ -6,7 +6,7 @@ import {
     FacebookIcon,
     TwitterIcon,
     WhatsappIcon,
-    EmailIcon
+    EmailIcon,
   } from 'react-share';
   import { CopyToClipboard } from 'react-copy-to-clipboard';
   import { useState, useEffect } from 'react';
@@ -24,12 +24,11 @@ import {
   
     return (
       <div className={styles.shareOptions}>
-        <div className={styles.shareOption}>
+        {/* <div className={styles.shareOption}>
           <FacebookShareButton url={url} quote={description}>
             <FacebookIcon size={32} round />
           </FacebookShareButton>
-          {/* <span>Facebook</span> */}
-        </div>
+        </div> */}
 {/*         
         <div className={styles.shareOption}>
           <TwitterShareButton url={url} title={title}>

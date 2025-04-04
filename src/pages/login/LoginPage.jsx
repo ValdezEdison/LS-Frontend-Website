@@ -224,25 +224,25 @@ const LoginPage = () => {
     }
 
     try {
-      let token;
+      // let token;
       
-      // Google Login
-      // if (provider === 'google') {
-      //   await initializeGoogleSDK();
-      //   token = await handleGoogleLogin();
-      // } 
-      // Facebook Login
-       if (provider === 'facebook') {
+      // // Google Login
+      // // if (provider === 'google') {
+      // //   await initializeGoogleSDK();
+      // //   token = await handleGoogleLogin();
+      // // } 
+      // // Facebook Login
+      //  if (provider === 'facebook') {
 
-        // if (window.location.protocol !== 'https:') {
-        //   throw new Error('Facebook login requires HTTPS');
-        // }
+      //   // if (window.location.protocol !== 'https:') {
+      //   //   throw new Error('Facebook login requires HTTPS');
+      //   // }
       
         
-        const facebookResponse = await handleFacebookLogin();
-        token = facebookResponse.accessToken;
-        // token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
-      }
+      //   const facebookResponse = await handleFacebookLogin();
+      //   token = facebookResponse.accessToken;
+      //   // token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
+      // }
 
       if (token) {
         const result = await dispatch(socialLogin({
