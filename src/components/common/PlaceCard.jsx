@@ -58,7 +58,11 @@ const PlaceCard = forwardRef(
             </div>
 
             <div className={styles.placeInfo}>
-                <h3 className={styles.placeName}>{place?.display_text || place?.title || ""}</h3>
+                <div className={styles.placeTitleMain}>
+                    <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
+                    <div className={styles.placeCardAdd}></div>
+                </div>
+                
                 <p className={styles.placeLocation}>
                     {place?.city?.name}
                     {place?.city?.name && place?.city?.country?.name && ", "}
