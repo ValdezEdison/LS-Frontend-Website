@@ -15,6 +15,7 @@ const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
+const Filter = "/images/filter.svg";
 const QR = "/images/QR.png";
 const FirstSection = "/images/imgen-primera-seccin-1@2x.png";
 const FirstSection1 = "/images/imgen-primera-seccin-1-1@2x.png";
@@ -74,6 +75,7 @@ export {
     ArrowRight1,
     Banner,
     Flag,
+    Filter,
     CalendarIcon,
     Cap,
     CellularConnection,

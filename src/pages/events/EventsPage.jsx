@@ -21,13 +21,15 @@ const EventsPage = () => {
   return (
     <div className={styles.eventsPage}>
       <Header />
-      <main className={styles.mainContent}>
+      <main className="page-center">
         <h1 className={styles.eventCount}>1.230 eventos disponibles</h1>
         <EventSearch />
         <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1}/>
         <h2 className={styles.sectionTitle}>Eventos más populares</h2>
         <EventList />
-        <button className={styles.showMoreButton}>Mostrar más</button>
+        <div className={styles.showMoreWrapper}>
+          <button className={styles.showMoreButton}>Mostrar más</button>
+        </div>
         <hr className={styles.divider} />
         <PopularEvents />
         <AppPromotion />

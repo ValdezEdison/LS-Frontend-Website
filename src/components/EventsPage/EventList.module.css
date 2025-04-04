@@ -8,8 +8,6 @@
 
 @media (max-width: 991px) {
   .eventList {
-    .eventList {
     grid-template-columns: 1fr;
   }
-}
 }

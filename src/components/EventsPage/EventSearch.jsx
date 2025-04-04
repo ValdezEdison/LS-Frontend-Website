@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./EventSearch.module.css";
+import { Filter } from "../common/Images";
 
 const EventSearch = () => {
   return (
@@ -24,7 +25,7 @@ const EventSearch = () => {
       </div>
       <div className={styles.actionButtons}>
         <button className={styles.mapButton}>Ver mapa</button>
-        <button className={styles.filterButton}>Filtros</button>
+        <button className={styles.filterButton}>Filtros <img src={Filter}/></button>
       </div>
     </div>
   );

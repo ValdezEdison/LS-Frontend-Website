@@ -63,6 +63,10 @@
   margin: 20px 0;
 }
 
+.showMoreWrapper{
+  text-align: center;
+}
+
 @media (max-width: 991px) {
   .mainContent {
     padding: 0 20px;
@@ -81,4 +85,6 @@
     font-size: 14px;
     padding: 8px 14px;
   }
+
+  
 }

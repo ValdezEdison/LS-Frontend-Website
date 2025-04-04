@@ -3,13 +3,14 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 24px;
+  margin: 0 0 24px;
 }
 
 .searchContainer {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex-grow: 1;
 }
 
 .searchTitle {
@@ -20,6 +21,8 @@
 
 .searchForm {
   flex-grow: 1;
+  max-width: 308px;
+  width: 100%;
 }
 
 .inputWrapper {
@@ -59,6 +62,13 @@
   cursor: pointer;
 }
 
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
 .mapButton {
   background-color: var(--Color-principal-naranja, #f4c031);
   color: var(--Negro-textos, #151820);
@@ -91,5 +101,10 @@
   .filterButton {
     flex-grow: 1;
     text-align: center;
+  }
+
+
+  .searchForm{
+    max-width: 100%;
   }
 }
