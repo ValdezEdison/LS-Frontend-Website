@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
-import EventCard from "../../../components/PlacesInfo/Events/EventCard";
+import EventCard from "../../../components/common/EventCard";
 import RecommendedEvent from "../../../components/PlacesInfo/Events/RecommendedEvent";
 import styles from "./Events.module.css";
 import SubNavMenu from "../../../components/common/SubNavMenu";

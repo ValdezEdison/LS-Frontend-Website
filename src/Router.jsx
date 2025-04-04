@@ -12,6 +12,7 @@ import ItineraryDetail from "./pages/placesInfo/itineries/ItineraryDetail";
 import LoginPage from "./pages/login/LoginPage";
 import TravelerRegistration from "./pages/register/TravelerRegistration";
 import PasswordRecoveryPage from "./pages/PasswordRecovery/PasswordRecoveryPage";
+import EventsPage from "./pages/events/EventsPage";
 const Router = () => {
     return (
         <>
@@ -30,6 +31,8 @@ const Router = () => {
                 <Route path="/places/destination-places" element={<Places />} />
                 <Route path="/places/itineraries" element={<ItineraryList />} />
                 <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
+
+                <Route path="/events" element={<EventsPage />} />
             </Routes>
         </>
     );

@@ -1,0 +1,110 @@
+.eventCard {
+  border-radius: 12px;
+  border: 1px solid var(--Gray-3, #828282);
+  background-color: #fff;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.eventImage {
+  width: 100%;
+  aspect-ratio: 1.452;
+  object-fit: cover;
+}
+
+.favoriteIcon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+}
+
+.eventInfo {
+  margin-top: 12px;
+}
+
+.eventTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.eventLocation,
+.eventDate,
+.eventCategory {
+  font-size: 10px;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.eventActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.viewMoreButton,
+.addToTripButton {
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.viewMoreButton {
+  background-color: var(--Color-principal-naranja, #f4c031);
+  color: var(--Negro-textos, #151820);
+  border: none;
+}
+
+.addToTripButton {
+  border: 1px solid var(--Color-principal-azul, #212d94);
+  background-color: #fff;
+  color: var(--Negro-textos, #151820);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23212d94"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (max-width: 991px) {
+  .eventCard {
+    padding: 8px;
+  }
+
+  .eventTitle {
+    font-size: 14px;
+  }
+
+  .eventLocation,
+  .eventDate,
+  .eventCategory {
+    font-size: 9px;
+  }
+
+  .viewMoreButton,
+  .addToTripButton {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

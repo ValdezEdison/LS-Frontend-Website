@@ -1,0 +1,102 @@
+.appPromotion {
+  border-radius: 24px;
+  border: 2px solid var(--Color-principal-azul, #212d94);
+  display: flex;
+  width: 100%;
+  margin-top: 80px;
+  position: relative;
+}
+
+.promotionImage {
+  width: 56%;
+  border-radius: 22px 0 0 22px;
+  object-fit: cover;
+}
+
+.promotionContent {
+  width: 44%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.promotionTitle {
+  color: var(--Negro-blue, #151820);
+  font-size: 32px;
+  font-weight: 700;
+  font-family:
+    Montserrat,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  margin-bottom: 14px;
+}
+
+.promotionDescription {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 24px;
+}
+
+.exploreButton {
+  align-self: flex-start;
+  border-radius: 12px;
+  background-color: var(--Color-principal-naranja, #f4c031);
+  color: var(--Negro-textos, #151820);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.paginationDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+}
+
+.paginationDot.active {
+  background-color: var(--Color-principal-azul, #212d94);
+}
+
+@media (max-width: 991px) {
+  .appPromotion {
+    flex-direction: column;
+    margin-top: 40px;
+  }
+
+  .promotionImage {
+    width: 100%;
+    border-radius: 22px 22px 0 0;
+  }
+
+  .promotionContent {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .promotionTitle {
+    font-size: 24px;
+  }
+
+  .promotionDescription {
+    font-size: 12px;
+  }
+
+  .exploreButton {
+    align-self: center;
+  }
+}

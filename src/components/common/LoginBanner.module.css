@@ -1,0 +1,55 @@
+.loginBanner {
+  border-radius: 12px;
+  background-color: var(--Color-principal-azul, #212d94);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 11px 28px;
+  margin-top: 24px;
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.bannerIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.bannerText {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.loginButton {
+  border-radius: 12px;
+  background-color: var(--Color-principal-naranja, #f4c031);
+  color: var(--Negro-textos, #151820);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .loginBanner {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .bannerContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .loginButton {
+    width: 100%;
+  }
+}

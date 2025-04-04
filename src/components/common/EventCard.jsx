@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./EventCard.module.css";
-import { PlaceHolderImg2 } from "../../common/Images";
-import Loader from "../../common/Loader";
+import { PlaceHolderImg2 } from "../common/Images"
+import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
 
 function EventCard({ event, handleActions, isFavoriteToggling = false }) {

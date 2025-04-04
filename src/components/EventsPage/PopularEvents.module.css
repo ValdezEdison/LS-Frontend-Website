@@ -1,0 +1,51 @@
+.popularEvents {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.eventCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.eventTitle {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+  .eventGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+
+  .eventTitle {
+    font-size: 12px;
+  }
+}
