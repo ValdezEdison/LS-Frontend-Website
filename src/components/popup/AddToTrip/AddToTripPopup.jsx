@@ -256,49 +256,52 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
                       )}
                     </div>
 
+                    <div className={styles.destinationItem}>
                     {state.destinations?.map((destination, index) => (
                       <div key={index} className={styles.formGroup}>
                         <label htmlFor={`destination-${index}`} className={styles.label}>
                           {index === 0 ? 'Destino' : ""}
                         </label>
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className={styles.removeDestinationButton}
-                            onClick={() => removeDestination(index)}
-                            aria-label={`Eliminar destino ${index + 1}`}
-                          >
-                            <img src={Delete} alt="Eliminar" />
-                          </button>
-                        )}
-                        <div className={styles.itenarysearchContainer}>
-                          <SearchInput
-                            handleSearchClick={() => {
-                              setActiveDestinationIndex(index);
-                              setShowSuggestionDropDown(true);
-                              setState(prev => ({
-                                ...prev,
-                                destinations: prev.destinations.map(dest => ({
-                                  ...dest,
-                                  destinationSearchQuery: ''  // Only reset the search query
-                                }))
-                              }));
-                              dispatch(fetchCities({}));
-                            }}
-                            suggestionRef={suggestionRef}
-                            handleSearch={(value) => handleSearch(value, index)}
-                            showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
-                            handleSearchClose={(e) => handleSearchClose(e, index)}
-                            searchValue={destination.destinationSearchQuery}
-                            suggestionsList={citiesSearchResults.length > 0 ? citiesSearchResults : cities}
-                            placeholder={t("search.placeholder")}
-                            onSelect={(value) => handleSelectDestination(value, index)}
-                            customClassName="placesSearchInputContainer"
-                            selectedValue={destination.destinationId}
-                            customClassNameForSuggestions="suggestionsContainerSm"
-                          />
+                        <div className={styles.addSearchItems}>
+                          <div className={styles.itenarysearchContainer}>
+                            <SearchInput
+                              handleSearchClick={() => {
+                                setActiveDestinationIndex(index);
+                                setShowSuggestionDropDown(true);
+                                setState(prev => ({
+                                  ...prev,
+                                  destinations: prev.destinations.map(dest => ({
+                                    ...dest,
+                                    destinationSearchQuery: ''  // Only reset the search query
+                                  }))
+                                }));
+                                dispatch(fetchCities({}));
+                              }}
+                              suggestionRef={suggestionRef}
+                              handleSearch={(value) => handleSearch(value, index)}
+                              showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
+                              handleSearchClose={(e) => handleSearchClose(e, index)}
+                              searchValue={destination.destinationSearchQuery}
+                              suggestionsList={citiesSearchResults.length > 0 ? citiesSearchResults : cities}
+                              placeholder={t("search.placeholder")}
+                              onSelect={(value) => handleSelectDestination(value, index)}
+                              customClassName="placesSearchInputContainer"
+                              selectedValue={destination.destinationId}
+                              customClassNameForSuggestions="suggestionsContainerSm"
+                            />
+                          </div>
+                            {index > 0 && (
+                              <button
+                                type="button"
+                                className={styles.removeDestinationButton}
+                                onClick={() => removeDestination(index)}
+                                aria-label={`Eliminar destino ${index + 1}`}
+                              >
+                                {/* <img src={Delete} alt="Eliminar" /> */}
+                              </button>
+                            )}
                         </div>
-
+                        
                         {formErrors[`destinations[${index}]`] && (
                           <div className="errorMessage">
                             {formErrors[`destinations[${index}]`]}
@@ -306,6 +309,8 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
                         )}
                       </div>
                     ))}
+                    </div>
+                    
 
                     <div className={styles.addDestination} onClick={addDestination}>
                       <img src={AddCircle} alt="Add" />
@@ -342,7 +347,11 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
               <div className={styles.divider} />
 
               <div className={styles.suggestionSection}>
-                <h3 className={styles.suggestionTitle}>Sugerencias para empezar</h3>
+                <div className={styles.suggestionTitleMain}>
+                  <h3 className={styles.suggestionTitle}>Sugerencias para empezar</h3>
+                  <div className={styles.suggestionAdd}></div>
+                </div>
+                
                 <div className={styles.suggestionList}>
                   {suggestions.map((item, index) => (
                     // <div key={index} className={styles.suggestionItem}>

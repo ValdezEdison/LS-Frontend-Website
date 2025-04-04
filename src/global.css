@@ -369,8 +369,8 @@ button,input,select,textarea{
 .radioContainer {
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
+  /* padding-left: 35px;
+  margin-bottom: 12px; */
   cursor: pointer;
   font-size: 14px;
   -webkit-user-select: none;
@@ -388,9 +388,9 @@ button,input,select,textarea{
 
 /* Create a custom radio button */
 .radioContainer .checkmark {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   height: 20px;
   width: 20px;
   background-color: #fff;
