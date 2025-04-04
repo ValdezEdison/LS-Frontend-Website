@@ -255,7 +255,7 @@ const LoginPage = () => {
 
         if (result) {
           toast.success("Login successful!");
-          await dispatch(getProfile()).unwrap();
+          // await dispatch(getProfile()).unwrap();
           const from = location.state?.from?.pathname || "/";
           navigate(from, { replace: true });
         }

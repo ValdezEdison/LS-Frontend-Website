@@ -86,3 +86,15 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const fetchStops = createAsyncThunk(
+    'places/fetchStops',
+    async ({cityId, type, page}, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.getStops(cityId, type, page);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

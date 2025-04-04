@@ -13,7 +13,8 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
   setActiveDestinationIndex,
   citiesSearchResults,
   isSearchingCities,
-  updateDestination }) => {
+  updateDestination,
+  handleActions }) => {
   const { t } = useTranslation('Places');
   const suggestionRef = useRef(null);
   const placeRefs = useRef({});
@@ -23,7 +24,7 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
   const [startDate, endDate] = dateRange;
   const [storedTripType, setStoredTripType] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { favTogglingId, isFavoriteToggling } = useSelector((state) => state.itineriesInCity);
+  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
 
   const suggestions = [
     {
@@ -207,9 +208,17 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
     };
   }, [showSuggestionDropDown]);
 
-  const handleActions = (e, action, id) => {
-   
-  }
+  // const handleActions = (e, action, id) => {
+  //   e.stopPropagation();
+  //   if (action === 'addToFavorites') {
+  //     handleFavClick(e, id);
+  //   } else if (action === 'addToStop') {
+  //     setState(prev => ({
+  //       ...prev,
+  //       stops: [...prev.stops, id]
+  //     }))
+  //   }
+  // }
 
   return (
     <div className={styles.modalOverlay}>
@@ -227,7 +236,7 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
 
           <p className={styles.modalDescription}>
 
-            Add 'Plaka and Anafiotika' to any of your planned trips
+            Add '{itineraryDetails?.title}' to any of your planned trips
           </p>
 
           <TripTypeList styles={styles} updateState={updateState} state={state} storedTripType={storedTripType} />
@@ -257,39 +266,39 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
                     </div>
 
                     <div className={styles.destinationItem}>
-                    {state.destinations?.map((destination, index) => (
-                      <div key={index} className={styles.formGroup}>
-                        <label htmlFor={`destination-${index}`} className={styles.label}>
-                          {index === 0 ? 'Destino' : ""}
-                        </label>
-                        <div className={styles.addSearchItems}>
-                          <div className={styles.itenarysearchContainer}>
-                            <SearchInput
-                              handleSearchClick={() => {
-                                setActiveDestinationIndex(index);
-                                setShowSuggestionDropDown(true);
-                                setState(prev => ({
-                                  ...prev,
-                                  destinations: prev.destinations.map(dest => ({
-                                    ...dest,
-                                    destinationSearchQuery: ''  // Only reset the search query
-                                  }))
-                                }));
-                                dispatch(fetchCities({}));
-                              }}
-                              suggestionRef={suggestionRef}
-                              handleSearch={(value) => handleSearch(value, index)}
-                              showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
-                              handleSearchClose={(e) => handleSearchClose(e, index)}
-                              searchValue={destination.destinationSearchQuery}
-                              suggestionsList={citiesSearchResults.length > 0 ? citiesSearchResults : cities}
-                              placeholder={t("search.placeholder")}
-                              onSelect={(value) => handleSelectDestination(value, index)}
-                              customClassName="placesSearchInputContainer"
-                              selectedValue={destination.destinationId}
-                              customClassNameForSuggestions="suggestionsContainerSm"
-                            />
-                          </div>
+                      {state.destinations?.map((destination, index) => (
+                        <div key={index} className={styles.formGroup}>
+                          <label htmlFor={`destination-${index}`} className={styles.label}>
+                            {index === 0 ? 'Destino' : ""}
+                          </label>
+                          <div className={styles.addSearchItems}>
+                            <div className={styles.itenarysearchContainer}>
+                              <SearchInput
+                                handleSearchClick={() => {
+                                  setActiveDestinationIndex(index);
+                                  setShowSuggestionDropDown(true);
+                                  setState(prev => ({
+                                    ...prev,
+                                    destinations: prev.destinations.map(dest => ({
+                                      ...dest,
+                                      destinationSearchQuery: ''  // Only reset the search query
+                                    }))
+                                  }));
+                                  dispatch(fetchCities({}));
+                                }}
+                                suggestionRef={suggestionRef}
+                                handleSearch={(value) => handleSearch(value, index)}
+                                showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
+                                handleSearchClose={(e) => handleSearchClose(e, index)}
+                                searchValue={destination.destinationSearchQuery}
+                                suggestionsList={citiesSearchResults.length > 0 ? citiesSearchResults : cities}
+                                placeholder={t("search.placeholder")}
+                                onSelect={(value) => handleSelectDestination(value, index)}
+                                customClassName="placesSearchInputContainer"
+                                selectedValue={destination.destinationId}
+                                customClassNameForSuggestions="suggestionsContainerSm"
+                              />
+                            </div>
                             {index > 0 && (
                               <button
                                 type="button"
@@ -300,17 +309,17 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
                                 {/* <img src={Delete} alt="Eliminar" /> */}
                               </button>
                             )}
-                        </div>
-                        
-                        {formErrors[`destinations[${index}]`] && (
-                          <div className="errorMessage">
-                            {formErrors[`destinations[${index}]`]}
                           </div>
-                        )}
-                      </div>
-                    ))}
+
+                          {formErrors[`destinations[${index}]`] && (
+                            <div className="errorMessage">
+                              {formErrors[`destinations[${index}]`]}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    
+
 
                     <div className={styles.addDestination} onClick={addDestination}>
                       <img src={AddCircle} alt="Add" />
@@ -351,39 +360,30 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
                   <h3 className={styles.suggestionTitle}>Sugerencias para empezar</h3>
                   <div className={styles.suggestionAdd}></div>
                 </div>
-                
+
                 <div className={styles.suggestionList}>
-                  {suggestions.map((item, index) => (
-                    // <div key={index} className={styles.suggestionItem}>
-                    //   <img src={suggestion.image} alt={suggestion.name} className={styles.suggestionImage} />
-                    //   <div className={styles.suggestionInfo}>
-                    //     <h4 className={styles.suggestionName}>{suggestion.name}</h4>
-                    //     <p className={styles.suggestionLocation}>{suggestion.location}</p>
-                    //     <p className={styles.suggestionDescription}>{suggestion.description}</p>
-                    //     <div className={styles.ratingContainer}>
-                    //       <div className={styles.ratingScore}>{suggestion.rating}</div>
-                    //       <div className={styles.ratingText}>
-                    //         <span>Excelente</span>
-                    //         <span>{suggestion.reviews} comentarios</span>
-                    //       </div>
-                    //     </div>
-                    //   </div>
-                    // </div>
-                    <PlaceCard
-                    key={item.id || index}
-                    place={item}
-                    translate={t}
-                    isAuthenticated={isAuthenticated}
-                    isPopup={true}
-                    handleActions={handleActions}
-                    isFavoriteToggling={isFavoriteToggling && favTogglingId === item.id}
-                    ref={(el) => {
-                        if (el) {
-                            placeRefs.current[item.id] = el;
-                        }
-                    }}
-                />
-                  ))}
+                  {stops.filter(item => !state.stops?.includes(item.id)).length > 0 ? (
+                    stops
+                      .filter(item => !state.stops?.includes(item.id))
+                      .map((item, index) => (
+                        <PlaceCard
+                          key={item.id || index}
+                          place={item}
+                          translate={t}
+                          isAuthenticated={isAuthenticated}
+                          isPopup={true}
+                          handleActions={handleActions}
+                          isFavoriteToggling={isFavoriteToggling && favTogglingId === item.id}
+                          ref={(el) => {
+                            if (el) {
+                              placeRefs.current[item.id] = el;
+                            }
+                          }}
+                        />
+                      ))
+                  ) : (
+                    <p>No new suggestions available</p>
+                  )}
                 </div>
               </div>
             </>

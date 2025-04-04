@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
 import { set } from 'lodash';
 
@@ -23,7 +23,10 @@ const initialState = {
   tripType: JSON.parse(localStorage.getItem('tripType')) || {
     id: null,
     type: null
-  }
+  },
+  stops: [],
+  stopsLoading: false,
+  addTripLoading: false
 };
 
 const itineriesInCitySlice = createSlice({
@@ -103,6 +106,18 @@ const itineriesInCitySlice = createSlice({
         
         state.itineries = updatedPlaces;
 
+        const updatedStops = state.stops.map(stop => {
+          if (stop.id === action.payload.id) {
+            return {
+              ...stop,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+            };
+          }
+          return stop;
+        });
+        
+        state.stops = updatedStops;
+
          // Also update the single place if it's the one being toggled
          if (state.itineraryDetails && state.itineraryDetails.id === action.payload.id) {
           state.itineraryDetails = {
@@ -143,15 +158,15 @@ const itineriesInCitySlice = createSlice({
       })
 
       .addCase(addTrip.pending, (state) => {
-        state.loading = true;
+        state.addTripLoading = true;
         state.error = null;
       })
       .addCase(addTrip.fulfilled, (state, action) => {
-        state.loading = false;
+        state.addTripLoading = false;
         state.error = null;
       })
       .addCase(addTrip.rejected, (state, action) => {
-        state.loading = false;
+        state.addTripLoading = false;
         state.error = action.payload;
       })
 
@@ -178,6 +193,19 @@ const itineriesInCitySlice = createSlice({
       })
       .addCase(downloadTrip.rejected, (state, action) => {
         state.downloadTripLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchStops.pending, (state) => {
+        state.stopsLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchStops.fulfilled, (state, action) => {
+        state.stopsLoading = false;
+        state.stops = action.payload?.results || [];
+      })
+      .addCase(fetchStops.rejected, (state, action) => {
+        state.stopsLoading = false;
         state.error = action.payload;
       })
 

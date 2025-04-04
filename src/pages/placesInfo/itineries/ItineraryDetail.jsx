@@ -17,13 +17,15 @@ import Modal from "../../../components/modal/Modal";
 import { openPopup, closePopup, openAddToTripPopup, closeAddToTripPopup } from "../../../features/popup/PopupSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
-import { fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import { fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../../features/common/cities/CityAction";
 import { debounce, set } from 'lodash';
 import { t } from "i18next";
 import ShareOptions from "../../../components/common/ShareOptions";
 import { resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { toggleFavorite } from "../../../features/places/PlaceAction";
+import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -33,7 +35,7 @@ const ItineraryDetail = () => {
 
   const { language } = useContext(LanguageContext);
 
-  const { loading, itineraryDetails, generatedLink, downloadedTrip } = useSelector((formState) => formState.itineriesInCity);
+  const { loading, itineraryDetails, generatedLink, downloadedTrip, stops, stopsLoading } = useSelector((formState) => formState.itineriesInCity);
   const { isAuthenticated } = useSelector((formState) => formState.auth);
 
   const { isOpen, isAddToPopupOpen } = useSelector((formState) => formState.popup);
@@ -63,7 +65,8 @@ const ItineraryDetail = () => {
       destinationSearchQuery: '',
       destinationId: null,
       destinationName: ''
-    }]
+    }],
+    stops: []
   });
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -101,6 +104,11 @@ const ItineraryDetail = () => {
       handleFavClick(e, id);
     } else if (action === 'addToTrip') {
       handleTripClick(e, id);
+    } else if (action === 'addToStop') {
+      setFormState(prev => ({
+        ...prev,
+        stops: [...prev.stops, id]
+      }))
     }
   };
 
@@ -128,11 +136,12 @@ const ItineraryDetail = () => {
           destinationSearchQuery: '',
           destinationId: null,
           destinationName: ''
-        }]
+        }],
+        stops: formState.stops
       });
       setFormErrors({});
       setSelectedTripId(null);
-      setIsCreatingNewTrip(false);
+      setIsCreatingNewTrip(true);
 
     } else {
       togglePopup("alert", true);
@@ -264,14 +273,22 @@ const ItineraryDetail = () => {
       dispatch(setTripType({  id: id, type: formState.tripType }))
       if (isCreatingNewTrip) {
         const tripData = {
-          title: formState.name,
+          title: formState.tripName,
           type: formState.tripType,
           cities: formState.destinations.map((destination) => destination.destinationId),
           initial_date: formState.startDate.toISOString().split('T')[0],
           end_date: formState.endDate.toISOString().split('T')[0],
-          stops: [id]
+          stops: formState.stops,
         };
-        dispatch(addTrip(tripData));
+        dispatch(addTrip(tripData)).then((response) => {
+          console.log('Trip added:', response);
+          if (response.payload) {
+            dispatch(resetTripType());
+            togglePopup("success", true);
+            setSuccessMessage(`A new trip has been added to your account. Continue adding destinations and events as you wish.`);
+            setSuccessTitle("Trip added!");
+          }
+        });
       } else {
         // Logic to add itinerary to existing trip would go here
         console.log('Adding to existing trip:', selectedTripId);
@@ -368,6 +385,14 @@ const ItineraryDetail = () => {
 
   console.log("formErrors", formErrors);
 
+  useEffect(() => {
+    if (formState.destinations.length > 0 && formState.destinations[0].destinationId !== null) {
+      console.log("formState.destinations", formState.destinations);
+      dispatch(fetchStops({cityId: formState.destinations.map((destination) => destination.destinationId), type: "place", page: 1}))
+    }
+    
+  },[formState.destinations])
+
   if (loading) {
     return (
       <>
@@ -418,7 +443,7 @@ const ItineraryDetail = () => {
       {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
         dispatch(closeAddToTripPopup());
         dispatch(closePopup());
-      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} />}
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
       {isOpen && popupState.alert && (
         <Modal
           onClose={() => togglePopup("alert", false)}

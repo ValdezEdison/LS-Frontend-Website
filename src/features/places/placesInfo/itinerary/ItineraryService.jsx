@@ -24,7 +24,7 @@ const itineraryService = {
     },
 
     addTrip: async (trip) => {
-        return ApiService.post('/travels', trip);
+        return ApiService.post('/travels/', trip);
     },
 
     generateLink: async (tripId) => {
@@ -33,6 +33,10 @@ const itineraryService = {
 
     downloadTrip: async (tripId) => {
         return ApiService.get(`/routes/${tripId}/pdf`);
+    },
+    getStops: async (cityId, type = "place", page = 1) => {
+        const encodedCityId = encodeURIComponent(cityId);
+        return ApiService.get(`/sites/?type=${type}&city_id=${encodedCityId}&page=${page}`);
     },
 
 }

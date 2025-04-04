@@ -66,7 +66,7 @@ const TravelerRegistration = () => {
     phone_prefix: {
       error: "",
       info: "",
-      touched: false,
+      touched: true,
       focused: false,
       isValid: true,
     },
@@ -101,51 +101,61 @@ const TravelerRegistration = () => {
     switch (name) {
       case "username":
         if (!value.trim()) {
-          error = "Please enter your username";
+          error = "Username is required";
+        } else if (value.trim().length < 3) {
+          error = "Minimum 3 characters required";
         } else {
           isValid = true;
         }
         break;
       case "email":
         if (!value.trim()) {
-          error = "Please enter your email";
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          error = "Please enter a valid email address";
+          error = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = "Please enter a valid email";
         } else {
           isValid = true;
         }
         break;
       case "phone":
         if (!value.trim()) {
-          error = "Please enter your phone number";
-        } else if (!/^\d{9,}$/.test(value)) {
-          error = "Please enter a valid phone number";
+          error = "Phone number is required";
+        } else if (!/^\d{7,15}$/.test(value)) {
+          error = "7-15 digits required";
         } else {
           isValid = true;
         }
         break;
       case "password":
         if (!value.trim()) {
-          error = "Please enter a password";
-        } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/.test(value)) {
-          error = "Password must be at least 8 characters with a number, uppercase letter, and symbol";
+          error = "Password is required";
+        } else if (value.length < 8) {
+          error = "Minimum 8 characters";
+        } else if (!/[A-Z]/.test(value)) {
+          error = "At least one uppercase letter";
+        } else if (!/\d/.test(value)) {
+          error = "At least one number";
+        } else if (!/[!@#$%^&*]/.test(value)) {
+          error = "At least one special character";
         } else {
           isValid = true;
         }
         break;
       case "terms":
         if (!value) {
-          error = "You must accept the terms and conditions";
+          error = "You must accept the terms";
         } else {
           isValid = true;
         }
         break;
       default:
+        isValid = true;
         break;
     }
 
     return { error, isValid };
   };
+
 
   // Update form validity when fields change
   useEffect(() => {
@@ -212,16 +222,18 @@ const TravelerRegistration = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate all fields on submit
+    // Validate all fields first
     const newFieldStates = { ...fieldStates };
     let allValid = true;
 
     Object.keys(formData).forEach(key => {
       const value = key === "terms" ? formData.terms : formData[key];
       const { error, isValid } = validateField(key, value);
+      
       newFieldStates[key] = {
         ...newFieldStates[key],
         error: isValid ? "" : error,
@@ -229,29 +241,39 @@ const TravelerRegistration = () => {
         isValid,
         info: isValid ? "" : newFieldStates[key].info
       };
-      allValid = allValid && isValid;
+      
+      if (key !== "phone_prefix") {
+        allValid = allValid && isValid;
+      }
     });
 
     setFieldStates(newFieldStates);
 
-    if (!allValid) return;
+    if (!allValid) {
+      toast.error("Please fix the errors in the form");
+      return;
+    }
 
-    dispatch(register(formData))
-      .then((action) => {
-        if (register.fulfilled.match(action)) {
-          toast.success("Registration successful! Please check your email for confirmation.");
-          setRegisteredEmail(formData.email);
-          setShowConfirmation(true);
-          dispatch(openPopup());
-        } else if (register.rejected.match(action)) {
-          toast.error(action.payload?.error_description || "Registration failed");
-        }
-      })
-      .catch((err) => {
-        toast.error("An unexpected error occurred");
-        console.error(err);
-      });
+    try {
+      const resultAction = await dispatch(register(formData));
+      
+      if (register.fulfilled.match(resultAction)) {
+        toast.success("Registration successful! Please check your email for confirmation.");
+        setRegisteredEmail(formData.email);
+        setShowConfirmation(true);
+        dispatch(openPopup());
+      } else {
+        const error = resultAction.payload?.error_description || 
+                      resultAction.error?.message || 
+                      "Registration failed";
+        toast.error(error);
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      toast.error(err.message || "An unexpected error occurred");
+    }
   };
+
 
   const handleNavigate = () => {
     navigate('/login');
@@ -310,7 +332,7 @@ const TravelerRegistration = () => {
   
           if (result) {
             toast.success("Login successful!");
-            await dispatch(getProfile()).unwrap();
+            // await dispatch(getProfile()).unwrap();
             const from = location.state?.from?.pathname || "/";
             navigate(from, { replace: true });
           }
@@ -346,10 +368,10 @@ console.log(formData, 'formData')
                 />
               </div>
               <div className={styles.formContainer}>
-              { loading &&
+              {/* { loading &&
                 <div className="loaderOverlay">
                 </div>
-              }
+              } */}
                 <div className={styles.formWrapper}>
                   <h1 className={styles.formTitle}>Regístrate como viajero</h1>
                   <RegistrationForm
