@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./MainContent.module.css";
+// import styles from "./MainContent.module.css";
 
-const PromotionalBanner = () => {
+const PromotionalBanner = ({styles}) => {
   return (
     <div className={styles.promotionalBanner}>
       <img

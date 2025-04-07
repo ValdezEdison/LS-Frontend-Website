@@ -149,6 +149,8 @@ const Events = () => {
       handleFavClick(e, id);
     } else if (action === 'addToTrip') {
       handleTripClick(e, id);
+    } else if (action === 'viewMore') {
+      handleViewMoreDetails(e, id);
     }
   };
 
@@ -173,6 +175,11 @@ const Events = () => {
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
   }
+
+  const handleViewMoreDetails = (e,id) => {
+    ;
+    navigate('/events/details', { state: { id } });
+  };
 
 
   return (

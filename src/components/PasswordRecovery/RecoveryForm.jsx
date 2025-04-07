@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./RecoveryForm.module.css";
 import Loader from "../common/Loader";
+import { useSelector } from "react-redux";
 
 function RecoveryForm({
   formData,
@@ -11,6 +12,9 @@ function RecoveryForm({
   handleBlur,
   isFormValid
 }) {
+
+  const { loading } = useSelector((state) => state.auth);
+
   return (
     <div className={styles.formContainer}>
       <h1 className={styles.formTitle}>Recuperar contraseña</h1>
@@ -27,9 +31,8 @@ function RecoveryForm({
             type="email"
             id="email"
             name="email"
-            className={`${styles.input} ${
-              fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
+              }`}
             value={formData.email}
             onChange={handleInputChange}
             onFocus={() => handleFocus('email')}
@@ -43,22 +46,27 @@ function RecoveryForm({
             <div className={styles.errorMessage}>{fieldStates.email.error}</div>
           )}
         </div>
-        <button 
-          type="submit" 
-          className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
-          disabled={!isFormValid}
-        >
-          Enviar
-        </button>
-        <button 
-        className="submitLoadingButton" 
-        disabled={!isFormValid}
-      >
-        <div className="loaderBtnWrapper">
-          <Loader/>
-        </div>
-       
-      </button>
+        {loading ? (
+          <button
+            className="submitLoadingButton"
+            disabled={!isFormValid}
+          >
+            <div className="loaderBtnWrapper">
+              <Loader />
+            </div>
+
+          </button>
+        ) :
+          <button
+            type="submit"
+            className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
+            disabled={!isFormValid}
+          >
+            Enviar
+          </button>
+        }
+
+
       </form>
       <p className={styles.helpText}>¿No te ha llegado ningún correo?</p>
     </div>

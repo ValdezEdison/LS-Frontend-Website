@@ -15,6 +15,7 @@ import eventByCityReducer from "../features/places/placesInfo/events/EventSlice.
 import placesInCityReducer from "../features/places/placesInfo/places/PlacesSlice.jsx"
 import itineriesInCityReducer from "../features/places/placesInfo/itinerary/ItinerarySlice.jsx"
 import socialAuthReducer from "../features/authentication/socialLogin/SocialAuthSlice.jsx"
+import homeReducer from "../features/home/HomeSlice.jsx"
 
 
 // cms reducer
@@ -22,7 +23,7 @@ import blockReducer from "../features/cms/Blocks/BlockSlice.jsx"
 
 // Configuration for redux-persist
 const persistConfig = {
-  key: "root", // Key for the persisted state
+  key: "destination", // Key for the persisted state
   storage, // Storage engine (localStorage by default)
   whitelist: ["destination"], // Only persist the destinationReducer
 };
@@ -46,6 +47,7 @@ const store = configureStore({
     eventsByCity: eventByCityReducer,
     placesInCity: placesInCityReducer,
     itineriesInCity: itineriesInCityReducer,
+    home: homeReducer,
     // cms api reducers
     cms: {
       blocks: blockReducer

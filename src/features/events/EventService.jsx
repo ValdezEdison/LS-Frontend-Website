@@ -1,8 +1,8 @@
 import apiService from "../../services/ApiService";
 
 const eventService = {
-    getEvents: async () => {
-        return apiService.get('/sites/?type=event&page=1');
+    getEvents: async (type, page) => {
+        return apiService.get(`/sites?type=${type}&page=${page}`);
     },
     getEvent: async (eventId) => {
         return apiService.get(`/events/${eventId}`);

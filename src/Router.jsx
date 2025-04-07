@@ -13,6 +13,7 @@ import LoginPage from "./pages/login/LoginPage";
 import TravelerRegistration from "./pages/register/TravelerRegistration";
 import PasswordRecoveryPage from "./pages/PasswordRecovery/PasswordRecoveryPage";
 import EventsPage from "./pages/events/EventsPage";
+import EventDetails from "./pages/events/EventDetails";
 const Router = () => {
     return (
         <>
@@ -33,6 +34,7 @@ const Router = () => {
                 <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
 
                 <Route path="/events" element={<EventsPage />} />
+                <Route path="/events/details" element={<EventDetails />} />
             </Routes>
         </>
     );

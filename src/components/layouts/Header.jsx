@@ -133,7 +133,7 @@ const Header = () => {
 
   return (
     <>
-   {loading && location.pathname !== "/login" && location.pathname !== "/register" && <div className="fullPageOverlay">
+   {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery" && <div className="fullPageOverlay">
       <div className="loaderBtnWrapper">
           <Loader /> 
           </div>

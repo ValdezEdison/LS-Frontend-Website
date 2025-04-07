@@ -36,7 +36,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
         <p className={styles.eventCategory}>{eventCategory}</p>
       </div>
       <div className={styles.eventActions}>
-        <button className={styles.viewMoreButton}>Ver más</button>
+        <button className={styles.viewMoreButton} onClick={(e) => handleActions(e, 'viewMore', event?.id)}>Ver más</button>
         <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', event?.id)}>
           <span className={styles.addIcon}></span>
           Añadir a viaje

@@ -5,7 +5,7 @@ import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/PlacesPage/Sidebar";
 import MainContent from "../../components/PlacesPage/MainContent";
 import Footer from "../../components/layouts/Footer";
-import PromotionalBanner from "../../components/PlacesPage/PromotionalBanner";
+import PromotionalBanner from "../../components/common/PromotionalBanner";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import { LanguageContext } from "../../context/LanguageContext";
 import { fetchPlaces, fetchPlacesByCityId, fetchGeoLocations, fetchPlacesFilterCategories, toggleFavorite } from "../../features/places/PlaceAction";
@@ -19,6 +19,7 @@ import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageS
 import { useNavigate } from "react-router-dom";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
+import styles3 from "../../components/PlacesPage/MainContent.module.css"
 
 const PlacesPage = () => {
   const dispatch = useDispatch();
@@ -278,7 +279,7 @@ const PlacesPage = () => {
                 }
               </div>
               <div className={styles.content}>
-                <PromotionalBanner />
+                <PromotionalBanner styles={styles3}/>
               </div>
             </div>
           </>

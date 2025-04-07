@@ -1,17 +1,26 @@
 // src/features/events/EventSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchEvents, fetchEventById, createEvent, updateEvent, deleteEvent } from './EventAction';
+import { toggleFavorite } from '../places/PlaceAction';
 
 const initialState = {
   events: [],
   loading: false,
   error: null,
+  next: null,
+  count: 0,
+  isFavoriteToggling: false,
+  favTogglingId: null
 };
 
 const eventSlice = createSlice({
   name: 'events',
   initialState,
-  reducers: {},
+  reducers: {
+    setFavTogglingId: (state, action) => {
+      state.favTogglingId = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Fetch all events
@@ -22,6 +31,8 @@ const eventSlice = createSlice({
       .addCase(fetchEvents.fulfilled, (state, action) => {
         state.loading = false;
         state.events = action.payload?.results || [];
+        state.next = action.payload?.next;
+        state.count = action.payload?.count;
       })
       .addCase(fetchEvents.rejected, (state, action) => {
         state.loading = false;
@@ -84,8 +95,35 @@ const eventSlice = createSlice({
       .addCase(deleteEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // Toggle favorite
+      .addCase(toggleFavorite.pending, (state) => {
+        state.isFavoriteToggling = true;
+        state.error = null;
+      })
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        state.isFavoriteToggling = false;
+        state.favTogglingId = null;
+        
+        const updatedevents = state.events.map(event => {
+          if (event.id === action.payload.id) {
+            return {
+              ...event,
+              is_fav: action.payload.response.detail === "Marked as favorite"
+            };
+          }
+          return event;
+        });
+        
+        state.events = updatedevents;
+      })
+      .addCase(toggleFavorite.rejected, (state, action) => {
+        state.isFavoriteToggling = false;
+        state.error = action.payload;
       });
   },
 });
 
+export const { setFavTogglingId } = eventSlice.actions;
 export default eventSlice.reducer;
