@@ -4,6 +4,7 @@
   border: 1px solid #828282;
   border-radius: 12px;
   padding: 8px;
+  align-items: center;
   /* cursor: pointer; */
 }
 
@@ -71,6 +72,7 @@
   flex-direction: column;
   justify-content: center;
   width: 146px;
+  gap: 8px;
 }
 
 .viewMoreButton,
@@ -88,7 +90,7 @@
   background-color: #f4c031;
   color: #000000;
   border: none;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
   transition: all ease .3s;
 }
 
