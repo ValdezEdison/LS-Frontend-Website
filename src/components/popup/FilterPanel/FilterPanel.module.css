@@ -119,8 +119,9 @@
 .sectionTitle {
   color: #151820;
   font:
-    700 16px Source Sans Pro,
+    600 16px Source Sans Pro,
     sans-serif;
+    margin: 0;
 }
 
 .toggleLink {
@@ -165,7 +166,7 @@
 .divider {
   height: 1px;
   background-color: #e0e0e0;
-  margin: 20px 0;
+  /* margin: 20px 0; */
 }
 
 .applyButton {
@@ -200,5 +201,9 @@
     width: 100%;
     transform: none;
     margin-top: 20px;
+  }
+
+  .modalContent{
+    width:100%;
   }
 }
