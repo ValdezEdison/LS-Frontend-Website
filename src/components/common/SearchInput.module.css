@@ -55,7 +55,8 @@
   color: #000000;
   padding: 5px 12px 5px 2px;
   position: absolute;
-  top: 60px;
+  /* top: 60px; */
+  top: calc(100% - 2px);
   display: none;
   z-index: 2;
  
@@ -67,7 +68,8 @@
 }
 
 .placesSearchInputContainer .suggestionsContainer {
-  top: 48px;
+  /* top: 48px; */
+  top: calc(100% - 1px);
 }
 
 .suggestionsContainer.active {

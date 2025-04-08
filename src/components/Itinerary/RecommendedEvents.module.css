@@ -1,0 +1,55 @@
+.recommendedEvents {
+  width: 100%;
+  max-width: 1216px;
+  margin: 70px auto 0;
+  padding: 0 20px;
+}
+
+.sectionTitle {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.eventCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.eventTitle {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+  .recommendedEvents {
+    margin-top: 40px;
+  }
+
+  .eventGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .eventGrid {
+    grid-template-columns: 1fr;
+  }
+}

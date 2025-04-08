@@ -237,7 +237,7 @@ const Events = () => {
 
           {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-          {loading ? <Loader /> : <SeeMoreButton
+          {loading ? <Loader /> : next && <SeeMoreButton
             onClick={loadMore}
             loading={loading}
             next={hasNext}

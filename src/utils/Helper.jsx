@@ -84,8 +84,9 @@ export const handleApiError = (error) => {
 };
 
 // Function to store code, flag, and language in localStorage
-export const setLanguage = (code, flag, language) => {
+export const setLanguage = (id,code, flag, language) => {
   const languageData = {
+      id,
       code,
       flag,
       language,

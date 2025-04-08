@@ -1,33 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeaderBlocks } from "./BlockAction";
+import { fetchHeroContent } from "./PagesAction";
 
 const initialState = {
-    headerBlocks: [],
+    heroContent: null,
     loading: false,
     error: null,
 };
 
-const blockSlice = createSlice({
-    name: "blocks",
+const pagesSlice = createSlice({
+    name: "cms/pages",
     initialState,
     reducers: {
         // You can add synchronous reducers here if needed
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchHeaderBlocks.pending, (state) => {
+            .addCase(fetchHeroContent.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchHeaderBlocks.fulfilled, (state, action) => {
+            .addCase(fetchHeroContent.fulfilled, (state, action) => {
                 state.loading = false;
-                state.headerBlocks = action.payload;
+                state.heroContent = action.payload?.results?.[0];
             })
-            .addCase(fetchHeaderBlocks.rejected, (state, action) => {
+            .addCase(fetchHeroContent.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default blockSlice.reducer;
+export default pagesSlice.reducer;
+   

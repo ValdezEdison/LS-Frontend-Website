@@ -282,7 +282,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
         )}
       </div>
 
-      {loading ? <Loader /> : <SeeMoreButton
+      {loading ? <Loader /> : next && <SeeMoreButton
         onClick={loadMore}
         loading={loading}
         next={hasNext}

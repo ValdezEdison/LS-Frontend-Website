@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../../components/layouts/Header";
 import EventSearch from "../../components/EventsPage/EventSearch";
 import LoginBanner from "../../components/common/LoginBanner";
@@ -17,16 +17,18 @@ import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import Loader from "../../components/common/Loader";
 import { useTranslation } from 'react-i18next';
-import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
 import { toggleFavorite } from "../../features/places/PlaceAction";
 import { setFavTogglingId } from "../../features/events/EventSlice";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { language } = useContext(LanguageContext);
 
   const { loading: eventLoading, error, next, count, events} = useSelector((state) => state.events);
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -54,7 +56,7 @@ const EventsPage = () => {
 
   useEffect(() => {
     dispatch(fetchEvents({ type: state.type, page: state.page }));
-  }, [dispatch, state.type, state.page]);
+  }, [dispatch, state.type, state.page, language]);
 
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
@@ -121,7 +123,7 @@ const EventsPage = () => {
           <EventList events={visibleEvents} handleActions={handleActions} />
           <div className={styles.showMoreWrapper}>
             {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-            {loading ? <Loader /> : <SeeMoreButton
+            {loading ? <Loader /> : next && <SeeMoreButton
               onClick={loadMore}
               loading={loading}
               next={hasNext}

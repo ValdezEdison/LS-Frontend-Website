@@ -323,7 +323,7 @@ const Places = () => {
                     ) : (
                         <div className="no-results-wrapper">No results</div>
                     )}
-                    {loading ? <Loader /> : <SeeMoreButton
+                    {loading ? <Loader /> : next && <SeeMoreButton
                         onClick={loadMore}
                         loading={loading}
                         next={hasNext}

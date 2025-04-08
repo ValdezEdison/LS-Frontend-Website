@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -16,10 +16,12 @@ import placesInCityReducer from "../features/places/placesInfo/places/PlacesSlic
 import itineriesInCityReducer from "../features/places/placesInfo/itinerary/ItinerarySlice.jsx"
 import socialAuthReducer from "../features/authentication/socialLogin/SocialAuthSlice.jsx"
 import homeReducer from "../features/home/HomeSlice.jsx"
+import itineraryReducer from "../features/itineraries/ItinerarySlice.jsx"
 
 
 // cms reducer
-import blockReducer from "../features/cms/Blocks/BlockSlice.jsx"
+import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
+import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -31,8 +33,17 @@ const persistConfig = {
 // Wrap the destinationReducer with persistReducer
 const persistedDestinationReducer = persistReducer(persistConfig, destinationReducer);
 
+const cmsReducer = combineReducers({
+  blocks: blockReducer,
+  pages: pagesReducer,
+});
+
 const store = configureStore({
   reducer: {
+
+    // cms reducers
+    cms: cmsReducer,
+    
     // main api reducers
     auth: authReducer,
     socialAuth: socialAuthReducer,
@@ -48,10 +59,8 @@ const store = configureStore({
     placesInCity: placesInCityReducer,
     itineriesInCity: itineriesInCityReducer,
     home: homeReducer,
-    // cms api reducers
-    cms: {
-      blocks: blockReducer
-    }
+    itineraries: itineraryReducer
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

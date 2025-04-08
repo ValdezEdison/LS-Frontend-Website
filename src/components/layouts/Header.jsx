@@ -9,15 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
-import { fetchHeaderBlocks } from "../../features/cms/Blocks/BlockAction";
+import { fetchHeaderBlocks } from "../../features/cms/Blocks/BlocksAction";
 import UserMenu from "../UserMenu/UserMenu";
 import { logout } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
+import { languagesList } from "../../constants/LanguagesList";
 
 const Header = () => {
 
   const { t, i18n } = useTranslation("Header");
-  const { language, setLanguage } = useContext(LanguageContext); // Use context to manage language
+  const { language, setLanguage, languageId } = useContext(LanguageContext); // Use context to manage language
   const [showNavBar, setShownavBar] = useState(false);
   const [showLanguageOption, setShowLanguageOption] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -26,6 +27,7 @@ const Header = () => {
   const userMenuRef = useRef(null);
 
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { languages } = useSelector((state) => state.languages);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -92,20 +94,26 @@ const Header = () => {
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
 
-  const handleLanguageChange = (code, flag, name) => {
+  const handleLanguageChange = (id, code, flag, name) => {
+    const selectedLang = languagesList.find(lang => lang.code === code);
     i18n.changeLanguage(code); // Update i18n
-    setLanguage(code, flag, name); // Update context and localStorage
+    setLanguage(selectedLang.id, code, flag, name); // Update context and localStorage
     setShowLanguageOption(false); // Close the language selector
   };
 
   const languageData = getLanguageData();
 
-  if (languageData) {
+  const filteredLanguages = languages.filter((lang) => lang.code === "es");
 
-  } else {
-    ;
-    setLanguage("es", "/images/spain.png", "Español");
-  }
+  useEffect(() => {
+    const languageData = getLanguageData();
+    if (!languageData) {
+      selectedLang = languagesList.find(lang => lang.code === "es");
+      setLanguage(selectedLang.id, "es", "/images/spain.png", "Español");
+    }
+  }, [setLanguage]);
+
+
 
   const handleClickOutsideUserMenu = (event) => {
     if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
