@@ -1,0 +1,165 @@
+.filterPanel {
+  width: 586px;
+  height: 1024px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 6px 0 0 6px;
+  padding: 20px;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #151820;
+  font:
+    700 25px Source Sans Pro,
+    sans-serif;
+}
+
+.closeIcon {
+  cursor: pointer;
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: #151820;
+  font:
+    700 16px Source Sans Pro,
+    sans-serif;
+}
+
+.inputWrapper {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  align-items: center;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  gap: 8px;
+  padding: 0 14px;
+}
+
+.inputIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font:
+    400 14px Source Sans Pro,
+    sans-serif;
+  color: #151820;
+}
+
+.input::placeholder {
+  color: #bdbdbd;
+}
+
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  color: #151820;
+  font:
+    700 16px Source Sans Pro,
+    sans-serif;
+}
+
+.toggleLink {
+  color: #151820;
+  text-decoration: underline;
+  cursor: pointer;
+  font:
+    700 12px Source Sans Pro,
+    sans-serif;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tag {
+  color: #151820;
+  border: 1px solid #718295;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 12px 16px;
+  font:
+    700 14px Source Sans Pro,
+    sans-serif;
+}
+
+.tagSelected {
+  background-color: #f4c031;
+  border-color: #f4c031;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 20px 0;
+}
+
+.applyButton {
+  color: #151820;
+  width: 147px;
+  height: 44px;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  font:
+    700 16px Source Sans Pro,
+    sans-serif;
+  border: none;
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 991px) {
+  .filterPanel {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .applyButton {
+    position: static;
+    width: 100%;
+    transform: none;
+    margin-top: 20px;
+  }
+}

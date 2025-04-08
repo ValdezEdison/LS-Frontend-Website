@@ -23,6 +23,9 @@ import Modal from "../../components/modal/Modal";
 import { toggleFavorite } from "../../features/places/PlaceAction";
 import { setFavTogglingId } from "../../features/events/EventSlice";
 import { LanguageContext } from "../../context/LanguageContext";
+import MapPopup from "../../components/common/MapPopup";
+import { fetchGeoLocations } from "../../features/places/PlaceAction";
+import FilterPanel from "../../components/popup/FilterPanel/FilterPanel";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -52,10 +55,12 @@ const EventsPage = () => {
     comment: false,
     deleteConfirm: false,
     success: false,
+    filterPanel: false
   });
 
   useEffect(() => {
     dispatch(fetchEvents({ type: state.type, page: state.page }));
+    dispatch(fetchGeoLocations({type: state.type}));
   }, [dispatch, state.type, state.page, language]);
 
   const togglePopup = (name, state) => {
@@ -113,11 +118,25 @@ const EventsPage = () => {
         </Modal>
       )}
 
+      {isOpen && popupState.map && (
+      
+          <MapPopup onClose={() => togglePopup("map", false)} state={state} setState={setState} handleActions={handleActions}/>
+      )}
+
+      {isOpen && popupState.filterPanel && (
+        <Modal
+          onClose={() => togglePopup("filterPanel", false)}
+          customClass="modalLgTypeOne"
+        >
+          <FilterPanel />
+        </Modal>
+      )}
+
       <div className={styles.eventsPage}>
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{count} eventos disponibles</h1>
-          <EventSearch />
+          <EventSearch togglePopup={togglePopup} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
           <EventList events={visibleEvents} handleActions={handleActions} />

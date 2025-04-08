@@ -17,9 +17,10 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
+    const { loading: eventsLoading, events: EventsList } = useSelector((state) => state.events);
 
     const location = useLocation();
-    const isEventsRoute = location.pathname === '/places/events';
+    const isEventsRoute = location.pathname.includes('events');
     const isDetailsRoute = location.pathname === '/places/details';
 
     const mapContainerRef = useRef(null);
@@ -31,7 +32,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
     const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
-    const dataToMap = isEventsRoute ? events : places;
+    const dataToMap = isEventsRoute ? events || EventsList : places;
     const geoDataToMap = geoLocations;
 
     const createPolygon = (mapInstance, center) => {

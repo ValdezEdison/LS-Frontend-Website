@@ -15,6 +15,7 @@ import PasswordRecoveryPage from "./pages/PasswordRecovery/PasswordRecoveryPage"
 import EventsPage from "./pages/events/EventsPage";
 import EventDetails from "./pages/events/EventDetails";
 import ItineraryPage from "./pages/Itinerary/ItineraryPage";
+import ExplorerPage from "./pages/ExplorerPage/ExplorerPage";
 const Router = () => {
     return (
         <>
@@ -38,6 +39,8 @@ const Router = () => {
                 <Route path="/events/details" element={<EventDetails />} />
 
                 <Route path="/itineraries" element={<ItineraryPage />} />
+
+                <Route path="/explorer" element={<ExplorerPage />} />
             </Routes>
         </>
     );

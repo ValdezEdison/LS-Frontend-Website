@@ -1,0 +1,105 @@
+.header {
+  background-color: #fff;
+  border-bottom: 1px solid var(--Gray-5, #e0e0e0);
+  padding: 16px 0;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.mainNav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.logo {
+  width: 60px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.navButton {
+  font-size: 14px;
+  color: var(--Negro-blue, #151820);
+  background: none;
+  border: none;
+  padding: 7px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navButton.active {
+  background-color: var(--Gray-6, #e8eaf4);
+}
+
+.userNav {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.blogLink,
+.contactLink {
+  font-size: 16px;
+  color: var(--Negro-blue, #151820);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--Negro-blue, #151820);
+}
+
+.userProfileButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.userAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+@media (max-width: 991px) {
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mainNav {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .userNav {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+}

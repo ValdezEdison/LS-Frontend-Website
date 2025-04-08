@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./EventSearch.module.css";
 import { Filter } from "../common/Images";
 
-const EventSearch = () => {
+const EventSearch = ({togglePopup}) => {
   return (
     <div className={styles.eventSearch}>
       <div className={styles.searchContainer}>
@@ -24,8 +24,8 @@ const EventSearch = () => {
         </form>
       </div>
       <div className={styles.actionButtons}>
-        <button className={styles.mapButton}>Ver mapa</button>
-        <button className={styles.filterButton}>Filtros <img src={Filter}/></button>
+        <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>Ver mapa</button>
+        <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>Filtros <img src={Filter}/></button>
       </div>
     </div>
   );
