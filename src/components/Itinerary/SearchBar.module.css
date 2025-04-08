@@ -16,6 +16,7 @@
   font-family: Montserrat, sans-serif;
   font-size: 32px;
   font-weight: 700;
+  margin: 0;
 }
 
 .searchContainer {
@@ -88,6 +89,11 @@
   font-weight: 600;
   color: var(--Negro-textos, #151820);
   cursor: pointer;
+}
+
+.itenarySearchWrapper{
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 991px) {

@@ -58,8 +58,9 @@ const SearchBar = ({state , setState, cities}) => {
     <section className={styles.banner}>
       <div className={styles.bannerContent}>
       <h1 className={styles.title}>1.240 itinerarios disponibles</h1>
+      <div className={styles.itenarySearchWrapper}>
+        <span className={styles.searchLabel}>Mirando itinerarios en</span>
         <div className={styles.searchContainer}>
-          <span className={styles.searchLabel}>Mirando itinerarios en</span>
           <SearchInput
             handleSearchClick={() => setShowSuggestionDropDown(true)}
             suggestionRef={suggestionRef}
@@ -87,6 +88,9 @@ const SearchBar = ({state , setState, cities}) => {
             />
           </div> */}
         </div>
+      </div>
+      
+        
       </div>
     
     </section>
