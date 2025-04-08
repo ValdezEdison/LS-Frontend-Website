@@ -124,12 +124,7 @@ const EventsPage = () => {
       )}
 
       {isOpen && popupState.filterPanel && (
-        <Modal
-          onClose={() => togglePopup("filterPanel", false)}
-          customClass="modalLgTypeOne"
-        >
-          <FilterPanel />
-        </Modal>
+          <FilterPanel onClose={() => togglePopup("filterPanel", false)} />
       )}
 
       <div className={styles.eventsPage}>
