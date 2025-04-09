@@ -191,7 +191,11 @@ const FilterPanel = ({onClose}) => {
             </div>
           </div>
         </form>
-        <button className={styles.applyButton}>Aplicar</button>
+        <div className={styles.filterFormBtnWrapper}>
+          <button className={styles.applyButton}>Aplicar</button>
+          <button className={styles.clearButton}>Eliminar filtros</button>
+        </div>
+       
         </div>
         
         </div>
