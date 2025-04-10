@@ -187,9 +187,9 @@ const Header = () => {
                 {t("nav.itineraries")}
               </button>
               <button
-                className={`${styles.navButton} ${isActive("/explorer") ? styles.navItemActive : ""
+                className={`${styles.navButton} ${isActive("/explore") ? styles.navItemActive : ""
                   }`}
-                onClick={() => handleNavigation("/explorer")}
+                onClick={() => handleNavigation("/explore")}
               >
                 {t("nav.explore")}
               </button>
@@ -286,9 +286,9 @@ const Header = () => {
                   {t("nav.itineraries")}
                 </li>
                 <li
-                  className={`${styles.navButton} ${isActive("/explorer") ? styles.navItemActive : ""
+                  className={`${styles.navButton} ${isActive("/explore") ? styles.navItemActive : ""
                     }`}
-                  onClick={() => handleNavigation("/explorer")}
+                  onClick={() => handleNavigation("/explore")}
                 >
                   {t("nav.explore")}
                 </li>

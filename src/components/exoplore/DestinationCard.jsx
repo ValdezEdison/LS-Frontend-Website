@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./DestinationCard.module.css";
 
-const DestinationCard = ({ name, results, image }) => {
+const DestinationCard = ({ destinationId, name, results, image, handleActions }) => {
   return (
-    <div className={styles.destinationCard}>
+    <div className={styles.destinationCard} onClick={(e) => handleActions(e,'showSites', destinationId)}>
       <img
         src={image}
         alt={`Vista de ${name}`}

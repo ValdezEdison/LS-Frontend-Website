@@ -17,6 +17,8 @@ import itineriesInCityReducer from "../features/places/placesInfo/itinerary/Itin
 import socialAuthReducer from "../features/authentication/socialLogin/SocialAuthSlice.jsx"
 import homeReducer from "../features/home/HomeSlice.jsx"
 import itineraryReducer from "../features/itineraries/ItinerarySlice.jsx"
+import continentReducer from "../features/common/continents/ContinentSlice.jsx"
+import exploreReducer from "../features/explore/ExploreSlice.jsx"
 
 
 // cms reducer
@@ -59,7 +61,9 @@ const store = configureStore({
     placesInCity: placesInCityReducer,
     itineriesInCity: itineriesInCityReducer,
     home: homeReducer,
-    itineraries: itineraryReducer
+    itineraries: itineraryReducer,
+    continents: continentReducer,
+    explore: exploreReducer
     
   },
   middleware: (getDefaultMiddleware) =>
