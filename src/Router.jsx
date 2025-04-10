@@ -18,6 +18,7 @@ import ItineraryPage from "./pages/Itinerary/ItineraryPage";
 import ItineraryDetails from "./pages/Itinerary/ItineraryDetails";
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 import EmailConfirmationPage from "./pages/register/EmailConfirmationPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 const Router = () => {
     return (
         <>
@@ -29,6 +30,8 @@ const Router = () => {
                 <Route path="/register/email-confirmation" element={<EmailConfirmationPage />} />
                 <Route path="/verify-user-email" element={<EmailConfirmationPage />} />
                 <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
+
+                <Route path="/profile-details" element={<ProfilePage />} />
                 
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />

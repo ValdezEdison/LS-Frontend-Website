@@ -139,6 +139,17 @@ const Header = () => {
         dispatch(logout());
   }
 
+  const handleActions = (e, action) => {
+    e.stopPropagation();
+    if (action === 'logout') {
+      handleLogout();
+    } else if (action === 'profile') {
+      navigate('/profile-details');
+    } else if (action === 'favorites') {
+      navigate('/favorites');
+    }
+  }
+
   return (
     <>
    {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && <div className="fullPageOverlay">
@@ -246,7 +257,7 @@ const Header = () => {
                     className={styles.userIcon}
                     onClick={handleUserIconClick}
                   />
-                  {showUserMenu && <UserMenu logout={handleLogout} />}
+                  {showUserMenu && <UserMenu onAction={handleActions} />}
                 </div>
                
                 
