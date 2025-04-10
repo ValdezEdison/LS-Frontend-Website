@@ -17,7 +17,7 @@ import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import Loader from "../../components/common/Loader";
 import { useTranslation } from 'react-i18next';
-import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
 import { toggleFavorite } from "../../features/places/PlaceAction";
@@ -26,20 +26,56 @@ import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
 import { fetchGeoLocations } from "../../features/places/PlaceAction";
 import FilterPanel from "../../components/popup/FilterPanel/FilterPanel";
+import { useAddTrip } from "../../hooks/useAddTrip";
+import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
+import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
+import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { fetchTravelLiteList } from "../../features/places/placesInfo/itinerary/ItineraryAction";
+import { fetchCities } from "../../features/common/cities/CityAction";
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { language } = useContext(LanguageContext);
+  const { t } = useTranslation('places');
 
-  const { loading: eventLoading, error, next, count, events} = useSelector((state) => state.events);
+  // Selectors
+  const { loading: eventLoading, error, next, count, events } = useSelector((state) => state.events);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
   const { isOpen } = useSelector((state) => state.popup);
+  const { cities } = useSelector((state) => state.cities);
 
-  const { t } = useTranslation('places');
+  // Add trip functionality
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
 
+  // Page state
   const [state, setState] = useState({
     selectedLevel: "",
     selectedDateRange: { startDate: null, endDate: null },
@@ -54,13 +90,21 @@ const EventsPage = () => {
     alert: false,
     comment: false,
     deleteConfirm: false,
-    success: false,
     filterPanel: false
   });
 
+  // Fetch events and locations
   useEffect(() => {
     dispatch(fetchEvents({ type: state.type, page: state.page }));
-    dispatch(fetchGeoLocations({type: state.type}));
+    dispatch(fetchGeoLocations({ type: state.type }));
+    if (isAuthenticated) {
+      dispatch(fetchTravelLiteList());
+    }
+    dispatch(fetchCities({}));
+    return () => {
+      dispatch(closePopup());
+      closeAddToTrip()
+    }
   }, [dispatch, state.type, state.page, language]);
 
   const togglePopup = (name, state) => {
@@ -70,16 +114,31 @@ const EventsPage = () => {
 
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
-  }
+  };
 
-  const handleActions = (e, action, id) => {
+  const handleActions = (e, action, id, name) => {
+    console.log(action, 'action');
     e.stopPropagation();
-    if (action === 'addToFavorites') {
-      handleFavClick(e, id);
-    } else if (action === 'addToTrip') {
-      handleTripClick(e, id);
-    } else if (action === 'viewMore') {
-      handleViewMoreDetails(e, id);
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "event" }));
+        break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      togglePopup("alert", true);
     }
   };
 
@@ -88,45 +147,93 @@ const EventsPage = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
-    }
-  };
-
-  const handleTripClick = (e, id) => {
-    e.stopPropagation();
-    if (isAuthenticated) {
-      dispatch(openAddToTripPopup());
-      navigate('/places/itineraries-details', { state: { id } });
     } else {
       togglePopup("alert", true);
     }
   };
 
-
-  const handleViewMoreDetails = (e,id) => {
-    ;
+  const handleViewMoreDetails = (e, id) => {
     navigate('/events/details', { state: { id } });
+  };
+
+  // Modal props
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
   };
 
   return (
     <>
+      {/* Popups and Modals */}
       {isOpen && popupState.alert && (
-        <Modal
-          onClose={() => togglePopup("alert", false)}
-          customClass="modalSmTypeOne"
-        >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+        <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
+          <AlertPopup
+            handleNavigateToLogin={handleNavigateToLogin}
+            title="Log in and save time"
+            description="Sign in to save your favorites and create new itineraries on Local Secrets."
+            buttonText="Sign in or create an account"
+          />
         </Modal>
       )}
 
       {isOpen && popupState.map && (
-      
-          <MapPopup onClose={() => togglePopup("map", false)} state={state} setState={setState} handleActions={handleActions}/>
+        <MapPopup
+          onClose={() => togglePopup("map", false)}
+          state={state}
+          setState={setState}
+          handleActions={handleActions}
+        />
       )}
 
       {isOpen && popupState.filterPanel && (
-          <FilterPanel onClose={() => togglePopup("filterPanel", false)} />
+        <FilterPanel onClose={() => togglePopup("filterPanel", false)} />
       )}
 
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
+        />
+      )}
+
+      {isOpen && isAddToPopupOpen && (
+        <AddToTripPopup
+          closeModal={() => {
+            closeAddToTrip();
+          }}
+          state={formState}
+          setState={setFormState}
+          cities={cities}
+          onSubmit={handleSubmit}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          {...modalSearchProps}
+          handleActions={handleActions}
+        />
+      )}
+
+      {isOpen && successData.show && (
+        <Modal
+          title=""
+          onClose={closeSuccessMessage}
+          customClass="modalSmTypeOne"
+          hideCloseButton={true}
+        >
+          <SuccessMessagePopup
+            title={successData.title}
+            message={successData.message}
+            onClose={closeSuccessMessage}
+          />
+        </Modal>
+      )}
+
+      {/* Main Content */}
       <div className={styles.eventsPage}>
         <Header />
         <main className="page-center">
@@ -134,16 +241,19 @@ const EventsPage = () => {
           <EventSearch togglePopup={togglePopup} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
-          <EventList events={visibleEvents} handleActions={handleActions} />
+          <EventList
+            events={visibleEvents}
+            handleActions={handleActions}
+          />
           <div className={styles.showMoreWrapper}>
-            {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-            {loading ? <Loader /> : next && <SeeMoreButton
-              onClick={loadMore}
-              loading={loading}
-              next={hasNext}
-              translate={t}
-            />
-            }
+            {loading ? <Loader /> : next && (
+              <SeeMoreButton
+                onClick={loadMore}
+                loading={loading}
+                next={hasNext}
+                translate={t}
+              />
+            )}
           </div>
           <hr className={styles.divider} />
           <PopularEvents />

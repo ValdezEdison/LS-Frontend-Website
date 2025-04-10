@@ -47,7 +47,6 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
         {Array.isArray(suggestions) && suggestions.length > 0 ? (
           // Render suggestions if available
           suggestions.map((suggestion, index) => (
-            console.log(suggestion, "suggestion"),
             <SuggestionItem
               key={index}
               id={suggestion.id}

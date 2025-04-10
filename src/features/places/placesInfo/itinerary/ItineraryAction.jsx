@@ -98,3 +98,15 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const addSite = createAsyncThunk(
+    'places/addSite',
+    async ({id, order}, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.addSite(id, order);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

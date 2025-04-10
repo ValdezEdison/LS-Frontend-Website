@@ -83,7 +83,9 @@ const ItineraryDetail = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
-      dispatch(fetchTravelLiteList());
+      if (isAuthenticated) {
+        dispatch(fetchTravelLiteList());
+      }
       dispatch(fetchCities({}));
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
     }
@@ -280,14 +282,35 @@ const ItineraryDetail = () => {
           end_date: formState.endDate.toISOString().split('T')[0],
           stops: formState.stops,
         };
-        dispatch(addTrip(tripData)).then((response) => {
-          console.log('Trip added:', response);
-          if (response.payload) {
+        dispatch(addTrip(tripData))
+        .then((response) => {
+          console.log('Trip add response:', response);
+          
+          if (response.type === "places/addTrip/fulfilled") {
+            // Success case
             dispatch(resetTripType());
             togglePopup("success", true);
             setSuccessMessage(`A new trip has been added to your account. Continue adding destinations and events as you wish.`);
             setSuccessTitle("Trip added!");
+          } 
+          else if (response.type === "places/addTrip/rejected") {
+            // Error case
+            const errorMsg = response.payload?.error_description || 
+                            response.error?.message || 
+                            "Failed to create trip";
+            
+            togglePopup("error", true);
+            setSuccessMessage(errorMsg);
+            setSuccessTitle("Error creating trip");
+            console.error('Trip creation failed:', response.payload || response.error);
           }
+        })
+        .catch((error) => {
+          // Unexpected errors
+          console.error('Unexpected error in dispatch:', error);
+          togglePopup("error", true);
+          setSuccessMessage("An unexpected error occurred while creating the trip");
+          setSuccessTitle("Error");
         });
       } else {
         // Logic to add itinerary to existing trip would go here
@@ -443,6 +466,7 @@ const ItineraryDetail = () => {
       {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
         dispatch(closeAddToTripPopup());
         dispatch(closePopup());
+        dispatch(resetTripType());
       }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
       {isOpen && popupState.alert && (
         <Modal

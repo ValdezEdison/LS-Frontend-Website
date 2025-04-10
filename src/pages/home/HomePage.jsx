@@ -44,7 +44,7 @@ const HomePage = () => {
   // Fetch places on component mount
   useEffect(() => {
       dispatch(fetchPlaces());
-      dispatch(fetchEvents());
+      dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
   }, [dispatch, language]);
 

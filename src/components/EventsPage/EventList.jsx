@@ -14,7 +14,7 @@ const EventList = ({ events, handleActions }) => {
   return (
     <div className={styles.eventList}>
       {loading ? (
-        Array.from({ length: 4 }).map((_, index) => (
+        Array.from({ length: 6 }).map((_, index) => (
           <EventCardSkeleton key={index} />
         ))
       ) : (

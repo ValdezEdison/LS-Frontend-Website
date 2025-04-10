@@ -69,7 +69,7 @@ const refreshAuthToken = async () => {
     return access_token;
   } catch (error) {
     removeToken();
-    window.location.href = '/login';
+    // window.location.href = '/login';
     throw error;
   }
 };
