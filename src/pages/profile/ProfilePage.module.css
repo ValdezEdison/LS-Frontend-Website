@@ -16,7 +16,7 @@
   display: flex;
   width: 100%;
   gap: 35px;
-  padding-bottom: 120px;
+  padding: 40px 0 120px;
 }
 
 @media (max-width: 991px) {
