@@ -66,22 +66,26 @@ const PlaceCard = forwardRef(
             </div>
 
             <div className={styles.placeInfo}>
-                <div className={styles.placeTitleMain}>
-                    <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
-                    {isAddToPopupOpen && isAuthenticated && (
-                        <div className={styles.placeCardAdd} onClick={handleStopClick}></div>
-                    )}
-                    
+                {isAddToPopupOpen && isAuthenticated && (
+                    <div className={styles.placeCardAdd} onClick={handleStopClick}></div>
+                )}
+                <div className={styles.placeTitleTop}>
+                    <div className={styles.placeTitleMain}>
+                        <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
+                        
+                        
+                    </div>
+                
+                    <p className={styles.placeLocation}>
+                        {place?.city?.name}
+                        {place?.city?.name && place?.city?.country?.name && ", "}
+                        {place?.city?.country?.name}
+                    </p>
+                    <p className={styles.placeCategory}>
+                        {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
+                    </p>
                 </div>
                 
-                <p className={styles.placeLocation}>
-                    {place?.city?.name}
-                    {place?.city?.name && place?.city?.country?.name && ", "}
-                    {place?.city?.country?.name}
-                </p>
-                <p className={styles.placeCategory}>
-                    {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
-                </p>
 
                 {/* Conditionally render the stops and views section */}
                 {hasStopsOrTags && !hasComments && isItineraryPage && (
