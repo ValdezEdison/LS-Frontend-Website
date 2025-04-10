@@ -577,14 +577,14 @@ const PlacesPage = () => {
 
     useEffect(() => {
       if(isAddToPopupOpen){
-        document.body.classList.add('my-custom-body-class');
+        document.body.classList.add('overflowHide');
       }else{
-        document.body.classList.remove('my-custom-body-class');
+        document.body.classList.remove('overflowHide');
       }
   
       // Cleanup: Remove class when component unmounts
       return () => {
-        document.body.classList.remove('my-custom-body-class');
+        document.body.classList.remove('overflowHide');
       };
     }, [isAddToPopupOpen]);
 

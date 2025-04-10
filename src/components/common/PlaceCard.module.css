@@ -4,7 +4,8 @@
   border: 1px solid #828282;
   border-radius: 12px;
   padding: 8px;
-  align-items: center;
+  align-items: stretch;
+  position: relative;
   /* cursor: pointer; */
 }
 
@@ -26,13 +27,17 @@
 
 .placeInfo {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 0;
 }
 
 .placeName {
   font-size: 16px;
   font-weight: 600;
   color: #000000;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
 }
 
 .placeLocation,
@@ -209,6 +214,10 @@
   background: url(../../../public/images/add-circle.svg) no-repeat 0 0;
   width: 24px;
   height: 24px;
+  position:absolute;
+  top: 10px;
+  right: 5px;
+  cursor: pointer;
 }
 
 .addTripPlaceName{
@@ -216,6 +225,11 @@
  text-overflow: ellipsis;
  overflow: hidden;
  white-space: nowrap;
+}
+
+.placeTitleTop{
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -241,6 +255,7 @@
   .popupPlaceCard.placeCard {
     flex-direction: row;
     gap: 10px;
+    min-width: unset;
   }
 
   .placeImage {

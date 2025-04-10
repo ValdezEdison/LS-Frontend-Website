@@ -92,7 +92,7 @@ const ExplorePage = () => {
                 </button>
               ))}
             </nav>
-            <hr className={styles.sectionDivider} />
+            {/* <hr className={styles.sectionDivider} /> */}
           </>
         )}
 
