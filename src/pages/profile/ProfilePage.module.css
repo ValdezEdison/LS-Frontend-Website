@@ -12,9 +12,20 @@
   flex-grow: 1;
 }
 
+.profilePageMain{
+  display: flex;
+  width: 100%;
+  gap: 35px;
+  padding-bottom: 120px;
+}
+
 @media (max-width: 991px) {
   .mainContent {
     flex-direction: column;
     padding: 40px 20px;
+  }
+
+  .profilePageMain{
+    flex-direction: column;
   }
 }

@@ -10,8 +10,10 @@ const ProfilePage = () => {
     <div className={styles.profilePage}>
       <Header />
       <main className="page-center">
-        <Sidebar />
-        <PersonalDetails />
+        <div className={styles.profilePageMain}>
+          <Sidebar />
+          <PersonalDetails />
+        </div>
       </main>
       <Footer />
     </div>

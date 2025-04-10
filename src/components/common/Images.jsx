@@ -59,6 +59,7 @@ const StarFill = "/images/star-fill.svg";
 const Subtract = "/images/subtract.svg";
 const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
+const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
 const Wifi = "/images/wifi.svg";
 
@@ -123,6 +124,7 @@ export {
     Spain,
     UK,
     US,
+    userAdd,
     Wifi,
     Star,
     StarFill

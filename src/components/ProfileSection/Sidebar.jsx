@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Sidebar.module.css";
+import { userAdd } from "../common/Images";
 
 const Sidebar = () => {
   const menuItems = [
@@ -14,7 +15,7 @@ const Sidebar = () => {
     <aside className={styles.sidebar}>
       {menuItems.map((item, index) => (
         <div key={index} className={styles.menuItem}>
-          <div className={styles.iconPlaceholder}></div>
+          <div className={`${styles.iconPlaceholder} ${styles.active}`}><img src={userAdd}/></div>
           <span className={item.isActive ? styles.activeLabel : styles.label}>
             {item.label}
           </span>

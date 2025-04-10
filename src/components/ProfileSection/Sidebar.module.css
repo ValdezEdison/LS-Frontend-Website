@@ -4,6 +4,12 @@
   padding: 26px 30px;
   border: 1px solid var(--Gray-4, #bdbdbd);
   border-radius: 6px;
+  max-width: 408px;
+  width: 100%;
+}
+
+.iconPlaceholder.active img{
+  filter: brightness(0) saturate(100%) invert(10%) sepia(92%) saturate(2968%) hue-rotate(228deg) brightness(110%) contrast(88%);
 }
 
 .menuItem {
@@ -22,6 +28,9 @@
   height: 50px;
   border-radius: 50%;
   background-color: var(--Gray-6, #f2f2f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .label {

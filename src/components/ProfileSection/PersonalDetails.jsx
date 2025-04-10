@@ -45,22 +45,30 @@ const PersonalDetails = () => {
           <div className={styles.detailRow}>
             <div className={styles.labelValue}>
               <span className={styles.label}>{detail.label}</span>
-              <span className={styles.value}>{detail.value}</span>
-              {detail.verified && (
-                <span className={styles.verifiedBadge}>Verificado</span>
-              )}
+              <div className={styles.valueRow}>
+                <div className={styles.valueRowTop}>
+                  <span className={styles.value}>{detail.value}</span>
+                  {detail.verified && (
+                    <span className={styles.verifiedBadge}>Verificado</span>
+                  )}
+                </div>
+                <div className={styles.valueRowBottom}>
+                  {details[2].verified && (
+                    <p className={styles.emailNote}>
+                      Esta dirección de email es la que has utilizado para iniciar sesión y
+                      a la que se envían todas las notificaciones
+                    </p>
+                  )}
+                </div>
+              </div>
+             
             </div>
             <button className={styles.actionButton}>{detail.action}</button>
           </div>
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}
-      {details[2].verified && (
-        <p className={styles.emailNote}>
-          Esta dirección de email es la que has utilizado para iniciar sesión y
-          a la que se envían todas las notificaciones
-        </p>
-      )}
+     
     </div>
   );
 };

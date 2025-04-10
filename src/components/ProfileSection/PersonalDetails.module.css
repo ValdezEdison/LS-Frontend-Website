@@ -5,7 +5,8 @@
     Roboto,
     Helvetica,
     sans-serif;
-  padding: 0 37px;
+  /* padding: 0 37px; */
+  flex-grow: 1;
 }
 
 .header {
@@ -43,19 +44,20 @@
 
 .labelValue {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .label {
   font-size: 16px;
   font-weight: 600;
   color: var(--Negro-blue, #151820);
+  width: 160px;
+  display: inline-block;
 }
 
 .value {
   font-size: 14px;
   color: var(--Negro-blue, #151820);
-  margin-top: 5px;
 }
 
 .verifiedBadge {
@@ -65,7 +67,17 @@
   padding: 2px 8px;
   border-radius: 8px;
   display: inline-block;
-  margin-top: 5px;
+  margin: 5px 0 0 15px;
+}
+
+.valueRow{
+  display: flex;
+  flex-direction: column;
+}
+
+.valueRowTop{
+  display: flex;
+  align-items: center;
 }
 
 .actionButton {
@@ -105,11 +117,22 @@
   }
 
   .detailRow {
-    flex-direction: column;
     align-items: flex-start;
   }
 
   .actionButton {
     margin-top: 10px;
+  }
+}
+
+@media (max-width:640px) {
+  .labelValue{
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .detailRow {
+    flex-direction: column;
   }
 }
