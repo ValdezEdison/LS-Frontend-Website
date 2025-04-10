@@ -58,3 +58,15 @@ export const forgotPassword = createAsyncThunk(
     }
   }
 );
+
+export const verifyEmail = createAsyncThunk(
+  'auth/verifyEmail',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await authService.verifyEmail(email);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);

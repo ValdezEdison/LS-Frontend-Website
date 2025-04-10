@@ -5,6 +5,8 @@ const initialState = {
     citiesInContinent: [],
     loading: false,
     error: null,
+    count: 0,
+    next: null
 };
 
 const exploreSlice = createSlice({
@@ -21,7 +23,9 @@ const exploreSlice = createSlice({
             })
             .addCase(fetchCitiesInContinent.fulfilled, (state, action) => {
                 state.loading = false;
-                state.citiesInContinent = action.payload;
+                state.citiesInContinent = action.payload?.results || [];
+                state.next = action.payload?.next;
+                state.count = action.payload?.count;
             })
             .addCase(fetchCitiesInContinent.rejected, (state, action) => {
                 state.loading = false;

@@ -18,7 +18,7 @@ const ExplorePage = () => {
   const location = useLocation();
 
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
-  const { citiesInContinent, loading: citiesLoading } = useSelector((state) => state.explore);
+  const { citiesInContinent, loading: citiesLoading, next, count } = useSelector((state) => state.explore);
   
   // Set default continent to the first one when loaded
   const [activeContinent, setActiveContinent] = useState(null);
@@ -38,7 +38,7 @@ const ExplorePage = () => {
   // Fetch cities when active continent changes
   useEffect(() => {
     if (activeContinent?.id) {
-      dispatch(fetchCitiesInContinent(activeContinent.id));
+      dispatch(fetchCitiesInContinent( {continentId: activeContinent.id, page: 1} ));
     }
   }, [dispatch, activeContinent]);
 
@@ -70,7 +70,7 @@ const ExplorePage = () => {
     <div className={styles.explorerPage}>
       <Header />
       <main className="page-center">
-        <h1 className={styles.pageTitle}>1.235 opciones a explorar</h1>
+        <h1 className={styles.pageTitle}>{count} opciones a explorar</h1>
         <SearchBar />
         <h2 className={styles.sectionTitle}>Explora más destinos</h2>
         <p className={styles.sectionSubtitle}>Déjate sorprender</p>
@@ -101,7 +101,7 @@ const ExplorePage = () => {
           loading={citiesLoading}
           handleActions={handleActions}
         />
-        
+        {!citiesLoading && citiesInContinent?.length === 0 && <div className="no-results-wrapper">No results</div>}
         <button className={styles.showMoreButton}>Mostrar más</button>
       </main>
       <BlogSection />

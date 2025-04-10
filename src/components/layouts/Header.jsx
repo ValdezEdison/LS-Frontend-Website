@@ -141,7 +141,7 @@ const Header = () => {
 
   return (
     <>
-   {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery" && <div className="fullPageOverlay">
+   {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && <div className="fullPageOverlay">
       <div className="loaderBtnWrapper">
           <Loader /> 
           </div>
@@ -149,7 +149,7 @@ const Header = () => {
   }
     <header> 
       <div className="page-center">
-        <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/password-recovery" ? styles.homeHeader + " authHeader" : ""}`}>
+        <div className={`${styles.header} ${location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/password-recovery" || location.pathname === "/verify-user-email" || location.pathname === "/register/email-confirmation" ? styles.homeHeader + " authHeader" : ""}`}>
           <div className={styles.logoContainer}>
             <img
               src={LSLogo2_1}

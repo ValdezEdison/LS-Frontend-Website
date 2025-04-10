@@ -7,6 +7,10 @@ export const popupSlice = createSlice({
     isWarningOpen: false,
     isPopUpOpen: false,
     isAddToPopupOpen: false,
+    emailConfirmation: {
+      email: "",
+      isConfirmPopupOpen: false,
+    }
   },
   reducers: {
     openPopup: (state) => {
@@ -36,6 +40,16 @@ export const popupSlice = createSlice({
       state.isOpen = false;
       state.isAddToPopupOpen = false;
     },
+    openEmailConfirmationPopup: (state, action) => {
+      state.emailConfirmation = {
+        email: action.payload,
+        isConfirmPopupOpen: true
+      };
+    },
+    closeEmailConfirmationPopup: (state) => {
+      state.emailConfirmation.email = "";
+      state.emailConfirmation.isConfirmPopupOpen = false;
+    },
   },
 });
 
@@ -48,5 +62,7 @@ export const {
   closePasswordPopup,
   openAddToTripPopup,
   closeAddToTripPopup,
+  openEmailConfirmationPopup,
+  closeEmailConfirmationPopup
 } = popupSlice.actions;
 export default popupSlice.reducer;

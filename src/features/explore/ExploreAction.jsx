@@ -4,9 +4,9 @@ import { handleApiError } from "../../utils/Helper";
 
 export const fetchCitiesInContinent = createAsyncThunk(
     "explore/fetchCitiesInContinent",
-    async (continentId, { rejectWithValue }) => {
+    async ({continentId, page}, { rejectWithValue }) => {
         try {
-            const response = await ExploreService.getCitiesInContinent(continentId);
+            const response = await ExploreService.getCitiesInContinent(continentId, page);
             return response;
         } catch (error) {
             return rejectWithValue(handleApiError(error));

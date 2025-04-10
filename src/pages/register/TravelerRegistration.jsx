@@ -10,7 +10,7 @@ import Footer from "../../components/TravelerRegistration/Footer";
 import { register } from "../../features/authentication/AuthActions";
 import EmailConfirmation from "../../components/popup/EmailConfirmation/EmailConfirmation";
 import Modal from "../../components/modal/Modal";
-import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup, openEmailConfirmationPopup } from "../../features/popup/PopupSlice";
 import { set } from "lodash";
 import Loader from "../../components/common/Loader";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
@@ -260,8 +260,9 @@ const TravelerRegistration = () => {
       if (register.fulfilled.match(resultAction)) {
         toast.success("Registration successful! Please check your email for confirmation.");
         setRegisteredEmail(formData.email);
-        setShowConfirmation(true);
+        dispatch(openEmailConfirmationPopup(formData.email));
         dispatch(openPopup());
+        navigate('/register/email-confirmation');
       } else {
         const error = resultAction.payload?.error_description || 
                       resultAction.error?.message || 
@@ -347,7 +348,7 @@ console.log(formData, 'formData')
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
-      { isOpen && showConfirmation ? (
+      {/* { isOpen && showConfirmation ? (
          <Modal onClose={handleConfirmationClose} customClass="modalMd">
          <EmailConfirmation
            email={registeredEmail}
@@ -355,7 +356,7 @@ console.log(formData, 'formData')
            onResend={handleResendEmail}
          />
        </Modal>
-      ) : (
+      ) : ( */}
         <div className={styles.loginPageOuter}>
           <div className={styles.imageContainerWide}></div>
           <div className="login-page-center">
@@ -394,7 +395,7 @@ console.log(formData, 'formData')
             </main>
           </div>
         </div>
-      )}
+      {/* // )} */}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, getProfile, logout, forgotPassword } from "./AuthActions";
+import { login, register, getProfile, logout, forgotPassword, verifyEmail } from "./AuthActions";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
 const initialState = {
@@ -94,6 +94,20 @@ const authSlice = createSlice({
         state.error = null; // Clear any previous errors
       })
       .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Set the error from the rejected action
+      })
+
+      // Verify Email
+      .addCase(verifyEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null; // Clear any previous errors
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Set the error from the rejected action
       })
