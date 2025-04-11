@@ -5,6 +5,7 @@
   border-radius: 12px;
   background-color: #fff;
   position: relative;
+  align-items: center;
 }
 
 .eventImage {

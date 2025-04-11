@@ -34,7 +34,7 @@ const Destination = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchDestinationInfo({ id }));
-      // dispatch(fetchNearbyPlaces(id));
+      // dispatch(fetchNearbyPlaces(id)); 
 
     }
   }, [dispatch, language]);

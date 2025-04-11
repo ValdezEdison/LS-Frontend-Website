@@ -1,0 +1,123 @@
+.banner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.bannerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title {
+  color: var(--Negro-blue, #151820);
+  font-family: Montserrat, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.searchContainer {
+  /* display: flex; */
+  align-items: center;
+  position: relative;
+
+}
+
+.searchLabel {
+  color: var(--Negro-blue, #151820);
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--Desactivado, #718295);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background-color: #fff;
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.searchInput input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--Gray-4, #bdbdbd);
+  width: 243px;
+}
+
+.loginBanner {
+  background-color: var(--Color-principal-azul, #212d94);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 28px;
+  margin-top: 24px;
+}
+
+.loginMessage {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.loginIcon {
+  width: 50px;
+  height: 50px;
+  margin-right: 28px;
+}
+
+.loginButton {
+  background-color: var(--Color-principal-naranja, #f4c031);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Negro-textos, #151820);
+  cursor: pointer;
+}
+
+.itenarySearchWrapper{
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .bannerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .searchContainer {
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .searchLabel {
+    /* margin-bottom: 10px; */
+  }
+
+  .loginBanner {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .loginMessage {
+    margin-bottom: 20px;
+  }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./EventCard.module.css";
-import { PlaceHolderImg2 } from "../../common/Images";
-import Loader from "../../common/Loader";
+import { PlaceHolderImg2 } from "../common/Images"
+import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
 
 function EventCard({ event, handleActions, isFavoriteToggling = false }) {
@@ -26,7 +26,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
           </div>
         )}
         <img src={eventImage} alt={title} className={styles.eventImage} />
-      {isAuthenticated &&  <div className={`${styles.favIcon} ${event?.is_fav ? styles.clicked : ''}`} onClick={(e) => handleActions(e, 'addToFavorites', event?.id)}></div>}
+      {isAuthenticated &&  <div className={`${styles.favIcon} ${event?.is_fav ? styles.clicked : ''}`} onClick={(e) => handleActions(e, 'addToFavorites', event?.id, title)}></div>}
       </div>
 
       <div className={styles.eventInfo}>
@@ -36,8 +36,8 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
         <p className={styles.eventCategory}>{eventCategory}</p>
       </div>
       <div className={styles.eventActions}>
-        <button className={styles.viewMoreButton}>Ver más</button>
-        <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', event?.id)}>
+        <button className={styles.viewMoreButton} onClick={(e) => handleActions(e, 'viewMore', event?.id, title)}>Ver más</button>
+        <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', event?.id, title)}>
           <span className={styles.addIcon}></span>
           Añadir a viaje
         </button>

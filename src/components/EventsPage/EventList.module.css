@@ -1,0 +1,13 @@
+.eventList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+@media (max-width: 991px) {
+  .eventList {
+    grid-template-columns: 1fr;
+  }
+}

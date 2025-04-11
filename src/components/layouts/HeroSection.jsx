@@ -1,27 +1,42 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Banner } from "../common/Images";
+import { Banner, PlaceHolderImg1 } from "../common/Images";
 import { useSelector } from "react-redux";
 
-const HeroSection = ({handleNavigateToLogin}) => {
+const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
   const { t } = useTranslation("HeroSection");
 
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
+
+  // Fallback values in case heroContent is not loaded yet
+  const title = heroContent?.title || "Viaja. Conéctate. Descubre.";
+  const subtitle = heroContent?.description
+    ? heroContent.description.replace(/<[^>]+>/g, '') // Remove HTML tags
+    : "Descubre los secretos locales de las ciudades más fascinantes del mundo.";
+
+    const backgroundImage = heroContent?.background_image || images?.[0]?.original || Banner || PlaceHolderImg1;
+
   return (
     <section className="hero-section">
       <img
-        src={ Banner}
+        src={backgroundImage}
         alt="Vibrant cityscape showcasing local attractions"
         className="hero-image"
       />
       <div className="hero-content">
-        <h1 className="hero-title">{t("title")}</h1>
-        <p className="hero-subtitle">
-        {t("subtitle")}
+        <h1 className="hero-title" style={{ color: heroContent?.text_color || "#fff" }}>
+          {title}
+        </h1>
+        <p className="hero-subtitle" style={{ color: heroContent?.text_color || "#fff" }}>
+          {subtitle}
         </p>
-      {!isAuthenticated && <button className="cta-button" onClick={handleNavigateToLogin}>{t("button")}</button>}
+        {!isAuthenticated && (
+          <button className="cta-button" onClick={handleNavigateToLogin}>
+            {heroContent?.primary_button_text || "Iniciar sesión"}
+          </button>
+        )}
       </div>
       <style jsx>{`
         .hero-section {

@@ -12,6 +12,13 @@ import ItineraryDetail from "./pages/placesInfo/itineries/ItineraryDetail";
 import LoginPage from "./pages/login/LoginPage";
 import TravelerRegistration from "./pages/register/TravelerRegistration";
 import PasswordRecoveryPage from "./pages/PasswordRecovery/PasswordRecoveryPage";
+import EventsPage from "./pages/events/EventsPage";
+import EventDetails from "./pages/events/EventDetails";
+import ItineraryPage from "./pages/Itinerary/ItineraryPage";
+import ItineraryDetails from "./pages/Itinerary/ItineraryDetails";
+import ExplorePage from "./pages/ExplorePage/ExplorePage";
+import EmailConfirmationPage from "./pages/register/EmailConfirmationPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 const Router = () => {
     return (
         <>
@@ -20,8 +27,12 @@ const Router = () => {
 
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<TravelerRegistration />} />
+                <Route path="/register/email-confirmation" element={<EmailConfirmationPage />} />
+                <Route path="/verify-user-email" element={<EmailConfirmationPage />} />
                 <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
 
+                <Route path="/profile-details" element={<ProfilePage />} />
+                
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />
                 <Route path="/places/details" element={<PlaceDetails />} />
@@ -30,6 +41,14 @@ const Router = () => {
                 <Route path="/places/destination-places" element={<Places />} />
                 <Route path="/places/itineraries" element={<ItineraryList />} />
                 <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
+
+                <Route path="/events" element={<EventsPage />} />
+                <Route path="/events/details" element={<EventDetails />} />
+
+                <Route path="/itineraries" element={<ItineraryPage />} />
+                <Route path="/itineraries/details" element={<ItineraryDetails />} />
+
+                <Route path="/explore" element={<ExplorePage />} />
             </Routes>
         </>
     );

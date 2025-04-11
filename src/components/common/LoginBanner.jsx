@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "./MainContent.module.css";
 import { useTranslation } from "react-i18next";
 
-const LoginBanner = ({handleNavigateToLogin}) => {
+const LoginBanner = ({handleNavigateToLogin, styles}) => {
 
   const { t } = useTranslation("Places");
 

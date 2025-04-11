@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -15,14 +15,19 @@ import eventByCityReducer from "../features/places/placesInfo/events/EventSlice.
 import placesInCityReducer from "../features/places/placesInfo/places/PlacesSlice.jsx"
 import itineriesInCityReducer from "../features/places/placesInfo/itinerary/ItinerarySlice.jsx"
 import socialAuthReducer from "../features/authentication/socialLogin/SocialAuthSlice.jsx"
+import homeReducer from "../features/home/HomeSlice.jsx"
+import itineraryReducer from "../features/itineraries/ItinerarySlice.jsx"
+import continentReducer from "../features/common/continents/ContinentSlice.jsx"
+import exploreReducer from "../features/explore/ExploreSlice.jsx"
 
 
 // cms reducer
-import blockReducer from "../features/cms/Blocks/BlockSlice.jsx"
+import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
+import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
 
 // Configuration for redux-persist
 const persistConfig = {
-  key: "root", // Key for the persisted state
+  key: "destination", // Key for the persisted state
   storage, // Storage engine (localStorage by default)
   whitelist: ["destination"], // Only persist the destinationReducer
 };
@@ -30,8 +35,17 @@ const persistConfig = {
 // Wrap the destinationReducer with persistReducer
 const persistedDestinationReducer = persistReducer(persistConfig, destinationReducer);
 
+const cmsReducer = combineReducers({
+  blocks: blockReducer,
+  pages: pagesReducer,
+});
+
 const store = configureStore({
   reducer: {
+
+    // cms reducers
+    cms: cmsReducer,
+    
     // main api reducers
     auth: authReducer,
     socialAuth: socialAuthReducer,
@@ -46,10 +60,11 @@ const store = configureStore({
     eventsByCity: eventByCityReducer,
     placesInCity: placesInCityReducer,
     itineriesInCity: itineriesInCityReducer,
-    // cms api reducers
-    cms: {
-      blocks: blockReducer
-    }
+    home: homeReducer,
+    itineraries: itineraryReducer,
+    continents: continentReducer,
+    explore: exploreReducer
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

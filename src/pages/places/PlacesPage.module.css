@@ -5,6 +5,12 @@
   font-family: 'Source Sans Pro'zz, -apple-system, Roboto, Helvetica, sans-serif;
 }
 
+/* .placesPage.overflowHide {
+  min-height: unset;
+  overflow: hidden;
+  height: 100vh;
+} */
+
 .content {
   display: flex;
   /* flex: 1; */

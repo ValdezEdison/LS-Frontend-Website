@@ -46,3 +46,39 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
     return rejectWithValue(handleApiError(error));
   }
 });
+
+export const forgotPassword = createAsyncThunk(
+  'auth/forgotPassword',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await authService.forgotPassword(email);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+export const verifyEmail = createAsyncThunk(
+  'auth/verifyEmail',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await authService.verifyEmail(email);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const resendVerificationMail = createAsyncThunk(
+  'auth/resendVerificationMail',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await authService.resendVerificationMail(email);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+)

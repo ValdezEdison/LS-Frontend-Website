@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./MuseumModal.module.css";
+import { PlaceHolderImg1 } from "../../../components/common/Images";
 
 const ImageGalleryPopupContent = ({ images, isWide = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -100,7 +101,7 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
       ) : (
         <div className={styles.mainImageContainer}>
           <img
-            src={images[0] ? images[0]?.original : PlaceHolderImg2}
+            src={images[0] ? images[0]?.original : PlaceHolderImg1}
             alt="Main exhibit"
             className={styles.mainImage}
           />

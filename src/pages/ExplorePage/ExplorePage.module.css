@@ -1,0 +1,124 @@
+.explorerPage {
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  color: var(--Negro-blue, #151820);
+  background-color: #fff;
+}
+
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 30px;
+}
+
+.sectionSubtitle {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.continentNav {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  overflow-x: auto;
+  /* padding-bottom: 10px; */
+  border-bottom: solid 1px #828282;
+}
+
+.continentNav button {
+  font-size: 14px;
+  color: var(--Negro-blue, #151820);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 20px;
+}
+
+.continentNav .activeContinent {
+  color: var(--Color-principal-azul, #212d94);
+  font-weight: 600;
+  position: relative;
+}
+
+.continentNav .activeContinent::after{
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: 0px;
+  background-color:  #212d94;
+  width: 100%;
+  height: 1px;
+}
+
+
+.sectionDivider {
+  border: none;
+  border-top: 1px solid #828282;
+  margin: 20px 0;
+}
+
+.showMoreButton {
+  display: block;
+  margin: 22px auto 0;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Color-principal-azul, #212d94);
+  background-color: #fff;
+  border: 1px solid var(--Color-principal-azul, #212d94);
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.showMoreButton:hover {
+  background-color: var(--Color-principal-azul, #212d94);
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .mainContent {
+    padding: 20px;
+  }
+
+  .pageTitle {
+    font-size: 28px;
+  }
+
+  .continentNav {
+    gap: 8px;
+  }
+
+  .continentNav button {
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width:640px) {
+  .continentNav{
+    border-bottom: none;
+    flex-direction: column;
+}
+
+  .continentNav button{
+    border-bottom: solid 1px #828282;
+  }
+}

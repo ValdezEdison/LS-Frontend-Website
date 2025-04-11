@@ -3,6 +3,7 @@ import styles from "./PlaceCard.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { getRatingText } from "../../constants/RatingText";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Loader from "./Loader";
 
 const PlaceCard = forwardRef(
@@ -10,29 +11,30 @@ const PlaceCard = forwardRef(
         
     const location = useLocation();
     const isItineraryPage = location.pathname.includes("itineraries");
-    const isItineraryDetailsPage = location.pathname.includes("itineraries-details");
+    const { isAddToPopupOpen } = useSelector((state) => state.popup);
+    
 
     const hasStopsOrTags = place?.num_of_stops !== undefined || (place?.tags && place?.tags.length > 0);
     const hasComments = place?.comments_count !== undefined;
 
     const handleFavClick = (e) => {
        
-        handleActions(e, 'addToFavorites', place?.id);
+        handleActions(e, 'addToFavorites', place?.id, place?.display_text);
         e.stopPropagation();
     };
 
     const handleTripClick = (e) => {
         e.stopPropagation();
-        handleActions(e, 'addToTrip', place?.id);
+        handleActions(e, 'addToTrip', place?.id, place?.display_text);
     };
 
     const handleStopClick = (e) => {
         e.stopPropagation();
-        handleActions(e, 'addToStop', place?.id);
+        handleActions(e, 'addToStop', place?.id, place?.display_text);
     };
 
     const handleCardClick = (e) => {
-        handleViewMoreDetails(e, place?.id);
+        handleViewMoreDetails(e, place?.id, place?.display_text);
     };
 
     return (
@@ -64,22 +66,26 @@ const PlaceCard = forwardRef(
             </div>
 
             <div className={styles.placeInfo}>
-                <div className={styles.placeTitleMain}>
-                    <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
-                    {isItineraryDetailsPage && (
-                        <div className={styles.placeCardAdd} onClick={handleStopClick}></div>
-                    )}
-                    
+                {isAddToPopupOpen && isAuthenticated && (
+                    <div className={styles.placeCardAdd} onClick={handleStopClick}></div>
+                )}
+                <div className={styles.placeTitleTop}>
+                    <div className={styles.placeTitleMain}>
+                        <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
+                        
+                        
+                    </div>
+                
+                    <p className={styles.placeLocation}>
+                        {place?.city?.name}
+                        {place?.city?.name && place?.city?.country?.name && ", "}
+                        {place?.city?.country?.name}
+                    </p>
+                    <p className={styles.placeCategory}>
+                        {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
+                    </p>
                 </div>
                 
-                <p className={styles.placeLocation}>
-                    {place?.city?.name}
-                    {place?.city?.name && place?.city?.country?.name && ", "}
-                    {place?.city?.country?.name}
-                </p>
-                <p className={styles.placeCategory}>
-                    {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
-                </p>
 
                 {/* Conditionally render the stops and views section */}
                 {hasStopsOrTags && !hasComments && isItineraryPage && (

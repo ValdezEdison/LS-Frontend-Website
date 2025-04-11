@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops } from './ItineraryAction';
+import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops, addSite } from './ItineraryAction';
 import { toggleFavorite } from '../../PlaceAction';
 import { set } from 'lodash';
 
@@ -206,6 +206,19 @@ const itineriesInCitySlice = createSlice({
       })
       .addCase(fetchStops.rejected, (state, action) => {
         state.stopsLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(addSite.pending, (state) => {
+        state.addSiteLoading = true;
+        state.error = null;
+      })
+      .addCase(addSite.fulfilled, (state, action) => {
+        state.addSiteLoading = false;
+        state.error = null;
+      })
+      .addCase(addSite.rejected, (state, action) => {
+        state.addSiteLoading = false;
         state.error = action.payload;
       })
 

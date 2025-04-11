@@ -4,8 +4,15 @@ import RecoveryForm from "../../components/PasswordRecovery/RecoveryForm";
 import styles from "./PasswordRecoveryPage.module.css";
 import HeroSection from "../../components/PasswordRecovery/HeroSection";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../features/authentication/AuthActions";
 
 function PasswordRecoveryPage() {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -108,9 +115,30 @@ function PasswordRecoveryPage() {
 
     if (!isValid) return;
 
-    // Here you would typically call your API to send the recovery email
-    toast.success("Recovery email sent successfully!");
-    ;
+    dispatch(forgotPassword(formData.email))
+    .then((response) => {
+      console.log(response);
+      if (response.error) {
+        // Handle cases where the API returns error in success response
+        toast.error(response.error_description || "Failed to send recovery email");
+      } else {
+        toast.success(response.payload?.detail);
+        navigate('/login');
+      }
+    })
+    .catch((error) => {
+      // Use the structured error from handleApiError
+      const errorMsg = error.payload?.error_description || 
+                      "Failed to send recovery email. Please try again.";
+      
+      // You could also customize messages based on error code
+      if (error.payload?.error === "network_error") {
+        toast.error("Connection problem. Please check your internet and try again.");
+      } else {
+        toast.error(errorMsg);
+      }
+    });
+  
   };
 
   return (
@@ -122,13 +150,7 @@ function PasswordRecoveryPage() {
           <div className="login-page-center">
             <HeroSection />
             <div className={styles.formWrapper}>
-              {/* { loading && */}
-               <div className="loaderOverlay">
-                  <div className="loaderBtnWrapper">
-                  {/* <Loader />  */}
-                  </div>
-                </div>
-              {/* } */}
+            
               <RecoveryForm 
                 formData={formData}
                 fieldStates={fieldStates}

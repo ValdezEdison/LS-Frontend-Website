@@ -55,7 +55,8 @@
   color: #000000;
   padding: 5px 12px 5px 2px;
   position: absolute;
-  top: 60px;
+  /* top: 60px; */
+  top: calc(100% - 2px);
   display: none;
   z-index: 2;
  
@@ -63,11 +64,12 @@
 
 .suggestionsContainerInner{
   max-height: 280px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .placesSearchInputContainer .suggestionsContainer {
-  top: 48px;
+  /* top: 48px; */
+  top: calc(100% - 1px);
 }
 
 .suggestionsContainer.active {
@@ -92,12 +94,12 @@
 }
 
 .suggestionIcon {
-  align-self: stretch;
+  align-self: center;
   display: flex;
-  width: 24px;
-  height: 24px;
-  margin: auto 0;
-  /* background: url(../../assets/images/map-icon.png) no-repeat 0 0; */
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  background: url(../../../public/images/map-icon.png) no-repeat 0 0;
   background-size: 100%;
 }
 
@@ -115,6 +117,12 @@
 
  .suggestionsContainerSm .suggestionsContainerInner{
   max-height: 180px;
+}
+
+.filterNoResults{
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
 }
 
 @media (max-width: 991px) {

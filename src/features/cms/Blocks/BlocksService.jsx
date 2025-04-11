@@ -1,11 +1,11 @@
 
 import CmsApiService from "../../../services/CmsApiService";
 
-const BlockService = {
+const BlocksService = {
     getHeaderBlocks: async () => {
         return CmsApiService.get('/api/v2/header-blocks');
     },
-
+  
 }
 
-export default BlockService
+export default BlocksService

@@ -505,6 +505,11 @@ button,input,select,textarea{
   width: 100% !important;
 }
 
+.overflowHide {
+  overflow: hidden;
+  height: 100vh;
+}
+
 @media screen and (max-width: 1260px) {
   .page-center{
     max-width: 100%;

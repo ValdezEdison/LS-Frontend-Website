@@ -15,7 +15,7 @@ const PlaceCardSkeleton = () => {
         <Skeleton height={20} width={`80%`} />
         <Skeleton height={20} width={`60%`} />
         <Skeleton height={20} width={`40%`} />
-        <Skeleton height={30} width={`100%`} />
+        <Skeleton height={30} width={`50%`} />
       </div>
       <div className={styles2.placeActions}>
         <Skeleton height={40} width={`45%`} />

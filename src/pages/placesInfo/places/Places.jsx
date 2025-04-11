@@ -28,6 +28,12 @@ import { LanguageContext } from "../../../context/LanguageContext";
 import { setFavTogglingId } from "../../../features/places/placesInfo/places/PlacesSlice";
 import Modal from "../../../components/modal/Modal";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
+import { useAddTrip } from "../../../hooks/useAddTrip";
+import { fetchCities } from "../../../features/common/cities/CityAction";
+import { fetchTravelLiteList } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
+import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
+import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -43,8 +49,37 @@ const Places = () => {
     const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
     const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next);
     const { isOpen } = useSelector((state) => state.popup);
+    const { cities } = useSelector((state) => state.cities);
 
     const [showMapPopup, setShowMapPopup] = useState(false);
+
+    // Add trip functionality
+    const {
+        tripState,
+        formState,
+        formErrors,
+        citiesSearchResults,
+        isSearchingCities,
+        activeDestinationIndex,
+        successData,
+        isAddToPopupOpen,
+        travelLiteList,
+        tripPopupState,
+        setTripPopupState,
+        setFormState,
+        setTripState,
+        setFormErrors,
+        handleTripClick,
+        handleSubmitTrip,
+        handleSubmit,
+        updateDestination,
+        setActiveDestinationIndex,
+        debouncedFetchCitiesForAddTrip,
+        openAddTripPopup,
+        closeAddTripPopup,
+        closeSuccessMessage,
+        closeAddToTrip
+    } = useAddTrip();
 
     // Consolidated state for all relevant states in the Places page
     const [state, setState] = useState({
@@ -55,6 +90,7 @@ const Places = () => {
         page: 1, // For pagination
         latAndLng: "",
         points: "",
+        type: "place",
     });
 
     const [popupState, setPopupState] = useState({
@@ -84,6 +120,14 @@ const Places = () => {
             dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place' }));
             dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
             dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
+            if (isAuthenticated) {
+            dispatch(fetchTravelLiteList());
+            }
+            dispatch(fetchCities({}));
+            return () => {
+                dispatch(closePopup());
+                closeAddToTrip()
+            }
         }
     }, [dispatch, id, language]);
 
@@ -222,12 +266,29 @@ const Places = () => {
     };
 
 
-    const handleActions = (e, action, id) => {
+    const handleActions = (e, action, id, name) => {
+        console.log(action, 'action');
         e.stopPropagation();
-        if (action === 'addToFavorites') {
-            handleFavClick(e, id);
-        } else if (action === 'addToTrip') {
-            handleTripClick(e, id);
+        switch (action) {
+            case 'addToFavorites':
+                handleFavClick(e, id);
+                break;
+            case 'addToTrip':
+                handleAddToTripClick(e, id, name);
+                setFormState(prev => ({ ...prev, type: "event" }));
+                break;
+            case 'viewMore':
+                handleViewMoreDetails(e, id);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleAddToTripClick = (e, id, name) => {
+        const result = handleTripClick(e, id, name);
+        if (result?.needsAuth) {
+            togglePopup("alert", true);
         }
     };
 
@@ -239,26 +300,27 @@ const Places = () => {
         }
     };
 
-    const handleTripClick = (e, id) => {
-        e.stopPropagation();
-        if (isAuthenticated) {
-            dispatch(openAddToTripPopup());
-            navigate('/places/itineraries-details', { state: { id } });
-        } else {
-            togglePopup("alert", true);
-        }
-    };
 
     const handleNavigateToLogin = () => {
         navigate('/login', { state: { from: location } });
-      }
+    }
 
-      useEffect(() => {
+    useEffect(() => {
         if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place',points: state.points }));
-            
+            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', points: state.points }));
+
         }
     }, [dispatch, id, state.points]);
+
+
+    // Modal props
+    const modalSearchProps = {
+        activeDestinationIndex,
+        setActiveDestinationIndex,
+        citiesSearchResults,
+        isSearchingCities,
+        updateDestination
+    };
 
     return (
         <>
@@ -269,6 +331,48 @@ const Places = () => {
                     customClass="modalSmTypeOne"
                 >
                     <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+                </Modal>
+            )}
+
+
+            {isOpen && tripPopupState.addTripPopup && (
+                <AddTripPopup
+                    onClose={closeAddTripPopup}
+                    travelLiteList={travelLiteList}
+                    state={tripState}
+                    setState={setTripState}
+                    handleSubmitTrip={handleSubmitTrip}
+                />
+            )}
+
+            {isOpen && isAddToPopupOpen && (
+                <AddToTripPopup
+                    closeModal={() => {
+                        closeAddToTrip();
+                    }}
+                    state={formState}
+                    setState={setFormState}
+                    cities={cities}
+                    onSubmit={handleSubmit}
+                    formErrors={formErrors}
+                    setFormErrors={setFormErrors}
+                    {...modalSearchProps}
+                    handleActions={handleActions}
+                />
+            )}
+
+            {isOpen && successData.show && (
+                <Modal
+                    title=""
+                    onClose={closeSuccessMessage}
+                    customClass="modalSmTypeOne"
+                    hideCloseButton={true}
+                >
+                    <SuccessMessagePopup
+                        title={successData.title}
+                        message={successData.message}
+                        onClose={closeSuccessMessage}
+                    />
                 </Modal>
             )}
             <Header />
@@ -323,7 +427,7 @@ const Places = () => {
                     ) : (
                         <div className="no-results-wrapper">No results</div>
                     )}
-                    {loading ? <Loader /> : <SeeMoreButton
+                    {loading ? <Loader /> : next && <SeeMoreButton
                         onClick={loadMore}
                         loading={loading}
                         next={hasNext}

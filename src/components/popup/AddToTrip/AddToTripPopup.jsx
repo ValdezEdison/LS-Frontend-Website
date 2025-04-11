@@ -8,8 +8,9 @@ import TripTypeList from '../../common/TripTypeList';
 import { fetchCities } from '../../../features/common/cities/CityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import PlaceCard from '../../common/PlaceCard';
+import { getTripsTypes } from '../../../constants/TripTypeList';
 
-const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors, activeDestinationIndex,
+const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors, activeDestinationIndex,
   setActiveDestinationIndex,
   citiesSearchResults,
   isSearchingCities,
@@ -25,7 +26,7 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
   const [storedTripType, setStoredTripType] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
-
+console.log(state, "stateggg")
   const suggestions = [
     {
       title: 'Las Artes y las Ciencias',
@@ -236,13 +237,13 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
 
           <p className={styles.modalDescription}>
 
-            Add '{itineraryDetails?.title}' to any of your planned trips
+            Add '{state?.selectedPlaceName}' to any of your planned trips
           </p>
 
-          <TripTypeList styles={styles} updateState={updateState} state={state} storedTripType={storedTripType} />
+          <TripTypeList styles={styles} updateState={updateState} state={state} tripsData={getTripsTypes} />
 
           <div className={styles.divider} />
-          {storedTripType && (
+          {state.tripType && (
             <>
               <div className={styles.formSection}>
                 <p className={styles.formDescription}>
@@ -396,4 +397,4 @@ const AddToTripModal = ({ closeModal, state, setState, cities, onSubmit, formErr
   );
 };
 
-export default AddToTripModal;
+export default AddToTripPopup;

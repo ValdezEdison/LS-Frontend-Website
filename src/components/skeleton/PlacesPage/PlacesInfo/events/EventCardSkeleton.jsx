@@ -1,8 +1,8 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Import the skeleton CSS
-import styles from "../../../../PlacesInfo/Events/EventCard.module.css";
-import { PlaceHolderImg2 } from "../../.././/../common/Images"
+import styles from "../../../../../components/common/EventCard.module.css";
+import { PlaceHolderImg2 } from "../../../../../components/common/Images";
 
 function EventCardSkeleton() {
   return (

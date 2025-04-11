@@ -27,6 +27,7 @@
 
 .mapPopupFilter{
     padding: 20px;
+    flex-shrink: 0;
 }
 
 .mapPopupMapArea{
@@ -78,7 +79,7 @@
 }
 
 .mapPopupMapArea iframe, .mapPopupMapArea .mapFrame{
-    height: 934px;
+    height: 734px;
 }
 
 .closeButtonSm{
@@ -97,7 +98,7 @@
 }
 @media screen  and (max-height:1000px) {
     .mapPopupMapArea iframe,.mapPopupMapArea .mapFrame{
-        height: calc(100vh - 100px);
+        height: calc(100vh - 220px);
     }
     
 }

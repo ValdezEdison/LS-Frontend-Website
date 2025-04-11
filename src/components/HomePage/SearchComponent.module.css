@@ -31,12 +31,13 @@
 
 .regionSearchContainer {
   border-radius: 0 0 12px 12px;
-  border: 2px solid var(--Color-principal-azul, #212d94);
+  border: 1px solid var(--Color-principal-azul, #212d94);
   background-color: #fff;
   width: 100%;
   padding: 24px 34px;
   position: absolute;
-  top: 60px;
+  /* top: 60px; */
+  top:calc(100% - 1px);
   display: none;
   z-index: 2;
 }

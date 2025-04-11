@@ -1,0 +1,46 @@
+.itineraryList {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  color: var(--Negro-blue, #151820);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.tagContainer {
+  margin-bottom: 20px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--Seleccionado, #e1e4ff);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--Negro-blue, #151820);
+}
+
+.showMoreButton {
+  display: block;
+  width: 146px;
+  margin: 22px auto;
+  padding: 10px 16px;
+  background-color: #fff;
+  border: 1px solid var(--Color-principal-azul, #212d94);
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Color-principal-azul, #212d94);
+  text-align: center;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .itineraryList {
+    padding: 0 20px;
+  }
+}

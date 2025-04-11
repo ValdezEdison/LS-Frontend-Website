@@ -1,0 +1,40 @@
+.blogCard {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.blogImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+}
+
+.blogContent {
+  padding: 16px;
+}
+
+.blogTag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--Color-principal-naranja, #f4c031);
+  border: 1px solid var(--Color-principal-naranja, #f4c031);
+  margin-bottom: 8px;
+}
+
+.blogTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--Negro-blue, #151820);
+  margin: 0 0 8px;
+}
+
+.blogDescription {
+  font-size: 12px;
+  color: var(--Negro-blue, #151820);
+  margin: 0;
+  line-height: 1.5;
+}

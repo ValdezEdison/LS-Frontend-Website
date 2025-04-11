@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PlaceCard from "../common/PlaceCard";
 import styles from "./MainContent.module.css";
 import SearchBar from "../common/SearchBar";
-import LoginBanner from "./LoginBanner";
+import LoginBanner from "../common/LoginBanner";
 import RecommendedPlaces from "./RecommendedPlaces";
 // import FilterBar from "./FilterBar";
 import { useTranslation } from 'react-i18next';
@@ -242,7 +242,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
           isLoading={citiesLoading || countriesLoading}
         />
       </div>
-      {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin}/>}
+      {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles}/>}
       <div className={styles.placesSelectedItemsList}>
         {/* <PlacesSelectedItemList
           state={state}
@@ -282,7 +282,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
         )}
       </div>
 
-      {loading ? <Loader /> : <SeeMoreButton
+      {loading ? <Loader /> : next && <SeeMoreButton
         onClick={loadMore}
         loading={loading}
         next={hasNext}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
-import EventCard from "../../../components/PlacesInfo/Events/EventCard";
+import EventCard from "../../../components/common/EventCard";
 import RecommendedEvent from "../../../components/PlacesInfo/Events/RecommendedEvent";
 import styles from "./Events.module.css";
 import SubNavMenu from "../../../components/common/SubNavMenu";
@@ -23,6 +23,12 @@ import { LanguageContext } from "../../../context/LanguageContext";
 import { setFavTogglingId } from "../../../features/places/placesInfo/events/EventSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import Modal from "../../../components/modal/Modal";
+import { fetchCities } from "../../../features/common/cities/CityAction";
+import { fetchTravelLiteList } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
+import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
+import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { useAddTrip } from "../../../hooks/useAddTrip";
 
 const recommendedEvents = [
   {
@@ -52,17 +58,46 @@ const Events = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const { language } = useContext(LanguageContext);
   const { loading: eventLoading, error, events, next, isFavoriteToggling, favTogglingId } = useSelector((state) => state.eventsByCity);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { cities } = useSelector((state) => state.cities);
 
   const { isOpen } = useSelector((state) => state.popup);
 
   const [showMapPopup, setShowMapPopup] = useState(false);
+
+
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
 
 
 
@@ -75,6 +110,7 @@ const Events = () => {
     selectedLevel: "",
     latAndLng: "",
     selectedDateRange: { startDate: null, endDate: null },
+    type: "event",
   })
 
   const [popupState, setPopupState] = useState({
@@ -97,6 +133,14 @@ const Events = () => {
       dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
       dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
       dispatch(fetchGeoLocations({ cityId: id, type: "event" }));
+      if (isAuthenticated) {
+        dispatch(fetchTravelLiteList());
+      }
+      dispatch(fetchCities({}));
+      return () => {
+        dispatch(closePopup());
+        closeAddToTrip()
+      }
     }
   }, [dispatch, id, state.selectedLevel, language]);
 
@@ -143,14 +187,32 @@ const Events = () => {
   ];
 
 
-  const handleActions = (e, action, id) => {
+  const handleActions = (e, action, id, name) => {
+    console.log(action, 'action');
     e.stopPropagation();
-    if (action === 'addToFavorites') {
-      handleFavClick(e, id);
-    } else if (action === 'addToTrip') {
-      handleTripClick(e, id);
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "event" }));
+        break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      default:
+        break;
     }
   };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      togglePopup("alert", true);
+    }
+  };
+
 
   const handleFavClick = (e, id) => {
     e.stopPropagation();
@@ -160,19 +222,33 @@ const Events = () => {
     }
   };
 
-  const handleTripClick = (e, id) => {
-    e.stopPropagation();
-    if (isAuthenticated) {
-      dispatch(openAddToTripPopup());
-      navigate('/places/itineraries-details', { state: { id } });
-    } else {
-      togglePopup("alert", true);
-    }
-  };
+  // const handleTripClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     dispatch(openAddToTripPopup());
+  //     navigate('/places/itineraries-details', { state: { id } });
+  //   } else {
+  //     togglePopup("alert", true);
+  //   }
+  // };
 
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
   }
+
+  const handleViewMoreDetails = (e, id) => {
+    ;
+    navigate('/events/details', { state: { id } });
+  };
+
+  // Modal props
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
 
 
   return (
@@ -184,7 +260,48 @@ const Events = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account"/>
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+        </Modal>
+      )}
+
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
+        />
+      )}
+
+      {isOpen && isAddToPopupOpen && (
+        <AddToTripPopup
+          closeModal={() => {
+            closeAddToTrip();
+          }}
+          state={formState}
+          setState={setFormState}
+          cities={cities}
+          onSubmit={handleSubmit}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          {...modalSearchProps}
+          handleActions={handleActions}
+        />
+      )}
+
+      {isOpen && successData.show && (
+        <Modal
+          title=""
+          onClose={closeSuccessMessage}
+          customClass="modalSmTypeOne"
+          hideCloseButton={true}
+        >
+          <SuccessMessagePopup
+            title={successData.title}
+            message={successData.message}
+            onClose={closeSuccessMessage}
+          />
         </Modal>
       )}
 
@@ -230,7 +347,7 @@ const Events = () => {
 
           {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-          {loading ? <Loader /> : <SeeMoreButton
+          {loading ? <Loader /> : next && <SeeMoreButton
             onClick={loadMore}
             loading={loading}
             next={hasNext}

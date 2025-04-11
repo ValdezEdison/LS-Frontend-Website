@@ -16,7 +16,18 @@ const authService = {
 
   logout: async () => { 
     return apiService.post('/users/logout');
-  }
+  },
+  forgotPassword: async (email) => {
+    return apiService.post('/users/create/restore_password', { email });
+  },  
+
+  verifyEmail: async (email) => {
+    return apiService.post('/users/verify', { email });
+  },
+
+  resendVerificationMail: async (email) => {
+    return apiService.post('users/verification-email', { email });
+  },
 };
 
 export default authService; 

@@ -50,7 +50,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
             <SuggestionItem
               key={index}
               id={suggestion.id}
-              text={suggestion.name || suggestion}
+              text={`${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
               onSelect={onSelect}
             />
           ))
