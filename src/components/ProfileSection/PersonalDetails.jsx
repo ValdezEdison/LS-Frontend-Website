@@ -53,7 +53,7 @@ const PersonalDetails = () => {
                   )}
                 </div>
                 <div className={styles.valueRowBottom}>
-                  {details[2].verified && (
+                  {detail.verified && (
                     <p className={styles.emailNote}>
                       Esta dirección de email es la que has utilizado para iniciar sesión y
                       a la que se envían todas las notificaciones

@@ -54,6 +54,7 @@
 @media (max-width: 991px) {
   .sidebar {
     padding: 20px;
+    max-width: 100%;
   }
 
   .menuItem {
