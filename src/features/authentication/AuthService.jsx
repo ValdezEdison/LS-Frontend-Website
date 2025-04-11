@@ -22,7 +22,11 @@ const authService = {
   },  
 
   verifyEmail: async (email) => {
-    return apiService.post('/users/verification-email', { email });
+    return apiService.post('/users/verify', { email });
+  },
+
+  resendVerificationMail: async (email) => {
+    return apiService.post('users/verification-email', { email });
   },
 };
 

@@ -21,6 +21,9 @@ const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const clientId = import.meta.env.VITE_CLIENT_ID;
+  const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
+
   const { loading } = useSelector((state) => state.auth);
   const { phoneCodes } = useSelector((state) => state.countries);
 

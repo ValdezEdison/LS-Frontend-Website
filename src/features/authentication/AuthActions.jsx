@@ -70,3 +70,15 @@ export const verifyEmail = createAsyncThunk(
     } 
   }
 );
+
+export const resendVerificationMail = createAsyncThunk(
+  'auth/resendVerificationMail',
+  async (email, { rejectWithValue }) => {
+    try {
+      const response = await authService.resendVerificationMail(email);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+)

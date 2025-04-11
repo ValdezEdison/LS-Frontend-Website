@@ -11,6 +11,7 @@ const ArrowRight1 = "/images/arrowright-1.svg";
 const Banner = "/images/banner.png";
 const Flag = "/images/bandera-idioma@2x.png";
 const Cap = "/images/cap.svg";
+const Card = "/images/card.png";
 const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
 const Delete = "/images/delete-icon.svg";
@@ -32,6 +33,7 @@ const SecondSection4 = "/images/imgen-segunda-seccin-4@2x.png";
 const SecondSection4_1 = "/images/imgen-segunda-seccin-4-1@2x.png";
 const InstagramWhite = "/images/instagramwhite@2x.png";
 const LinkedinWhite = "/images/linkedinwhite@2x.png";
+const Lock = "/images/lock.png";
 const MapIcon = "/images/map-icon.png";
 const MapsSearchAmericaDefault = "/images/mapas-buscadoramerica-default.svg";
 const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
@@ -43,6 +45,7 @@ const MyWeirdLittleDesign = "/images/my-weird-little-design@3x.png";
 const Marker = "/images/marker.svg";
 const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
+const Notification = "/images/notification.png";
 const Oceana = "/images/oceana@2x.png";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
 const PlaceHolderImg2 = "/images/placeholder2.jpg"
@@ -53,6 +56,7 @@ const Profilecircle = "/images/profile-circle.svg";
 const Rectangle = "/images/rectangle-19290@2x.png";
 const SearchBlack = "/images/search-black-24dp-1.svg";
 const Search = "/images/search.svg";
+const Setting = "/images/setting.png";
 const Spain = "/images/spain.png";
 const Star = "/images/star.svg";
 const StarFill = "/images/star-fill.svg";
@@ -79,6 +83,7 @@ export {
     Filter,
     CalendarIcon,
     Cap,
+    Card,
     CellularConnection,
     Delete,
     FacebookWhite,
@@ -100,6 +105,7 @@ export {
     Search,
     InstagramWhite,
     LinkedinWhite,
+    Lock,
     MapIcon,
     MapsSearchAmericaDefault,
     MapsFindersiaDefault,
@@ -111,6 +117,7 @@ export {
     Marker,
     MarkerYellow,
     Notch,
+    Notification,
     Oceana,
     PlaceHolderImg1,
     PlaceHolderImg2,
@@ -120,6 +127,7 @@ export {
     Profilecircle,
     Rectangle,
     SearchBlack,
+    Setting,
     Subtract,
     Spain,
     UK,
