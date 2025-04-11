@@ -121,7 +121,7 @@ const Places = () => {
             dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
             dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
             if (isAuthenticated) {
-            dispatch(fetchTravelLiteList());
+                dispatch(fetchTravelLiteList());
             }
             dispatch(fetchCities({}));
             return () => {
@@ -321,6 +321,19 @@ const Places = () => {
         isSearchingCities,
         updateDestination
     };
+
+    useEffect(() => {
+        if (tripPopupState.addTripPopup || isAddToPopupOpen) {
+            document.body.classList.add('overflowHide');
+        } else {
+            document.body.classList.remove('overflowHide');
+        }
+
+        // Cleanup: Remove class when component unmounts
+        return () => {
+            document.body.classList.remove('overflowHide');
+        };
+    }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
     return (
         <>

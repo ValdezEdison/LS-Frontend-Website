@@ -576,7 +576,7 @@ const PlacesPage = () => {
     }, [popupState.success]);
 
     useEffect(() => {
-      if(isAddToPopupOpen){
+      if(isAddToPopupOpen || popupState.addTrip){
         document.body.classList.add('overflowHide');
       }else{
         document.body.classList.remove('overflowHide');
@@ -586,7 +586,7 @@ const PlacesPage = () => {
       return () => {
         document.body.classList.remove('overflowHide');
       };
-    }, [isAddToPopupOpen]);
+    }, [isAddToPopupOpen, popupState.addTrip]);
 
   return (
     <>

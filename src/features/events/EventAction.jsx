@@ -6,9 +6,27 @@ import { handleApiError } from '../../utils/Helper';
 // Fetch all events
 export const fetchEvents = createAsyncThunk(
   'events/fetchEvents',
-  async ({ page = 1, type = "event" }, { rejectWithValue }) => {
+  async ({ 
+    page = 1, 
+    type = "event",
+    cityId,
+    categories,
+    subcategories,
+    levels,
+    startDate,
+    endDate
+  }, { rejectWithValue }) => {
     try {
-      const response = await eventService.getEvents(type, page);
+      const response = await eventService.getEvents({
+        type,
+        page,
+        cityId,
+        categories,
+        subcategories,
+        levels,
+        startDate,
+        endDate
+      });
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

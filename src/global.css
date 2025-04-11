@@ -345,6 +345,72 @@ button,input,select,textarea{
   transform: translateX(-50%);
 }
 
+.react-datepicker__header{
+  background-color: transparent !important;
+  border-bottom: transparent !important;
+}
+
+.react-datepicker__day-name{
+  margin: 8px 8px 0;
+}
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle,.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle {
+  fill: #fff;
+  color: #fff;
+  display: none;
+}
+
+.react-datepicker-popper .react-datepicker__triangle {
+  stroke: #212D94;
+}
+
+.react-datepicker{
+  border: 1px solid #212D94;
+  font-family: 'Source Sans Pro' !important;
+  border-radius: 12px;
+}
+
+
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected,
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range), .react-datepicker__month-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range), .react-datepicker__quarter-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range), .react-datepicker__year-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range)
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range
+{
+  border-radius: 50%;
+  background-color: #f4c031;
+  color: #000;
+}
+
+.react-datepicker__day--keyboard-selected:not([aria-disabled=true]):hover, .react-datepicker__month-text--keyboard-selected:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--keyboard-selected:not([aria-disabled=true]):hover, .react-datepicker__year-text--keyboard-selected:not([aria-disabled=true]):hover,.react-datepicker__day--selected:not([aria-disabled=true]):hover, .react-datepicker__day--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__day--in-range:not([aria-disabled=true]):hover, .react-datepicker__month-text--selected:not([aria-disabled=true]):hover, .react-datepicker__month-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__month-text--in-range:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--selected:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--in-range:not([aria-disabled=true]):hover, .react-datepicker__year-text--selected:not([aria-disabled=true]):hover, .react-datepicker__year-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__year-text--in-range:not([aria-disabled=true]):hover{
+  background-color: #f4c031;
+  color: #000;
+  border-radius: 50%;
+}
+
+.react-datepicker__day, .react-datepicker__time-name{
+  margin: 8px;
+}
+
+
+.react-datepicker__day-names {
+  white-space: nowrap;
+  margin: 10px 4px -5px;
+}
+
+.react-datepicker__day-name{
+  font-size: 12px;
+}
+
+.react-datepicker__day, .react-datepicker__time-name{
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header{
+  font-size: 16px;
+  font-weight: normal;
+}
+
 
 .authPage .header{
   background-color: transparent !important;

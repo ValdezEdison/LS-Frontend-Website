@@ -1,157 +1,291 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./FilterPanel.module.css";
 import SearchInput from "../../common/SearchInput";
+import { CalendarIcon } from "../../common/Images";
+import DatePicker from 'react-datepicker';
 
-const FilterPanel = ({ 
-  onClose, 
-  categories, 
-  cities,
-  selectedLevel,
-  selectedCategory,
-  selectedSubcategory,
-  selectedCityId,
-  dateRange,
-  sortBy,
-  onLevelSelect,
-  onCategorySelect,
-  onSubcategorySelect,
-  onCitySelect,
-  onDateRangeChange,
-  onSortBy,
-  onResetFilters,
-  allCategories,
-  allSubcategories
-}) => {
-  const [showMoreLevels, setShowMoreLevels] = useState(false);
-  const [showMoreCategories, setShowMoreCategories] = useState(false);
-  const [showMoreSubcategories, setShowMoreSubcategories] = useState(false);
-  const [localDateRange, setLocalDateRange] = useState(dateRange);
+const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilters }) => {
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+  const [expandedSections, setExpandedSections] = useState({
+    levels: false,
+    categories: false,
+    search: false,
+    sort: false
+  });
+  const [availableCategories, setAvailableCategories] = useState([]);
+  
+  // Initialize selected levels and categories from state, ensuring they're strings
+  const [selectedLevels, setSelectedLevels] = useState(
+    state.selectedLevel ? String(state.selectedLevel).split(',').filter(Boolean) : []
+  );
+  const [selectedCategories, setSelectedCategories] = useState(
+    state.selectedCategory ? String(state.selectedCategory).split(',').filter(Boolean) : []
+  );
+  const [selectedSubcategories, setSelectedSubcategories] = useState(
+    state.selectedSubcategory ? String(state.selectedSubcategory).split(',').filter(Boolean) : []
+  );
 
-  const handleApplyFilters = () => {
-    onDateRangeChange(localDateRange);
-    onClose();
+  // Number of items to show when collapsed
+  const VISIBLE_ITEMS = 5;
+
+  const suggestionRef = useRef(null);
+  const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
+
+  // Initialize with first level selected by default if none selected
+  useEffect(() => {
+    if (categories?.length > 0 && selectedLevels.length === 0) {
+      const defaultLevel = categories[0].id;
+      setSelectedLevels([String(defaultLevel)]);
+      updateState("selectedLevel", String(defaultLevel));
+    }
+  }, [categories]);
+
+  // Update available categories when selected levels change
+  useEffect(() => {
+    if (categories && selectedLevels.length > 0) {
+      const cats = [];
+      selectedLevels.forEach(levelId => {
+        const level = categories.find(l => String(l.id) === String(levelId));
+        if (level && level.categories) {
+          cats.push(...level.categories);
+        }
+      });
+      setAvailableCategories(cats);
+    } else {
+      setAvailableCategories([]);
+    }
+  }, [selectedLevels, categories]);
+
+  const toggleLevel = (levelId) => {
+    const levelIdStr = String(levelId);
+    const newSelectedLevels = selectedLevels.includes(levelIdStr) 
+      ? selectedLevels.filter(id => id !== levelIdStr) 
+      : [...selectedLevels, levelIdStr];
+    
+    setSelectedLevels(newSelectedLevels);
+    updateState("selectedLevel", newSelectedLevels.join(','));
   };
 
-  const handleResetFilters = () => {
-    onResetFilters();
-    setLocalDateRange({ startDate: null, endDate: null });
+  const toggleCategory = (categoryId) => {
+    const categoryIdStr = String(categoryId);
+    const newSelectedCategories = selectedCategories.includes(categoryIdStr) 
+      ? selectedCategories.filter(id => id !== categoryIdStr) 
+      : [...selectedCategories, categoryIdStr];
+    
+    setSelectedCategories(newSelectedCategories);
+    updateState("selectedCategory", newSelectedCategories.join(','));
+  };
+
+  const toggleSubcategory = (subcategoryId) => {
+    const subcategoryIdStr = String(subcategoryId);
+    const newSelectedSubcategories = selectedSubcategories.includes(subcategoryIdStr) 
+      ? selectedSubcategories.filter(id => id !== subcategoryIdStr) 
+      : [...selectedSubcategories, subcategoryIdStr];
+    
+    setSelectedSubcategories(newSelectedSubcategories);
+    updateState("selectedSubcategory", newSelectedSubcategories.join(','));
+  };
+
+  const toggleTag = (tag) => {
+    setSelectedTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag],
+    );
+  };
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const handleSearch = (value) => {
+    updateState("destinationSearchQuery", value);
+  };
+
+  const handleSearchClose = (e) => {
+    e.stopPropagation();
+    updateState("destinationSearchQuery", "");
+    updateState("selectedDestinationId", null);
+    setShowSuggestionDropDown(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
+      setShowSuggestionDropDown(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showSuggestionDropDown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSuggestionDropDown]);
+
+  const updateState = (key, value) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+    if (key === "selectedDestinationId" && value) {
+      setState((prev) => ({ ...prev, "destinationSearchQuery": "" }));
+      setShowSuggestionDropDown(false);
+    }else if (key === "destinationSearchQuery") {
+      setShowSuggestionDropDown(true);
+    }
+    
+  };
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setDateRange(dates);
+    updateState("startDate", start);
+    updateState("endDate", end);
+  };
+
+  const clearAllFilters = () => {
+    setSelectedLevels([]);
+    setSelectedCategories([]);
+    setSelectedSubcategories([]);
+    setSelectedTags([]);
+    setDateRange([null, null]);
+    setState({
+      selectedLevel: "",
+      selectedCategory: "",
+      selectedSubcategory: "",
+      selectedDateRange: { startDate: null, endDate: null },
+      page: 1,
+      type: "event",
+      selectedCityId: null,
+      selectedDestinationId: null,
+      destinationSearchQuery: "",
+      startDate: null,
+      endDate: null
+    });
+  };
+
+  const applyFilters = () => {
+    onApplyFilters();
+    onClose();
   };
 
   const renderLevelSection = () => (
     <div className={styles.categorySection}>
       <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>Búsqueda</h2>
-        <button 
-          className={styles.toggleLink}
-          onClick={() => setShowMoreLevels(!showMoreLevels)}
-        >
-          {showMoreLevels ? "Ver menos" : "Ver más"}
-        </button>
+        <h2 className={styles.sectionTitle}>Niveles</h2>
+        {categories.length > VISIBLE_ITEMS && (
+          <span
+            className={styles.toggleLink}
+            onClick={() => toggleSection('levels')}
+          >
+            {expandedSections.levels ? "Ver menos" : "Ver más"}
+          </span>
+        )}
       </div>
-      <div className={`${styles.tagContainer} ${showMoreLevels ? styles.tagMore : ''}`}>
+      <div className={`${styles.tagContainer} ${
+        !expandedSections.levels && styles.tagMore
+      }`}>
         {categories?.map(level => (
-          <button
+          <span
             key={level.id}
-            className={`${styles.tag} ${selectedLevel === level.id ? styles.tagSelected : ''}`}
-            onClick={() => onLevelSelect(level.id)}
+            className={`${styles.tag} ${
+              selectedLevels.includes(String(level.id)) ? styles.tagSelected : ""
+            }`}
+            onClick={() => toggleLevel(level.id)}
           >
             {level.title}
-          </button>
+          </span>
         ))}
       </div>
     </div>
   );
 
-  const renderCategorySection = () => {
-    const filteredCategories = selectedLevel 
-      ? allCategories.filter(cat => cat.levelId === selectedLevel)
-      : allCategories;
-
-    return (
-      <div className={styles.categorySection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Categoría</h2>
-          {filteredCategories.length > 5 && (
-            <button 
-              className={styles.toggleLink}
-              onClick={() => setShowMoreCategories(!showMoreCategories)}
-            >
-              {showMoreCategories ? "Ver menos" : "Ver más"}
-            </button>
-          )}
-        </div>
-        <div className={`${styles.tagContainer} ${showMoreCategories ? styles.tagMore : ''}`}>
-          {filteredCategories.slice(0, showMoreCategories ? filteredCategories.length : 5).map(category => (
-            <button
-              key={category.id}
-              className={`${styles.tag} ${selectedCategory === category.id ? styles.tagSelected : ''}`}
-              onClick={() => onCategorySelect(category.id)}
-            >
-              {category.title}
-            </button>
-          ))}
-        </div>
+  const renderCategorySection = () => (
+    <div className={styles.categorySection}>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>Categorías</h2>
+        {availableCategories.length > VISIBLE_ITEMS && (
+          <span
+            className={styles.toggleLink}
+            onClick={() => toggleSection('categories')}
+          >
+            {expandedSections.categories ? "Ver menos" : "Ver más"}
+          </span>
+        )}
       </div>
-    );
-  };
+      <div className={`${styles.tagContainer} ${
+        !expandedSections.categories && styles.tagMore
+      }`}>
+        {availableCategories?.map(category => (
+          <span
+            key={category.id}
+            className={`${styles.tag} ${
+              selectedCategories.includes(String(category.id)) ? styles.tagSelected : ""
+            }`}
+            onClick={() => toggleCategory(category.id)}
+          >
+            {category.title}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
-  const renderSubcategorySection = () => {
-    const filteredSubcategories = selectedCategory
-      ? allSubcategories.filter(sub => sub.categoryId === selectedCategory)
-      : [];
-
-    if (filteredSubcategories.length === 0) return null;
-
-    return (
-      <div className={styles.categorySection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Subcategoría</h2>
-          {filteredSubcategories.length > 5 && (
-            <button 
-              className={styles.toggleLink}
-              onClick={() => setShowMoreSubcategories(!showMoreSubcategories)}
-            >
-              {showMoreSubcategories ? "Ver menos" : "Ver más"}
-            </button>
-          )}
-        </div>
-        <div className={`${styles.tagContainer} ${showMoreSubcategories ? styles.tagMore : ''}`}>
-          {filteredSubcategories.slice(0, showMoreSubcategories ? filteredSubcategories.length : 5).map(subcategory => (
-            <button
+  const renderSubcategorySection = () => (
+    <div className={styles.categorySection}>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>Subcategorías</h2>
+      </div>
+      <div className={styles.tagContainer}>
+        {availableCategories
+          .filter(cat => selectedCategories.includes(String(cat.id)))
+          .flatMap(cat => cat.subcategories || [])
+          .map(subcategory => (
+            <span
               key={subcategory.id}
-              className={`${styles.tag} ${selectedSubcategory === subcategory.id ? styles.tagSelected : ''}`}
-              onClick={() => onSubcategorySelect(subcategory.id)}
+              className={`${styles.tag} ${
+                selectedSubcategories.includes(String(subcategory.id)) ? styles.tagSelected : ""
+              }`}
+              onClick={() => toggleSubcategory(subcategory.id)}
             >
               {subcategory.title}
-            </button>
+            </span>
           ))}
-        </div>
       </div>
-    );
-  };
+    </div>
+  );
 
-  const renderSortSection = () => (
+  const renderTagSection = (title, tags, sectionKey) => (
     <div className={styles.categorySection}>
-      <h2 className={styles.sectionTitle}>Ordenar por</h2>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>{title}</h2>
+        {tags.length > VISIBLE_ITEMS && (
+          <span 
+            className={styles.toggleLink}
+            onClick={() => toggleSection(sectionKey)}
+          >
+            {expandedSections[sectionKey] ? "Ver menos" : "Ver más"}
+          </span>
+        )}
+      </div>
       <div className={styles.tagContainer}>
-        <button 
-          className={`${styles.tag} ${sortBy === 'recent' ? styles.tagSelected : ''}`}
-          onClick={() => onSortBy('recent')}
-        >
-          Más recientes
-        </button>
-        <button 
-          className={`${styles.tag} ${sortBy === 'rating' ? styles.tagSelected : ''}`}
-          onClick={() => onSortBy('rating')}
-        >
-          Más valorados
-        </button>
-        <button 
-          className={`${styles.tag} ${sortBy === 'recommended' ? styles.tagSelected : ''}`}
-          onClick={() => onSortBy('recommended')}
-        >
-          Nuestra recomendación
-        </button>
+        {tags
+          .slice(0, expandedSections[sectionKey] ? tags.length : VISIBLE_ITEMS)
+          .map((tag) => (
+            <span
+              key={tag}
+              className={`${styles.tag} ${selectedTags.includes(tag) ? styles.tagSelected : ""}`}
+              onClick={() => toggleTag(tag)}
+            >
+              {tag}
+            </span>
+          ))}
       </div>
     </div>
   );
@@ -162,26 +296,10 @@ const FilterPanel = ({
         <div className={styles.filterPanel}>
           <header className={styles.header}>
             <h1 className={styles.title}>Todos los filtros</h1>
-            <button
-              className={styles.closeIcon}
-              aria-label="Cerrar panel de filtros" 
-              onClick={onClose}
-            >
-              <svg
-                width="34"
-                height="34"
-                viewBox="0 0 34 34"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22.2578 23.763L10.237 11.7422C9.82627 11.3315 9.82627 10.6503 10.237 10.2396C10.6477 9.82887 11.3289 9.82887 11.7396 10.2396L23.7604 22.2604C24.1711 22.6711 24.1711 23.3523 23.7604 23.763C23.3497 24.1737 22.6685 24.1737 22.2578 23.763Z"
-                  fill="#151820"
-                />
-                <path
-                  d="M10.2396 23.763C9.82889 23.3523 9.82889 22.6711 10.2396 22.2604L22.2604 10.2396C22.6711 9.82887 23.3523 9.82887 23.763 10.2396C24.1737 10.6503 24.1737 11.3315 23.763 11.7422L11.7422 23.763C11.3315 24.1737 10.6503 24.1737 10.2396 23.763Z"
-                  fill="#151820"
-                />
+            <button className={styles.closeIcon} aria-label="Cerrar panel de filtros" onClick={onClose}>
+              <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.2578 23.763L10.237 11.7422C9.82627 11.3315 9.82627 10.6503 10.237 10.2396C10.6477 9.82887 11.3289 9.82887 11.7396 10.2396L23.7604 22.2604C24.1711 22.6711 24.1711 23.3523 23.7604 23.763C23.3497 24.1737 22.6685 24.1737 22.2578 23.763Z" fill="#151820"/>
+                <path d="M10.2396 23.763C9.82889 23.3523 9.82889 22.6711 10.2396 22.2604L22.2604 10.2396C22.6711 9.82887 23.3523 9.82887 23.763 10.2396C24.1737 10.6503 24.1737 11.3315 23.763 11.7422L11.7422 23.763C11.3315 24.1737 10.6503 24.1737 10.2396 23.763Z" fill="#151820"/>
               </svg>
             </button>
           </header>
@@ -191,37 +309,18 @@ const FilterPanel = ({
                 <label htmlFor="dateRange" className={styles.label}>
                   Fechas de inicio - fechas de fin del evento
                 </label>
-                <div className={styles.inputWrapper}>
-                  <svg
-                    className={styles.inputIcon}
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* Calendar icon paths */}
-                  </svg>
-                  <input
-                    id="dateRange"
-                    className={styles.input}
-                    type="text"
-                    placeholder="Fecha inicio - fecha fin"
-                    aria-label="Seleccionar rango de fechas"
-                    value={
-                      localDateRange.startDate && localDateRange.endDate 
-                        ? `${localDateRange.startDate.toLocaleDateString()} - ${localDateRange.endDate.toLocaleDateString()}`
-                        : ''
-                    }
-                    readOnly
-                    onClick={() => {
-                      // Here you would typically open a date picker component
-                      // For now, we'll just simulate setting some dates
-                      const startDate = new Date();
-                      const endDate = new Date();
-                      endDate.setDate(startDate.getDate() + 7);
-                      setLocalDateRange({ startDate, endDate });
-                    }}
+                <div className={styles.inputWithIcon}>
+                  <img src={CalendarIcon} alt="Calendar" />
+                  <DatePicker
+                    selectsRange={true}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={handleDateChange}
+                    placeholderText="Fecha inicio - fecha fin"
+                    className={styles.datePickerInput}
+                    minDate={new Date()}
+                    dateFormat="dd/MM/yyyy"
+                    isClearable={true}
                   />
                 </div>
               </div>
@@ -229,51 +328,46 @@ const FilterPanel = ({
                 <label htmlFor="destination" className={styles.label}>
                   Destino
                 </label>
-                <div className={styles.inputWrapper}>
-                  <svg
-                    className={styles.inputIcon}
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* Search icon paths */}
-                  </svg>
-                  <select
-                    id="destination"
-                    className={styles.input}
-                    value={selectedCityId || ''}
-                    onChange={(e) => onCitySelect(e.target.value ? parseInt(e.target.value) : null)}
-                  >
-                    <option value="">Todos los destinos</option>
-                    {cities?.map(city => (
-                      <option key={city.id} value={city.id}>{city.name}</option>
-                    ))}
-                  </select>
+                <div className={styles.filterSearchContainer}>
+                  <SearchInput
+                    handleSearchClick={() => setShowSuggestionDropDown(true)}
+                    suggestionRef={suggestionRef}
+                    handleSearch={handleSearch}
+                    showSuggestionDropDown={showSuggestionDropDown}
+                    handleSearchClose={handleSearchClose}
+                    searchValue={state.destinationSearchQuery}
+                    suggestionsList={cities}
+                    placeholder="Busca un destino"
+                    onSelect={(value) => updateState("selectedDestinationId", value)}
+                    customClassName="placesSearchInputContainer"
+                    selectedValue={state.selectedDestinationId}
+                    customClassNameForSuggestions="suggestionsContainerSm"
+                  />
                 </div>
               </div>
+              
               {renderLevelSection()}
               <div className={styles.divider} />
+              
               {renderCategorySection()}
-              {renderSubcategorySection() && <div className={styles.divider} />}
+              <div className={styles.divider} />
+              
               {renderSubcategorySection()}
               <div className={styles.divider} />
-              {renderSortSection()}
+              
+              {renderTagSection(
+                "Ordenar por",
+                [
+                  "Más recientes",
+                  "Más valorados",
+                  "Nuestra recomendación"
+                ],
+                'sort'
+              )}
             </form>
             <div className={styles.filterFormBtnWrapper}>
-              <button 
-                className={styles.applyButton}
-                onClick={handleApplyFilters}
-              >
-                Aplicar
-              </button>
-              <button 
-                className={styles.clearButton}
-                onClick={handleResetFilters}
-              >
-                Eliminar filtros
-              </button>
+              <button className={styles.applyButton} onClick={applyFilters}>Aplicar</button>
+              <button className={styles.clearButton} onClick={clearAllFilters}>Eliminar filtros</button>
             </div>
           </div>
         </div>

@@ -45,7 +45,6 @@
 }
 
 .activeLabel {
-  composes: label;
   color: var(--Color-principal-azul, #212d94);
   font-weight: 600;
   text-decoration: underline;

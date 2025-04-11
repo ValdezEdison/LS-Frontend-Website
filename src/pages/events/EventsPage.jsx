@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import Header from "../../components/layouts/Header";
 import EventSearch from "../../components/EventsPage/EventSearch";
 import LoginBanner from "../../components/common/LoginBanner";
@@ -32,6 +32,7 @@ import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { fetchTravelLiteList } from "../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
+import { debounce } from "lodash";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -76,21 +77,19 @@ const EventsPage = () => {
     closeAddToTrip
   } = useAddTrip();
 
-  // Filter state
-  const [filters, setFilters] = useState({
-    searchQuery: '',
-    selectedLevel: null,
-    selectedCategory: null,
-    selectedSubcategory: null,
-    selectedCityId: null,
-    dateRange: { startDate: null, endDate: null },
-    sortBy: 'recent' // 'recent', 'rating', 'recommended'
-  });
-
   // Page state
   const [state, setState] = useState({
+    selectedLevel: "",
+    selectedCategory: "",
+    selectedSubcategory: "",
+    selectedDateRange: { startDate: null, endDate: null },
     page: 1,
-    type: "event"
+    type: "event",
+    selectedCityId: null,
+    selectedDestinationId: null,
+    destinationSearchQuery: "",
+    startDate: null,
+    endDate: null
   });
 
   const [popupState, setPopupState] = useState({
@@ -103,71 +102,33 @@ const EventsPage = () => {
     filterPanel: false
   });
 
-  // Extract all categories and subcategories for filter panel
-  const getAllCategories = () => {
-    const allCategories = [];
-    const allSubcategories = [];
-    
-    categories?.forEach(level => {
-      if (level.categories && level.categories.length > 0) {
-        level.categories.forEach(category => {
-          allCategories.push({
-            id: category.id,
-            title: category.title,
-            levelId: level.id,
-            levelTitle: level.title
-          });
-          
-          if (category.subcategories && category.subcategories.length > 0) {
-            category.subcategories.forEach(subcategory => {
-              allSubcategories.push({
-                id: subcategory.id,
-                title: subcategory.title,
-                categoryId: category.id
-              });
-            });
-          }
-        });
-      }
-    });
-    
-    return { allCategories, allSubcategories };
-  };
-
-  const { allCategories, allSubcategories } = getAllCategories();
-
-  // Fetch events with filters
-  const fetchEventsWithFilters = () => {
-    const params = {
-      type: state.type,
-      page: state.page,
-      search: filters.searchQuery,
-      level_id: filters.selectedLevel,
-      category_id: filters.selectedCategory,
-      subcategory_id: filters.selectedSubcategory,
-      city_id: filters.selectedCityId,
-      start_date: filters.dateRange.startDate,
-      end_date: filters.dateRange.endDate,
-      sort_by: filters.sortBy
-    };
-    
-    dispatch(fetchEvents(params));
-  };
-
   // Fetch events and locations
   useEffect(() => {
-    fetchEventsWithFilters();
+    dispatch(fetchEvents({ type: state.type, page: state.page }));
     dispatch(fetchGeoLocations({ type: state.type }));
-    dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type }));
+    dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
     dispatch(fetchCities({}));
     return () => {
       dispatch(closePopup());
-      closeAddToTrip();
+      closeAddToTrip()
+      setState({
+        selectedLevel: "",
+        selectedCategory: "", 
+        selectedSubcategory: "",
+        selectedDateRange: { startDate: null, endDate: null },  
+        page: 1,
+        type: "event",
+        selectedCityId: null,
+        selectedDestinationId: null,
+        destinationSearchQuery: "",
+        startDate: null,
+        endDate: null
+      });
     }
-  }, [dispatch, state.type, state.page, language, filters]);
+  }, [dispatch, language]);
 
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
@@ -179,6 +140,7 @@ const EventsPage = () => {
   };
 
   const handleActions = (e, action, id, name) => {
+    console.log(action, 'action');
     e.stopPropagation();
     switch (action) {
       case 'addToFavorites':
@@ -217,56 +179,6 @@ const EventsPage = () => {
     navigate('/events/details', { state: { id } });
   };
 
-  // Filter handlers
-  const handleSearch = (query) => {
-    setFilters(prev => ({ ...prev, searchQuery: query }));
-  };
-
-  const handleLevelSelect = (levelId) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedLevel: levelId,
-      selectedCategory: null,
-      selectedSubcategory: null
-    }));
-  };
-
-  const handleCategorySelect = (categoryId) => {
-    setFilters(prev => ({
-      ...prev,
-      selectedCategory: categoryId,
-      selectedSubcategory: null
-    }));
-  };
-
-  const handleSubcategorySelect = (subcategoryId) => {
-    setFilters(prev => ({ ...prev, selectedSubcategory: subcategoryId }));
-  };
-
-  const handleCitySelect = (cityId) => {
-    setFilters(prev => ({ ...prev, selectedCityId: cityId }));
-  };
-
-  const handleDateRangeChange = (dateRange) => {
-    setFilters(prev => ({ ...prev, dateRange }));
-  };
-
-  const handleSortBy = (sortOption) => {
-    setFilters(prev => ({ ...prev, sortBy: sortOption }));
-  };
-
-  const resetFilters = () => {
-    setFilters({
-      searchQuery: '',
-      selectedLevel: null,
-      selectedCategory: null,
-      selectedSubcategory: null,
-      selectedCityId: null,
-      dateRange: { startDate: null, endDate: null },
-      sortBy: 'recent'
-    });
-  };
-
   // Modal props
   const modalSearchProps = {
     activeDestinationIndex,
@@ -275,6 +187,64 @@ const EventsPage = () => {
     isSearchingCities,
     updateDestination
   };
+
+  const debouncedSearch = useMemo(
+    () => debounce((query) => {
+      if (query.trim() !== "") {
+        dispatch(fetchCities({ searchQuery: query }));
+      } else {
+        // Clear results when query is empty
+        dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
+      }
+    }, 500),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    debouncedSearch(state.destinationSearchQuery);
+
+    // Cleanup function to cancel debounce on unmount
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [state.destinationSearchQuery, debouncedSearch]);
+
+
+
+  useEffect(() => {
+    if (state.selectedCityId) {
+      dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
+    }
+
+  }, [state.selectedCityId]);
+
+  const onApplyFilters = () => {
+    dispatch(fetchEvents({
+      type: state.type,
+      page: state.page,
+      cityId: state.selectedCityId,
+      categories: state.selectedCategory,
+      subcategories: state.selectedSubcategory,
+      levels: state.selectedLevel,
+      startDate: state.selectedDateRange.startDate,
+      endDate: state.selectedDateRange.endDate
+    }));
+    dispatch(closePopup())
+    togglePopup("filterPanel", false)
+  }
+
+ useEffect(() => {
+      if(popupState.filterPanel || tripPopupState.addTripPopup || isAddToPopupOpen){
+        document.body.classList.add('overflowHide');
+      }else{
+        document.body.classList.remove('overflowHide');
+      }
+  
+      // Cleanup: Remove class when component unmounts
+      return () => {
+        document.body.classList.remove('overflowHide');
+      };
+    }, [popupState.filterPanel, tripPopupState.addTripPopup, isAddToPopupOpen]);
 
   return (
     <>
@@ -300,26 +270,7 @@ const EventsPage = () => {
       )}
 
       {isOpen && popupState.filterPanel && (
-        <FilterPanel 
-          onClose={() => togglePopup("filterPanel", false)} 
-          categories={categories} 
-          cities={cities}
-          selectedLevel={filters.selectedLevel}
-          selectedCategory={filters.selectedCategory}
-          selectedSubcategory={filters.selectedSubcategory}
-          selectedCityId={filters.selectedCityId}
-          dateRange={filters.dateRange}
-          sortBy={filters.sortBy}
-          onLevelSelect={handleLevelSelect}
-          onCategorySelect={handleCategorySelect}
-          onSubcategorySelect={handleSubcategorySelect}
-          onCitySelect={handleCitySelect}
-          onDateRangeChange={handleDateRangeChange}
-          onSortBy={handleSortBy}
-          onResetFilters={resetFilters}
-          allCategories={allCategories}
-          allSubcategories={allSubcategories}
-        />
+        <FilterPanel onClose={() => togglePopup("filterPanel", false)} categories={categories} cities={cities} state={state} setState={setState} onApplyFilters={onApplyFilters} />
       )}
 
       {isOpen && tripPopupState.addTripPopup && (
@@ -368,17 +319,15 @@ const EventsPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{count} eventos disponibles</h1>
-          <EventSearch 
-            togglePopup={togglePopup} 
-            onSearch={handleSearch}
-            searchQuery={filters.searchQuery}
-          />
+          <EventSearch togglePopup={togglePopup} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
-          <EventList
+          {visibleEvents.length > 0 ?<EventList
             events={visibleEvents}
             handleActions={handleActions}
-          />
+          />:
+          <div className="no-results-wrapper">No results</div>
+          }
           <div className={styles.showMoreWrapper}>
             {loading ? <Loader /> : next && (
               <SeeMoreButton
