@@ -80,12 +80,16 @@ const EventsPage = () => {
   // Page state
   const [state, setState] = useState({
     selectedLevel: "",
+    selectedCategory: "",
+    selectedSubcategory: "",
     selectedDateRange: { startDate: null, endDate: null },
     page: 1,
     type: "event",
     selectedCityId: null,
     selectedDestinationId: null,
     destinationSearchQuery: "",
+    startDate: null,
+    endDate: null
   });
 
   const [popupState, setPopupState] = useState({
@@ -110,8 +114,21 @@ const EventsPage = () => {
     return () => {
       dispatch(closePopup());
       closeAddToTrip()
+      setState({
+        selectedLevel: "",
+        selectedCategory: "", 
+        selectedSubcategory: "",
+        selectedDateRange: { startDate: null, endDate: null },  
+        page: 1,
+        type: "event",
+        selectedCityId: null,
+        selectedDestinationId: null,
+        destinationSearchQuery: "",
+        startDate: null,
+        endDate: null
+      });
     }
-  }, [dispatch, state.type, state.page, language]);
+  }, [dispatch, language]);
 
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
@@ -171,26 +188,63 @@ const EventsPage = () => {
     updateDestination
   };
 
-    const debouncedSearch = useMemo(
-      () => debounce((query) => {
-        if (query.trim() !== "") {
-          dispatch(fetchCities({ searchQuery: query }));
-        } else {
-          // Clear results when query is empty
-          dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
-        }
-      }, 500),
-      [dispatch]
-    );
+  const debouncedSearch = useMemo(
+    () => debounce((query) => {
+      if (query.trim() !== "") {
+        dispatch(fetchCities({ searchQuery: query }));
+      } else {
+        // Clear results when query is empty
+        dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
+      }
+    }, 500),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    debouncedSearch(state.destinationSearchQuery);
+
+    // Cleanup function to cancel debounce on unmount
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [state.destinationSearchQuery, debouncedSearch]);
+
+
+
+  useEffect(() => {
+    if (state.selectedCityId) {
+      dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
+    }
+
+  }, [state.selectedCityId]);
+
+  const onApplyFilters = () => {
+    dispatch(fetchEvents({
+      type: state.type,
+      page: state.page,
+      cityId: state.selectedCityId,
+      categories: state.selectedCategory,
+      subcategories: state.selectedSubcategory,
+      levels: state.selectedLevel,
+      startDate: state.selectedDateRange.startDate,
+      endDate: state.selectedDateRange.endDate
+    }));
+    dispatch(closePopup())
+    togglePopup("filterPanel", false)
+  }
+
+ useEffect(() => {
+      if(popupState.filterPanel || tripPopupState.addTripPopup || isAddToPopupOpen){
+        document.body.classList.add('overflowHide');
+      }else{
+        document.body.classList.remove('overflowHide');
+      }
   
-    useEffect(() => {
-      debouncedSearch(state.destinationSearchQuery);
-  
-      // Cleanup function to cancel debounce on unmount
+      // Cleanup: Remove class when component unmounts
       return () => {
-        debouncedSearch.cancel();
+        document.body.classList.remove('overflowHide');
       };
-    }, [state.destinationSearchQuery, debouncedSearch]);
+    }, [popupState.filterPanel, tripPopupState.addTripPopup, isAddToPopupOpen]);
 
   return (
     <>
@@ -216,7 +270,7 @@ const EventsPage = () => {
       )}
 
       {isOpen && popupState.filterPanel && (
-        <FilterPanel onClose={() => togglePopup("filterPanel", false)} categories={categories} cities={cities} state={state} setState={setState}/>
+        <FilterPanel onClose={() => togglePopup("filterPanel", false)} categories={categories} cities={cities} state={state} setState={setState} onApplyFilters={onApplyFilters} />
       )}
 
       {isOpen && tripPopupState.addTripPopup && (
@@ -268,10 +322,12 @@ const EventsPage = () => {
           <EventSearch togglePopup={togglePopup} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
-          <EventList
+          {visibleEvents.length > 0 ?<EventList
             events={visibleEvents}
             handleActions={handleActions}
-          />
+          />:
+          <div className="no-results-wrapper">No results</div>
+          }
           <div className={styles.showMoreWrapper}>
             {loading ? <Loader /> : next && (
               <SeeMoreButton

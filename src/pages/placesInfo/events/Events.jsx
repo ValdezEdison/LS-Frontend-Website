@@ -250,6 +250,19 @@ const Events = () => {
     updateDestination
   };
 
+  useEffect(() => {
+    if (tripPopupState.addTripPopup || isAddToPopupOpen) {
+      document.body.classList.add('overflowHide');
+    } else {
+      document.body.classList.remove('overflowHide');
+    }
+
+    // Cleanup: Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overflowHide');
+    };
+  }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
+
 
   return (
     <>
