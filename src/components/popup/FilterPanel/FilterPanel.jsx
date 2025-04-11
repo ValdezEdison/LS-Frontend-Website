@@ -151,6 +151,7 @@ const FilterPanel = ({ onClose, categories, cities, state , setState }) => {
                 <label htmlFor="destination" className={styles.label}>
                   Destino
                 </label>
+                <div className={styles.filterSearchContainer}>
                 <SearchInput
                   handleSearchClick={() => setShowSuggestionDropDown(true)}
                   suggestionRef={suggestionRef}
@@ -165,6 +166,8 @@ const FilterPanel = ({ onClose, categories, cities, state , setState }) => {
                   selectedValue={state.selectedDestinationId}
                   customClassNameForSuggestions="suggestionsContainerSm"
                 />
+                </div>
+                
               </div>
               {renderTagSection(
                 "Búsqueda",

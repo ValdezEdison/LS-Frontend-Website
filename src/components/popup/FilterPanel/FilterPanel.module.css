@@ -74,6 +74,24 @@
     sans-serif;
 }
 
+.inputWithIcon {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 50px;
+}
+
+.inputWithIcon input{
+  border: none;
+  width: 100%;
+  outline: none;
+}
+
 .inputWrapper {
   display: flex;
   width: 100%;
@@ -208,6 +226,9 @@
   margin-bottom: 15px;
 }
 
+.filterSearchContainer{
+  position: relative;
+}
 @media (max-width: 991px) {
   .filterPanel {
     width: 100%;
@@ -217,9 +238,7 @@
 
   .applyButton {
     position: static;
-    width: 100%;
     transform: none;
-    margin-top: 20px;
   }
 
   .modalContent{
