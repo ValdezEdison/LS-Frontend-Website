@@ -6,6 +6,9 @@ const MyTripsService = {
     },
     getMyPastTrips: async (page) => {
         return ApiService.get('/travels/history?page=' + page);
+    },
+    getTripDetails: async (tripId) => {
+        return ApiService.get('/travels/' + tripId);
     }
 };
 
