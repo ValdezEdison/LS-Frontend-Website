@@ -4,9 +4,9 @@
   background-color: #fff;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 14px 15px;
-  margin-top: 10px;
+  margin-bottom: 20px;
   font-family:
     Source Sans Pro,
     -apple-system,
@@ -30,26 +30,33 @@
 .tripDetails {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .tripTitle {
   color: #151820;
   font-size: 14px;
   font-weight: 600;
+  margin: 0 0 5px;
 }
 
 .tripSites,
 .tripDates {
   color: #151820;
   font-size: 12px;
-  margin-top: 5px;
+  margin: 0 0 5px;
 }
 
 .tripActions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  background: url(../../../public/images/more.svg) no-repeat 0 0;
+  background-size: 100%;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  transition:all ease .3s ;
+  /* flex-direction: column;
+  align-items: flex-end; */
 }
 
 .editButton,
@@ -59,24 +66,48 @@
   color: #151820;
   font-size: 12px;
   cursor: pointer;
-  padding: 5px;
-  text-align: right;
+  padding: 6px 12px;
 }
 
-.editButton {
-  font-weight: 600;
+.tripActions:hover .tripActionsDropdown {
+  display: block;
 }
 
-@media (max-width: 991px) {
-  .tripCard {
-    flex-direction: column;
-    align-items: flex-start;
+.tripActionsDropdown{
+  position: absolute;
+  top: 23px;
+  right: 0;
+  width: 96px;
+  border: 1px solid rgba(113, 130, 149, 0.5);
+  border-radius: 12px;
+  display: none;
+}
+
+.tripActionsDropdown div{
+  transition: all ease .3s;
+}
+
+.tripActionsDropdown div:hover{
+  background: rgba(217, 217, 217, 0.2);
+}
+
+.tripDate{
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+@media screen and (max-width:640px) {
+  .tripImage {
+    width: 65px;
+    height: 65px;
   }
 
   .tripActions {
-    margin-top: 10px;
-    flex-direction: row;
-    justify-content: flex-end;
-    width: 100%;
+    width: 16px;
+    height: 16px;
+  }
+
+  .tripCard{
+    padding: 8px 8px;
   }
 }
