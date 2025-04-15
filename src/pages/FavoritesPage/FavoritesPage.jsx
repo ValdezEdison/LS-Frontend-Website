@@ -263,7 +263,7 @@ const FavoritesPage = () => {
 
   return (
     <>
-      {/* <FilterSiderbar/> */}
+      <FilterSiderbar/>
       {isOpen && popupState.alert && (
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
           <AlertPopup
@@ -334,11 +334,11 @@ const FavoritesPage = () => {
               ))
             ) : (
               favorites?.map((favorite, index) => (
-                <div
-                  key={index}
-                  className={`${styles.favoriteItem} ${vanishingItems.includes(favorite.id) ? styles.vanishing : ''
-                    }`}
-                >
+                // <div
+                //   key={index}
+                //   className={`${styles.favoriteItem} ${vanishingItems.includes(favorite.id) ? styles.vanishing : ''
+                //     }`}
+                // >
                   <EventCard
                     key={index}
                     event={favorite}
@@ -347,7 +347,7 @@ const FavoritesPage = () => {
                       isFavoriteToggling && favTogglingId === favorite.id
                     }
                   />
-                </div>
+                // </div>
               ))
             )}
           </div>

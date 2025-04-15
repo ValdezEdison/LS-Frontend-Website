@@ -472,6 +472,7 @@ button,input,select,textarea{
 /* When the radio button is checked, add a blue background */
 .radioContainer input:checked ~ .checkmark {
   background-color: #fff;
+  border: solid 1px #212D94; 
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */

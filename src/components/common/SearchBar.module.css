@@ -44,7 +44,7 @@
   border: none;
   outline: none;
   font-size: 14px;
-  color: var(--Gray-4, #bdbdbd);
+  /* color: var(--Gray-4, #bdbdbd); */
   width: 100%;
 }
 
@@ -99,9 +99,11 @@
     justify-content: space-between;
   }
 
-  .mapButton,
+  .mapButton{
+    text-align: center;
+  }
+
   .filterButton {
-    flex-grow: 1;
     text-align: center;
   }
 

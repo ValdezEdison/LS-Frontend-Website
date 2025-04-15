@@ -1,6 +1,6 @@
 .eventCard {
   display: flex;
-  padding: 8px 12px;
+  padding: 8px 26px 8px 12px;
   border: 1px solid #828282;
   border-radius: 12px;
   background-color: #fff;
@@ -13,6 +13,7 @@
   height: 124px;
   border-radius: 12px;
   object-fit: cover;
+  display: block;
 }
 
 .favoriteButton {
@@ -63,6 +64,11 @@
   cursor: pointer;
   background-color: #f4c031;
   font: 600 15px "Source Sans Pro", sans-serif;
+  transition: all ease .3s;
+}
+
+.viewMoreButton:hover{
+  background-color: #e5b22e;
 }
 
 .addIcon {
@@ -72,6 +78,7 @@
   margin-right: 8px;
   position: relative;
   background: url(../../../images/add-icon.png);
+  background-size: 100%;
 }
 
 .addToTripButton {
@@ -86,6 +93,12 @@
   cursor: pointer;
   background-color: #fff;
   font: 600 15px "Source Sans Pro", sans-serif;
+  transition: all ease .3s;
+}
+
+.addToTripButton:hover {
+  border-color: #000;
+  color: #212d94;
 }
 
 
@@ -137,10 +150,30 @@
   transform: translate(-50%, -50%);
 }
 
+@media (max-width:1100px) {
+  .viewMoreButton:hover{
+    background-color: #e5b22e;
+  }
+  
+  .addIcon {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .addToTripButton,.viewMoreButton {
+    padding: 9px 8px;
+    font-size: 14px;
+  }
+
+  .eventCard {
+    padding: 8px 12px 8px 12px;
+  }
+}
+
 @media (max-width: 640px) {
   .eventCard {
     flex-direction: column;
-    /* align-items: center; */
+    align-items: flex-start;
     /* text-align: center; */
   }
 
