@@ -162,6 +162,11 @@
   max-width: 222px;
 }
 
+.dropdown.disabled .filterHeader {
+  background-color: #F2F2F2;
+  pointer-events: none
+}
+
 .filterBlock {
   border-radius: 0;
   display: flex;
