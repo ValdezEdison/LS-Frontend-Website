@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from "./pages/home/HomePage";
@@ -19,6 +19,9 @@ import ItineraryDetails from "./pages/Itinerary/ItineraryDetails";
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 import EmailConfirmationPage from "./pages/register/EmailConfirmationPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
+import MyTrips from "./pages/MyTrips/MyTrips";
+import TripDetails from "./pages/MyTrips/TripDetails";
 const Router = () => {
     return (
         <>
@@ -31,7 +34,10 @@ const Router = () => {
                 <Route path="/verify-user-email" element={<EmailConfirmationPage />} />
                 <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
 
-                <Route path="/profile-details" element={<ProfilePage />} />
+                <Route path="/profile" element={<Navigate to="/profile/personal" replace />} />
+                <Route path="/profile/:tab" element={<ProfilePage />} />
+
+                <Route path="/favorites" element={<FavoritesPage />} />
                 
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />
@@ -49,6 +55,9 @@ const Router = () => {
                 <Route path="/itineraries/details" element={<ItineraryDetails />} />
 
                 <Route path="/explore" element={<ExplorePage />} />
+
+                <Route path="/my-trips" element={<MyTrips />} />
+                <Route path="/my-trips/details" element={<TripDetails/>} />
             </Routes>
         </>
     );

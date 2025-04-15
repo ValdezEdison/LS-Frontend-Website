@@ -39,14 +39,14 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
               className={styles.webIcon}
               onClick={() => handleGenerateLink()}
             />
-            {showShareOptions && (
+            {/* {showShareOptions && (
               <ShareOptions
                 url={shareableLink}
                 title={place?.title}
                 description={place?.description}
                 onClose={toggleShareOptions}
               />
-            )}
+            )} */}
           </div>
 
           <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>Ir a la web</button>

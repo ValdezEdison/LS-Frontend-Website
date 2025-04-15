@@ -20,7 +20,7 @@ import { fetchItineriesInCity } from "../../../features/places/placesInfo/itiner
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import FilterBar from "../../../components/common/FilterBar";
 import { LanguageContext } from "../../../context/LanguageContext";
-import { toggleFavorite } from "../../../features/places/PlaceAction";
+import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import Modal from "../../../components/modal/Modal";

@@ -1,0 +1,28 @@
+.tripListSection {
+  margin-top: 40px;
+}
+
+.tripListTitle {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+
+.tripListDateRange {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  margin-top: 6px;
+}

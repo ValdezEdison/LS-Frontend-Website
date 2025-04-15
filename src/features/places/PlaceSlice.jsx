@@ -11,13 +11,14 @@ import {
     fetchPlaceComments, 
     fetchNearbyPlaces,
     fetchPlacesFilterCategories,
-    toggleFavorite, 
+    // toggleFavorite, 
     addComment,
     editComment,
     deleteComment,
     generateLink
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
+import { toggleFavorite } from '../favorites/FavoritesAction';
 
 const initialState = {
     places: [],

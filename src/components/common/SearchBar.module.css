@@ -1,32 +1,112 @@
+.eventSearch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 24px;
+}
+
 .searchContainer {
-    position: relative;
-    max-width: 447px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-grow: 1;
+}
+
+.searchTitle {
+  color: var(--Negro-blue, #151820);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.searchForm {
+  flex-grow: 1;
+  max-width: 308px;
+  width: 100%;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--Desactivado, #718295);
+  background-color: #fff;
+  padding: 12px 14px;
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--Gray-4, #bdbdbd);
+  width: 100%;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 18px;
+}
+
+.mapButton,
+.filterButton {
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.mapButton {
+  background-color: var(--Color-principal-naranja, #f4c031);
+  color: var(--Negro-textos, #151820);
+  border: none;
+}
+
+.filterButton {
+  border: 1px solid var(--Color-principal-azul, #212d94);
+  background-color: #fff;
+  color: var(--Negro-blue, #151820);
+}
+
+
+
+@media (max-width: 991px) {
+  .eventSearch {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
   }
 
-  .searchInput {
-    width: 100%;
-    padding: 12px 14px 12px 40px;
-    border: 1px solid #718295;
-    border-radius: 12px;
-    font-size: 14px;
-    outline: none;
+  .searchContainer {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .searchIcon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
+  .actionButtons {
+    justify-content: space-between;
   }
-  
 
-  @media (max-width: 991px) {
-  
-    .searchContainer {
-      width: 100%;
-      margin-top: 10px;
-    }
+  .mapButton,
+  .filterButton {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+
+  .searchForm{
+    max-width: 100%;
+  }
 }

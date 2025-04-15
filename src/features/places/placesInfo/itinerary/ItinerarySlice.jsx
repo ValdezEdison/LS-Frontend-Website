@@ -1,7 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchItineriesInCity, fetchItineraryDetails, fetchTravelLiteList, fetchTravelTime, addTrip, generateLink, downloadTrip, fetchStops, addSite } from './ItineraryAction';
-import { toggleFavorite } from '../../PlaceAction';
+import { toggleFavorite } from '../../../favorites/FavoritesAction';
 import { set } from 'lodash';
 
 const initialState = {

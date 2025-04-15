@@ -1,7 +1,7 @@
 // src/features/events/EventSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchEventsByCityId } from './EventAction';
-import { toggleFavorite } from '../../PlaceAction';
+import { toggleFavorite } from '../../../favorites/FavoritesAction';
 
 const initialState = {
   events: [],

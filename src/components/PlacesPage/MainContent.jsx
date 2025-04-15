@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import PlaceCard from "../common/PlaceCard";
 import styles from "./MainContent.module.css";
-import SearchBar from "../common/SearchBar";
 import LoginBanner from "../common/LoginBanner";
 import RecommendedPlaces from "./RecommendedPlaces";
 // import FilterBar from "./FilterBar";
 import { useTranslation } from 'react-i18next';
 import { useSelector } from "react-redux";
 import SearchInput from "../common/SearchInput";
-import styles2 from "../common/SearchBar.module.css";
+import styles2 from "../common/MainSearchBar.module.css";
 import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";

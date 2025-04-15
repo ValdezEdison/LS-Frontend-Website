@@ -12,7 +12,8 @@ import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesD
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, toggleFavorite, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
 import ImageGallerySkeleton from "../../components/skeleton/PlacesDetailPage/ImageGallerySkeleton";
@@ -116,7 +117,7 @@ const PlaceDetails = () => {
   };
 
 
-  const handleFavClick = (id) => {
+  const handleFavClick = (e, id) => {
     if (!isAuthenticated) {
       togglePopup("alert", true);
     } else {

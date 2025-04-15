@@ -29,8 +29,8 @@ import {
   fetchPlacesByCityId,
   fetchGeoLocations,
   fetchPlacesFilterCategories,
-  toggleFavorite
 } from "../../features/places/PlaceAction";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import {
@@ -50,6 +50,7 @@ import {
   resetTripType,
   setTripType
 } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { setFavTogglingId } from "../../features/places/PlaceSlice";
 
 // Styles
 import styles from "./PlacesPage.module.css";
@@ -226,9 +227,12 @@ const PlacesPage = () => {
 
   const handleFavClick = (e, id) => {
     e.stopPropagation();
-    isAuthenticated
-      ? dispatch(toggleFavorite(id))
-      : togglePopup("alert", true);
+       if (isAuthenticated) {
+          dispatch(toggleFavorite(id));
+          dispatch(setFavTogglingId(id));
+        } else {
+          togglePopup("alert", true);
+        }
   };
 
   const handleTripClick = (e, id) => {

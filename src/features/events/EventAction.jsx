@@ -14,7 +14,8 @@ export const fetchEvents = createAsyncThunk(
     subcategories,
     levels,
     startDate,
-    endDate
+    endDate,
+    keyword
   }, { rejectWithValue }) => {
     try {
       const response = await eventService.getEvents({
@@ -25,7 +26,8 @@ export const fetchEvents = createAsyncThunk(
         subcategories,
         levels,
         startDate,
-        endDate
+        endDate,
+        keyword
       });
       return response;
     } catch (error) {

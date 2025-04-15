@@ -1,0 +1,138 @@
+.favoritesPage {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 16px 70px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.pageTitle {
+  color: #000;
+  font:
+    700 32px Montserrat,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  margin-bottom: 16px;
+}
+
+.favoritesList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.showMoreButton {
+  border-radius: 12px;
+  border: 1px solid var(--Color-principal-azul, #212d94);
+  background-color: #fff;
+  color: var(--Color-principal-azul, #212d94);
+  font:
+    600 16px Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  padding: 10px 16px;
+  margin: 22px auto;
+  display: block;
+  cursor: pointer;
+}
+
+.recommendedSection {
+  margin-top: 70px;
+}
+
+.recommendedTitle {
+  color: #000;
+  text-align: center;
+  font:
+    600 20px Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  margin-bottom: 30px;
+}
+
+.recommendedList {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+
+/* Add these to your FavoritesPage.module.css */
+
+.favoriteItem {
+  transition: all 0.5s ease;
+}
+
+.favoriteItem.vanishing {
+  opacity: 0;
+  transform: scale(0.9);
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Make sure your favorites list has proper transition */
+.favoritesList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+  transition: all 0.5s ease;
+}
+
+
+
+@keyframes vanish {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    height: auto;
+    margin: initial;
+    padding: initial;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.favoriteItem.vanishing {
+  animation: vanish 0.5s forwards;
+}
+
+@media (max-width: 991px) {
+  .mainContent {
+    padding: 16px 20px;
+  }
+
+  .favoritesList{
+    grid-template-columns: 1fr;
+  }
+  .recommendedList {
+    flex-direction: column;
+  }
+
+  .recommendedSection {
+    margin-top: 40px;
+  }
+}

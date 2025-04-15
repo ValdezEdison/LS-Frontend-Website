@@ -15,7 +15,7 @@ import { debounce } from "lodash";
 import { LanguageContext } from "../../context/LanguageContext";
 import useSeeMore from "../../hooks/useSeeMore";
 import { fetchItineraries } from "../../features/itineraries/ItineraryAction";
-import { toggleFavorite } from "../../features/places/PlaceAction";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../features/itineraries/ItinerarySlice";
 import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import Loader from "../../components/common/Loader";

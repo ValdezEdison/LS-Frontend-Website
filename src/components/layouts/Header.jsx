@@ -144,7 +144,7 @@ const Header = () => {
     if (action === 'logout') {
       handleLogout();
     } else if (action === 'profile') {
-      navigate('/profile-details');
+      navigate('/profile/personal');
     } else if (action === 'favorites') {
       navigate('/favorites');
     }
@@ -204,6 +204,15 @@ const Header = () => {
               >
                 {t("nav.explore")}
               </button>
+              {isAuthenticated &&
+                <button
+                  className={`${styles.navButton} ${isActive("/my-trips") ? styles.navItemActive : ""
+                    }`}
+                  onClick={() => handleNavigation("/my-trips")}
+                >
+                My Trips
+                </button>
+              }
             </nav>
           </div>
           <div className={styles.userActions}>
@@ -303,6 +312,15 @@ const Header = () => {
                 >
                   {t("nav.explore")}
                 </li>
+                {isAuthenticated &&
+                  <li
+                    className={`${styles.navButton} ${isActive("/my-trips") ? styles.navItemActive : ""
+                      }`}
+                    onClick={() => handleNavigation("/my-trips")}
+                  >
+                    My Trips
+                  </li>
+                }
                 <li
                   className={`${styles.navButton} ${isActive("/blog") ? styles.navItemActive : ""
                     }`}

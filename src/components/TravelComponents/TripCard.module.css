@@ -1,0 +1,82 @@
+.tripCard {
+  border-radius: 12px;
+  border: 1px solid #828282;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 15px;
+  margin-top: 10px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+
+.tripInfo {
+  display: flex;
+  gap: 18px;
+}
+
+.tripImage {
+  width: 90px;
+  height: 90px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.tripDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tripTitle {
+  color: #151820;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tripSites,
+.tripDates {
+  color: #151820;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.tripActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.editButton,
+.deleteButton {
+  border: none;
+  background: none;
+  color: #151820;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px;
+  text-align: right;
+}
+
+.editButton {
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .tripCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tripActions {
+    margin-top: 10px;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
