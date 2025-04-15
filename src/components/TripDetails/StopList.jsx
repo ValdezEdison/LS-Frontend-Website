@@ -51,7 +51,7 @@ const stops = [
   },
 ];
 
-const StopList = () => {
+const StopList = ({ tripDetails, handleViewMoreDetails }) => {
   return (
     <>
       <div className={styles.tripType}>
@@ -71,9 +71,15 @@ const StopList = () => {
       </div>
       <h2 className={styles.tripSummary}>París - 5 paradas, 3h y 30 min</h2>
       <div className={styles.stopList}>
-        {stops.map((stop) => (
-          <ItineraryCard key={stop.number} place={stop} handleViewMoreDetails={() => {}}  />
-        ))}
+        {tripDetails?.stops && tripDetails.stops.length > 0 ? (
+          // Render itinerary stops if available
+          tripDetails.stops.map((stop, index) => (
+            <ItineraryCard key={stop.id} place={stop} index={index + 1} handleViewMoreDetails={handleViewMoreDetails} />
+          ))
+        ) : (
+          // Show "No results" message if no stops are found
+          <div className="no-results-wrapper">No stops available</div>
+        )}
       </div>
     </>
   );

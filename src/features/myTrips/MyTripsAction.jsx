@@ -25,3 +25,15 @@ export const fetchMyPastTrips = createAsyncThunk(
         }
     }
 );
+
+export const fetchTripDetails = createAsyncThunk(
+    "myTrips/fetchTripDetails",
+    async (tripId, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.getTripDetails(tripId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

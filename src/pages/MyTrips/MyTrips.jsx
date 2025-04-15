@@ -24,6 +24,7 @@ const MyTrips = () => {
   }, [dispatch, language, state.page]);
 
   const handleActions = (e, action, id) => {
+    console.log(action, id);
     if(action === 'showTripDetails') {
       navigate('/my-trips/details', { state: { id: id } });
     }

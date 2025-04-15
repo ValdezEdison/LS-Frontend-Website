@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./TripDetails.module.css";
 
-const TripInfo = () => {
+const TripInfo = ({ handleActions, id }) => {
   return (
     <div className={styles.tripHeader}>
       <div className={styles.tripInfo}>
@@ -11,7 +11,7 @@ const TripInfo = () => {
         </p>
       </div>
       <div className={styles.tripActions}>
-        <button className={styles.actionButton} aria-label="Edit trip">
+        <button className={styles.actionButton} aria-label="Edit trip" onClick={(e) => handleActions(e, 'editTrip', id)}>
           <svg
             id="249:12021"
             width="24"

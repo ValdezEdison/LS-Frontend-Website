@@ -1,0 +1,149 @@
+.suggestedStops {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.stopsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.suggestedStop {
+  border: 1px solid #828282;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.stopImageContainer {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stopImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stopIcon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+}
+
+.stopInfo {
+  padding: 10px 0;
+}
+
+.stopName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.stopLocation,
+.stopCategory {
+  font-size: 10px;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.stopRating {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ratingScore {
+  background-color: #212d94;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
+.ratingInfo {
+  font-size: 10px;
+  color: #000;
+}
+
+.ratingText {
+  font-weight: 600;
+}
+
+.stopActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.viewMoreButton,
+.addToTripButton {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.viewMoreButton {
+  background-color: #f4c031;
+  border: none;
+  color: #151820;
+}
+
+.addToTripButton {
+  background-color: #fff;
+  border: 1px solid #212d94;
+  color: #151820;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addIcon {
+  width: 20px;
+  height: 20px;
+  background-image: url("path-to-add-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 8px;
+}
+
+.showMoreButton {
+  display: block;
+  margin: 20px auto 0;
+  padding: 15px 16px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 1px solid #212d94;
+  color: #212d94;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .stopsGrid {
+    grid-template-columns: 1fr;
+  }
+}
