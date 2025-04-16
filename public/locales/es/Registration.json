@@ -1,0 +1,70 @@
+{
+    "title": "Regístrate como viajero",
+    "form": {
+        "username": {
+            "label": "Nombre de usuario",
+            "placeholder": "Nombre y apellidos",
+            "info": "Por favor ingresa tu nombre completo",
+            "errors": {
+                "required": "El nombre de usuario es requerido",
+                "minLength": "Mínimo 3 caracteres requeridos"
+            }
+        },
+        "email": {
+            "label": "Correo electrónico",
+            "placeholder": "nombre@ejemplo.com",
+            "info": "Por favor ingresa un correo electrónico válido",
+            "errors": {
+                "required": "El correo electrónico es requerido",
+                "invalid": "Por favor ingresa un correo electrónico válido"
+            }
+        },
+        "phone": {
+            "label": "Teléfono",
+            "placeholder": "123 456 789",
+            "info": "Por favor ingresa tu número de teléfono con código de país",
+            "errors": {
+                "required": "El número de teléfono es requerido",
+                "invalid": "Se requieren 7-15 dígitos"
+            }
+        },
+        "password": {
+            "label": "Contraseña",
+            "placeholder": "Introduce una contraseña",
+            "requirements": "Debe de constar <strong>al menos de 8 caracteres</strong> y contener mínimo <strong>un número, una mayúscula y un símbolo.</strong>",
+            "info": "La contraseña debe tener al menos 8 caracteres con un número, letra mayúscula y símbolo",
+            "errors": {
+                "required": "La contraseña es requerida",
+                "minLength": "Mínimo 8 caracteres",
+                "uppercase": "Al menos una letra mayúscula",
+                "number": "Al menos un número",
+                "symbol": "Al menos un carácter especial"
+            }
+        },
+        "terms": {
+            "text": "Acepta los",
+            "link": "Términos y Condiciones",
+            "error": "Debes aceptar los términos"
+        },
+        "submit": "Crear cuenta",
+        "loginPrompt": "¿Ya tienes cuenta?",
+        "loginLink": "Inicia sesión"
+    },
+    "messages": {
+        "success": "¡Registro exitoso! Por favor revisa tu correo para confirmar.",
+        "error": "Error en el registro",
+        "resendSuccess": "Correo de confirmación reenviado exitosamente"
+    },
+    "socialLogin": {
+        "or": "O regístrate con"
+    },
+    "footer": {
+        "termsText": "Al iniciar sesión o al crear una cuenta, aceptas nuestros",
+        "termsLink": "Términos y condiciones",
+        "privacyText": "y la",
+        "privacyLink": "Política de privacidad",
+        "businessQuestion": "¿Tienes un negocio?",
+        "businessLink": "Registrarme como Local Secret Manager",
+        "copyright": "Copyright (2024) - Local Secrets. Todos los derechos reservados."
+    }
+}

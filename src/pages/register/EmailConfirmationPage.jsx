@@ -53,8 +53,8 @@ const EmailConfirmationPage = () => {
             setIsOpenSuccessPopup(false);
             setSuccessMessage("");
             setSuccessTitle("");
-          }, 5000); // 5 seconds in milliseconds
-          navigate('/login');
+          }, 15000); // 5 seconds in milliseconds
+        //   navigate('/login');
         }
     
         // Clean up the timer when the component unmounts or when popupState.success changes

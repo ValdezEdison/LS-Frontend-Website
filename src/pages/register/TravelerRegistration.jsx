@@ -16,10 +16,12 @@ import Loader from "../../components/common/Loader";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
 import SocialLogin from "../../components/LoginPage/SocialLogin";
 import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
+import { useTranslation } from 'react-i18next';
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation('Registration');
 
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
@@ -47,21 +49,21 @@ const TravelerRegistration = () => {
   const [fieldStates, setFieldStates] = useState({
     username: {
       error: "",
-      info: "Please enter your full name",
+      info: t('form.username.info'),
       touched: false,
       focused: false,
       isValid: false,
     },
     email: {
       error: "",
-      info: "Please enter a valid email address",
+      info: t('form.email.info'),
       touched: false,
       focused: false,
       isValid: false,
     },
     phone: {
       error: "",
-      info: "Please enter your phone number with country code",
+      info: t('form.phone.info'),
       touched: false,
       focused: false,
       isValid: false,
@@ -75,7 +77,7 @@ const TravelerRegistration = () => {
     },
     password: {
       error: "",
-      info: "Password must be at least 8 characters with a number, uppercase letter, and symbol",
+      info: t('form.password.info'),
       touched: false,
       focused: false,
       isValid: false,
@@ -104,49 +106,49 @@ const TravelerRegistration = () => {
     switch (name) {
       case "username":
         if (!value.trim()) {
-          error = "Username is required";
+          error = t('form.username.errors.required');
         } else if (value.trim().length < 3) {
-          error = "Minimum 3 characters required";
+          error = t('form.username.errors.minLength');
         } else {
           isValid = true;
         }
         break;
       case "email":
         if (!value.trim()) {
-          error = "Email is required";
+          error = t('form.email.errors.required');
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          error = "Please enter a valid email";
+          error = t('form.email.errors.invalid');
         } else {
           isValid = true;
         }
         break;
       case "phone":
         if (!value.trim()) {
-          error = "Phone number is required";
+          error = t('form.phone.errors.required');
         } else if (!/^\d{7,15}$/.test(value)) {
-          error = "7-15 digits required";
+          error = t('form.phone.errors.invalid');
         } else {
           isValid = true;
         }
         break;
       case "password":
         if (!value.trim()) {
-          error = "Password is required";
+          error = t('form.password.errors.required');
         } else if (value.length < 8) {
-          error = "Minimum 8 characters";
+          error = t('form.password.errors.minLength');
         } else if (!/[A-Z]/.test(value)) {
-          error = "At least one uppercase letter";
+          error = t('form.password.errors.uppercase');
         } else if (!/\d/.test(value)) {
-          error = "At least one number";
+          error = t('form.password.errors.number');
         } else if (!/[!@#$%^&*]/.test(value)) {
-          error = "At least one special character";
+          error = t('form.password.errors.symbol');
         } else {
           isValid = true;
         }
         break;
       case "terms":
         if (!value) {
-          error = "You must accept the terms";
+          error = t('form.terms.error');
         } else {
           isValid = true;
         }
@@ -253,7 +255,7 @@ const TravelerRegistration = () => {
     setFieldStates(newFieldStates);
 
     if (!allValid) {
-      toast.error("Please fix the errors in the form");
+      toast.error(t('messages.error'));
       return;
     }
 
@@ -261,7 +263,7 @@ const TravelerRegistration = () => {
       const resultAction = await dispatch(register(formData));
       
       if (register.fulfilled.match(resultAction)) {
-        toast.success("Registration successful! Please check your email for confirmation.");
+        toast.success(t('messages.success'));
         setRegisteredEmail(formData.email);
         dispatch(openEmailConfirmationPopup(formData.email));
         dispatch(openPopup());
@@ -269,12 +271,12 @@ const TravelerRegistration = () => {
       } else {
         const error = resultAction.payload?.error_description || 
                       resultAction.error?.message || 
-                      "Registration failed";
+                      t('messages.error');
         toast.error(error);
       }
     } catch (err) {
       console.error("Registration error:", err);
-      toast.error(err.message || "An unexpected error occurred");
+      toast.error(err.message || t('messages.error'));
     }
   };
 
@@ -293,14 +295,14 @@ const TravelerRegistration = () => {
   const handleResendEmail = () => {
     // Implement your resend email logic here
     // This would typically call your API to resend the confirmation email
-    toast.info("Confirmation email resent successfully");
+    toast.info(t('messages.resendSuccess'));
   };
 
   // Social Login Handler
      const handleSocialLogin = async (provider, token, error) => {
   
       if (error) {
-        toast.error(error.message || "Social login failed");
+        toast.error(error.message || t('messages.error'));
         return;
       }
   
@@ -335,14 +337,14 @@ const TravelerRegistration = () => {
           })).unwrap();
   
           if (result) {
-            toast.success("Login successful!");
+            toast.success(t('messages.success'));
             // await dispatch(getProfile()).unwrap();
             const from = location.state?.from?.pathname || "/";
             navigate(from, { replace: true });
           }
         }
       } catch (error) {
-        toast.error(error.message || "Social login failed");
+        toast.error(error.message || t('messages.error'));
         console.error("Social login error:", error);
       }
     };
@@ -377,7 +379,7 @@ console.log(formData, 'formData')
                 </div>
               } */}
                 <div className={styles.formWrapper}>
-                  <h1 className={styles.formTitle}>Regístrate como viajero</h1>
+                  <h1 className={styles.formTitle}>{t('title')}</h1>
                   <RegistrationForm
                     formData={formData}
                     fieldStates={fieldStates}
@@ -390,6 +392,7 @@ console.log(formData, 'formData')
                     handleBlur={handleBlur}
                     isFormValid={isFormValid}
                     phoneCodes={phoneCodes}
+                    t={t}
                   />
                   <SocialLogin onSocialLogin={handleSocialLogin}/>
                   <Footer />
