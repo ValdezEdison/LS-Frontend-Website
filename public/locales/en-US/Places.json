@@ -1,6 +1,6 @@
 {
     "availablePlaces": "{{count}} places available",
-    "showMore": "Show more",
+    "seeMore": "Show more",
     "places": {
         "place_list": "{{placeNames}}"
     },

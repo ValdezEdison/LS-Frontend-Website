@@ -12,11 +12,13 @@ import Loader from "../../components/common/Loader";
 import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
 import { handleFacebookLogin } from "../../utils/FacebookLogin";
 import { initializeGoogleSDK, handleGoogleLogin } from "../../utils/GoogleLogin";
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation('Login');
 
   const { loading } = useSelector((state) => state.auth);
 
@@ -31,14 +33,14 @@ const LoginPage = () => {
   const [fieldStates, setFieldStates] = useState({
     email: {
       error: "",
-      info: "Please enter a valid email address",
+      info: t('emailInfo'),
       touched: false,
       focused: false,
       isValid: false,
     },
     password: {
       error: "",
-      info: "Please enter a password",
+      info: t('passwordInfo'),
       touched: false,
       focused: false,
       isValid: false,
@@ -63,16 +65,16 @@ const LoginPage = () => {
     switch (name) {
       case "email":
         if (!value) {
-          error = "Email is required";
+          error = t('emailError.required');
         } else if (!validateEmail(value)) {
-          error = "Please enter a valid email";
+          error = t('emailError.invalid');
         } else {
           isValid = true;
         }
         break;
       case "password":
         if (!value) {
-          error = "Password is required";
+          error = t('passwordError.required');
         }else {
           isValid = true;
         }
@@ -112,7 +114,7 @@ const LoginPage = () => {
         touched: true,
         focused: false,
         isValid,
-        info: isValid ? "" : prev[field].info
+        info: isValid ? "" :  t(`${field}Info`)
       }
     }));
   };
@@ -128,7 +130,7 @@ const LoginPage = () => {
         ...prev[name],
         error: isValid ? "" : error,
         isValid,
-        info: isValid ? "" : prev[name].info
+        info: isValid ? "" : t(`${name}Info`)
       }
     }));
   };
@@ -152,7 +154,7 @@ const LoginPage = () => {
         error: isValid ? "" : error,
         touched: true,
         isValid,
-        info: isValid ? "" : newFieldStates[key].info
+        info: isValid ? "" : t(`${key}Info`)
       };
       formIsValid = formIsValid && isValid;
     });
@@ -176,7 +178,7 @@ const LoginPage = () => {
     dispatch(login(payload))
       .then((action) => {
         if (login.fulfilled.match(action)) {
-          toast.success("Login successful!");
+          toast.success(t('messages.success'));
           
           // Dispatch getProfile after successful login
           return dispatch(getProfile())
@@ -200,12 +202,12 @@ const LoginPage = () => {
               }
             });
         } else if (login.rejected.match(action)) {
-          toast.error(action.payload?.error_description || "Login failed");
+          toast.error(action.payload?.error_description || t('messages.error'));
           throw new Error("Login failed");
         }
       })
       .catch((err) => {
-        toast.error(err.message || "An unexpected error occurred");
+        toast.error(err.message || t('messages.error'));
         console.error(err);
       });
   };
@@ -219,7 +221,7 @@ const LoginPage = () => {
    const handleSocialLogin = async (provider, token, error) => {
 
     if (error) {
-      toast.error(error.message || "Social login failed");
+      toast.error(error.message || t('messages.error'));
       return;
     }
 
@@ -254,14 +256,14 @@ const LoginPage = () => {
         })).unwrap();
 
         if (result) {
-          toast.success("Login successful!");
+          toast.success(t('messages.success'));
           // await dispatch(getProfile()).unwrap();
           const from = location.state?.from?.pathname || "/";
           navigate(from, { replace: true });
         }
       }
     } catch (error) {
-      toast.error(error.message || "Social login failed");
+      toast.error(error.message || t('messages.error'));
       console.error("Social login error:", error);
     }
   };
@@ -290,7 +292,7 @@ const LoginPage = () => {
                 </div>
                } */}
               <div className={styles.formWrapper}>
-                <h1 className={styles.formTitle}>Inicia sesión o crea una cuenta</h1>
+                <h1 className={styles.formTitle}>{t('title')}</h1>
                 <LoginForm
                   formData={formData}
                   fieldStates={fieldStates}

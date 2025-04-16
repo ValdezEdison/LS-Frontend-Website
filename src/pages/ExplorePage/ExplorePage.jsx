@@ -11,14 +11,22 @@ import { fetchCitiesInContinent } from "../../features/explore/ExploreAction";
 import { useDispatch, useSelector } from "react-redux";
 import ExplorePageSkeleton from "../../components/skeleton/ExplorePage/ExplorePageSkeleton";
 import { useNavigate, useLocation } from "react-router-dom";
+import SeeMoreButton from "../../components/common/SeeMoreButton";
+import useSeeMore from "../../hooks/useSeeMore";
+import { useTranslation } from 'react-i18next';
+import Loader from "../../components/common/Loader";
 
 const ExplorePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { t: tCommon } = useTranslation('Common');
+  const {t: tExplore} = useTranslation('ExplorePage');
+
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
   const { citiesInContinent, loading: citiesLoading, next, count } = useSelector((state) => state.explore);
+  const { data: visibleCitiesInContinent, loading, next: hasNext, loadMore } = useSeeMore(citiesInContinent, next);
   
   // Set default continent to the first one when loaded
   const [activeContinent, setActiveContinent] = useState(null);
@@ -70,10 +78,10 @@ const ExplorePage = () => {
     <div className={styles.explorerPage}>
       <Header />
       <main className="page-center">
-        <h1 className={styles.pageTitle}>{count} opciones a explorar</h1>
+        <h1 className={styles.pageTitle}> {tExplore('pageTitle', { count })}</h1>
         <SearchBar />
-        <h2 className={styles.sectionTitle}>Explora más destinos</h2>
-        <p className={styles.sectionSubtitle}>Déjate sorprender</p>
+        <h2 className={styles.sectionTitle}>{tExplore('sectionTitle')}</h2>
+        <p className={styles.sectionSubtitle}>{tExplore('sectionSubtitle')}</p>
         
         {!continentsLoading && continents?.length > 0 && (
           <>
@@ -97,12 +105,18 @@ const ExplorePage = () => {
         )}
 
         <DestinationGrid 
-          destinations={citiesInContinent}
+          destinations={visibleCitiesInContinent}
           loading={citiesLoading}
           handleActions={handleActions}
         />
-        {!citiesLoading && citiesInContinent?.length === 0 && <div className="no-results-wrapper">No results</div>}
-        <button className={styles.showMoreButton}>Mostrar más</button>
+        {!citiesLoading && visibleCitiesInContinent?.length === 0 && <div className="no-results-wrapper">{tCommon('noResults')}</div>}
+        {loading ? <Loader /> : next && <SeeMoreButton
+        onClick={loadMore}
+        loading={loading}
+        next={hasNext}
+        translate={tCommon}
+      />
+      }
       </main>
       <BlogSection />
       <Newsletter />

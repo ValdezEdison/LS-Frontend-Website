@@ -14,7 +14,8 @@ const RegistrationForm = ({
   handleFocus,
   handleBlur,
   isFormValid,
-  phoneCodes
+  phoneCodes,
+  t
 }) => {
 
   const { loading } = useSelector((state) => state.auth);
@@ -70,13 +71,13 @@ const RegistrationForm = ({
       {/* Username Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="username" className={styles.label}>
-          Nombre de usuario
+        {t('form.username.label')}
         </label>
         <input
           type="text"
           id="username"
           name="username"
-          placeholder="Nombre y apellidos"
+          placeholder={t('form.username.placeholder')}
           className={`${styles.input} ${fieldStates.username.error && fieldStates.username.touched ? styles.inputError : ""
             }`}
           value={formData.username}
@@ -84,9 +85,9 @@ const RegistrationForm = ({
           onFocus={() => handleFocus('username')}
           onBlur={() => handleBlur('username')}
         />
-        {!fieldStates.username.isValid && fieldStates.username.focused && (
+        {/* {!fieldStates.username.isValid && fieldStates.username.focused && (
           <div className={styles.infoMessage}>{fieldStates.username.info}</div>
-        )}
+        )} */}
         {fieldStates.username.error && fieldStates.username.touched && (
           <div className={styles.errorMessage}>{fieldStates.username.error}</div>
         )}
@@ -95,13 +96,13 @@ const RegistrationForm = ({
       {/* Email Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="email" className={styles.label}>
-          Correo electrónico
+        {t('form.email.label')}
         </label>
         <input
           type="email"
           id="email"
           name="email"
-          placeholder="nombre@ejemplo.com"
+          placeholder={t('form.email.placeholder')}
           className={`${styles.input} ${fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
             }`}
           value={formData.email}
@@ -109,9 +110,9 @@ const RegistrationForm = ({
           onFocus={() => handleFocus('email')}
           onBlur={() => handleBlur('email')}
         />
-        {!fieldStates.email.isValid && fieldStates.email.focused && (
+        {/* {!fieldStates.email.isValid && fieldStates.email.focused && (
           <div className={styles.infoMessage}>{fieldStates.email.info}</div>
-        )}
+        )} */}
         {fieldStates.email.error && fieldStates.email.touched && (
           <div className={styles.errorMessage}>{fieldStates.email.error}</div>
         )}
@@ -120,7 +121,7 @@ const RegistrationForm = ({
       {/* Phone Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="phone" className={styles.label}>
-          Teléfono
+        {t('form.phone.label')}
         </label>
         <div className={`${styles.phoneInput} ${isDropdownOpen ? styles.open : ""}`}>
         <div 
@@ -130,7 +131,7 @@ const RegistrationForm = ({
             {formData.phone_prefix ? (
               <span className={styles.placeholderText}>{formData.phone_prefix}</span>
             ) : (
-              <span className={styles.placeholderText}>Code</span>
+              <span className={styles.placeholderText}>{t('form.phone.codePlaceholder')}</span>
             )}
             <span className={isDropdownOpen ? styles.arrowUp : styles.arrowDown}></span>
           </div>
@@ -142,7 +143,7 @@ const RegistrationForm = ({
               <div className={styles.phoneCodeinputWrapper}>
                 <input
                   type="text"
-                  placeholder="Search country"
+                  placeholder={t('form.phone.searchPlaceholder')}
                   className={styles.selectedItem}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -165,7 +166,7 @@ const RegistrationForm = ({
                     </li>
                   ))
                 ) : (
-                  <li className={styles.selectedItem}>No countries found</li>
+                  <li className={styles.selectedItem}>{t('form.phone.noCountries')}</li>
                 )}
               </ul>
             </div>
@@ -175,7 +176,7 @@ const RegistrationForm = ({
             type="tel"
             id="phone"
             name="phone"
-            placeholder="123 456 789"
+            placeholder={t('form.phone.placeholder')}
             className={`${styles.input} ${fieldStates.phone.error && fieldStates.phone.touched ? styles.inputError : ""
               }`}
             value={formData.phone}
@@ -184,9 +185,9 @@ const RegistrationForm = ({
             onBlur={() => handleBlur('phone')}
           />
         </div>
-        {!fieldStates.phone.isValid && fieldStates.phone.focused && (
+        {/* {!fieldStates.phone.isValid && fieldStates.phone.focused && (
           <div className={styles.infoMessage}>{fieldStates.phone.info}</div>
-        )}
+        )} */}
         {fieldStates.phone.error && fieldStates.phone.touched && (
           <div className={styles.errorMessage}>{fieldStates.phone.error}</div>
         )}
@@ -195,12 +196,12 @@ const RegistrationForm = ({
       {/* Password Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="password" className={styles.label}>
-          Contraseña
+        {t('form.password.label')}
         </label>
-        <div className={styles.passwordRequirements}>
-          Debe de constar <strong>al menos de 8 caracteres</strong> y contener
-          mínimo <strong>un número, una mayúscula y un símbolo.</strong>
-        </div>
+        <div 
+          className={styles.passwordRequirements} 
+          dangerouslySetInnerHTML={{ __html: t('form.password.requirements') }}
+        />
         <div className={styles.passwordInput}>
           <div
             className={`${styles.showPassword} ${showPassword ? styles.clicked : ''}`}
@@ -210,7 +211,7 @@ const RegistrationForm = ({
             type={showPassword ? "text" : "password"}
             id="password"
             name="password"
-            placeholder="Introduce una contraseña"
+            placeholder={t('form.password.placeholder')}
             className={`${styles.input} ${fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
               }`}
             value={formData.password}
@@ -219,9 +220,9 @@ const RegistrationForm = ({
             onBlur={() => handleBlur('password')}
           />
         </div>
-        {!fieldStates.password.isValid && fieldStates.password.focused && (
+        {/* {!fieldStates.password.isValid && fieldStates.password.focused && (
           <div className={styles.infoMessage}>{fieldStates.password.info}</div>
-        )}
+        )} */}
         {fieldStates.password.error && fieldStates.password.touched && (
           <div className={styles.errorMessage}>{fieldStates.password.error}</div>
         )}
@@ -240,8 +241,8 @@ const RegistrationForm = ({
             onBlur={() => handleBlur('terms')}
           />
           <span className={styles.checkmark}></span>
-          Acepta los
-          <span className={styles.termsLink}>Términos y Condiciones</span>
+          {t('form.terms.text')}{" "}
+          <span className={styles.termsLink}>{t('form.terms.link')}</span>
         </label>
         {fieldStates.terms.error && fieldStates.terms.touched && (
           <div className={styles.errorMessage}>{fieldStates.terms.error}</div>
@@ -263,7 +264,7 @@ const RegistrationForm = ({
           className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
           disabled={!isFormValid}
         >
-          Crear cuenta
+        {t('form.submit')}
         </button>
       }
 
@@ -271,9 +272,9 @@ const RegistrationForm = ({
 
       {/* Login Prompt */}
       <p className={styles.loginPrompt}>
-        ¿Ya tienes cuenta?{" "}
+      {t('form.loginPrompt')}{" "}
         <span className={styles.loginLink} onClick={handleNavigate}>
-          Inicia sesión
+        {t('form.loginLink')}
         </span>
       </p>
     </form>
