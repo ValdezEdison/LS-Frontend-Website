@@ -110,7 +110,7 @@
 .tripInfo {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  /* gap: 5px; */
 }
 
 .tripTitle {
@@ -118,6 +118,7 @@
   font:
     600 25px "Source Sans Pro",
     sans-serif;
+    margin: 0 0 5px;
 }
 
 .tripDates {
@@ -125,6 +126,7 @@
   font:
     14px "Source Sans Pro",
     sans-serif;
+    margin: 0;
 }
 
 .tripActions {
@@ -201,18 +203,22 @@
 
 .tripTypeTag {
   height: 24px;
-  padding: 6px 12px;
+  width: 75px;
   border: 1px solid #f4c031;
   border-radius: 8px;
   color: #1d192b;
-  font:
-    14px Roboto,
-    sans-serif;
+  font-size:14px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .tripSummary {
   color: #000;
-  margin-bottom: 40px;
+  margin: 24px 0 30px;
   font:
     600 20px "Source Sans Pro",
     sans-serif;
@@ -223,6 +229,25 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.editButton{
+  background: url(../../../public/images/edit.svg) no-repeat 0 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.shareButton{
+  background: url(../../../public/images/share-icon.svg) no-repeat 0 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
 
 @media (max-width: 640px) {
   .stopList {

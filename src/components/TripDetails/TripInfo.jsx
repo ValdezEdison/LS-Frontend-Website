@@ -11,29 +11,9 @@ const TripInfo = ({ handleActions, id }) => {
         </p>
       </div>
       <div className={styles.tripActions}>
-        <button className={styles.actionButton} aria-label="Edit trip" onClick={(e) => handleActions(e, 'editTrip', id)}>
-          <svg
-            id="249:12021"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* SVG content for edit icon */}
-          </svg>
+        <button className={`${styles.actionButton} ${styles.editButton}`} aria-label="Edit trip" onClick={(e) => handleActions(e, 'editTrip', id)}>
         </button>
-        <button className={styles.actionButton} aria-label="More options">
-          <svg
-            id="249:12020"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* SVG content for more options icon */}
-          </svg>
+        <button className={`${styles.actionButton} ${styles.shareButton}`} aria-label="More options">
         </button>
       </div>
     </div>
