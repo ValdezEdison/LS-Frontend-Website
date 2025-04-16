@@ -43,6 +43,7 @@
   border: none;
   border-radius: 12px 0 0 12px;
   font-size: 14px;
+  outline: none;
 }
 
 .subscribeButton {
@@ -53,6 +54,11 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.subscribeButton:hover {
+  background-color:#e5b22e;
 }
 
 .privacyNotice {

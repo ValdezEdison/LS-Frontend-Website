@@ -29,6 +29,7 @@
   font-size: 14px;
   text-decoration: underline;
   color: inherit;
+  cursor: pointer;
 }
 
 .divider {
@@ -55,11 +56,13 @@
   aspect-ratio: 1.86;
   object-fit: cover;
   border-radius: 12px;
+  cursor: pointer;
 }
 
 .placeName {
   margin-top: 12px;
   font-size: 14px;
+  cursor: pointer;
 }
 
 :global(.slick-next),

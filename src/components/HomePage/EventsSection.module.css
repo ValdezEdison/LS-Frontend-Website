@@ -30,6 +30,7 @@
   font-size: 14px;
   text-decoration: underline;
   color: inherit;
+  cursor: pointer;
 }
 
 .divider {

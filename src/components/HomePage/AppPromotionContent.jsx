@@ -26,11 +26,13 @@ const AppPromotionContent = () => {
           font: 700 32px/42px Montserrat, -apple-system, Roboto, Helvetica,
             sans-serif;
           margin: 0 0 26px 0;
+          color:#212D94;
         }
         .app-promotion-content__description {
           font: 400 14px Source Sans Pro, -apple-system, Roboto, Helvetica,
             sans-serif;
           margin: 0;
+          color:#212D94;
         }
         @media (max-width: 991px) {
           .app-promotion-content {

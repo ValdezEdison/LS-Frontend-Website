@@ -25,19 +25,14 @@
   color: var(--Negro-blue, #151820);
   font-size: 32px;
   font-weight: 700;
-  font-family:
-    Montserrat,
-    -apple-system,
-    Roboto,
-    Helvetica,
-    sans-serif;
+  font-family:'Montserrat';
   margin-bottom: 14px;
 }
 
 .promotionDescription {
   font-size: 14px;
   line-height: 22px;
-  margin-bottom: 24px;
+  margin: 0 0 24px;
 }
 
 .exploreButton {
@@ -50,6 +45,11 @@
   padding: 10px 16px;
   border: none;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.exploreButton:hover {
+  background-color: #e5b22e;
 }
 
 .pagination {

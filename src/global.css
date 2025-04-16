@@ -45,6 +45,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../src/assets/fonts/Montserrat-Bold.woff2') format('woff2'),
+      url('../src/assets/fonts/Montserrat-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 .page-center {
   max-width: 1240px;
   width: 100%;
@@ -516,6 +525,7 @@ button,input,select,textarea{
   margin-top: 10px;
   padding: 0;
   text-align: right;
+  cursor: pointer;
 }
 
 .seeMoreLink:hover {

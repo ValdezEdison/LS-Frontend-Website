@@ -132,7 +132,7 @@
   font-size: 20px;
   font-weight: 600;
   color: #000000;
-  margin-bottom: 34px;
+  margin: 0 0 34px;
 }
 
 .recommendedList {
@@ -147,12 +147,14 @@
 .recommendedImage {
   width: 100%;
   border-radius: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 0px;
+  display: block;
 }
 
 .recommendedName {
   font-size: 14px;
   color: #000000;
+  margin: 12px 0 0;
 }
 
 .promotionalBanner {
@@ -197,6 +199,11 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.exploreButton:hover {
+  background-color: #e5b22e;
 }
 
 .placesSelectedItemsList{

@@ -6,7 +6,7 @@
   padding: 8px;
   align-items: stretch;
   position: relative;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 
 .popupPlaceCard{
@@ -197,6 +197,10 @@
   width: 20px;
   height: 20px;
   transform: rotate(-90deg);
+}
+
+.gotoTopButton:hover{
+  background-color: #e5b22e;
 }
 
 .placeRating p{

@@ -24,6 +24,7 @@
   font-weight: 400;
   text-decoration: underline;
   color: inherit;
+  cursor: pointer;
 }
 
 .articlesList {
@@ -53,6 +54,7 @@
   border: 1px solid var(--Color-principal-naranja, #f4c031);
   font-size: 12px;
   line-height: 2;
+  cursor: pointer;
 }
 
 .articleTitle {

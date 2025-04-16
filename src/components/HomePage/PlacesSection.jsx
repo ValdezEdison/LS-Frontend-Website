@@ -12,13 +12,13 @@ const PlacesSection = ({ places = [] }) => {
   const navigate = useNavigate();
 
   const renderPlace = (place) => (
-    <div key={place.id} className={styles.placeCard} onClick={() => handleNavigate(place)}>
+    <div key={place.id} className={styles.placeCard}>
       <img
         src={place.images[0] ? place.images[0]?.original : PlaceHolderImg2}
         alt={place.display_text}
-        className={styles.placeImage}
+        className={styles.placeImage}  onClick={() => handleNavigate(place)}
       />
-      <p className={styles.placeName}>{place.display_text}</p>
+      <p className={styles.placeName}  onClick={() => handleNavigate(place)}>{place.display_text}</p>
     </div>
   );
 
