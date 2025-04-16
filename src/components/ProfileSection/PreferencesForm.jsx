@@ -11,6 +11,7 @@ const PreferencesForm = () => {
 
       <section className={styles.languageSection}>
         <div className={styles.sectionHeader}>
+          <div className={styles.sectionHeaderLeft}>
           <h2>Idioma</h2>
           <div className={styles.languageDisplay}>
             <img
@@ -20,6 +21,8 @@ const PreferencesForm = () => {
             />
             <span>Español</span>
           </div>
+          </div>
+         
           <a href="#" className={styles.editLink}>
             Editar
           </a>
@@ -28,17 +31,20 @@ const PreferencesForm = () => {
 
       <section className={styles.suggestionsSection}>
         <div className={styles.sectionHeader}>
+        <div className={styles.sectionHeaderLeft}>
           <h2>Sugerencias</h2>
           <span>Escribe una sugerencia</span>
+        </div>
+          
           <a href="#" className={styles.editLink}>
             Editar
           </a>
         </div>
-        <p className={styles.disclaimer}>
+        {/* <p className={styles.disclaimer}>
           Una vez tu sugerencia sea enviada, no se podrá editar ni eliminar.
           Responderemos por email lo más rápido posible.
-        </p>
-        <form className={styles.suggestionForm}>
+        </p> */}
+        {/* <form className={styles.suggestionForm}>
           <div className={styles.formGroup}>
             <label htmlFor="title" className={styles.label}>
               Título
@@ -90,16 +96,16 @@ const PreferencesForm = () => {
           <button type="submit" className={styles.submitButton}>
             Enviar
           </button>
-        </form>
+        </form> */}
       </section>
 
-      <section className={styles.contactSection}>
+      {/* <section className={styles.contactSection}>
         <h3 className={styles.contactTitle}>¿Tienes alguna duda?</h3>
         <p className={styles.contactInfo}>
           Puedes ponerte en contacto con nosotros enviando un email a
           nombre@gmail.com o llamando a +34 123 456 789
         </p>
-      </section>
+      </section> */}
     </div>
   );
 };

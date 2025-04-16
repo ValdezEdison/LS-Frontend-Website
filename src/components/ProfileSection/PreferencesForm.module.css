@@ -21,13 +21,25 @@
 .languageSection,
 .suggestionsSection {
   border-bottom: 1px solid #e0e0e0;
-  padding: 25px 0;
+  padding: 25px 0 20px;
+}
+
+
+.languageSection{
+  border-top: 1px solid #e0e0e0;
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.sectionHeader h2{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  width: 140px;
 }
 
 .languageDisplay {
@@ -119,13 +131,25 @@
   font-size: 14px;
 }
 
-@media (max-width: 640px) {
+.sectionHeaderLeft{
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 991px) {
   .preferencesForm {
     width: 100%;
   }
+}
 
+@media (max-width: 640px) {
   .input,
   .select {
     width: 100%;
+  }
+
+  .sectionHeader h2{
+    width: unset;
   }
 }

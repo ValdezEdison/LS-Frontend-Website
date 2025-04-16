@@ -240,6 +240,7 @@
 @media (max-width: 991px) {
   .mainSection {
     width: 100%;
+    margin-left: 0;
   }
 }
 
@@ -268,15 +269,16 @@
   font-size: 25px;
   font-weight: 600;
   align-self: start;
+  margin: 0 0 5px;
 }
 
 .sectionDescription {
   color: #151820;
   font-size: 16px;
   font-weight: 400;
-  text-align: center;
+  /* text-align: center; */
   align-self: start;
-  margin-top: 4px;
+  margin: 0 0 30px;
 }
 
 @media (max-width: 991px) {
@@ -286,10 +288,9 @@
 }
 
 .separator {
-  background-color: #e0e0e0;
-  margin-top: 29px;
-  height: 1px;
-  border: 1px solid #e0e0e0;
+  border: none;
+  border-top: 1px solid var(--Gray-5, #e0e0e0);
+  margin: 0px 0;
 }
 
 @media (max-width: 991px) {
@@ -300,7 +301,7 @@
 
 .privacySettings {
   display: flex;
-  margin-top: 20px;
+  margin: 20px 0;
   width: 100%;
   gap: 20px;
   flex-wrap: wrap;
@@ -329,6 +330,7 @@
   font-size: 16px;
   font-weight: 600;
   align-self: start;
+  margin: 0;
 }
 
 .settingsDetails {
@@ -343,11 +345,12 @@
 .userEmail {
   font-size: 14px;
   align-self: start;
+  margin: 0;
 }
 
 .settingsDescription {
   font-size: 10px;
-  margin-top: 15px;
+  margin: 15px 0 0;
 }
 
 .manageButton {
@@ -357,6 +360,9 @@
   font-weight: 400;
   text-decoration: underline;
   align-self: start;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 .footer {
