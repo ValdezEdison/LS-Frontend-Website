@@ -6,7 +6,7 @@ import ErrorBoundary from "./components/common/ErrorBoundary"; // Import as name
 function App() {
   return (
     <ErrorBoundary> {/* Wrap ErrorBoundary around everything */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <BrowserRouter>
           {/* Ensure that Router and PageNotFound are wrapped within Suspense */}
           <Router />

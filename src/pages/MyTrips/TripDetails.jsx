@@ -50,7 +50,7 @@ const TripDetails = () => {
     <>
       <Header />
       <main className="page-center">
-        <TripInfo handleActions={handleActions} id={tripDetails.id}/>
+        <TripInfo handleActions={handleActions} id={id}/>
         <ItineraryMap places={[]} formState={formState} setFormState={setFormState} />
         <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} />
         <SimilarPlaces />
