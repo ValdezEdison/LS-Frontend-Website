@@ -7,42 +7,48 @@
   font-size: 25px;
   font-weight: 600;
   color: var(--Negro-blue, #151820);
-  margin-bottom: 5px;
+  margin: 0 0 5px;
 }
 
 .description {
   font-size: 16px;
   color: var(--Negro-blue, #151820);
-  margin-bottom: 28px;
+  margin: 0 0 28px;
 }
 
 .divider {
   border: none;
   border-top: 1px solid var(--Gray-5, #e0e0e0);
-  margin: 20px 0;
+  margin: 0px 0;
 }
 
 .securitySection {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  /* padding: 10px 0; */
+  margin: 20px 0;
 }
 
 .sectionContent {
   flex-grow: 1;
+  display: flex;
+  /* margin: 20px 0; */
 }
 
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
   color: var(--Negro-blue, #151820);
-  margin-bottom: 5px;
+  margin: 0 0 5px;
+  width: 145px;
+  flex-shrink: 0;
 }
 
 .sectionDescription {
   font-size: 14px;
   color: var(--Negro-blue, #151820);
+  margin: 0;
 }
 /* Continuing from where we left off: */
 .actionButton {
@@ -54,6 +60,7 @@
   text-decoration: underline;
   cursor: pointer;
   padding: 5px;
+  flex-shrink: 0;
 }
 
 .actionButton:hover {
@@ -70,7 +77,17 @@
     align-items: flex-start;
   }
 
-  .actionButton {
+  /* .actionButton {
     margin-top: 10px;
+  } */
+}
+
+@media screen and (max-width:640px) {
+  .sectionContent{
+    flex-direction: column;
+  }
+
+  .sectionTitle{
+    width: unset;
   }
 }
