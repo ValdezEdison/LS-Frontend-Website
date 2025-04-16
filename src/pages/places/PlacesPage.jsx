@@ -22,6 +22,7 @@ import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
+import SidebarSkeleton from "../../components/skeleton/PlacesPage/SidebarSkeleton";
 
 // Actions & Selectors
 import {
@@ -203,6 +204,7 @@ const PlacesPage = () => {
   const handleCloseMapPopup = () => {
     setShowMapPopup(false);
     dispatch(closePopup());
+    setState(prev => ({ ...prev, points: "" }));
   };
 
   const handleActions = (e, action, id) => {
@@ -406,6 +408,7 @@ const PlacesPage = () => {
       categories: state.categories,
       levels: state.levels,
       subcategories: state.subcategories,
+      points: state.points
     }));
   }, [
     state.selectedCountryName,
@@ -665,20 +668,28 @@ const PlacesPage = () => {
       <div className={`${styles.placesPage} ${popupState.addTrip ? styles.overflowHide : ''}`}>
         <Header />
 
-        {filterLoading ? (
+        {/* {filterLoading ? (
           <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading} />
-        ) : (
+        ) : ( */}
           <>
             <div className="page-center">
               <div className={styles.content}>
-                <Sidebar
-                  handleShowMapPopup={handleShowMapPopup}
-                  categories={categories}
-                  ratings={RATINGS}
-                  state={state}
-                  setState={setState}
-                />
-                {!filterLoading && placesLoading ? (
+                {filterLoading ? (
+                  <SidebarSkeleton />
+                )
+                  :
+                  (
+                    <Sidebar
+                    handleShowMapPopup={handleShowMapPopup}
+                    categories={categories}
+                    ratings={RATINGS}
+                    state={state}
+                    setState={setState}
+                  />
+                  )
+                }
+              
+                { placesLoading ? (
                   <MainContentSkeleton />
                 ) : (
                   <MainContent
@@ -695,7 +706,7 @@ const PlacesPage = () => {
               </div>
             </div>
           </>
-        )}
+        {/* )} */}
 
         <Newsletter />
         <Footer />

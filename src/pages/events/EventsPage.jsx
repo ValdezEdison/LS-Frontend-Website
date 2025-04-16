@@ -352,12 +352,14 @@ const EventsPage = () => {
           <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state}/>
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
-          {visibleEvents.length > 0 ?<EventList
+          <EventList
             events={visibleEvents}
             handleActions={handleActions}
-          />:
+          />
+          {visibleEvents?.length === 0 &&
           <div className="no-results-wrapper">No results</div>
           }
+        
           <div className={styles.showMoreWrapper}>
             {loading ? <Loader /> : next && (
               <SeeMoreButton

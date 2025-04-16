@@ -164,7 +164,7 @@ const PlaceDetails = () => {
       dispatch(fetchPlaceComments(id));
       dispatch(fetchNearbyPlaces(id));
     }
-  }, [id, dispatch, language]);
+  }, [id, dispatch, language, state.latitude]);
 
   const handleClickViewMoreDetails = () => {
     togglePopup("gallery", true);
@@ -522,7 +522,10 @@ const PlaceDetails = () => {
     <>
       {isOpen && popupState.map && (
         <MapPopup
-          onClose={() => togglePopup("map", false)}
+        onClose={() => {
+          togglePopup("map", false);
+          setState(prev => ({ ...prev, latitude: "", longitude: "" }));
+        }}
           categories={{}}
           ratings={{}}
           state={state}

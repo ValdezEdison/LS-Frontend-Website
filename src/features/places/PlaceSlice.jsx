@@ -35,7 +35,8 @@ const initialState = {
     isFavoriteToggling: false,
     favTogglingId : null,
     generateLinkLoading: false,
-    shareableLink: null
+    shareableLink: null,
+    geoLocationsLoading: false
 };
 
 const placeSlice = createSlice({
@@ -86,11 +87,11 @@ const placeSlice = createSlice({
 
             // Fetch GeoLocations
             .addCase(fetchGeoLocations.pending, (state) => {
-                state.loading = true;
+                state.geoLocationsLoading = true;
                 state.error = null;
             })
             .addCase(fetchGeoLocations.fulfilled, (state, action) => {
-                state.loading = false;
+                state.geoLocationsLoading = false;
                 if(action.payload?.results){
                     state.geoLocations = action.payload?.results
                 }else{
@@ -98,7 +99,7 @@ const placeSlice = createSlice({
                 }
             })
             .addCase(fetchGeoLocations.rejected, (state, action) => {
-                state.loading = false;
+                state.geoLocationsLoading = false;
                 state.error = action.payload;
             })
 
