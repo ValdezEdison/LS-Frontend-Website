@@ -14,7 +14,7 @@ import Loader from "../../../components/common/Loader";
 import SeeMoreButton from "../../../components/common/SeeMoreButton";
 import { useTranslation } from 'react-i18next';
 import EventCardSkeleton from "../../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
-import { fetchPlacesFilterCategories, fetchGeoLocations } from "../../../features/places/PlaceAction";
+import { fetchPlacesFilterCategories, fetchGeoLocations, fetchNearbyPlaces } from "../../../features/places/PlaceAction";
 import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
@@ -112,6 +112,7 @@ const Events = () => {
     latAndLng: "",
     selectedDateRange: { startDate: null, endDate: null },
     type: "event",
+    points:"",
   })
 
   const [popupState, setPopupState] = useState({
@@ -145,6 +146,13 @@ const Events = () => {
     }
   }, [dispatch, id, state.selectedLevel, language]);
 
+   useEffect(() => {
+          if (id) {
+              dispatch(fetchEventsByCityId({ cityId: id, page: 1, type: 'event', points: state.points, levels: state.selectedLevel }));
+  
+          }
+      }, [dispatch, id, state.points]);
+
 
 
   const handleShowMapPopup = () => {
@@ -156,6 +164,7 @@ const Events = () => {
   const handleCloseMapPopup = () => {
     setShowMapPopup(false);
     dispatch(closePopup());
+    setState(prev => ({ ...prev, points: "" }));
   };
 
 

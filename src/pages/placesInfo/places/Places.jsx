@@ -264,6 +264,7 @@ const Places = () => {
     const handleCloseMapPopup = () => {
         setShowMapPopup(false);
         dispatch(closePopup());
+        setState(prev => ({ ...prev, points: "" }));
     };
 
 

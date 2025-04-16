@@ -51,7 +51,7 @@ const PlaceService = {
     categories,
     levels,
     subcategories,
-    // points = [] // Accept points as an array
+    points// Accept points as an array
   ) => {
     let url = '/sites/geolocations?';
 
@@ -65,6 +65,10 @@ const PlaceService = {
     if (categories !== undefined && categories !== null && categories !== "") url += `categories=${encodeURIComponent(categories)}&`;
     if (levels !== undefined && levels !== null && levels !== "") url += `levels=${encodeURIComponent(levels)}&`;
     if (subcategories !== undefined && subcategories !== null && subcategories !== "") url += `levels=${encodeURIComponent(subcategories)}&`;
+
+    if (points) {
+      url += `&${points}`; // Just append the already encoded points string
+    }
 
     // Append points as separate query parameters
     // if (points && points.length > 0) {
