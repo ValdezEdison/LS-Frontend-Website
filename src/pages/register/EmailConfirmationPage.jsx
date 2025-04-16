@@ -45,23 +45,23 @@ const EmailConfirmationPage = () => {
         navigate('/login'); // Moved here from the useEffect
     };
 
-      useEffect(() => {
-        let timer;
-        if (isOpenSuccessPopup) {
-          timer = setTimeout(() => {
-            dispatch(closePopup());
-            setIsOpenSuccessPopup(false);
-            setSuccessMessage("");
-            setSuccessTitle("");
-          }, 15000); // 5 seconds in milliseconds
-        //   navigate('/login');
-        }
+    //   useEffect(() => {
+    //     let timer;
+    //     if (isOpenSuccessPopup) {
+    //       timer = setTimeout(() => {
+    //         dispatch(closePopup());
+    //         setIsOpenSuccessPopup(false);
+    //         setSuccessMessage("");
+    //         setSuccessTitle("");
+    //       }, 15000); // 5 seconds in milliseconds
+    //     //   navigate('/login');
+    //     }
     
-        // Clean up the timer when the component unmounts or when popupState.success changes
-        return () => {
-          if (timer) clearTimeout(timer);
-        };
-      }, [isOpenSuccessPopup]);
+    //     // Clean up the timer when the component unmounts or when popupState.success changes
+    //     return () => {
+    //       if (timer) clearTimeout(timer);
+    //     };
+    //   }, [isOpenSuccessPopup]);
 
     useEffect(() => {
         if (email) {

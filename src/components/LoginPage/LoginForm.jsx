@@ -41,9 +41,9 @@ const LoginForm = ({
           onFocus={() => handleFocus('email')}
           onBlur={() => handleBlur('email')}
         />
-        {!fieldStates.email.isValid && fieldStates.email.focused && (
+        {/* {!fieldStates.email.isValid && fieldStates.email.focused && (
           <div className={styles.infoMessage}>{fieldStates.email.info}</div>
-        )}
+        )} */}
         {fieldStates.email.error && fieldStates.email.touched && (
           <div className={styles.errorMessage}>{fieldStates.email.error}</div>
         )}
@@ -73,9 +73,9 @@ const LoginForm = ({
             onBlur={() => handleBlur('password')}
           />
         </div>
-        {!fieldStates.password.isValid && fieldStates.password.focused && (
+        {/* {!fieldStates.password.isValid && fieldStates.password.focused && (
           <div className={styles.infoMessage}>{fieldStates.password.info}</div>
-        )}
+        )} */}
         {fieldStates.password.error && fieldStates.password.touched && (
           <div className={styles.errorMessage}>{fieldStates.password.error}</div>
         )}

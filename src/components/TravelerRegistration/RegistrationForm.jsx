@@ -85,9 +85,9 @@ const RegistrationForm = ({
           onFocus={() => handleFocus('username')}
           onBlur={() => handleBlur('username')}
         />
-        {!fieldStates.username.isValid && fieldStates.username.focused && (
+        {/* {!fieldStates.username.isValid && fieldStates.username.focused && (
           <div className={styles.infoMessage}>{fieldStates.username.info}</div>
-        )}
+        )} */}
         {fieldStates.username.error && fieldStates.username.touched && (
           <div className={styles.errorMessage}>{fieldStates.username.error}</div>
         )}
@@ -110,9 +110,9 @@ const RegistrationForm = ({
           onFocus={() => handleFocus('email')}
           onBlur={() => handleBlur('email')}
         />
-        {!fieldStates.email.isValid && fieldStates.email.focused && (
+        {/* {!fieldStates.email.isValid && fieldStates.email.focused && (
           <div className={styles.infoMessage}>{fieldStates.email.info}</div>
-        )}
+        )} */}
         {fieldStates.email.error && fieldStates.email.touched && (
           <div className={styles.errorMessage}>{fieldStates.email.error}</div>
         )}
@@ -185,9 +185,9 @@ const RegistrationForm = ({
             onBlur={() => handleBlur('phone')}
           />
         </div>
-        {!fieldStates.phone.isValid && fieldStates.phone.focused && (
+        {/* {!fieldStates.phone.isValid && fieldStates.phone.focused && (
           <div className={styles.infoMessage}>{fieldStates.phone.info}</div>
-        )}
+        )} */}
         {fieldStates.phone.error && fieldStates.phone.touched && (
           <div className={styles.errorMessage}>{fieldStates.phone.error}</div>
         )}
@@ -220,9 +220,9 @@ const RegistrationForm = ({
             onBlur={() => handleBlur('password')}
           />
         </div>
-        {!fieldStates.password.isValid && fieldStates.password.focused && (
+        {/* {!fieldStates.password.isValid && fieldStates.password.focused && (
           <div className={styles.infoMessage}>{fieldStates.password.info}</div>
-        )}
+        )} */}
         {fieldStates.password.error && fieldStates.password.touched && (
           <div className={styles.errorMessage}>{fieldStates.password.error}</div>
         )}
