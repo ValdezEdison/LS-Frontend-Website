@@ -5,8 +5,10 @@ import GoogleLoginButton from "./GoogleLoginButton";
 import FacebookLogin from '@greatsumini/react-facebook-login';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppleLoginButton from "./AppleLoginButton";
+import { useTranslation } from "react-i18next";
 
 const SocialLogin = ({ onSocialLogin }) => {
+  const { t } = useTranslation('Login');
 
   const handleGoogleSuccess = (response) => {
     console.log("response", response);
@@ -38,7 +40,7 @@ const SocialLogin = ({ onSocialLogin }) => {
     <div className={styles.socialLogin}>
       <div className={styles.divider}>
         <span className={styles.dividerLine}></span>
-        <span className={styles.dividerText}>o usar una de estas opciones</span>
+        <span className={styles.dividerText}>{t('socialLogin.dividerText')}</span>
         <span className={styles.dividerLine}></span>
       </div>
       <div className={styles.socialButtons}>

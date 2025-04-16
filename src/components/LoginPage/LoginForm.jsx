@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./LoginForm.module.css";
 import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = ({
   formData,
@@ -19,12 +20,13 @@ const LoginForm = ({
 }) => {
 
   const { loading } = useSelector((state) => state.auth);
+  const { t } = useTranslation('Login');
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
       {/* Email Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="email" className={styles.label}>
-          Email
+        {t('email')}
         </label>
         <input
           type="text"
@@ -33,7 +35,7 @@ const LoginForm = ({
           className={`${styles.input} ${
             fieldStates.email.error && fieldStates.email.touched ? styles.inputError : ""
           }`}
-          placeholder="Enter your email"
+          placeholder={t('emailPlaceholder')}
           value={formData.email}
           onChange={handleInputChange}
           onFocus={() => handleFocus('email')}
@@ -50,7 +52,7 @@ const LoginForm = ({
       {/* Password Input */}
       <div className={styles.inputGroup}>
         <label htmlFor="password" className={styles.label}>
-          Password
+        {t('password')}
         </label>
         <div className={styles.passwordInput}>
           <div 
@@ -64,7 +66,7 @@ const LoginForm = ({
             className={`${styles.input} ${
               fieldStates.password.error && fieldStates.password.touched ? styles.inputError : ""
             }`}
-            placeholder="Enter your password"
+            placeholder={t('passwordPlaceholder')}
             value={formData.password}
             onChange={handleInputChange}
             onFocus={() => handleFocus('password')}
@@ -85,11 +87,11 @@ const LoginForm = ({
           <label className="check-container login-check">
             <input type="checkbox" id="remember" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}/>
             <span className="checkmark"></span>
-            Remember Me
+            {t('rememberMe')}
           </label>
         </div>
         <a onClick={() => handleNavigate('/password-recovery')} className={styles.forgotPassword}>
-          Forgot Password?
+        {t('forgotPassword')}
         </a>
       </div>
 
@@ -110,7 +112,7 @@ const LoginForm = ({
         className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
         disabled={!isFormValid}
       >
-        Log In
+         {t('submitButton')}
       </button>
       )}
    
@@ -118,9 +120,9 @@ const LoginForm = ({
 
       {/* Register Prompt */}
       <p className={styles.registerPrompt}>
-        Don't have an account?{" "}
+      {t('noAccount')}{" "}
         <a className={styles.registerLink} onClick={() => handleNavigate('/register')}>
-          Register
+        {t('register')}
         </a>
       </p>
     </form>
