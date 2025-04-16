@@ -62,6 +62,11 @@
   color: #151820;
   border: none;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.actionButton:hover {
+  background-color: #e5b22e;
 }
 
 .alertPopupMain{

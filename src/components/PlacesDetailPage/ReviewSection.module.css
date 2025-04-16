@@ -209,3 +209,13 @@
     padding: 0 ;
   }
 }
+
+
+@media (max-width:640px) {
+  .reviewHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+}
+}
