@@ -91,7 +91,11 @@ const placeSlice = createSlice({
             })
             .addCase(fetchGeoLocations.fulfilled, (state, action) => {
                 state.loading = false;
-                state.geoLocations = action.payload;
+                if(action.payload?.results){
+                    state.geoLocations = action.payload?.results
+                }else{
+                    state.geoLocations = action.payload
+                }
             })
             .addCase(fetchGeoLocations.rejected, (state, action) => {
                 state.loading = false;

@@ -32,9 +32,9 @@ export const fetchPlaceById = createAsyncThunk(
 
 export const fetchPlacesByCityId = createAsyncThunk(
   'places/fetchPlacesByCityId',
-  async ({ cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points }, { rejectWithValue }) => {
+  async ({ cityId, page = 1, preview = 1, country = null, avg_rating = "", categories = "", levels = "", subcategories, points, sort_by }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getPlacesByCityId(cityId, page, preview, country, avg_rating, categories, levels,subcategories, points);
+      const response = await placeService.getPlacesByCityId(cityId, page, preview, country, avg_rating, categories, levels,subcategories, points, sort_by);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

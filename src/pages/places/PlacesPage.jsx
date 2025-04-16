@@ -390,7 +390,8 @@ const PlacesPage = () => {
       categories: state.categories,
       levels: state.levels,
       subcategories: state.subcategories,
-      points: state.points
+      points: state.points,
+      sort_by: state.selectedOrder
     }));
 
     dispatch(fetchGeoLocations({
