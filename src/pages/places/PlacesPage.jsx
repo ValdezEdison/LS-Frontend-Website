@@ -22,6 +22,7 @@ import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import { MainContentSkeleton } from "../../components/skeleton/PlacesPage/PlaceSkeleton";
 import PlacesPageSkeleton from "../../components/skeleton/PlacesPage/PlacesPageSkeleton";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
+import SidebarSkeleton from "../../components/skeleton/PlacesPage/SidebarSkeleton";
 
 // Actions & Selectors
 import {
@@ -29,8 +30,8 @@ import {
   fetchPlacesByCityId,
   fetchGeoLocations,
   fetchPlacesFilterCategories,
-  toggleFavorite
 } from "../../features/places/PlaceAction";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import {
@@ -50,6 +51,7 @@ import {
   resetTripType,
   setTripType
 } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { setFavTogglingId } from "../../features/places/PlaceSlice";
 
 // Styles
 import styles from "./PlacesPage.module.css";
@@ -202,6 +204,7 @@ const PlacesPage = () => {
   const handleCloseMapPopup = () => {
     setShowMapPopup(false);
     dispatch(closePopup());
+    setState(prev => ({ ...prev, points: "" }));
   };
 
   const handleActions = (e, action, id) => {
@@ -226,9 +229,12 @@ const PlacesPage = () => {
 
   const handleFavClick = (e, id) => {
     e.stopPropagation();
-    isAuthenticated
-      ? dispatch(toggleFavorite(id))
-      : togglePopup("alert", true);
+       if (isAuthenticated) {
+          dispatch(toggleFavorite(id));
+          dispatch(setFavTogglingId(id));
+        } else {
+          togglePopup("alert", true);
+        }
   };
 
   const handleTripClick = (e, id) => {
@@ -386,7 +392,8 @@ const PlacesPage = () => {
       categories: state.categories,
       levels: state.levels,
       subcategories: state.subcategories,
-      points: state.points
+      points: state.points,
+      sort_by: state.selectedOrder
     }));
 
     dispatch(fetchGeoLocations({
@@ -401,6 +408,7 @@ const PlacesPage = () => {
       categories: state.categories,
       levels: state.levels,
       subcategories: state.subcategories,
+      points: state.points
     }));
   }, [
     state.selectedCountryName,
@@ -660,20 +668,28 @@ const PlacesPage = () => {
       <div className={`${styles.placesPage} ${popupState.addTrip ? styles.overflowHide : ''}`}>
         <Header />
 
-        {filterLoading ? (
+        {/* {filterLoading ? (
           <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading} />
-        ) : (
+        ) : ( */}
           <>
             <div className="page-center">
               <div className={styles.content}>
-                <Sidebar
-                  handleShowMapPopup={handleShowMapPopup}
-                  categories={categories}
-                  ratings={RATINGS}
-                  state={state}
-                  setState={setState}
-                />
-                {!filterLoading && placesLoading ? (
+                {filterLoading ? (
+                  <SidebarSkeleton />
+                )
+                  :
+                  (
+                    <Sidebar
+                    handleShowMapPopup={handleShowMapPopup}
+                    categories={categories}
+                    ratings={RATINGS}
+                    state={state}
+                    setState={setState}
+                  />
+                  )
+                }
+              
+                { placesLoading ? (
                   <MainContentSkeleton />
                 ) : (
                   <MainContent
@@ -690,7 +706,7 @@ const PlacesPage = () => {
               </div>
             </div>
           </>
-        )}
+        {/* )} */}
 
         <Newsletter />
         <Footer />

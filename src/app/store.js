@@ -19,7 +19,8 @@ import homeReducer from "../features/home/HomeSlice.jsx"
 import itineraryReducer from "../features/itineraries/ItinerarySlice.jsx"
 import continentReducer from "../features/common/continents/ContinentSlice.jsx"
 import exploreReducer from "../features/explore/ExploreSlice.jsx"
-
+import favoriteReducer from "../features/favorites/FavoritesSlice.jsx"
+import myTripsReducer from "../features/myTrips/MyTripsSlice.jsx"
 
 // cms reducer
 import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
@@ -63,7 +64,9 @@ const store = configureStore({
     home: homeReducer,
     itineraries: itineraryReducer,
     continents: continentReducer,
-    explore: exploreReducer
+    explore: exploreReducer,
+    favorites: favoriteReducer,
+    myTrips: myTripsReducer
     
   },
   middleware: (getDefaultMiddleware) =>

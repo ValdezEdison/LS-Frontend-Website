@@ -1,0 +1,155 @@
+.preferencesForm {
+  flex: 1;
+}
+
+.title {
+  color: #151820;
+  margin-bottom: 4px;
+  font:
+    600 25px "Source Sans Pro",
+    sans-serif;
+}
+
+.description {
+  color: #151820;
+  margin-bottom: 30px;
+  font:
+    16px "Source Sans Pro",
+    sans-serif;
+}
+
+.languageSection,
+.suggestionsSection {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 25px 0 20px;
+}
+
+
+.languageSection{
+  border-top: 1px solid #e0e0e0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sectionHeader h2{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  width: 140px;
+}
+
+.languageDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flagSmall {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.editLink {
+  color: #212d94;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.disclaimer {
+  color: #151820;
+  font-size: 14px;
+  margin: 16px 0;
+}
+
+.suggestionForm {
+  margin-top: 30px;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.label {
+  color: #151820;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input,
+.select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  padding: 0 14px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.radioLabel {
+  display: flex;
+  color: #151820;
+  font-size: 14px;
+  align-items: center;
+  gap: 8px;
+}
+
+.submitButton {
+  width: 146px;
+  height: 39px;
+  border-radius: 12px;
+  border: none;
+  color: #151820;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #f4c031;
+}
+
+.contactSection {
+  margin-top: 40px;
+}
+
+.contactTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #151820;
+  margin-bottom: 6px;
+}
+
+.contactInfo {
+  color: #151820;
+  font-size: 14px;
+}
+
+.sectionHeaderLeft{
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 991px) {
+  .preferencesForm {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .input,
+  .select {
+    width: 100%;
+  }
+
+  .sectionHeader h2{
+    width: unset;
+  }
+}

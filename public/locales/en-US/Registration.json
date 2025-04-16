@@ -1,0 +1,70 @@
+{
+    "title": "Register as a traveler",
+    "form": {
+        "username": {
+            "label": "Username",
+            "placeholder": "Full name",
+            "info": "Please enter your full name",
+            "errors": {
+                "required": "Username is required",
+                "minLength": "Minimum 3 characters required"
+            }
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "name@example.com",
+            "info": "Please enter a valid email address",
+            "errors": {
+                "required": "Email is required",
+                "invalid": "Please enter a valid email"
+            }
+        },
+        "phone": {
+            "label": "Phone",
+            "placeholder": "123 456 789",
+            "info": "Please enter your phone number with country code",
+            "errors": {
+                "required": "Phone number is required",
+                "invalid": "7-15 digits required"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter a password",
+            "requirements": "Must contain <strong>at least 8 characters</strong> with minimum <strong>one number, one uppercase letter, and one symbol</strong>.",
+            "info": "Password must be at least 8 characters with a number, uppercase letter, and symbol",
+            "errors": {
+                "required": "Password is required",
+                "minLength": "Minimum 8 characters",
+                "uppercase": "At least one uppercase letter",
+                "number": "At least one number",
+                "symbol": "At least one special character"
+            }
+        },
+        "terms": {
+            "text": "I accept the",
+            "link": "Terms and Conditions",
+            "error": "You must accept the terms"
+        },
+        "submit": "Create account",
+        "loginPrompt": "Already have an account?",
+        "loginLink": "Log in"
+    },
+    "messages": {
+        "success": "Registration successful! Please check your email for confirmation.",
+        "error": "Registration failed",
+        "resendSuccess": "Confirmation email resent successfully"
+    },
+    "socialLogin": {
+        "or": "Or register with"
+    },
+    "footer": {
+        "termsText": "By signing in or creating an account, you agree to our",
+        "termsLink": "Terms & Conditions",
+        "privacyText": "and the",
+        "privacyLink": "Privacy Policy",
+        "businessQuestion": "Have a business?",
+        "businessLink": "Sign up as a Local Secret Manager",
+        "copyright": "Copyright (2024) - Local Secrets. All rights reserved."
+    }
+}

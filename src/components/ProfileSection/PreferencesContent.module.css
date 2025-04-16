@@ -1,0 +1,79 @@
+.preferencesContent {
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  color: #151820;
+  margin: 0 0 4px
+}
+
+.description {
+  font-size: 16px;
+  color: #151820;
+  margin: 0 0 30px;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+}
+
+.preferenceSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.preferenceHeader {
+  display: flex;
+  gap: 40px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #151820;
+}
+
+.languageSelection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.flagIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.sectionDescription {
+  font-size: 14px;
+  color: #151820;
+}
+
+.editButton {
+  color: #212d94;
+  font-size: 12px;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .preferencesContent {
+    padding-left: 0;
+  }
+
+  .preferenceHeader {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

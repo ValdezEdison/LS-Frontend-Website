@@ -2,22 +2,28 @@ import React from "react";
 import styles from "./Sidebar.module.css";
 import { userAdd, Notification, Setting, Card, Lock } from "../common/Images";
 
-const Sidebar = () => {
-  const menuItems = [
-    { label: "Detalles personales", isActive: true, image: userAdd },
-    { label: "Preferencias", isActive: false,  image: Setting},
-    { label: "Seguridad", isActive: false, image: Lock},
-    { label: "Privacidad", isActive: false, image: Card},
-    { label: "Notificaciones", isActive: false, image: Notification},
-  ];
+const tabConfig = {
+  personal: { label: "Personal details", image: userAdd },
+  preferences: { label: "Preferences", image: Setting },
+  security: { label: "Security", image: Lock },
+  privacy: { label: "Privacy", image: Card },
+  notifications: { label: "Notifications", image: Notification },
+};
 
+const Sidebar = ({ activeTab, onTabChange }) => {
   return (
     <aside className={styles.sidebar}>
-      {menuItems.map((item, index) => (
-        <div key={index} className={styles.menuItem}>
-          <div className={`${styles.iconPlaceholder} ${styles.active}`}><img src={item.image}/></div>
-          <span className={item.isActive ? styles.activeLabel : styles.label}>
-            {item.label}
+      {Object.entries(tabConfig).map(([tabKey, { label, image }]) => (
+        <div 
+          key={tabKey} 
+          className={styles.menuItem}
+          onClick={() => onTabChange(tabKey)}
+        >
+          <div className={`${styles.iconPlaceholder} ${activeTab === tabKey ? styles.active : ''}`}>
+            <img src={image} alt={label} />
+          </div>
+          <span className={activeTab === tabKey ? styles.activeLabel : styles.label}>
+            {label}
           </span>
         </div>
       ))}

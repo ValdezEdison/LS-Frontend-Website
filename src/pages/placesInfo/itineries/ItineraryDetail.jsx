@@ -24,7 +24,7 @@ import { t } from "i18next";
 import ShareOptions from "../../../components/common/ShareOptions";
 import { resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
-import { toggleFavorite } from "../../../features/places/PlaceAction";
+import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 
 const ItineraryDetail = () => {

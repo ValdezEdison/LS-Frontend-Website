@@ -1,0 +1,43 @@
+{
+    "title": "Log in or create an account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailInfo": "Please enter a valid email address",
+    "emailError": {
+        "required": "Email is required",
+        "invalid": "Please enter a valid email"
+    },
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordInfo": "Please enter a password",
+    "passwordError": {
+        "required": "Password is required"
+    },
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgotten your password?",
+    "submitButton": "Log In",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "socialLogin": {
+        "or": "Or log in with",
+        "google": "Log in with Google",
+        "facebook": "Log in with Facebook"
+    },
+    "messages": {
+        "success": "Login successful!",
+        "error": "Login failed"
+    },
+    "footer": {
+        "terms": "Terms and conditions",
+        "privacy": "Privacy policy",
+        "rights": "All rights reserved",
+        "copyright": "Copyright (2024) - Local Secrets",
+        "agreement": "By logging in or creating an account, you agree to our"
+    },
+    "socialLogin": {
+        "dividerText": "or use one of these options",
+        "google": "Log in with Google",
+        "facebook": "Log in with Facebook",
+        "apple": "Log in with Apple"
+    }
+}

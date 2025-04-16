@@ -1,0 +1,29 @@
+.recommendedItem {
+  width: calc(25% - 15px);
+}
+
+.recommendedImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.recommendedTitle {
+  color: #000;
+  font:
+    400 14px Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+  .recommendedItem {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

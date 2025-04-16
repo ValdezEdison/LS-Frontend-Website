@@ -1,0 +1,47 @@
+.similarPlaces {
+  margin-bottom: 70px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.placesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.placeCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.placeImage {
+  width: 100%;
+  aspect-ratio: 1.86;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.placeName {
+  font-size: 14px;
+  color: #000;
+  margin-top: 12px;
+}
+
+@media (max-width: 991px) {
+  .placesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .placesGrid {
+    grid-template-columns: 1fr;
+  }
+}

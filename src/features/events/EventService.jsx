@@ -10,7 +10,8 @@ const eventService = {
             subcategories, 
             levels, 
             startDate, 
-            endDate 
+            endDate,
+            keyword
         } = params;
         
         let url = `/sites?type=${type}&page=${page}`;
@@ -21,6 +22,7 @@ const eventService = {
         if (levels) url += `&levels=${levels}`;
         if (startDate) url += `&startDate=${startDate}`;
         if (endDate) url += `&endDate=${endDate}`;
+        if (keyword) url += `&keyword=${keyword}`;
         
         return apiService.get(url);
     },

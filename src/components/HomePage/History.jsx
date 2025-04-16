@@ -15,18 +15,21 @@ const History = ({
     <section className={styles.appPromotion}>
       <div className="page-center">
       <div className={styles.promotionContent}>
-        {imageSrc && (
-          <img
-            src={imageSrc}
-            alt={t("title")}
-            className={styles.promotionImage}
-          />
-        )}
-        <h2 className={styles.promotionTitle}>{t("title")}</h2>
-        <p className={styles.promotionDescription}>{t("description")}</p>
-        {buttonText && (
-          <button className={styles.promotionButton}>{t("buttonText")}</button>
-        )}
+        <div className={styles.promotionContentInner}>
+          {imageSrc && (
+            <img
+              src={imageSrc}
+              alt={t("title")}
+              className={styles.promotionImage}
+            />
+          )}
+          <h2 className={styles.promotionTitle}>{t("title")}</h2>
+          <p className={styles.promotionDescription}>{t("description")}</p>
+          {buttonText && (
+            <button className={styles.promotionButton}>{t("buttonText")}</button>
+          )}
+        </div>
+       
       </div>
       </div>
     </section>

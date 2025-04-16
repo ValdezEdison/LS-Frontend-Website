@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "./EventSearch.module.css";
-import { Filter } from "../common/Images";
+import styles from "./SearchBar.module.css";
 
-const EventSearch = ({togglePopup}) => {
+const SearchBar = ({togglePopup, handleSearch, state}) => {
   return (
     <div className={styles.eventSearch}>
       <div className={styles.searchContainer}>
@@ -19,16 +18,17 @@ const EventSearch = ({togglePopup}) => {
               placeholder="Busca por palabras clave"
               className={styles.searchInput}
               aria-label="Busca por palabras clave"
+              value={state.keyword}
+              onChange={(e) => handleSearch(e)}
             />
           </div>
         </form>
       </div>
       <div className={styles.actionButtons}>
-        <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>Ver mapa</button>
         <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>Filtros <img src={Filter}/></button>
       </div>
     </div>
   );
 };
 
-export default EventSearch;
+export default SearchBar;

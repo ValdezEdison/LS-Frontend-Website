@@ -1,23 +1,26 @@
-import React from "react";
-import styles from "./Footer.module.css";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './Footer.module.css';
 
 const Footer = () => {
+  const { t } = useTranslation('Login');
+
   return (
     <footer className={styles.footer}>
       <hr className={styles.footerDivider} />
       <p className={styles.footerText}>
-        Al iniciar sesión o al crear una cuenta, aceptas nuestros{" "}
+        {t('footer.agreement')}{" "}
         <a href="#" className={styles.footerLink}>
-          Términos y condiciones
+          {t('footer.terms')}
         </a>{" "}
-        y la{" "}
+        {t('and')}{" "}
         <a href="#" className={styles.footerLink}>
-          Política de privacidad
+          {t('footer.privacy')}
         </a>
         <br />
-        Todos los derechos reservados.
+        {t('footer.rights')}
         <br />
-        Copyright (2024) - Local Secrets
+        {t('footer.copyright')}
       </p>
     </footer>
   );

@@ -1,0 +1,106 @@
+.footer {
+  border-top: 1px solid #e0e0e0;
+  background-color: #fff;
+  padding: 21px 0;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1035px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.appDownload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.appLogo {
+  width: 80px;
+  height: 67px;
+  object-fit: contain;
+}
+
+.downloadButton {
+  background-color: #f4c031;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 21px;
+  font-size: 14px;
+  color: #151820;
+  cursor: pointer;
+}
+
+.footerSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #151820;
+  margin-bottom: 10px;
+}
+
+.sectionLinks {
+  list-style-type: none;
+  padding: 0;
+  font-size: 14px;
+  line-height: 25px;
+  color: #151820;
+}
+
+.footerDivider {
+  border-top: 1px solid #151820;
+  margin: 30px auto;
+  max-width: 1035px;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1035px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: #151820;
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 991px) {
+  .footerContent {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .footerSection {
+    text-align: center;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}

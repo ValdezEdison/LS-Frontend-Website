@@ -1,38 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./SearchBar.module.css";
-import { SearchBlack } from "./Images";
-import { useTranslation } from "react-i18next";
+import { Filter } from "./Images";
+import SearchInput from "./SearchInput";
 import CustomInput from "./CustomInput";
-// import SuggestionItem from "./SuggestionItem";
+import { useLocation } from "react-router-dom";
 
-const SearchBar = ({ onSearch, showSuggestionDropDown, suggestionRef }) => {
-    const [suggestions] = useState([
-      "Lisboa, Portugal",
-      "Liverpool, Reino Unido",
-      "Centro histórico de Lisboa, Portugal",
-      "Centro de Lisboa, Portugal",
-      "Liguria, Italia",
-    ]);
+const EventSearch = ({togglePopup, handleSearch, state}) => {
 
-  const { t } = useTranslation('Places');
-
+  const location = useLocation();
+  const isFavorites = location.pathname.includes('favorites')
   return (
-    <div className={styles.searchContainer}>
-      <CustomInput
-        type="text"
-        placeholder={t("search.placeholder")}
-        className={styles.searchInput}
-        onChange={(e) => onSearch(e.target.value)}
-      />
-      <img src={SearchBlack} alt={t("search.iconAlt")} className={styles.searchIcon} />
-
-      <div className={`${styles.suggestionsContainer} ${showSuggestionDropDown ? styles.active : ""}`} ref={suggestionRef}>
-        {/* {suggestions.map((suggestion, index) => (
-          <SuggestionItem key={index} text={suggestion} />
-        ))} */}
+    <div className={styles.eventSearch}>
+      <div className={styles.searchContainer}>
+        <h2 className={styles.searchTitle}>Encuentra tu evento</h2>
+        <form className={styles.searchForm}>
+          <div className={styles.inputWrapper}>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/c60a664a23f01dbed983b94542acfa8a942029c1?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+              alt=""
+              className={styles.searchIcon}
+            />
+            <CustomInput
+              type="text"
+              placeholder="Busca por palabras clave"
+              className={styles.searchInput}
+              aria-label="Busca por palabras clave"
+              value={state.keyword}
+              onChange={(e) => handleSearch(e)}
+            />
+          </div>
+        </form>
+      </div>
+      <div className={styles.actionButtons}>
+       {!isFavorites &&  <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>Ver mapa</button>}
+        <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>Filtros <img src={Filter}/></button>
       </div>
     </div>
   );
 };
 
-export default SearchBar;
+export default EventSearch;

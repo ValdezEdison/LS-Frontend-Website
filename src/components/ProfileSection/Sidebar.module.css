@@ -17,6 +17,7 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 50px;
+  cursor: pointer;
 }
 
 .menuItem:last-child {

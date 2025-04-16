@@ -1,28 +1,32 @@
 import React from "react";
 import styles from "./Footer.module.css";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+
+  const { t } = useTranslation('Registration');
   return (
     <footer className={styles.footer}>
       <div className={styles.termsAndPolicy}>
         <p>
-          Al iniciar sesión o al crear una cuenta, aceptas nuestros
+        {t("footer.termsText")}{" "}
           <a href="#" className={styles.link}>
-            Términos y condiciones
+          {t("footer.termsLink")}
           </a>
-          y la
+          {" "}
+          {t("footer.privacyText")}{" "}
           <a href="#" className={styles.link}>
-            Política de privacidad
+          {t("footer.privacyLink")}{" "}
           </a>
         </p>
       </div>
       <div className={styles.copyright}>
-        Copyright (2024) - Local Secrets. Todos los derechos reservados.
+      {t("footer.copyright")}
       </div>
       <div className={styles.businessSignup}>
-        <p>¿Tienes un negocio?</p>
+        <p>{t("footer.businessQuestion")}</p>
         <a href="#" className={styles.link}>
-          Registrarme como Local Secret Manager
+        {t("footer.businessLink")}
         </a>
       </div>
     </footer>

@@ -16,7 +16,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
   const eventLocation = city ? `${city.name}, ${city.country.name}` : "Ubicación no disponible";
 
   return (
-    <div className={styles.eventCard}>
+    <div className={styles.eventCard} onClick={(e) => handleActions(e, 'viewMore', event?.id, title)}>
       <div className={styles.eventImageContainer}>
         {isFavoriteToggling && (
           <div className={styles.loaderOverlay}>

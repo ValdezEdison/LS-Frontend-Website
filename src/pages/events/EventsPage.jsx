@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import Header from "../../components/layouts/Header";
-import EventSearch from "../../components/EventsPage/EventSearch";
+import EventSearch from "../../components/common/SearchBar";
 import LoginBanner from "../../components/common/LoginBanner";
 import EventList from "../../components/EventsPage/EventList";
 import PopularEvents from "../../components/EventsPage/PopularEvents";
@@ -20,7 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
-import { toggleFavorite, fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
+import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../features/events/EventSlice";
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
@@ -89,7 +90,8 @@ const EventsPage = () => {
     selectedDestinationId: null,
     destinationSearchQuery: "",
     startDate: null,
-    endDate: null
+    endDate: null,
+    keyword: "",
   });
 
   const [popupState, setPopupState] = useState({
@@ -246,6 +248,34 @@ const EventsPage = () => {
       };
     }, [popupState.filterPanel, tripPopupState.addTripPopup, isAddToPopupOpen]);
 
+
+
+    const debouncedSearchEvents = useMemo(
+      () => debounce((query) => {
+        if (query.trim() !== "") {
+          dispatch(fetchEvents({ keyword: query })); // Use the query parameter directly
+        } else {
+          // Clear results when query is empty
+          dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
+        }
+      }, 500),
+      [dispatch]
+    );
+    
+    useEffect(() => {
+      debouncedSearchEvents(state.keyword);
+    
+      // Cleanup function to cancel debounce on unmount
+      return () => {
+        debouncedSearchEvents.cancel();
+      };
+    }, [state.keyword, debouncedSearchEvents]);
+    
+    const handleSearch = (e) => {
+      const value = e.target.value;
+      setState((prev) => ({ ...prev, keyword: value }));
+      // Don't call debouncedSearchEvents here - it will be triggered by the useEffect
+    };
   return (
     <>
       {/* Popups and Modals */}
@@ -319,15 +349,17 @@ const EventsPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{count} eventos disponibles</h1>
-          <EventSearch togglePopup={togglePopup} />
+          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state}/>
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>Eventos más populares</h2>
-          {visibleEvents.length > 0 ?<EventList
+          <EventList
             events={visibleEvents}
             handleActions={handleActions}
-          />:
+          />
+          {visibleEvents?.length === 0 &&
           <div className="no-results-wrapper">No results</div>
           }
+        
           <div className={styles.showMoreWrapper}>
             {loading ? <Loader /> : next && (
               <SeeMoreButton

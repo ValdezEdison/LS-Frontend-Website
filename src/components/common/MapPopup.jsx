@@ -15,13 +15,13 @@ import PageLoader from "../../components/common/Loader";
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
-    const { loading, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
+    const { loading, NearbyPlaces, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
     const { loading: eventsLoading, events: EventsList } = useSelector((state) => state.events);
 
     const location = useLocation();
-    const isEventsRoute = location.pathname.includes('events');
-    const isDetailsRoute = location.pathname === '/places/details';
+    const isEventsRoute = location.pathname === 'places/events';
+    const isDetailsRoute = location.pathname === '/places/details' || location.pathname === '/events/details';
 
     const mapContainerRef = useRef(null);
     const placeRefs = useRef({});
@@ -32,7 +32,9 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
     const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
 
-    const dataToMap = isEventsRoute ? events || EventsList : places;
+    const placesToUse = NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places;
+
+    const dataToMap = isEventsRoute ? events || EventsList : placesToUse;
     const geoDataToMap = geoLocations;
 
     const createPolygon = (mapInstance, center) => {
@@ -153,7 +155,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
 
                 setMarkers([marker]);
                 mapInstance.setCenter(marker.position);
-                mapInstance.setZoom(5);
+                mapInstance.setZoom(20);
             } else if (geoDataToMap.length > 0) {
                 // For other pages, show all markers
                 const newMarkers = geoDataToMap
@@ -223,7 +225,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                             className={styles2.mapFrame}
                             style={{ width: '100%', display: isMapLoaded ? 'block' : 'none' }}
                         />
-                        {!isDetailsRoute && (
+                        {/* {!isDetailsRoute && ( */}
                             <div className={styles2.mapPopupPlaces}>
                                 {dataToMap?.length > 0 ? (
                                     dataToMap.map((item, index) => (
@@ -248,7 +250,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                                     </div>
                                 )}
                             </div>
-                        )}
+                        {/* // )} */}
                     </div>
                 </div>
                 <button

@@ -1,0 +1,19 @@
+{
+    "pageTitle": "{{count}} options to explore",
+    "sectionTitle": "Explore more destinations",
+    "sectionSubtitle": "Let yourself be surprised",
+    "continentNav": {
+        "all": "All",
+        "europe": "Europe",
+        "asia": "Asia",
+        "africa": "Africa",
+        "northAmerica": "North America",
+        "southAmerica": "South America",
+        "oceania": "Oceania",
+        "antarctica": "Antarctica"
+    },
+    "buttons": {
+        "seeMore": "See more",
+        "showSites": "View sites"
+    }
+}

@@ -35,6 +35,7 @@
   color: var(--Azul-desactivado, #718295);
   padding: 11px 17px;
   border: none;
+  outline: none;
 }
 
 .subscribeButton {

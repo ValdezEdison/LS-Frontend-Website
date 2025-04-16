@@ -1,7 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchPlacesInCity } from './PlacesAction';
-import { toggleFavorite } from '../../PlaceAction';
+import { toggleFavorite } from '../../../favorites/FavoritesAction';
 
 const initialState = {
   placesList: [],

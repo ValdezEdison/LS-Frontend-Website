@@ -53,9 +53,9 @@ const Map = ({ onOpenPopup }) => {
     }, [geoLocations, apiKey]);
 
     return (
-        <div className={styles.mapContainer} onClick={onOpenPopup}>
+        <div className={styles.mapContainer} >
             <div ref={mapContainerRef} className={styles.mapFrame} style={{height: '157px', width: '100%' }}></div>
-            <button className={styles.viewMapButton} >Ver mapa</button>
+            <button className={styles.viewMapButton} onClick={onOpenPopup}>Ver mapa</button>
         </div>
     );
 };

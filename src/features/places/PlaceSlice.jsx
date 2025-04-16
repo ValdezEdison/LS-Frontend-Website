@@ -11,13 +11,14 @@ import {
     fetchPlaceComments, 
     fetchNearbyPlaces,
     fetchPlacesFilterCategories,
-    toggleFavorite, 
+    // toggleFavorite, 
     addComment,
     editComment,
     deleteComment,
     generateLink
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
+import { toggleFavorite } from '../favorites/FavoritesAction';
 
 const initialState = {
     places: [],
@@ -34,7 +35,8 @@ const initialState = {
     isFavoriteToggling: false,
     favTogglingId : null,
     generateLinkLoading: false,
-    shareableLink: null
+    shareableLink: null,
+    geoLocationsLoading: false
 };
 
 const placeSlice = createSlice({
@@ -85,15 +87,19 @@ const placeSlice = createSlice({
 
             // Fetch GeoLocations
             .addCase(fetchGeoLocations.pending, (state) => {
-                state.loading = true;
+                state.geoLocationsLoading = true;
                 state.error = null;
             })
             .addCase(fetchGeoLocations.fulfilled, (state, action) => {
-                state.loading = false;
-                state.geoLocations = action.payload;
+                state.geoLocationsLoading = false;
+                if(action.payload?.results){
+                    state.geoLocations = action.payload?.results
+                }else{
+                    state.geoLocations = action.payload
+                }
             })
             .addCase(fetchGeoLocations.rejected, (state, action) => {
-                state.loading = false;
+                state.geoLocationsLoading = false;
                 state.error = action.payload;
             })
 
