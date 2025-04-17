@@ -4,8 +4,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Widget.module.css";
 import { PlaceHolderImg2 } from "./Images";
+import { useTranslation } from "react-i18next";
 
 const Widget = ({ data = [], title, count}) => {
+
+  const { t } = useTranslation("Common");
   
 ;
   const settings = {
@@ -34,7 +37,7 @@ const Widget = ({ data = [], title, count}) => {
     <section className={styles.nearbyPlaces}>
       <div className={styles.nearbyPlaceTitle}>
         <h2 className={styles.sectionTitle}>{title}</h2>
-        <div className="seeMoreLink">See More</div>
+        <div className="seeMoreLink" >{t('seeMore')}</div>
       </div>
       
       {data.length > 0 ? 
@@ -50,7 +53,7 @@ const Widget = ({ data = [], title, count}) => {
           </div>
         ))}
       </Slider>
-      : <p>No hay lugares cercanos</p>
+      : <p>{t('noResults')}</p>
 }
 
     </section>

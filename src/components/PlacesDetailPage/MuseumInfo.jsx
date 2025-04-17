@@ -3,10 +3,13 @@ import styles from "./MuseumInfo.module.css";
 import ShareOptions from "../common/ShareOptions";
 import { useSelector } from "react-redux";
 import { MapIcon } from "../common/Images";
+import { useTranslation } from "react-i18next";
 
 const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { }, isFavoriteToggling = false, handleGenerateLink, showShareOptions, toggleShareOptions }) => {
 
   const { shareableLink } = useSelector((state) => state.places);
+
+  const { t } = useTranslation("DetailsPage");
 
   return (
     <div className={styles.museumInfo}>
@@ -49,9 +52,9 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
             )} */}
           </div>
 
-          <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>Ir a la web</button>
+          <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>{t('header.websiteButton')}</button>
         </div>
-        <p className={styles.phoneNumber}>Teléfono: {place?.phone}</p>
+        <p className={styles.phoneNumber}>{t('header.phone')}: {place?.phone}</p>
       </div>
     </div>
   );

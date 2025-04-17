@@ -1,8 +1,11 @@
 import React from "react";
 import styles from "./ImageGallery.module.css";
 import { PlaceHolderImg2 } from "../common/Images";
+import { useTranslation } from "react-i18next";
 
 const ImageGallery = ({ handleClickViewMoreDetails, images }) => {
+
+  const { t } = useTranslation("Common");
   
   return (
     <div className={styles.imageGallery}>
@@ -17,7 +20,7 @@ const ImageGallery = ({ handleClickViewMoreDetails, images }) => {
         </div>
       </div>
       <button className={styles.viewMoreButton} onClick={handleClickViewMoreDetails}>
-        Ver más
+        {t("seeMore")}
       </button>
     </div>
   );

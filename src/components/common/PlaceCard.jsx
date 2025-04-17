@@ -91,7 +91,7 @@ const PlaceCard = forwardRef(
                 {hasStopsOrTags && !hasComments && isItineraryPage && (
                     <div className={styles.placeStopsTags}>
                         {place?.num_of_stops !== undefined && (
-                            <p className={styles.placeStops}>Stops: {place.num_of_stops}</p>
+                            <p className={styles.placeStops}>{translate("placeCard.stops")} {place.num_of_stops}</p>
                         )}
                         {place?.tags?.length > 0 && (
                             <div className={styles.placeTags}>

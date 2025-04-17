@@ -50,7 +50,8 @@
         "terrible": "Terrible",
         "comments": "Comments",
         "view_more": "View more",
-        "add_to_trip": "Add to trip"
+        "add_to_trip": "Add to trip",
+        "stops": "Stops"
     },
     "ratings": {
     "title": "Rating",

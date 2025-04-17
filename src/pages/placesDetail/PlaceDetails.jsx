@@ -55,6 +55,8 @@ const PlaceDetails = () => {
 
   const { languages, loading: languagesLoading } = useSelector((state) => state.languages);
   const { t } = useTranslation("Places");
+  const { t: tDetail } = useTranslation("DetailsPage");
+  const { t: tCommon } = useTranslation("Common");
 
   const sortByOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
     id: index,
@@ -302,8 +304,8 @@ const PlaceDetails = () => {
       .unwrap()
       .then(() => {
         dispatch(fetchPlaceComments(id));
-        setSuccessMessage("The comment has been deleted successfully.");
-        setSuccessTitle("Comment Removed");
+        setSuccessMessage(tDetail('reviews.success.deleted'));
+        setSuccessTitle(tDetail('reviews.success.deleted'));
         togglePopup("deleteConfirm", false);
         togglePopup("success", true);
         setCommentToDelete(null);
@@ -430,8 +432,12 @@ const PlaceDetails = () => {
               rating: false
             }
           });
-          setSuccessMessage(isEditing ? "Remember that once it's validated, you can edit or delete your comment." : "Remember that once it's validated, you can edit or delete your comment.");
-          setSuccessTitle(isEditing ? "Comment updated successfully!" : "Comment Sent successfully!");
+            setSuccessMessage(tDetail(isEditing 
+      ? 'reviews.success.updated' 
+      : 'reviews.success.added'));
+    setSuccessTitle(tDetail(isEditing 
+      ? 'reviews.success.updated' 
+      : 'reviews.success.added'));
           togglePopup("comment", false);
           togglePopup("success", true);
           setIsEditing(false);
@@ -460,7 +466,7 @@ const PlaceDetails = () => {
             toast.warning(error.detail, "Error");
           } else {
             // Show generic error message for other errors
-            toast.error(error.error_description || "Failed to submit comment", error.error || "Error");
+            toast.error(error.error_description || tDetail('errors.genericError'));
           }
         });
     }
@@ -608,8 +614,8 @@ const PlaceDetails = () => {
           hideCloseButton={true}
         >
           <ConfirmationPopup
-            title="Delete Comment"
-            description="Are you sure you want to delete this comment? This action cannot be undone."
+            title={tDetail('confirmationPopup.deleteComment.title')}
+            description={tDetail('confirmationPopup.deleteComment.description')}
             onCancel={() => togglePopup("deleteConfirm", false)}
             onConfirm={handleConfirmDelete}
           />
@@ -679,7 +685,7 @@ const PlaceDetails = () => {
             {isLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={NearByPlaces} title="Otros lugares cercanos" count={4} />
+              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} />
             )}
           </div>
         </main>

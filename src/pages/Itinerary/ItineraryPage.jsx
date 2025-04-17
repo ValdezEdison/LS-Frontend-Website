@@ -14,7 +14,7 @@ import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce } from "lodash";
 import { LanguageContext } from "../../context/LanguageContext";
 import useSeeMore from "../../hooks/useSeeMore";
-import { fetchItineraries } from "../../features/itineraries/ItineraryAction";
+import { fetchItineraries, fetchItinerariesInCity } from "../../features/itineraries/ItineraryAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../features/itineraries/ItinerarySlice";
 import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
@@ -43,6 +43,7 @@ const ItineraryPage = () => {
     selectedDestinationId: null,
     destinationSearchQuery: "",
     page: 1,
+    cityId: "",
   })
 
   const [popupState, setPopupState] = useState({
@@ -62,7 +63,8 @@ const ItineraryPage = () => {
 
   useEffect(() => {
     dispatch(fetchCities({}));
-    dispatch(fetchItineraries(state.page));
+    // dispatch(fetchItineraries(state.page));
+    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId}));
   }, [dispatch, language]);
 
   const debouncedSearch = useMemo(
@@ -125,6 +127,14 @@ const ItineraryPage = () => {
     ;
     navigate('/itineraries/details', { state: { id } });
   };
+
+
+  useEffect(() => {
+    if(state.cityId){
+      dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId}));
+    }
+
+  },[language, state.selectedDestinationId])
   return (
     <div className={styles.itineraryPage}>
       <Header />

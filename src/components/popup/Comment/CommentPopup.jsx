@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./CommentPopup.module.css";
 import StarRating from "./StarRating";
+import { useTranslation } from "react-i18next";
 
 const CommentPopup = ({ 
   title,
@@ -14,12 +15,13 @@ const CommentPopup = ({
   onSubmit,
   isEditing
 }) => {
+  const { t } = useTranslation("DetailsPage");
   return (
     <div className={styles.CommentPopupMain}>
       <h3 className={styles.subtitle}>{title}</h3>
       
       <label htmlFor="rating" className={styles.ratingLabel}>
-        Rating:
+      {t('commentPopup.ratingLabel')}
       </label>
       <div 
         className={`${styles.ratingContainer} ${errors.rating && touched.rating ? styles.error : ''}`} 
@@ -35,13 +37,13 @@ const CommentPopup = ({
       </div>
       
       <label htmlFor="commentText" className={styles.commentLabel}>
-        Comment:
+      {t('commentPopup.commentLabel')}
       </label>
       <div className={styles.textareaContainer}>
         <textarea
           id="commentText"
           className={`${styles.textarea}  ${errors.text && touched.text ? 'error' : ''}`}
-          placeholder="Write your comment here"
+          placeholder={t('commentPopup.placeholder')}
           value={comment}
           onChange={onCommentChange}
           onBlur={() => onFieldBlur('text')}
@@ -49,7 +51,7 @@ const CommentPopup = ({
         />
 
         <div className={styles.characterCount}>
-          {comment.length}/400
+        {t('reviews.characterCount', { current: comment.length })}
         </div>
         {errors.text && touched.text && (
           <div className="errorMessage">{errors.text}</div>
@@ -61,7 +63,7 @@ const CommentPopup = ({
           className={styles.submitButton} 
           onClick={onSubmit}
         >
-          {isEditing ? "Update" : "Submit"}
+          {isEditing ? t('reviews.update') : t('reviews.submit')}
         </button>
       </div>
     </div>

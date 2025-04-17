@@ -53,7 +53,7 @@ const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActio
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineraries);
 
-  const { t } = useTranslation('places');
+  const { t } = useTranslation('Places');
 
   return (
     <section className={styles.itineraryList}>
