@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import { useSelector } from "react-redux";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { useTranslation } from "react-i18next";
 
 
 const Map = ({ onOpenPopup }) => {
@@ -11,6 +12,8 @@ const Map = ({ onOpenPopup }) => {
     const [map, setMap] = useState(null);
     const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
     const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
+
+    const { t } = useTranslation('Common');
 
 
     useEffect(() => {
@@ -55,7 +58,7 @@ const Map = ({ onOpenPopup }) => {
     return (
         <div className={styles.mapContainer} >
             <div ref={mapContainerRef} className={styles.mapFrame} style={{height: '157px', width: '100%' }}></div>
-            <button className={styles.viewMapButton} onClick={onOpenPopup}>Ver mapa</button>
+            <button className={styles.viewMapButton} onClick={onOpenPopup}>{t("seeMap")}</button>
         </div>
     );
 };

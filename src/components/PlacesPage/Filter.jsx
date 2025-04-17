@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import styles from './Sidebar.module.css'; // Assuming you have a CSS module for styles
+import { useTranslation } from 'react-i18next';
 
 const Filter = ({ categories, ratings, state, setState }) => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [visibleSubcategories, setVisibleSubcategories] = useState({});
+
+  const { t } = useTranslation('Places');
+  const { t: tCommon } = useTranslation('Common');
 
   const toggleCategory = (categoryId) => {
     setExpandedCategories((prev) => ({
@@ -185,9 +189,9 @@ const Filter = ({ categories, ratings, state, setState }) => {
 
   return (
     <div className={styles.filters}>
-      <h2 className={styles.filterTitle}>Filtrar por:</h2>
+      <h2 className={styles.filterTitle}>{t("filter.filterBy")}</h2>
       <div className={styles.clearFilters} onClick={clearFilters}>
-        Eliminar filtros
+        {tCommon("removeFilters")}
       </div>
       {categories.map((mainCategory) => (
         <div key={mainCategory.id} className={styles.mainCategory}>
@@ -245,7 +249,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
       ))}
 
       <div className={styles.punctuationWrapper}>
-        <h3 className={styles.ratingTitle}>Puntuación</h3>
+        <h3 className={styles.ratingTitle}>{t('ratings.title')}</h3>
         <div className={styles.ratingFilters}>
           {ratings.map((rating, index) => (
             <span key={index} className={styles.ratingLabel}>

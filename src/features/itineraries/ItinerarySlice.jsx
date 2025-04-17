@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchItineraries } from "./ItineraryAction";
+import { fetchItineraries, fetchItinerariesInCity } from "./ItineraryAction";
 import { toggleFavorite } from "../places/PlaceAction";
 
 const initialState = {
@@ -59,6 +59,20 @@ const itinerarySlice = createSlice({
             })
             .addCase(toggleFavorite.rejected, (state, action) => {
                 state.isFavoriteToggling = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchItinerariesInCity.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchItinerariesInCity.fulfilled, (state, action) => {
+                state.loading = false;
+                state.itineraries = action.payload?.results || [];
+                state.next = action.payload?.next;
+                state.count = action.payload?.count;
+            })
+            .addCase(fetchItinerariesInCity.rejected, (state, action) => {
+                state.loading = false;
                 state.error = action.payload;
             });
     },

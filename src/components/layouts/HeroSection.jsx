@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Banner, PlaceHolderImg1 } from "../common/Images";
 import { useSelector } from "react-redux";
+import config from "../../config";
 
 const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
   const { t } = useTranslation("HeroSection");
@@ -16,7 +17,11 @@ const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
     ? heroContent.description.replace(/<[^>]+>/g, '') // Remove HTML tags
     : "Descubre los secretos locales de las ciudades más fascinantes del mundo.";
 
-    const backgroundImage = heroContent?.background_image || images?.[0]?.original || Banner || PlaceHolderImg1;
+    // const backgroundImage = heroContent?.background_image_url || images?.[0]?.original || Banner || PlaceHolderImg1;
+    const backgroundImage = heroContent?.background_image_url
+  ? `${config.api.cmsBaseUrl}${heroContent.background_image_url}`
+  : images?.[0]?.original || Banner || PlaceHolderImg1;
+
 
   return (
     <section className="hero-section">

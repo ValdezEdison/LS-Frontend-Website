@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { debounce } from 'lodash';
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 // Context
 import { LanguageContext } from "../../context/LanguageContext";
@@ -57,15 +58,11 @@ import { setFavTogglingId } from "../../features/places/PlaceSlice";
 import styles from "./PlacesPage.module.css";
 import styles3 from "../../components/PlacesPage/MainContent.module.css";
 
-// Constants
-const RATINGS = [
-  { label: "Excelente: 4 o más", value: 4 },
-  { label: "Muy bueno: 3 o más", value: 3 },
-  { label: "Bueno: 2 o más", value: 2 },
-  { label: "Mejorable: menos de 2", value: 1 },
-];
+
 
 const PlacesPage = () => {
+
+  const { t } = useTranslation('Places');
   // Hooks and Redux
   const dispatch = useDispatch();
   const location = useLocation();
@@ -103,6 +100,14 @@ const PlacesPage = () => {
   const {
     travelLiteList
   } = useSelector((state) => state.itineriesInCity);
+
+  // Constants
+const RATINGS = [
+  { label: t('ratings.labels.4'), value: 4 },
+  { label: t('ratings.labels.3'), value: 3 },
+  { label: t('ratings.labels.2'), value: 2 },
+  { label: t('ratings.labels.1'), value: 1 }
+];
 
   // State Management
   const [state, setState] = useState({

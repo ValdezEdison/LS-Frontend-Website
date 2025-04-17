@@ -13,6 +13,7 @@
     "country": "País",
     "destination": "Destino",
     "sortBy": "Ordenar por",
+    "filterBy": "Filtrar por:",
     "countries": [
       "España",
       "Portugal",
@@ -49,6 +50,17 @@
     "terrible": "Terrible",
     "comments": "Comentarios",
     "view_more": "Ver más",
-    "add_to_trip": "Añadir a viaje"
+    "add_to_trip": "Añadir a viaje",
+    "stops": "Paradas"
+  },
+
+  "ratings": {
+    "title": "Puntuación",
+    "labels": {
+      "4": "Excelente: 4 o más",
+      "3": "Muy bueno: 3 o más",
+      "2": "Bueno: 2 o más",
+      "1": "Mejorable: menos de 2"
+    }
   }
 }

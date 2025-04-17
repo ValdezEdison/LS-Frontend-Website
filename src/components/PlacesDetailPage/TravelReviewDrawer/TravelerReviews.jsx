@@ -4,6 +4,7 @@ import ReviewItem from "./ReviewItem";
 import FilterDropdown from "./FilterDropdown";
 import FilterBar from "../../common/FilterBar";
 import { Star, StarFill } from "../../common/Images";
+import { useTranslation } from "react-i18next";
 
 const TravelerReviews = ({ onClose, isOpen, showReviewDrawer, filters, isLoading, placeDetails, reviews }) => {
   // const reviews = [
@@ -16,6 +17,8 @@ const TravelerReviews = ({ onClose, isOpen, showReviewDrawer, filters, isLoading
   //   },
   //   // Add more review objects here...
   // ];
+
+  const { t } = useTranslation("DetailsPage");
 
   const ratingPopupTopRef = useRef(null);
   const reviewListRef = useRef(null);
@@ -49,7 +52,7 @@ const TravelerReviews = ({ onClose, isOpen, showReviewDrawer, filters, isLoading
       <div className={`${styles.container} ${showReviewDrawer ? styles.active : ''}`}>
         <div className={styles.ratingPopupTop} ref={ratingPopupTopRef}>
           <header className={styles.header}>
-            <h2 className={styles.title}>Comentarios de los viajeros</h2>
+            <h2 className={styles.title}>{t('reviews.title')}</h2>
             <button className={styles.closeButton} aria-label="Cerrar" onClick={onClose}>
               <svg
                 width="32"
@@ -76,10 +79,10 @@ const TravelerReviews = ({ onClose, isOpen, showReviewDrawer, filters, isLoading
                 <div className={styles.starRating}>
                   {renderStars(placeDetails?.rating)}
                 </div>
-                <div className={styles.reviewCount}>{reviews.length} reseñas</div>
+                <div className={styles.reviewCount}>{t('reviews.reviewsCount', { count: reviews.length })}</div>
               </div>
               <div className={styles.ratingContainerRight}>
-                <button className="yellowButton">Añadir comentario</button>
+                <button className="yellowButton">{t('reviews.addReview')}</button>
               </div>
             </div>
             <div className={styles.categoryTagWrapper}>

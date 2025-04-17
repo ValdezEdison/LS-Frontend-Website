@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "../../components/PlacesPage/MainContent.module.css";
 import styles2 from "./SelectedItemList.module.css";
+import { useTranslation } from "react-i18next";
 
 const SelectedItemList = ({ state, setState, categories, countries, cities, translate, type }) => {
+    const { t } = useTranslation("Common");
     const {
         selectedLevel,
         selectedCategory,
@@ -249,7 +251,7 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
             </div>
 
             <div className={styles.placesClearFilter} onClick={handleClickClearFilter}>
-            Eliminar filtros
+            {t("removeFilters")}
             </div>
         </>
     );

@@ -1,0 +1,64 @@
+{
+    "header": {
+        "openingHours": "Opening Hours",
+        "websiteButton": "Go to website",
+        "phone": "Phone",
+        "share": "Share",
+        "addToFavorites": "Add to favorites"
+    },
+    "reviews": {
+        "title": "Traveler Reviews",
+        "addReview": "Add a review",
+        "seeAll": "See all reviews",
+        "rating": "Rating",
+        "reviewsCount": "{{count}} reviews",
+        "yourReview": "Your review",
+        "edit": "Edit",
+        "delete": "Delete",
+        "comment": "Comment",
+        "characterCount": "{{current}}/400 characters",
+        "submit": "Submit",
+        "update": "Update",
+        "deleteConfirm": {
+            "title": "Delete Comment",
+            "message": "Are you sure you want to delete this comment? This action cannot be undone."
+        },
+        "success": {
+            "added": "Remember that once it's validated, you can edit or delete your comment.",
+            "updated": "Comment updated successfully!",
+            "deleted": "The comment has been deleted successfully."
+        }
+    },
+    "nearby": {
+        "title": "Nearby places",
+        "count": "4"
+    },
+    "map": {
+        "viewMap": "View on map"
+    },
+    "commentPopup": {
+        "title": "Leave your review",
+        "ratingLabel": "Rating:",
+        "commentLabel": "Comment:",
+        "placeholder": "Write your comment here"
+    },
+    "authAlert": {
+        "title": "Do you want to give us your opinion?",
+        "message": "Sign up or log in to leave a review about the local secrets or event you attended.",
+        "button": "Sign in or create an account"
+    },
+    "errors": {
+        "commentRequired": "Comment is required",
+        "ratingRequired": "Please select a rating",
+        "alreadyReviewed": "You have already posted a review",
+        "genericError": "Failed to submit comment"
+    },
+    "confirmationPopup": {
+    "deleteComment": {
+      "title": "Are you sure?",
+      "description": "Are you sure you want to delete this comment? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+}
+}

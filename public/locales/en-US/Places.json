@@ -13,6 +13,7 @@
         "country": "Country",
         "destination": "Destination",
         "sortBy": "Sort by",
+        "filterBy": "Filter by:",
         "countries": [
             "Spain",
             "Portugal",
@@ -49,6 +50,16 @@
         "terrible": "Terrible",
         "comments": "Comments",
         "view_more": "View more",
-        "add_to_trip": "Add to trip"
+        "add_to_trip": "Add to trip",
+        "stops": "Stops"
+    },
+    "ratings": {
+    "title": "Rating",
+   "labels": {
+      "4": "Excellent: 4+",
+      "3": "Very Good: 3+",
+      "2": "Good: 2+",
+      "1": "Needs Improvement: below 2"
     }
+  }
 }
