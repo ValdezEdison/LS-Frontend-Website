@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 0 0 24px;
+  margin: 0 0 20px;
 }
 
 .searchContainer {
@@ -17,6 +17,7 @@
   color: var(--Negro-blue, #151820);
   font-size: 16px;
   font-weight: 600;
+  margin: 0;
 }
 
 .searchForm {
@@ -73,15 +74,24 @@
   background-color: var(--Color-principal-naranja, #f4c031);
   color: var(--Negro-textos, #151820);
   border: none;
+  transition: all ease .3s;
+}
+
+.mapButton:hover {
+  background-color: #e5b22e;
 }
 
 .filterButton {
   border: 1px solid var(--Color-principal-azul, #212d94);
   background-color: #fff;
   color: var(--Negro-blue, #151820);
+  transition: all ease .3s;
 }
 
-
+.filterButton:hover {
+  border: 1px solid var(--Negro-blue, #151820);
+  color: var(--Color-principal-azul, #212d94);
+}
 
 @media (max-width: 991px) {
   .eventSearch {

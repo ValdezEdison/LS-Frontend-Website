@@ -39,6 +39,11 @@
   padding: 0;
   text-align: right;
   width: 100%;
+  transition: all ease .3s;
+}
+
+.viewMoreButton:hover {
+  color: #212d94;
 }
 
 @media (max-width: 991px) {
