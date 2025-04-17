@@ -4,11 +4,14 @@ import { Filter } from "./Images";
 import SearchInput from "./SearchInput";
 import CustomInput from "./CustomInput";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const EventSearch = ({togglePopup, handleSearch, state}) => {
 
   const location = useLocation();
   const isFavorites = location.pathname.includes('favorites')
+
+  const { t } = useTranslation("Common");
   return (
     <div className={styles.eventSearch}>
       <div className={styles.searchContainer}>
@@ -32,7 +35,7 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
         </form>
       </div>
       <div className={styles.actionButtons}>
-       {!isFavorites &&  <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>Ver mapa</button>}
+       {!isFavorites &&  <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>{t("seeMap")}</button>}
         <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>Filtros <img src={Filter}/></button>
       </div>
     </div>
