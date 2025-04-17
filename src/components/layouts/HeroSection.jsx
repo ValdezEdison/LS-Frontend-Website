@@ -39,7 +39,7 @@ const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
         </p>
         {!isAuthenticated && (
           <button className="cta-button" onClick={handleNavigateToLogin}>
-            {heroContent?.primary_button_text || "Iniciar sesión"}
+            {heroContent?.cta_text || "Iniciar sesión"}
           </button>
         )}
       </div>
