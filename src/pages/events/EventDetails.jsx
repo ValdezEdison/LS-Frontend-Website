@@ -56,6 +56,10 @@ const EventDetails = () => {
   const { languages, loading: languagesLoading } = useSelector((state) => state.languages);
   const { t } = useTranslation("Places");
 
+  const { t: tCommon } = useTranslation("Common");
+
+  const { t: tDetail } = useTranslation("DetailsPage");
+
   const sortByOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
     id: index,
     name: option,
@@ -302,8 +306,8 @@ const EventDetails = () => {
       .unwrap()
       .then(() => {
         dispatch(fetchPlaceComments(id));
-        setSuccessMessage("The comment has been deleted successfully.");
-        setSuccessTitle("Comment Removed");
+        setSuccessTitle(tDetail('reviews.success.deletedTitle'));
+        setSuccessMessage(tDetail('reviews.success.deletedMessage'));
         togglePopup("deleteConfirm", false);
         togglePopup("success", true);
         setCommentToDelete(null);
@@ -430,8 +434,13 @@ const EventDetails = () => {
               rating: false
             }
           });
-          setSuccessMessage(isEditing ? "Remember that once it's validated, you can edit or delete your comment." : "Remember that once it's validated, you can edit or delete your comment.");
-          setSuccessTitle(isEditing ? "Comment updated successfully!" : "Comment Sent successfully!");
+          setSuccessTitle(tDetail(isEditing 
+            ? 'reviews.success.updatedTitle' 
+            : 'reviews.success.addedTitle'));
+          
+          setSuccessMessage(tDetail(isEditing 
+            ? 'reviews.success.updatedMessage' 
+            : 'reviews.success.addedMessage'));
           togglePopup("comment", false);
           togglePopup("success", true);
           setIsEditing(false);
@@ -460,7 +469,7 @@ const EventDetails = () => {
             toast.warning(error.detail, "Error");
           } else {
             // Show generic error message for other errors
-            toast.error(error.error_description || "Failed to submit comment", error.error || "Error");
+            toast.error(error.error_description || tDetail('errors.genericError'));
           }
         });
     }
@@ -557,7 +566,9 @@ const EventDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Do you want to give us your opinion?" description="Sign up or log in to leave a review about the local secrets or event you attended." buttonText="Sign in or create an account" />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} itle={tDetail("authAlert.title")}
+  description={tDetail("authAlert.message")}
+  buttonText={tDetail("authAlert.button")}/>
         </Modal>
       )}
 
@@ -605,8 +616,8 @@ const EventDetails = () => {
           hideCloseButton={true}
         >
           <ConfirmationPopup
-            title="Delete Comment"
-            description="Are you sure you want to delete this comment? This action cannot be undone."
+              title={tDetail('confirmationPopup.deleteComment.title')}
+              description={tDetail('confirmationPopup.deleteComment.description')}
             onCancel={() => togglePopup("deleteConfirm", false)}
             onConfirm={handleConfirmDelete}
           />

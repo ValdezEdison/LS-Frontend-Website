@@ -304,8 +304,9 @@ const PlaceDetails = () => {
       .unwrap()
       .then(() => {
         dispatch(fetchPlaceComments(id));
-        setSuccessMessage(tDetail('reviews.success.deleted'));
-        setSuccessTitle(tDetail('reviews.success.deleted'));
+        setSuccessTitle(tDetail('reviews.success.deletedTitle'));
+        setSuccessMessage(tDetail('reviews.success.deletedMessage'));
+        
         togglePopup("deleteConfirm", false);
         togglePopup("success", true);
         setCommentToDelete(null);
@@ -432,12 +433,13 @@ const PlaceDetails = () => {
               rating: false
             }
           });
-            setSuccessMessage(tDetail(isEditing 
-      ? 'reviews.success.updated' 
-      : 'reviews.success.added'));
-    setSuccessTitle(tDetail(isEditing 
-      ? 'reviews.success.updated' 
-      : 'reviews.success.added'));
+          setSuccessTitle(tDetail(isEditing 
+            ? 'reviews.success.updatedTitle' 
+            : 'reviews.success.addedTitle'));
+          
+          setSuccessMessage(tDetail(isEditing 
+            ? 'reviews.success.updatedMessage' 
+            : 'reviews.success.addedMessage'));
           togglePopup("comment", false);
           togglePopup("success", true);
           setIsEditing(false);
@@ -566,7 +568,9 @@ const PlaceDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Do you want to give us your opinion?" description="Sign up or log in to leave a review about the local secrets or event you attended." buttonText="Sign in or create an account" />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin}  title={tDetail("authAlert.title")}
+  description={tDetail("authAlert.message")}
+  buttonText={tDetail("authAlert.button")}/>
         </Modal>
       )}
 

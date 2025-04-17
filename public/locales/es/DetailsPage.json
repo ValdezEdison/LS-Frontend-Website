@@ -24,9 +24,12 @@
             "message": "¿Estás seguro de que quieres eliminar este comentario? Esta acción no se puede deshacer."
         },
         "success": {
-            "added": "Recuerda que una vez validado, podrás editar o eliminar tu comentario.",
-            "updated": "¡Comentario actualizado correctamente!",
-            "deleted": "El comentario ha sido eliminado correctamente."
+           "addedTitle": "¡Comentario enviado con éxito!",
+            "addedMessage": "Recuerda que una vez validado, podrás editar o eliminar tu comentario.",
+            "updatedTitle": "¡Comentario actualizado correctamente!",
+            "updatedMessage": "Recuerda que una vez validado, podrás editar o eliminar tu comentario.",
+            "deletedTitle": "Comentario eliminado",
+            "deletedMessage": "El comentario ha sido eliminado correctamente."
         }
     },
     "nearby": {
