@@ -6,6 +6,7 @@
   background-color: #fff;
   position: relative;
   align-items: center;
+  cursor: pointer;
 }
 
 .eventImage {
