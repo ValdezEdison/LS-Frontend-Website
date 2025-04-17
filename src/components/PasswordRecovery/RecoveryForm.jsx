@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./RecoveryForm.module.css";
 import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function RecoveryForm({
   formData,
@@ -14,18 +15,18 @@ function RecoveryForm({
 }) {
 
   const { loading } = useSelector((state) => state.auth);
+  const { t } = useTranslation('PasswordRecovery');
 
   return (
     <div className={styles.formContainer}>
-      <h1 className={styles.formTitle}>Recuperar contraseña</h1>
+      <h1 className={styles.formTitle}>{t('passwordRecovery.title')}</h1>
       <p className={styles.formDescription}>
-        Para recuperar tu contraseña introduce tu correo electrónico y te
-        mandaremos un link al email para restablecerla.
+      {t('passwordRecovery.description')}
       </p>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
           <label htmlFor="email" className={styles.inputLabel}>
-            Correo electrónico
+          {t('passwordRecovery.form.email.label')}
           </label>
           <input
             type="email"
@@ -39,11 +40,13 @@ function RecoveryForm({
             onBlur={() => handleBlur('email')}
             aria-label="Correo electrónico"
           />
-          {!fieldStates.email.isValid && fieldStates.email.focused && (
+          {/* {!fieldStates.email.isValid && fieldStates.email.focused && (
             <div className={styles.infoMessage}>{fieldStates.email.info}</div>
-          )}
+          )} */}
           {fieldStates.email.error && fieldStates.email.touched && (
-            <div className={styles.errorMessage}>{fieldStates.email.error}</div>
+            <div className={styles.errorMessage}> {fieldStates.email.error === "Please enter your email"
+              ? t('passwordRecovery.form.email.errors.required')
+              : t('passwordRecovery.form.email.errors.invalid')}</div>
           )}
         </div>
         {loading ? (
@@ -62,13 +65,13 @@ function RecoveryForm({
             className={`${styles.submitButton} ${isFormValid ? styles.active : ''}`}
             disabled={!isFormValid}
           >
-            Enviar
+            {t('passwordRecovery.form.submit')}
           </button>
         }
 
 
       </form>
-      <p className={styles.helpText}>¿No te ha llegado ningún correo?</p>
+      <p className={styles.helpText}>{t('passwordRecovery.form.helpText')}</p>
     </div>
   );
 }

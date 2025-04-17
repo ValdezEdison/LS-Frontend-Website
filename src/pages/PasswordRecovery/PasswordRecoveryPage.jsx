@@ -7,11 +7,13 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { forgotPassword } from "../../features/authentication/AuthActions";
+import { useTranslation } from 'react-i18next';
 
 function PasswordRecoveryPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation('PasswordRecovery');
 
   const [formData, setFormData] = useState({
     email: "",
@@ -41,9 +43,9 @@ function PasswordRecoveryPage() {
     let isValid = false;
 
     if (!value.trim()) {
-      error = "Please enter your email";
+      error = t('passwordRecovery.form.email.errors.required');
     } else if (!validateEmail(value)) {
-      error = "Please enter a valid email address";
+      error = t('passwordRecovery.form.email.errors.invalid');
     } else {
       isValid = true;
     }
@@ -120,20 +122,20 @@ function PasswordRecoveryPage() {
       console.log(response);
       if (response.error) {
         // Handle cases where the API returns error in success response
-        toast.error(response.error_description || "Failed to send recovery email");
+        toast.error(response.error_description || t('passwordRecovery.toast.error'));
       } else {
-        toast.success(response.payload?.detail);
+        toast.success(response.payload?.detail || t('passwordRecovery.toast.success'));
         navigate('/login');
       }
     })
     .catch((error) => {
       // Use the structured error from handleApiError
       const errorMsg = error.payload?.error_description || 
-                      "Failed to send recovery email. Please try again.";
+      t('passwordRecovery.toast.error');
       
       // You could also customize messages based on error code
       if (error.payload?.error === "network_error") {
-        toast.error("Connection problem. Please check your internet and try again.");
+        toast.error(t('passwordRecovery.toast.networkError'))
       } else {
         toast.error(errorMsg);
       }

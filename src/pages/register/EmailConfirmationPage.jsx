@@ -9,11 +9,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { verifyEmail, resendVerificationMail } from "../../features/authentication/AuthActions";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 
 const EmailConfirmationPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const { t } = useTranslation('Registration');
     
     const searchParams = new URLSearchParams(location.search);
     const email = searchParams.get('email');
@@ -32,9 +35,9 @@ const EmailConfirmationPage = () => {
     const handleResendEmail = () => {
        dispatch(resendVerificationMail(emailConfirmation.email)).then((response) => {
         if (response.error) {
-          toast.error(response.error.message || "Failed to resend verification email");
+          toast.error(response.error.message || t('emailConfirmation.toast.resendError'));
         } else {
-          toast.success("Verification email resent successfully");
+            toast.success(t('emailConfirmation.toast.resendSuccess'));
         }
        })
     };
@@ -68,16 +71,16 @@ const EmailConfirmationPage = () => {
             dispatch(verifyEmail(email))
                 .then((response) => {
                     if (response.error) {
-                        toast.error(response.error.message || "Email verification failed");
+                        toast.error(response.error.message ||  t('emailConfirmation.toast.verifyError'));
                     } else {
-                        setSuccessMessage(response.payload?.detail || "Your email has been verified successfully");
-                        setSuccessTitle("Email Verified!");
+                        setSuccessMessage(response.payload?.detail || t('emailConfirmation.success.message'));
+                        setSuccessTitle(t('emailConfirmation.success.title'));
                         setIsOpenSuccessPopup(true);
                         dispatch(openPopup());
                     }
                 })
                 .catch((error) => {
-                    toast.error(error.message || "An error occurred during email verification");
+                    toast.error(error.message || t('emailConfirmation.toast.genericError'));
                 });
         }
 
@@ -86,7 +89,7 @@ const EmailConfirmationPage = () => {
             dispatch(closeEmailConfirmationPopup());
 
         };
-    }, [email, dispatch]);
+    }, [email, dispatch, t]);
 
     if (isOpenSuccessPopup && isOpen) {
         return (
@@ -111,7 +114,7 @@ const EmailConfirmationPage = () => {
     return (
         <div className={`${styles.registrationPage} ${styles.authPage}`}>
             <Header />
-            {isOpen && emailConfirmation?.isConfirmPopupOpen && emailConfirmation?.email && (
+            {true &&(
                 <Modal 
                     onClose={handleConfirmationClose} 
                     customClass="modalMd"

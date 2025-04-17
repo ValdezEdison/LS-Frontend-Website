@@ -66,5 +66,23 @@
         "businessQuestion": "¿Tienes un negocio?",
         "businessLink": "Registrarme como Local Secret Manager",
         "copyright": "Copyright (2024) - Local Secrets. Todos los derechos reservados."
+    },
+    "emailConfirmation": {
+    "title": "Confirmación del email",
+    "description": "Hemos enviado un email a <strong>{{email}}</strong> para confirmar que la dirección de correo electrónico es correcta. Al recibir el email, haz click en el link para completar el registro.",
+    "resendText": {
+      "normal": "Si no has recibido ningún email haz click en",
+      "link": "reenviar email de confirmación"
+    },
+    "success": {
+      "title": "¡Email Verificado!",
+      "message": "Tu email ha sido verificado correctamente"
+    },
+    "toast": {
+      "resendSuccess": "Email de verificación reenviado correctamente",
+      "resendError": "Error al reenviar el email de verificación",
+      "verifyError": "Error al verificar el email",
+      "genericError": "Ocurrió un error durante la verificación del email"
     }
+  }
 }
