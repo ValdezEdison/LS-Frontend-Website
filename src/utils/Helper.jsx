@@ -99,3 +99,11 @@ export const getLanguageData = () => {
   const languageData = localStorage.getItem('languageData');
   return languageData ? JSON.parse(languageData) : null; // Parse the JSON string back to an object
 };
+
+export const setSecretKey = (key) => {
+  localStorage.setItem('encryptedSecretKey', key);
+};
+
+export const getSecretKey = () => {
+  return localStorage.getItem('encryptedSecretKey');
+};

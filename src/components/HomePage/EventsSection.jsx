@@ -13,7 +13,7 @@ const EventsSection = ({ events = [] }) => {
   const renderEvent = (event) => (
     <div key={event.id} className={styles.placeCard}>
       <img
-        src={event.images[0] ? event.images[0]?.original : PlaceHolderImg2}
+        src={event.images[0] ? event.images[0]?.midsize : PlaceHolderImg2}
         alt={event.name}
         className={styles.placeImage} onClick={() => handleNavigate(event)}
       />

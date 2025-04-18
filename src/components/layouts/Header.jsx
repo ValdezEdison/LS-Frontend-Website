@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styles from "./Header.module.css";
 import LanguageSelector from "../common/LanguageSelector";
-import { getLanguageData, setLanguage } from "../../utils/Helper";
+import { getLanguageData, setLanguage, setSecretKey } from "../../utils/Helper";
 import { useTranslation } from "react-i18next";
 import { LSLogo2_1, Favorite } from "../common/Images";
 import { fetchLanguages } from "../../features/common/languages/LanguageAction";
@@ -150,6 +150,10 @@ const Header = () => {
     }
   }
 
+  useEffect(() => {
+    setSecretKey("ol9YA+fex9ZXw4QRZwD6UYQ3ByDWw883wsxA0bw6lPs=")
+    
+  },[])
   return (
     <>
    {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && <div className="fullPageOverlay">

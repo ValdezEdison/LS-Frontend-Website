@@ -22,6 +22,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { fetchHeroContent } from "../../features/cms/Pages/PagesAction";
 import HeroSectionSkeleton from "../../components/skeleton/HomePage/HeroSectionSkeleton";
+import { fetchRandomSites } from "../../features/home/HomeAction";
 
 const HomePage = () => {
   
@@ -39,11 +40,12 @@ const HomePage = () => {
   const { events, loading: eventsLoading, error: eventsError } = useSelector((state) => state.events);
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
   const { heroContent, loading: heroContentLoading, error: heroContentError } = useSelector((state) => state.cms.pages);
+  const { randomPlaces, loading: randomPlacesLoading, error: randomPlacesError } = useSelector((state) => state.home);
 
 
   // Fetch places on component mount
   useEffect(() => {
-      dispatch(fetchPlaces());
+      dispatch(fetchRandomSites());
       dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
   }, [dispatch, language]);
@@ -58,7 +60,7 @@ const handleNavigateToLogin = () => {
       {heroContentLoading ? <HeroSectionSkeleton /> : <HeroSection handleNavigateToLogin={handleNavigateToLogin} heroContent={heroContent}/>}
       
       <SearchComponent />
-    {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={places} />}  
+    {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={randomPlaces} />}  
     {eventsLoading ? <CommonWidgetSkeleton /> : <EventsSection events={events} />} 
       <History
         title="¡Conóce nuestra historia!"
