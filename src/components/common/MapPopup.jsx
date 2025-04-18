@@ -11,6 +11,7 @@ import { MapPlaceHolderImage } from './Images';
 import { useLocation } from 'react-router-dom';
 import { set } from 'lodash';
 import PageLoader from "../../components/common/Loader";
+import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecrets';
 
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
@@ -29,8 +30,8 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [activeMarker, setActiveMarker] = useState(null);
     const [markers, setMarkers] = useState([]);
-    const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-    const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
+    const apiKey = getGoogleMapsApiKey();
+    const mapId = getGoogleMapsMapId();
 
     const placesToUse = NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places;
 

@@ -4,14 +4,15 @@ import { useSelector } from "react-redux";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { useTranslation } from "react-i18next";
+import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecrets';
 
 
 const Map = ({ onOpenPopup }) => {
     const { geoLocations } = useSelector((state) => state.places);
     const mapContainerRef = useRef(null);
     const [map, setMap] = useState(null);
-    const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-    const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
+    const apiKey = getGoogleMapsApiKey();
+    const mapId = getGoogleMapsMapId();
 
     const { t } = useTranslation('Common');
 

@@ -13,3 +13,15 @@ export const fetchHeaderBlocks = createAsyncThunk(
         }
     }
 );
+
+export const fetchNewsLetterBlocks = createAsyncThunk(
+    'blocks/fetchNewsLetterBlocks',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getNewsLetterBlocks(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

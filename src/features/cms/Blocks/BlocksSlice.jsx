@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeaderBlocks } from "./BlocksAction";
+import { fetchHeaderBlocks, fetchNewsLetterBlocks } from "./BlocksAction";
 
 const initialState = {
     headerBlocks: [],
     loading: false,
     error: null,
+    
 };
 
 const blocksSlice = createSlice({

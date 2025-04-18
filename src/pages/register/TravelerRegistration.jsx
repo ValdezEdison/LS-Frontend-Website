@@ -17,14 +17,15 @@ import { fetchCountriesPhonecodes } from "../../features/common/countries/Countr
 import SocialLogin from "../../components/LoginPage/SocialLogin";
 import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
 import { useTranslation } from 'react-i18next';
+import { getClientId, getClientSecret } from "../../utils/decryptSecrets";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation('Registration');
 
-  const clientId = import.meta.env.VITE_CLIENT_ID;
-  const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
+  const clientId = getClientId();
+  const clientSecret = getClientSecret();
 
   const { loading } = useSelector((state) => state.auth);
   const { phoneCodes } = useSelector((state) => state.countries);
