@@ -54,7 +54,12 @@
   transition: all ease .3s;
 }
 
-.websiteButton:hover {
+.websiteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.websiteButton:hover:not(:disabled) {
   background-color: #e5b22e;
 }
 

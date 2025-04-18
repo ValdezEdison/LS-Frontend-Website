@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from "./ItineraryMap.module.css";
 import { Loader } from "@googlemaps/js-api-loader";
 import { PlaceHolderImg1 } from '../../common/Images';
+import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../../utils/decryptSecrets';
 
 
 
@@ -26,9 +27,9 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
     setIsOptionsVisible(!isOptionsVisible);
   };
 
-  const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
+  const mapId = getGoogleMapsMapId();
 
-  const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
+  const apiKey = getGoogleMapsApiKey();
   const loader = new Loader({
     apiKey: apiKey,
     version: "weekly",

@@ -13,6 +13,7 @@ import { socialLogin } from "../../features/authentication/socialLogin/SocialAut
 import { handleFacebookLogin } from "../../utils/FacebookLogin";
 import { initializeGoogleSDK, handleGoogleLogin } from "../../utils/GoogleLogin";
 import { useTranslation } from 'react-i18next';
+import { getClientId, getClientSecret } from "../../utils/decryptSecrets";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -21,9 +22,8 @@ const LoginPage = () => {
   const { t } = useTranslation('Login');
 
   const { loading } = useSelector((state) => state.auth);
-
-  const clientId = import.meta.env.VITE_CLIENT_ID;
-  const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
+  const clientId = getClientId();
+  const clientSecret = getClientSecret();
 
   const [formData, setFormData] = useState({
     email: "",

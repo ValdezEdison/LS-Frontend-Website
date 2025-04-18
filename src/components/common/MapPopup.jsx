@@ -11,6 +11,7 @@ import { MapPlaceHolderImage } from './Images';
 import { useLocation } from 'react-router-dom';
 import { set } from 'lodash';
 import PageLoader from "../../components/common/Loader";
+import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecrets';
 
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
@@ -29,8 +30,8 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [activeMarker, setActiveMarker] = useState(null);
     const [markers, setMarkers] = useState([]);
-    const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-    const mapId = import.meta.env.VITE_APP_GOOGLE_MAPS_MAP_ID;
+    const apiKey = getGoogleMapsApiKey();
+    const mapId = getGoogleMapsMapId();
 
     const placesToUse = NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places;
 
@@ -121,41 +122,72 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
             console.error("Google Maps authentication failed. Please check your API key and restrictions.");
             setIsMapLoaded(false);
         };
-
+    
         const loader = new Loader({
             apiKey: apiKey,
             version: "weekly",
             libraries: ["maps", "marker", "core", "geometry"],
         });
-
+    
         loader.load().then(() => {
             const google = window.google;
+            
+            // Determine the initial center and zoom based on available data
+            let initialCenter = { lat: 0, lng: 0 };
+            let initialZoom = 2;
+            
+            // If we have a specific location in state (for details page)
+            if (isDetailsRoute && state?.latitude && state?.longitude) {
+                initialCenter = { lat: state.latitude, lng: state.longitude };
+                initialZoom = 15;
+            } 
+            // If we have geo locations but not on details page
+            else if (geoDataToMap.length > 0) {
+                // Calculate bounds to fit all markers
+                const bounds = new google.maps.LatLngBounds();
+                geoDataToMap.forEach(location => {
+                    if (location.address?.latitude && location.address?.longitude) {
+                        bounds.extend({
+                            lat: location.address.latitude,
+                            lng: location.address.longitude
+                        });
+                    }
+                });
+                
+                // If we have valid bounds, use them
+                if (!bounds.isEmpty()) {
+                    initialCenter = bounds.getCenter();
+                    // For single location, zoom in more
+                    initialZoom = geoDataToMap.length === 1 ? 15 : 12;
+                }
+            }
+    
             const mapInstance = new google.maps.Map(mapContainerRef.current, {
-                center: { lat: 0, lng: 0 },
-                zoom: 2,
+                center: initialCenter,
+                zoom: initialZoom,
                 mapId: mapId,
                 fullscreenControl: false,
             });
-
+    
             setMap(mapInstance);
             setIsMapLoaded(true);
-
+    
             if (isDetailsRoute && state?.latitude && state?.longitude) {
                 // For details page, show only one marker
                 const defaultContent = document.createElement("div");
                 defaultContent.innerHTML = `
                     <img src="${MarkerYellow}" alt="Marker" style="width: 40px; height: 40px;" />
                 `;
-
+    
                 const marker = new google.maps.marker.AdvancedMarkerElement({
                     position: { lat: state.latitude, lng: state.longitude },
                     map: mapInstance,
                     content: defaultContent,
                 });
-
+    
                 setMarkers([marker]);
                 mapInstance.setCenter(marker.position);
-                mapInstance.setZoom(20);
+                mapInstance.setZoom(15);
             } else if (geoDataToMap.length > 0) {
                 // For other pages, show all markers
                 const newMarkers = geoDataToMap
@@ -165,28 +197,45 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                         defaultContent.innerHTML = `
                             <img src="${Marker}" alt="Marker" style="width: 40px; height: 40px;" />
                         `;
-
+    
                         const marker = new google.maps.marker.AdvancedMarkerElement({
                             position: { lat: location.address.latitude, lng: location.address.longitude },
                             map: mapInstance,
                             content: defaultContent,
                         });
-
+    
                         marker.addListener("click", () => {
                             handleMarkerClick(marker, location, mapInstance);
                         });
-
+    
                         return marker;
                     });
-
+    
                 setMarkers(newMarkers);
+                
+                // If there are markers, fit the map to their bounds
+                if (newMarkers.length > 0) {
+                    const bounds = new google.maps.LatLngBounds();
+                    newMarkers.forEach(marker => bounds.extend(marker.position));
+                    
+                    // For single marker, zoom in more
+                    if (newMarkers.length === 1) {
+                        mapInstance.setCenter(newMarkers[0].position);
+                        mapInstance.setZoom(15);
+                    } else {
+                        mapInstance.fitBounds(bounds, {
+                            padding: 50, // Add some padding around the markers
+                        });
+                    }
+                }
+                
                 new MarkerClusterer({ map: mapInstance, markers: newMarkers });
             }
         }).catch((error) => {
             console.error("Failed to load the map:", error);
             setIsMapLoaded(false);
         });
-
+    
         return () => {
             // Cleanup markers when component unmounts
             setMarkers([]);

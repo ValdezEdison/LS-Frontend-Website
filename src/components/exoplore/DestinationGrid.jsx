@@ -21,7 +21,7 @@ const DestinationGrid = ({ destinations, loading, handleActions }) => {
             destinationId={destination.id}
             name={destination.name}
             results={destination.number_of_sites}
-            image={destination.images[0]?.original || PlaceHolderImg2}
+            image={destination.images[0]?.thumbnail || PlaceHolderImg2}
             handleActions={handleActions}
           />
         ))
