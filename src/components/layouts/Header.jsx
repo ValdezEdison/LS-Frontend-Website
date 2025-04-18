@@ -43,7 +43,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(languageId, 'fdhdgdghsdgh')
     dispatch(fetchLanguages());
     dispatch(fetchImages());
     dispatch(fetchHeaderBlocks());
@@ -110,7 +109,7 @@ const Header = () => {
   useEffect(() => {
     const languageData = getLanguageData();
     if (!languageData) {
-      selectedLang = languagesList.find(lang => lang.code === "es");
+      const selectedLang = languagesList.find(lang => lang.code === "es");
       setLanguage(selectedLang.id, "es", "/images/spain.png", "Español");
     }
   }, [setLanguage]);
