@@ -7,7 +7,7 @@ const SECRET_KEY = localStorage.getItem(ENCRYPTION_KEY_NAME);
 
 if (!SECRET_KEY) {
   console.error('Missing decryption key in localStorage');
-  throw new Error('Decryption key missing');
+  // throw new Error('Decryption key missing');
 }
 
 let cachedSecrets = null;
