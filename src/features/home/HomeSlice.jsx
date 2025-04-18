@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHomeRandomSites } from "./HomeAction";
+import { fetchRandomSites } from "./HomeAction";
 
 const initialState = {
     randomPlaces: [],
@@ -13,16 +13,16 @@ const homeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchHomeRandomSites.pending, (state) => {
+            .addCase(fetchRandomSites.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchHomeRandomSites.fulfilled, (state, action) => {
+            .addCase(fetchRandomSites.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.randomPlaces = action.payload;
+                state.randomPlaces = action.payload?.results;
             })
-            .addCase(fetchHomeRandomSites.rejected, (state, action) => {
+            .addCase(fetchRandomSites.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });        

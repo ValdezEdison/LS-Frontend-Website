@@ -2,6 +2,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { Google } from '../common/Images';
 import React from 'react';
+import { getGoogleAuthId } from '../../utils/decryptSecrets';
 
 const GoogleLoginButton = ({ onSuccess, onFailure, styles }) => {
   const googleLoginRef = React.useRef(null);
@@ -9,9 +10,11 @@ const GoogleLoginButton = ({ onSuccess, onFailure, styles }) => {
   const handleCustomClick = () => {
     googleLoginRef.current.click();
   };
+  const clientId = getGoogleAuthId();
+  console.log(clientId, 'clientId');
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_ID}>
+    <GoogleOAuthProvider clientId={clientId}>
       <div style={{ position: 'relative' }}>
         {/* Hidden Google Login Button */}
         <div style={{
