@@ -7,6 +7,7 @@ import { LocalStorage } from 'node-localstorage';
 // 1. Define all your secrets in one object
 
 
+
 // Mock localStorage in Node.js
 const localStorage = new LocalStorage('./scratch');
 
