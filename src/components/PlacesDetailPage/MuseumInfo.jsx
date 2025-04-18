@@ -52,9 +52,14 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
             )} */}
           </div>
 
-          <button className={styles.websiteButton} onClick={() => handleNavigateToWebsite(place)}>{t('header.websiteButton')}</button>
+          <button className={styles.websiteButton}   onClick={() => place?.url && handleNavigateToWebsite(place)}
+  disabled={!place?.url}>{t('header.websiteButton')}</button>
         </div>
-        <p className={styles.phoneNumber}>{t('header.phone')}: {place?.phone}</p>
+        {place?.phone && (
+          <p className={styles.phoneNumber}>
+            {t('header.phone')}: {place.phone}
+          </p>
+        )}
       </div>
     </div>
   );
