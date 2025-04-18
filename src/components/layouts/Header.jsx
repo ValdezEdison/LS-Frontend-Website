@@ -43,7 +43,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(languageId, 'fdhdgdghsdgh')
     dispatch(fetchLanguages());
     dispatch(fetchImages());
     dispatch(fetchHeaderBlocks());
@@ -110,7 +109,7 @@ const Header = () => {
   useEffect(() => {
     const languageData = getLanguageData();
     if (!languageData) {
-      selectedLang = languagesList.find(lang => lang.code === "es");
+      const selectedLang = languagesList.find(lang => lang.code === "es");
       setLanguage(selectedLang.id, "es", "/images/spain.png", "Español");
     }
   }, [setLanguage]);
@@ -153,7 +152,7 @@ const Header = () => {
   }
 
   useEffect(() => {
-    setSecretKey("5d02ac7246b9cd4c02ffdf08b44d8cf5dadbd35ef43a34689d0d5431ea2bd654")
+    setSecretKey("f3a39c89d25055e8d1617fcf8e636603596da3ef2625a61e9c8d855a45359375")
     
   },[])
   return (
