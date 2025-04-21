@@ -18,9 +18,11 @@ import Loader from "../common/Loader";
 import FilterBar from "../common/FilterBar";
 import styles4 from "../common/FilterBar.module.css";
 import SelectedItemList from "../common/SelectedItemList";
+import GoToFilterCard from "../common/GoToFilterCard";
 
 const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
+  const { t: tCommon } = useTranslation('Common');
   const { places, loading: placesLoading, error: placesError, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
 
   const { loading: countriesLoading } = useSelector((state) => state.countries);
@@ -129,7 +131,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
     };
   }, [showSuggestionDropDown]);
 
-  const handleViewMoreDetails = (e,id) => {
+  const handleViewMoreDetails = (e, id) => {
     ;
     navigate('/places/details', { state: { id } });
   };
@@ -213,6 +215,18 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   }
 
 
+  const handleActionFilter = () => {
+    scrollToTop();
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+
 
 
   return (
@@ -241,7 +255,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
           isLoading={citiesLoading || countriesLoading}
         />
       </div>
-      {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles}/>}
+      {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles} />}
       <div className={styles.placesSelectedItemsList}>
         {/* <PlacesSelectedItemList
           state={state}
@@ -273,38 +287,52 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
           <img src={Arrow} alt="arrow" />
         </button>
         {visiblePlaces?.length > 0 ? (
-          visiblePlaces?.map((place, index) => (
-            <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id} />
-          ))
+          visiblePlaces?.map((place, index) => {
+            // Render the place card
+            const placeCard = (
+              <PlaceCard
+                key={index}
+                place={place}
+                translate={t}
+                isAuthenticated={isAuthenticated}
+                handleViewMoreDetails={handleViewMoreDetails}
+                handleActions={handleActions}
+                isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id}
+              />
+            );
+
+            // Check if we need to render the banner after this item
+            if ((index + 1) % 10 === 0 && index !== visiblePlaces.length - 1) {
+              return (
+                <>
+                  {placeCard}
+                  <GoToFilterCard index={index} handleActionFilter={handleActionFilter} />
+                </>
+              );
+            }
+
+            return placeCard;
+          })
         ) : (
           <div className="no-results-wrapper">No results</div>
         )}
 
-       <div className={styles.placesBlueBanner}>
-       <div className={styles.placesBlueBannerLeft}>
-        <img src={PlaceFilter}/>
-       </div>
-       <div className={styles.placesBlueBannerRight}>
-          <div className={styles.placesBannerDescrption}>
-            <h3>Aplica nuestros filtros para conseguir mejores resultados</h3>
-            <p>El 67% de nuestros clientes lo están haciendo</p>
-          </div>
-          <button class={styles.filterButton}>Ir a filtros</button>
-       </div>
-        </div> 
+    
       </div>
 
-      {loading ? <Loader /> : next && <SeeMoreButton
+      {loading ? <Loader /> : next && isAuthenticated ? <SeeMoreButton
         onClick={loadMore}
         loading={loading}
         next={hasNext}
         translate={t}
       />
+        :
+        <div className={styles.loginButtonWrapper}>
+          <button class={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+        </div>
       }
 
-      <div className={styles.loginButtonWrapper}>
-        <button class={styles.loginButton}>Sign in</button>
-      </div>
+
       <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
       <RecommendedPlaces />
     </main>

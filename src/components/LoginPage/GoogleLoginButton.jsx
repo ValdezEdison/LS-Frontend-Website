@@ -11,10 +11,10 @@ const GoogleLoginButton = ({ onSuccess, onFailure, styles }) => {
     googleLoginRef.current.click();
   };
   const clientId = getGoogleAuthId();
-  console.log(clientId, 'clientId');
+  console.log(import.meta.env.VITE_GOOGLE_AUTH_ID, 'clientId');
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_ID}>
       <div style={{ position: 'relative' }}>
         {/* Hidden Google Login Button */}
         <div style={{

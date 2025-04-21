@@ -35,6 +35,7 @@ import {
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
+import { fetchBannerBlocks } from "../../features/cms/Blocks/BlocksAction";
 import {
   fetchTravelLiteList,
   addSite,
@@ -67,7 +68,7 @@ const PlacesPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { language } = useContext(LanguageContext);
+  const { language, languageId } = useContext(LanguageContext);
   const initialRender = useRef(true);
 
   // Selectors
@@ -100,6 +101,10 @@ const PlacesPage = () => {
   const {
     travelLiteList
   } = useSelector((state) => state.itineriesInCity);
+
+  const {
+    bannerBlocks
+  } = useSelector((state) => state.cms.blocks);
 
   // Constants
 const RATINGS = [
@@ -332,6 +337,7 @@ const RATINGS = [
     dispatch(fetchCities({}));
     dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
     dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
+    dispatch(fetchBannerBlocks(languageId));
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
@@ -707,7 +713,7 @@ const RATINGS = [
                 )}
               </div>
               <div className={styles.content}>
-                <PromotionalBanner styles={styles3} />
+                <PromotionalBanner styles={styles3} bannerBlocks={bannerBlocks}/>
               </div>
             </div>
           </>

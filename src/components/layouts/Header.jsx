@@ -46,7 +46,9 @@ const Header = () => {
     dispatch(fetchLanguages());
     dispatch(fetchImages());
     dispatch(fetchHeaderBlocks());
-    dispatch(fetchNewsLetterBlocks(languageId));
+    if(!isAuthenticated){
+      dispatch(fetchNewsLetterBlocks(languageId));  
+    }
   }, [dispatch, language]); // Re-fetch data when language changes
 
   const handleClickHamburger = () => {
@@ -152,7 +154,7 @@ const Header = () => {
   }
 
   useEffect(() => {
-    setSecretKey("f3a39c89d25055e8d1617fcf8e636603596da3ef2625a61e9c8d855a45359375")
+    setSecretKey("23a28f8270fd7bef759d20500101040b1f54fdc4cc2622e65c0954ca8de85663")
     
   },[])
   return (

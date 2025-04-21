@@ -8,7 +8,10 @@ const BlocksService = {
 
     getNewsLetterBlocks: async (language) => {
         return CmsApiService.get('/api/v2/newsletters/?locale=' + language)
-    }
+    },
+    getBannerBlocks: async (language) => {
+        return CmsApiService.get('/api/v2/banners/?locale=' + language);
+    },
   
 }
 

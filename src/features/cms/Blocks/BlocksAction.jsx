@@ -25,3 +25,15 @@ export const fetchNewsLetterBlocks = createAsyncThunk(
         }
     }
 );
+
+export const fetchBannerBlocks = createAsyncThunk(
+    'blocks/fetchBannerBlocks',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getBannerBlocks(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

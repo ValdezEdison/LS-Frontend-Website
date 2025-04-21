@@ -1,8 +1,13 @@
 {
-    "seeMore": "Mostrar más",
-    "noResults": "No se encontraron resultados",
-    "seeMap": "Ver mapa",
-    "removeFilters": "Eliminar filtros",
-    "nearbyPlaces": "Otros lugares cercanos"
+  "seeMore": "Mostrar más",
+  "noResults": "No se encontraron resultados",
+  "seeMap": "Ver mapa",
+  "removeFilters": "Eliminar filtros",
+  "nearbyPlaces": "Otros lugares cercanos",
+  "logInButton": "Iniciar sesión",
+  "banner": {
+    "title": "Aplica nuestros filtros para conseguir mejores resultados",
+    "description": "El 67% de nuestros clientes lo están haciendo",
+    "button": "Ir a filtros"
   }
-  
+}
