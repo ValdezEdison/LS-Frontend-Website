@@ -164,12 +164,31 @@
 }
 
 .promotionalBanner {
-  display: flex;
+  /* display: flex; */
   border: 2px solid #212d94;
   border-radius: 24px;
-  overflow: hidden;
   margin-top: 36px;
   margin-bottom: 80px;
+  position: relative;
+}
+
+.promotionalBannerIn{
+ 
+  overflow: hidden;
+}
+
+.promotionalBannerItem{
+  display: flex;
+  align-items: center;
+}
+
+.promotionalBannerItem img{
+  max-width: 50%;
+  flex-basis: 50%;
+  height: 265px;
+  display: block;
+  border-radius: 22px 0 0 22px;
+  flex-shrink: 0;
 }
 
 .promotionalImage {
@@ -179,7 +198,9 @@
 
 .promotionalContent {
   width: 50%;
-  padding: 40px;
+  padding:0px 96px 0 48px;
+  display: flex;
+  flex-direction: column;
 }
 
 .promotionalTitle {
@@ -259,41 +280,7 @@
   cursor: pointer;
 }
 
-.placesBlueBanner{
-  background-color: #212D94;
-  width: 100%;
-  padding: 24px 26px 0 23px;
-  border-radius: 12px;
-  display: flex;
-  align-items: flex-start;
-  gap: 30px;
-}
 
-.placesBlueBannerLeft img{
-  display: block;
-}
-
-.placesBlueBannerRight{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  color: #fff;
-  flex-grow: 1;
-}
-
-.placesBannerDescrption h3{
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  width: 90%;
-}
-
-.placesBannerDescrption p{
-  margin: 5px 0 0;
-  font-size: 12px;
-}
 
 .filterButton{
   background-color: #f4c031;
@@ -310,6 +297,45 @@
 
 .loginButton:hover,.filterButton:hover {
   background-color: #e5b22e;
+}
+
+:global(.slick-slide) {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+:global(.slick-dots li){
+      width: 12px;
+     height: 12px;
+}
+
+:global(.slick-dots li button) {
+  font-size: 0;
+  width: 12px;
+  height: 12px;
+}
+
+:global(.slick-dots li button:before) {
+  font-size: 0px ;
+  width: 12px;
+  height: 12px;
+  background: #D9D9D9;
+  opacity: 1;
+  border-radius: 50%;
+}
+
+:global(.slick-dots li.slick-active button:before){
+  opacity: 1;
+  background: #212D94;
+}
+
+.promotionalBanner :global(.slick-slider){
+  margin: 0 !important;
+}
+
+:global(.slick-dots ul){
+  padding: 0;
 }
 
 @media (max-width: 991px) {
@@ -354,25 +380,39 @@
     padding: 10px 24px;
   }
 
+  .promotionalBannerItem img{
+    height: 100%;
+    max-height: 350px;
+  }
+
 
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 768px) {
+  .promotionalContent {
+    padding: 0px 48px 0 24px;
+  }
+  
   .placesList {
     flex-direction: column; 
   }
 
-  .placesBlueBannerRight {
-    gap: 15px;
-    flex-direction: column; 
-    align-items: flex-start;
-    padding: 0;
-  }
+}
 
-  .placesBlueBanner{
+@media screen and (max-width: 640px) {
+  .promotionalBannerItem{
     flex-direction: column;
-    gap: 15px;
-    padding: 24px 24px 23px;
+  }
+  
+  .promotionalBannerItem img {
+    max-width: 100%;
+    flex-basis: 100%;
+    border-radius: 22px 22px 0 0;
+    max-height: 250px;
+  }
+  
+  .promotionalContent {
+    padding: 24px;
+  }
 }
 
-}

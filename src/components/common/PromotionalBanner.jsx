@@ -10,15 +10,21 @@ const PromotionalBanner = ({ styles, bannerBlocks }) => {
   // Slider settings configuration
   const settings = {
     dots: true,
+    arrows: false ,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 1,
     slidesToScroll: 1,
+    appendDots: dots => (
+      <div style={{ position: "absolute", bottom: "-30px", width: "100%" }}>
+        <ul style={{ margin: "0px" }}> {dots} </ul>
+      </div>
+    ),
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow:1,
         },
       },
       {
@@ -33,10 +39,12 @@ const PromotionalBanner = ({ styles, bannerBlocks }) => {
 
 
   return (
-    <div className={styles.promotionalBanner}>
+    <div className={styles.promotionalBannerIn}>
+    <div className={styles.promotionalBanner}> 
       <Slider {...settings}>
         {bannerBlocks.map((slide, index) => (
           <div key={index}>
+            <div className={styles.promotionalBannerItem}>
             <img
               src={slide.background_image?.url ? `${config.api.cmsBaseUrl}${slide.background_image.url}` : PlaceHolderImg4}
               alt="Discover Japan"
@@ -49,9 +57,11 @@ const PromotionalBanner = ({ styles, bannerBlocks }) => {
               </p>
               <button className={styles.exploreButton}>{slide.button_text}</button>
             </div>
+            </div>
           </div>
         ))}
       </Slider>
+    </div>
     </div>
   );
 };
