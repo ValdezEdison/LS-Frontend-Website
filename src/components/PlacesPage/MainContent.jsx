@@ -12,7 +12,7 @@ import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Arrow } from "../common/Images";
+import { Arrow, PlaceFilter } from "../common/Images";
 import styles3 from "../common/PlaceCard.module.css";
 import Loader from "../common/Loader";
 import FilterBar from "../common/FilterBar";
@@ -279,6 +279,19 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
         ) : (
           <div className="no-results-wrapper">No results</div>
         )}
+
+       <div className={styles.placesBlueBanner}>
+       <div className={styles.placesBlueBannerLeft}>
+        <img src={PlaceFilter}/>
+       </div>
+       <div className={styles.placesBlueBannerRight}>
+          <div className={styles.placesBannerDescrption}>
+            <h3>Aplica nuestros filtros para conseguir mejores resultados</h3>
+            <p>El 67% de nuestros clientes lo están haciendo</p>
+          </div>
+          <button class={styles.filterButton}>Ir a filtros</button>
+       </div>
+        </div> 
       </div>
 
       {loading ? <Loader /> : next && <SeeMoreButton
@@ -289,6 +302,9 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
       />
       }
 
+      <div className={styles.loginButtonWrapper}>
+        <button class={styles.loginButton}>Sign in</button>
+      </div>
       <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
       <RecommendedPlaces />
     </main>

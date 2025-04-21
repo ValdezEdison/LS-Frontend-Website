@@ -47,6 +47,7 @@ const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
 const Notification = "/images/notification.png";
 const Oceana = "/images/oceana@2x.png";
+const PlaceFilter = "/images/places-filter.jpg";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
 const PlaceHolderImg2 = "/images/placeholder2.jpg"
 const PlaceHolderImg3 = "/images/placeholder3.jpg"
@@ -66,6 +67,8 @@ const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
 const Wifi = "/images/wifi.svg";
+
+
 
 export {
     LSLogo2_1,
@@ -119,6 +122,7 @@ export {
     Notch,
     Notification,
     Oceana,
+    PlaceFilter,
     PlaceHolderImg1,
     PlaceHolderImg2,
     PlaceHolderImg3,
