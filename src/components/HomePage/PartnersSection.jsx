@@ -29,9 +29,9 @@ const PartnersSection = ({ ourPartners }) => {
   // Slider settings
   const settings = {
     arrow: true,
-    infinite: partners.length > 4,
+    infinite: partners.length > 5,
     speed: 500,
-    slidesToShow: Math.min(4, partners.length),
+    slidesToShow: Math.min(5, partners.length),
     slidesToScroll: 1,
     responsive: [
       {
@@ -42,7 +42,7 @@ const PartnersSection = ({ ourPartners }) => {
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 991,
         settings: {
           slidesToShow: Math.min(2, partners.length),
           infinite: partners.length > 2
