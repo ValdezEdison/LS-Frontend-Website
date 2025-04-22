@@ -4,14 +4,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import config from "../../config";
 import { PlaceHolderImg4 } from "./Images";
+import styles from "./PromotionalBanner.module.css";
 
-const PromotionalBanner = ({ styles, bannerBlocks }) => {
+const PromotionalBanner = ({ bannerBlocks }) => {
   console.log(bannerBlocks, 'banners')
   // Slider settings configuration
   const settings = {
     dots: true,
     arrows: false ,
     infinite: true,
+    autoplay: true,
+    autoplaySpeed: 8000,
+    fade: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,

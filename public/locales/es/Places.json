@@ -53,7 +53,6 @@
     "add_to_trip": "Añadir a viaje",
     "stops": "Paradas"
   },
-
   "ratings": {
     "title": "Puntuación",
     "labels": {
@@ -62,5 +61,49 @@
       "2": "Bueno: 2 o más",
       "1": "Mejorable: menos de 2"
     }
+  },
+  "Events": {
+    "filters": {
+      "dateRange": "Seleccionar rango de fechas",
+      "level": "Seleccionar nivel"
+    },
+    "popularEvents": "Eventos más populares en {{city}}",
+    "noEvents": "Actualmente no hay eventos publicados para esta ciudad.",
+    "recommendedEvents": "Otras personas también han visto",
+    "recommended": {
+      "KensingtonDollshouseFestival": "Festival de Casas de Muñecas de Kensington",
+      "SummerSocial2024": "Social de Verano 2024",
+      "OpenBarAfroCaribbean": "Open Bar Afro Caribeño",
+      "AsburyParkVeganFoodFestival": "Festival de Comida Vegana de Asbury Park"
+    }
+  },
+  "Places": {
+    "availableCount": "{{count}} lugares disponibles",
+    "noResults": "No se encontraron resultados",
+    "popular": "Lugares populares en {{city}}",
+    "recommended": "Lugares recomendados"
+  },
+  "Filters": {
+    "level": "Seleccionar nivel",
+    "category": "Seleccionar categoría",
+    "subcategory": "Seleccionar subcategoría",
+    "sortBy": "Ordenar por",
+    "all": "Todos",
+    "mostRecent": "Más recientes",
+    "highestRated": "Mejor valorados",
+    "recommendations": "Nuestras recomendaciones"
+  },
+  "scrollToTop": "Ir arriba",
+  "arrowIcon": "Icono de flecha arriba",
+  "Itineraries": {
+    "availableCount": "{{count}} itinerarios disponibles",
+    "noResults": "No se encontraron itinerarios",
+    "popular": "Itinerarios populares en {{city}}"
+  },
+  "Itinerary": {
+    "detailTitle": "Detalle itinerario",
+    "addToTrip": "Añadir a viaje",
+    "stopCount": "{{count}} paradas",
+    "noStops": "No hay paradas disponibles"
   }
 }

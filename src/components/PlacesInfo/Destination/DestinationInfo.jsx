@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./DestinationInfo.module.css";
 import SubNavMenu from "../../common/SubNavMenu";
+import { useTranslation } from "react-i18next";
 
 const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
   if (!destination) return null;
@@ -17,6 +18,8 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
     activated,
     media
   } = destination;
+
+  const { t } = useTranslation("Common");
 
   return (
     <section className={styles.destinationInfo}>
@@ -36,12 +39,12 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
             ))}
           </div>
         )}
-    <button className={styles.viewMoreButton} onClick={handleClickViewMoreDetails}>Ver más</button>
+    <button className={styles.viewMoreButton} onClick={handleClickViewMoreDetails}>{t("showMore")}</button>
         <div className={styles.infoSection}>
           <h2 className={styles.infoTitle}>{slogan || "Discover this destination"}</h2>
           {link && (
             <a href={link} target="_blank" rel="noopener noreferrer" className={styles.websiteButton}>
-              Visit Website
+              {t("visitWebsite")}
             </a>
           )}
         </div>
@@ -49,12 +52,7 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
         <p className={styles.description}>{description}</p>
 
         <div className={styles.coordinates}>
-          <p>
-            <strong>Location:</strong> {latitude}, {longitude}
-          </p>
-          {/* <p>
-            <strong>Status:</strong> {activated ? "Active" : "Inactive"}
-          </p> */}
+      
         </div>
       </div>
     </section>

@@ -26,6 +26,7 @@ import { resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } f
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
 import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { useTranslation } from "react-i18next";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,8 @@ const ItineraryDetail = () => {
   const { isOpen, isAddToPopupOpen } = useSelector((formState) => formState.popup);
   const { geoLocations } = useSelector((formState) => formState.places);
   const { cities, loading: citiesLoading } = useSelector((formState) => formState.cities);
+
+  const { t } = useTranslation("Places");
 
   const [popupState, setPopupState] = useState({
 
@@ -496,7 +499,7 @@ const ItineraryDetail = () => {
         <Header />
         <main className="page-center">
           <section className={styles.itineraryHeader}>
-            <div className={styles.itenaryDetailTitle}>Detalle itinerario</div>
+            <div className={styles.itenaryDetailTitle}>{t('Itinerary.detailTitle')}</div>
             <ItineraryMap places={itineraryDetails?.stops} formState={formState} setFormState={setFormState} />
             <div className={styles.itineraryInfo}>
               <h1 className={styles.itineraryTitle}>{itineraryDetails?.title}</h1>
@@ -522,7 +525,7 @@ const ItineraryDetail = () => {
                 </div>
                 <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', itineraryDetails?.id)}>
                   <span className={styles.addIcon}></span>
-                  Añadir a viaje
+                  {t('Itinerary.addToTrip')}
                 </button>
               </div>
             </div>
@@ -533,7 +536,7 @@ const ItineraryDetail = () => {
                 </div>
               ))}
             </div>
-            <p className={styles.itineraryMeta}>{`${itineraryDetails?.num_of_stops} paradas`}</p>
+            <p className={styles.itineraryMeta}>{t('Itinerary.stopCount', { count: itineraryDetails?.num_of_stops })}</p>
           </section>
           <section className={styles.itineraryPlaces}>
             {itineraryDetails?.stops && itineraryDetails.stops.length > 0 ? (
@@ -543,7 +546,7 @@ const ItineraryDetail = () => {
               ))
             ) : (
               // Show "No results" message if no stops are found
-              <div className="no-results-wrapper">No stops available</div>
+              <div className="no-results-wrapper">{t('Itinerary.noStops')}</div>
             )}
           </section>
           <RelatedContent />

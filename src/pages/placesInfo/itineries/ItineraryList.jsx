@@ -31,6 +31,7 @@ import { openPopup, closePopup, openAddToTripPopup } from "../../../features/pop
 const ItineraryList = () => {
 
   const { t } = useTranslation('Places');
+  const { t: tCommon } = useTranslation('Common');
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -160,17 +161,17 @@ const ItineraryList = () => {
 
 
   const sortOrder = [
-    { id: 1, name: "All" },
-    { id: 2, name: "Most Recent" },
-    { id: 3, name: "Highest Rated" },
-    { id: 4, name: "Our Recommendation" },
+    { id: 1, name: t('Filters.all') },
+    { id: 2, name: t('Filters.mostRecent') },
+    { id: 3, name: t('Filters.highestRated') },
+    { id: 4, name: t('Filters.recommendations') },
   ];
 
   // Define filters array
   const filters = [
 
     {
-      label: "Select Order",
+      label: t('Filters.sortBy'),
       type: "select",
       options: sortOrder,
       selectedId: selectedOrderId,
@@ -234,7 +235,7 @@ const ItineraryList = () => {
             <FilterBar filters={filters} />
           </div>
         </div>
-        <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
+        <p className={commonStyle.availablePlaces}>{t('Itineraries.availableCount', { count })}</p>
         <div className={styles.placesList} ref={placesListRef}>
           <button
             style={{
@@ -245,7 +246,7 @@ const ItineraryList = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             ref={gotoTopButtonRef}
           >
-            <img src={Arrow} alt="arrow" />
+            <img src={Arrow} alt={t('arrowIcon')} />
           </button>
           {itineriesLoading ?
             (Array.from({ length: 5 }).map((_, index) => (
@@ -264,7 +265,7 @@ const ItineraryList = () => {
                 />
               ))
             ) : (
-              <div className="no-results-wrapper">No results</div>
+              <div className="no-results-wrapper">{t('Itineraries.noResults')}</div>
             )}
           {loading ? <Loader /> : next && <SeeMoreButton
             onClick={loadMore}

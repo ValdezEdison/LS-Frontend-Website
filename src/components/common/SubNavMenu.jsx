@@ -3,6 +3,7 @@ import styles from "./SubNavMenu.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PURGE } from "redux-persist"; // Import PURGE action
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const SubNavMenu = ({ activeLink }) => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const SubNavMenu = ({ activeLink }) => {
   const dispatch = useDispatch();
   const { id } = location.state || {};
 
-  ;
+  const { t } = useTranslation("Common");
 
   const handleNavigation = (path) => {
     navigate(path, { state: { id } });
@@ -50,25 +51,25 @@ const SubNavMenu = ({ activeLink }) => {
         className={`${styles.subNavLink} ${isActive("/places/destination") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/destination")}
       >
-        Destino
+       {t('subNav.destination')}
       </a>
       <a
         className={`${styles.subNavLink} ${isActive("/places/events") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/events")}
       >
-        Eventos
+         {t('subNav.events')}
       </a>
       <a
         className={`${styles.subNavLink} ${isActive("/places/destination-places") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/destination-places")}
       >
-        Lugares
+        {t('subNav.places')}
       </a>
       <a
         className={`${styles.subNavLink} ${isActive("/places/itineraries") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/itineraries")}
       >
-        Itinerarios
+        {t('subNav.itineraries')}
       </a>
     </nav>
   );

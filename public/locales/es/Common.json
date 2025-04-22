@@ -5,9 +5,17 @@
   "removeFilters": "Eliminar filtros",
   "nearbyPlaces": "Otros lugares cercanos",
   "logInButton": "Iniciar sesión",
+  "showMore": "Ver más",
+  "visitWebsite": "Visitar sitio web",
   "banner": {
     "title": "Aplica nuestros filtros para conseguir mejores resultados",
     "description": "El 67% de nuestros clientes lo están haciendo",
     "button": "Ir a filtros"
+  },
+  "subNav": {
+    "destination": "Destino",
+    "events": "Eventos",
+    "places": "Lugares",
+    "itineraries": "Itinerarios"
   }
 }

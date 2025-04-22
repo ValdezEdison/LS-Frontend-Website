@@ -5,9 +5,17 @@
   "removeFilters": "Remove filters",
   "nearbyPlaces": "Other nearby places",
   "logInButton": "Sign in",
+  "showMore": "See more",
+  "visitWebsite": "Visit website",
   "banner": {
     "title": "Apply our filters to get better results",
     "description": "67% of our customers are doing it",
     "button": "Go to filters"
+  },
+  "subNav": {
+    "destination": "Destination",
+    "events": "Events",
+    "places": "Places",
+    "itineraries": "Itineraries"
   }
 }

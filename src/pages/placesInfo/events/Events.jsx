@@ -103,6 +103,7 @@ const Events = () => {
 
 
   const { t } = useTranslation('Places');
+  const { t:tCommon } = useTranslation('Common');
 
   const { id } = location.state || {};
   ;
@@ -171,7 +172,7 @@ const Events = () => {
   // Define filters array
   const filters = [
     {
-      label: "Select Date Range",
+      label: t('Events.filters.dateRange'),
       type: "datePicker",
       selectedId: state.selectedDateRange,
       onSelect: (dates) => {
@@ -182,7 +183,7 @@ const Events = () => {
       },
     },
     {
-      label: "Select Level",
+      label: t('Events.filters.level'),
       type: "select",
       options: categories.map(category => ({ id: category.id, title: category.title })),
       selectedId: state.selectedLevel,
@@ -335,7 +336,7 @@ const Events = () => {
 
         <div className={styles.searchSection}>
           <div className={styles.mapButtonContainer}>
-            <button className={styles.mapButton} onClick={handleShowMapPopup}>Ver mapa</button>
+            <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
           </div>
           <div className={styles.filterContainer}>
             <FilterBar filters={filters} />
@@ -352,7 +353,7 @@ const Events = () => {
         </div>
         <section className={styles.eventsSection}>
           <h2 className={styles.sectionTitle}>
-            Eventos más populares en Atenas
+            {t('Events.popularEvents', { city: destination?.name })}
           </h2>
           <div className={styles.eventGrid}>
             {eventLoading ? (
@@ -368,7 +369,7 @@ const Events = () => {
             )}
           </div>
 
-          {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
+          {visibleEvents.length === 0 && <div className="no-results-wrapper">{t('Events.noEvents')}</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
           {loading ? <Loader /> : next && <SeeMoreButton
             onClick={loadMore}
@@ -381,7 +382,7 @@ const Events = () => {
         <div className={styles.divider} />
         <section className={styles.recommendedSection}>
           <h2 className={styles.sectionTitle}>
-            Otras personas tambien han visto
+          {t('Events.recommendedEvents')}
           </h2>
           <div className={styles.recommendedGrid}>
             {recommendedEvents.map((event, index) => (

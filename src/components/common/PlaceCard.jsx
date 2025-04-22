@@ -71,7 +71,7 @@ const PlaceCard = forwardRef(
                 )}
                 <div className={styles.placeTitleTop}>
                     <div className={styles.placeTitleMain}>
-                        <h3 className={`${styles.placeName} ${styles.addTripPlaceName}`}>{place?.display_text || place?.title || ""}</h3>
+                        <h3 className={`${styles.placeName} ${isAddToPopupOpen ? styles.addTripPlaceName : ""}`}>{place?.display_text || place?.title || ""}</h3>
                         
                         
                     </div>

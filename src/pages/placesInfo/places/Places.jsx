@@ -38,6 +38,7 @@ import SuccessMessagePopup from "../../../components/popup/SuccessMessage/Succes
 
 const Places = () => {
     const { t } = useTranslation('Places');
+    const { t: tCommon } = useTranslation('Common');
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -211,7 +212,7 @@ const Places = () => {
 
     const filters = [
         {
-            label: "Select Level",
+            label: t('Filters.level'),
             type: "select",
             options: categories.map(category => ({ id: category.id, title: category.title })),
             selectedId: state.selectedLevel,
@@ -225,7 +226,7 @@ const Places = () => {
             },
         },
         {
-            label: "Select Category",
+            label: t('Filters.category'),
             type: "select",
             options: state.selectedLevel
                 ? categories.find(cat => cat.id === state.selectedLevel)?.categories || []
@@ -240,7 +241,7 @@ const Places = () => {
             },
         },
         {
-            label: "Select Subcategory",
+            label: t('Filters.subcategory'),
             type: "select",
             options: state.selectedCategory
                 ? categories
@@ -396,7 +397,7 @@ const Places = () => {
                 <SubNavMenu activeLink="lugares" />
                 <div className={styles.searchFilters}>
                     <div className={styles.mapButtonContainer}>
-                        <button className={styles.mapButton} onClick={handleShowMapPopup}>Ver mapa</button>
+                        <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
                     </div>
                     <div className={styles.filterContainer}>
                         <FilterBar filters={filters} />
@@ -411,7 +412,7 @@ const Places = () => {
                         type="submenu-places"
                     />
                 </div>
-                <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
+                <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
                 <div className={styles.placesList} ref={placesListRef}>
                     <button
                         style={{
@@ -421,7 +422,7 @@ const Places = () => {
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                         ref={gotoTopButtonRef}
                     >
-                        <img src={Arrow} alt="arrow" />
+                        <img src={Arrow} alt={t('arrowIcon')} />
                     </button>
                     {placesLoading ? (
                         Array.from({ length: 5 }).map((_, index) => (
@@ -440,7 +441,7 @@ const Places = () => {
                             />
                         ))
                     ) : (
-                        <div className="no-results-wrapper">No results</div>
+                        <div className="no-results-wrapper">{t('Places:noResults')}</div>
                     )}
                     {loading ? <Loader /> : next && <SeeMoreButton
                         onClick={loadMore}
