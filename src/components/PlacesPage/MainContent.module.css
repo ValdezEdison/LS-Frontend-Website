@@ -173,7 +173,7 @@
 }
 
 .promotionalBannerIn{
- 
+  width: 100%;
   overflow: hidden;
 }
 
@@ -393,9 +393,7 @@
     padding: 0px 48px 0 24px;
   }
   
-  .placesList {
-    flex-direction: column; 
-  }
+  
 
 }
 
@@ -413,6 +411,10 @@
   
   .promotionalContent {
     padding: 24px;
+  }
+
+  .placesList {
+    flex-direction: column; 
   }
 }
 
