@@ -3,6 +3,7 @@
   border-radius: 12px;
   overflow: hidden;
   aspect-ratio: 1.86;
+  cursor: pointer;
 }
 
 .destinationImage {
