@@ -20,7 +20,7 @@ const PartnersSection = ({ ourPartners, ourPartnersLoading }) => {
         <div className={styles.sectionTitle}>
           <Skeleton width={200} height={30} />
         </div>
-        <div className={styles.partnersSlider}>
+        <div className={styles.partnersSkeltonSlider}>
           <Slider
             arrow= {true}
             infinite={false}
