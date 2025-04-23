@@ -2,17 +2,33 @@ import React from "react";
 import styles from "./Newsletter.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Newsletter = () => {
 
   const { t } = useTranslation("Newsletter");
 
-  const { newsLetterBlocks } = useSelector((state) => state.cms.blocks);
+  const { newsLetterBlocks, newsLetterLoading, newsLetterError } = useSelector((state) => state.cms.blocks);
 console.log(newsLetterBlocks, 'newsLetterBlocks')
 
 const createMarkup = (html) => {
   return { __html: html };
 };
+
+if (newsLetterLoading) {
+  return (
+    <section className={styles.newsletter} style={{ backgroundColor:"#dfdbdb" }} >
+      <Skeleton height={30} width={200} className={styles.newsletterTitle} />
+      <Skeleton count={2} className={styles.newsletterDescription} />
+      <form className={styles.newsletterForm}>
+        <Skeleton height={40} width={300} className={styles.emailInput} />
+        <Skeleton height={40} width={100} className={styles.subscribeButton} style={{ backgroundColor:"#dfdbdb" }}/>
+      </form>
+      <Skeleton count={2} className={styles.privacyNotice} />
+    </section>
+  );
+}
 
   return (
     <section className={styles.newsletter}>

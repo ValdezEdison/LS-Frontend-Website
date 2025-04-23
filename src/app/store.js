@@ -25,6 +25,7 @@ import myTripsReducer from "../features/myTrips/MyTripsSlice.jsx"
 // cms reducer
 import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
 import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
+import wordPressReducer from "../features/cms/wordpress/WordPressSlice";
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -39,6 +40,7 @@ const persistedDestinationReducer = persistReducer(persistConfig, destinationRed
 const cmsReducer = combineReducers({
   blocks: blockReducer,
   pages: pagesReducer,
+  wordpress: wordPressReducer
 });
 
 const store = configureStore({

@@ -103,7 +103,7 @@ const PlacesPage = () => {
   } = useSelector((state) => state.itineriesInCity);
 
   const {
-    bannerBlocks
+    bannerBlocks, bannerLoading
   } = useSelector((state) => state.cms.blocks);
 
   // Constants
@@ -713,7 +713,7 @@ const RATINGS = [
                 )}
               </div>
               <div className={styles.content}>
-                <PromotionalBanner styles={styles3} bannerBlocks={bannerBlocks}/>
+                <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
               </div>
             </div>
           </>
