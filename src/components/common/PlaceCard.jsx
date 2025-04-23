@@ -84,15 +84,17 @@ const PlaceCard = forwardRef(
                     <p className={styles.placeCategory}>
                         {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
                     </p>
+                    {place?.num_of_stops !== undefined && (
+                            <p className={styles.placeStops}>{translate("placeCard.stops")} {place.num_of_stops}</p>
+                    )}
                 </div>
                 
 
                 {/* Conditionally render the stops and views section */}
                 {hasStopsOrTags && !hasComments && isItineraryPage && (
                     <div className={styles.placeStopsTags}>
-                        {place?.num_of_stops !== undefined && (
-                            <p className={styles.placeStops}>{translate("placeCard.stops")} {place.num_of_stops}</p>
-                        )}
+                       <p className={styles.placeItenary}>Itinerario</p>
+                       <p className={styles.placeLocation}>Atenas, Grecia</p>
                         {place?.tags?.length > 0 && (
                             <div className={styles.placeTags}>
                                 {place.tags.map((tag) => (

@@ -1,16 +1,16 @@
 .recommendedEvents {
   width: 100%;
   max-width: 1216px;
-  margin: 70px auto 0;
-  padding: 0 20px;
+  margin: 22px auto 70px;
+  border-top: solid 1px #BDBDBD;
 }
 
 .sectionTitle {
   color: #000;
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 30px;
-  text-align: center;
+  margin: 20px 0 30px;
+  text-align: left;
 }
 
 .eventGrid {

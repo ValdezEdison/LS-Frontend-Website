@@ -8,12 +8,12 @@
     border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
-    color: #000001;
+    color: #212d94;
     cursor: pointer;
     transition: all ease .3s;
   }
   
   .showMoreButton:hover{
     border-color:#000 ;
-    color: #212d94;
+    color: #000;
   }

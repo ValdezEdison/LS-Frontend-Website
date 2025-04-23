@@ -10,7 +10,7 @@ const SeeMoreButton = ({ onClick, loading, next, translate }) => {
           onClick={onClick}
           disabled={loading}
         >
-          {loading ? translate('loading') : translate('seeMore')}
+          {loading ? translate('loading') : translate('See more')}
         </button>
       )}
     </div>

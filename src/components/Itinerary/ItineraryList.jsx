@@ -63,6 +63,7 @@ const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActio
       <div className={styles.tagContainer}>
         {/* <span className={styles.tag}>#Patrimonio histórico</span> */}
       </div>
+      <div className={styles.ItineraryPlaceCards}>
       {visibleItineraries?.length > 0 ? (
           visibleItineraries?.map((place, index) => (
             <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id} />
@@ -71,6 +72,7 @@ const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActio
           <div className="no-results-wrapper">No results</div>
         )}
       {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
+      </div>
     </section>
   );
 };
