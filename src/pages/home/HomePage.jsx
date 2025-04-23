@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchHeroContent, fetchOurPartners } from "../../features/cms/Pages/PagesAction";
 import HeroSectionSkeleton from "../../components/skeleton/HomePage/HeroSectionSkeleton";
 import { fetchRandomSites } from "../../features/home/HomeAction";
+import { fetchPosts } from "../../features/cms/wordpress/WordPressAction";
 
 const HomePage = () => {
   
@@ -49,6 +50,8 @@ const HomePage = () => {
       dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
       dispatch(fetchOurPartners(languageId));
+      dispatch(fetchPosts({ per_page: 4 }));
+
   }, [dispatch, language]);
 
 const handleNavigateToLogin = () => {
@@ -71,7 +74,7 @@ const handleNavigateToLogin = () => {
       />
       <ArticlesSection />
       <AppPromotion />
-      <PartnersSection ourPartners={ourPartners}/>
+      <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />
       <Footer />
     </div>

@@ -11,6 +11,14 @@ const CmsInstance = axios.create({
   baseURL: config.api.cmsBaseUrl,
 });
 
+const WordPressInstance = axios.create({
+  baseURL: config.api.wordPressBaseUrl,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
+
 const languageData = getLanguageData();
 let currentLanguage = languageData?.code || 'es';
 
@@ -145,7 +153,40 @@ const configureInstance = (instance, isCmsInstance = false) => {
   );
 };
 
+const configureWordPressInstance = (instance) => {
+  instance.interceptors.request.use(
+    (config) => {
+      // WordPress-specific request transformations
+      if (config.params?._embed) {
+        config.params = {
+          ...config.params,
+          _embed: true // Ensure proper formatting for WP REST API
+        };
+      }
+      
+      config.headers['Accept-Language'] = currentLanguage;
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
+  instance.interceptors.response.use(
+    (response) => {
+      // Transform WordPress response data if needed
+      if (Array.isArray(response.data)) {
+        response.data = response.data.map(post => ({
+          ...post,
+          featuredMedia: post._embedded?.['wp:featuredmedia']?.[0]
+        }));
+      }
+      return response;
+    },
+    (error) => Promise.reject(error)
+  );
+};
+
 configureInstance(ApiInstance);
 configureInstance(CmsInstance, true);
+configureWordPressInstance(WordPressInstance);
 
-export { ApiInstance, CmsInstance };
+export { ApiInstance, CmsInstance, WordPressInstance };

@@ -34,12 +34,13 @@ import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMe
 import { fetchTravelLiteList } from "../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce } from "lodash";
+import { fetchBannerBlocks } from "../../features/cms/Blocks/BlocksAction";
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { language } = useContext(LanguageContext);
+  const { language, languageId } = useContext(LanguageContext);
   const { t } = useTranslation('places');
 
   // Selectors
@@ -49,6 +50,9 @@ const EventsPage = () => {
   const { isOpen } = useSelector((state) => state.popup);
   const { cities } = useSelector((state) => state.cities);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
+    const {
+      bannerBlocks, bannerLoading
+    } = useSelector((state) => state.cms.blocks);
 
   // Add trip functionality
   const {
@@ -113,6 +117,7 @@ const EventsPage = () => {
       dispatch(fetchTravelLiteList());
     }
     dispatch(fetchCities({}));
+    dispatch(fetchBannerBlocks(languageId));
     return () => {
       dispatch(closePopup());
       closeAddToTrip()
@@ -372,7 +377,7 @@ const EventsPage = () => {
           </div>
           <hr className={styles.divider} />
           <PopularEvents />
-          <PromotionalBanner styles={styles1} />
+          <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
         </main>
         <Newsletter />
         <Footer />
