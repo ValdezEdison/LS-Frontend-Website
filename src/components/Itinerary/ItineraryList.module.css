@@ -45,3 +45,11 @@
   gap: 10px;
 }
 
+@media (max-width:991px) {
+  .ItineraryPlaceCards{
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+}
+
