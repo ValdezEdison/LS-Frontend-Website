@@ -11,18 +11,20 @@ const eventService = {
             levels, 
             startDate, 
             endDate,
-            keyword
+            keyword,
+            sortBy
         } = params;
         
         let url = `/sites?type=${type}&page=${page}`;
         
-        if (cityId) url += `&cityId=${cityId}`;
+        if (cityId) url += `&city_id=${cityId}`;
         if (categories) url += `&categories=${categories}`;
         if (subcategories) url += `&subcategories=${subcategories}`;
         if (levels) url += `&levels=${levels}`;
-        if (startDate) url += `&startDate=${startDate}`;
-        if (endDate) url += `&endDate=${endDate}`;
+        if (startDate) url += `&first_date=${startDate}`;
+        if (endDate) url += `&last_date=${endDate}`;
         if (keyword) url += `&keyword=${keyword}`;
+        if (sortBy) url += `&sort_by=${sortBy}`;
         
         return apiService.get(url);
     },

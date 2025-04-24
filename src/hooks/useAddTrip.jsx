@@ -2,13 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 // Actions
 import {
   fetchStops,
   fetchTravelLiteList,
   addSite,
-  addTrip
+  addTrip,
+  addToExistingTrip
 } from '../features/places/placesInfo/itinerary/ItineraryAction';
 
 import { fetchCities } from "../features/common/cities/CityAction";
@@ -28,6 +30,8 @@ export const useAddTrip = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { travelLiteList } = useSelector((state) => state.itineriesInCity);
   const { isOpen, isAddToPopupOpen } = useSelector((state) => state.popup);
+
+  const { t } = useTranslation("AddTrip");
 
   // Trip state
   const [tripState, setTripState] = useState({
@@ -117,26 +121,26 @@ export const useAddTrip = () => {
     const errors = {};
 
     if (!formState.tripName.trim()) {
-      errors.tripName = 'Trip name is required';
+      errors.tripName = t('AddTrip.popups.validation.tripNameRequired');
     }
 
     if (!formState.startDate) {
-      errors.startDate = 'Start date is required';
+      errors.startDate = t('AddTrip.popups.validation.startDateRequired');
     }
     if (!formState.endDate) {
-      errors.endDate = 'End date is required';
+      errors.endDate = t('AddTrip.popups.validation.endDateRequired');
     }
 
     if (formState.startDate && formState.endDate && formState.endDate < formState.startDate) {
-      errors.endDate = 'End date cannot be before start date';
+      errors.endDate = t('AddTrip.popups.validation.endDateBeforeStart');
     }
 
     if (formState.destinations.length === 0) {
-      errors.destinations = 'At least one destination is required';
+      errors.destinations = t('AddTrip.popups.validation.destinationRequired');
     } else {
       formState.destinations.forEach((dest, index) => {
         if (!dest.destinationName.trim()) {
-          errors[`destinations[${index}]`] = 'Destination is required';
+          errors[`destinations[${index}]`] = t('AddTrip.popups.validation.specificDestinationRequired');
         }
       });
     }
@@ -148,22 +152,21 @@ export const useAddTrip = () => {
   // Handle adding to existing trip
   const handleSubmitTrip = () => {
     if (tripState.selectedTripId !== "new") {
-      dispatch(addSite({ id: tripState.selectedPlaceId, order: 5 }))
+      dispatch(formState.type === "event" ? addSite({ id: tripState.selectedPlaceId, order: 5 }) : addToExistingTrip({ tripId: tripState.selectedTripId, siteId: tripState.selectedPlaceId }))
         .then((res) => {
           if (res.type === "places/addSite/fulfilled") {
-            toast.success(<>
-              Place added to itinerary!<br />
-              A new place has been added to your "{tripState.existingTripName}". Keep adding destinations and events.
-            </>);
+            toast.success(
+              t('AddTrip.success.placeAdded.message', { tripName: tripState.existingTripName })
+            );
             closeAddTripPopup();
           } else if (res.type === "places/addSite/rejected") {
-            const errorMsg = res.payload?.error_description || "Failed to add place";
+            const errorMsg = res.payload?.error_description ||  t('AddTrip.errors.addPlaceFailed');
             toast.error(`Error: ${errorMsg}`);
           }
         })
         .catch((error) => {
           console.error("Dispatch error:", error);
-          toast.error("An unexpected error occurred");
+          toast.error(t('AddTrip.errors.unexpectedError'));
         });
     } else {
       closeAddTripPopup();
@@ -200,15 +203,16 @@ export const useAddTrip = () => {
       
       if (result.type === "places/addTrip/fulfilled") {
         setSuccessData({
-          message: "A new trip has been added to your account. Continue adding destinations and events.",
-          title: "Trip added!",
+          message: t('AddTrip.success.tripAdded.message'),
+          title: t('AddTrip.success.tripAdded.title'),
           show: true
         });
         dispatch(resetTripType());
       } else {
         setSuccessData({
-          message: result.payload?.error_description || "Failed to create trip",
-          title: "Error",
+          message: result.payload?.error_description || 
+                  t('AddTrip.errors.createTripFailed'),
+          title: 'Error',
           show: true
         });
       }
@@ -218,8 +222,8 @@ export const useAddTrip = () => {
     } catch (error) {
       console.error('Error adding trip:', error);
       setSuccessData({
-        message: "An unexpected error occurred",
-        title: "Error",
+        message: t('AddTrip.errors.unexpectedError'),
+        title: 'Error',
         show: true
       });
     }
@@ -245,6 +249,7 @@ export const useAddTrip = () => {
   const closeAddToTrip = () => {
     dispatch(closePopup());
     dispatch(closeAddToTripPopup());
+    setFormErrors({});
   };
 
   // Handle trip click (main entry point)

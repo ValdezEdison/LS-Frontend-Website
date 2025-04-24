@@ -1,0 +1,23 @@
+{
+    "events": {
+      "pageTitle": "Eventos",
+      "availableEvents": "{{count}} eventos disponibles",
+      "popularEvents": "Eventos más populares",
+      "noResults": "No se encontraron resultados",
+      "showMore": "Mostrar más",
+      "loginBanner": {
+        "title": "Inicia sesión y ahorra tiempo",
+        "description": "Inicia sesión para guardar tus favoritos y crear nuevos itinerarios en Local Secrets.",
+        "buttonText": "Inicia sesión o crea una cuenta"
+      },
+      "alertPopup": {
+        "title": "Inicia sesión y ahorra tiempo",
+        "description": "Inicia sesión para guardar tus favoritos y crear nuevos itinerarios en Local Secrets.",
+        "buttonText": "Inicia sesión o crea una cuenta"
+      },
+      "successPopup": {
+        "addedToTrip": "Añadido al viaje",
+        "tripCreated": "Viaje creado con éxito"
+      }
+    }
+  }

@@ -1,15 +1,16 @@
 import styles from "./ItineraryDetail.module.css";
 import TripTypeList from '../../common/TripTypeList';
+import { useTranslation } from 'react-i18next';
 
 const AddTripPopup = ({ onClose, travelLiteList, state, setState, handleSubmitTrip }) => {
     
-    console.log(state, "state");
+    const { t } = useTranslation("AddTrip");
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modal}>
                 <div className={styles.modalContent}>
                     <div className={styles.modalHeader}>
-                        <h2 className={styles.modalTitle}>Añadir a mis viajes</h2>
+                        <h2 className={styles.modalTitle}>{t('AddTrip.popups.addTrip.title')}</h2>
                         <button onClick={onClose} className={styles.closeButton} aria-label="Cerrar modal">
                             <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M25.5 8.5L8.5 25.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -20,14 +21,14 @@ const AddTripPopup = ({ onClose, travelLiteList, state, setState, handleSubmitTr
 
                     <p className={styles.modalDescription}>
 
-                        Add '{state.selectedPlaceName}' to any of your planned trips
+                    {t('AddTrip.popups.addTrip.description', { placeName: state.selectedPlaceName })}
                     </p>
 
                     {/* <TripTypeList styles={styles} setState={setState} state={state} tripsData={travelLiteList} /> */}
                     <div className={styles.tripList}>
                         {/* Static "New Trip" option */}
                         <div className={styles.tripItem}>
-                            <div className={styles.tripName}>New Trip</div>
+                            <div className={styles.tripName}>{t('AddTrip.popups.addTrip.newTrip')}</div>
                           
                             <label className="radioContainer">
                                 <input
@@ -66,7 +67,7 @@ const AddTripPopup = ({ onClose, travelLiteList, state, setState, handleSubmitTr
 
                     <div className={styles.divider} />
 
-                    <button className={styles.confirmButton} onClick={handleSubmitTrip}>Confirmar</button>
+                    <button className={styles.confirmButton} onClick={handleSubmitTrip}>{t('AddTrip.popups.addTrip.confirmButton')}</button>
                 </div>
             </div>
         </div>

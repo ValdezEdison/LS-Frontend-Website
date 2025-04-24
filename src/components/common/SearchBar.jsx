@@ -15,7 +15,7 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
   return (
     <div className={styles.eventSearch}>
       <div className={styles.searchContainer}>
-        <h2 className={styles.searchTitle}>Encuentra tu evento</h2>
+        <h2 className={styles.searchTitle}>{t('events.searchTitle')}</h2>
         <form className={styles.searchForm}>
           <div className={styles.inputWrapper}>
             <img
@@ -25,9 +25,9 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
             />
             <CustomInput
               type="text"
-              placeholder="Busca por palabras clave"
+              placeholder={t("events.searchPlaceholder")}
               className={styles.searchInput}
-              aria-label="Busca por palabras clave"
+              aria-label={t("events.searchPlaceholder")}
               value={state.keyword}
               onChange={(e) => handleSearch(e)}
             />
@@ -36,7 +36,7 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
       </div>
       <div className={styles.actionButtons}>
        {!isFavorites &&  <button className={styles.mapButton} onClick={() => togglePopup('map', true)}>{t("seeMap")}</button>}
-        <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>Filtros <img src={Filter}/></button>
+        <button className={styles.filterButton} onClick={() => togglePopup('filterPanel', true)}>{t("filters")} <img src={Filter}/></button>
       </div>
     </div>
   );

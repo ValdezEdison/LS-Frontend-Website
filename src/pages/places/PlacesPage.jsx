@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { useAddTrip } from "../../hooks/useAddTrip";
 
 // Context
 import { LanguageContext } from "../../context/LanguageContext";
@@ -64,6 +65,8 @@ import styles3 from "../../components/PlacesPage/MainContent.module.css";
 const PlacesPage = () => {
 
   const { t } = useTranslation('Places');
+  const { t: tCommon } = useTranslation('Common');
+  const { t: tAddTrip } = useTranslation('AddTrip');
   // Hooks and Redux
   const dispatch = useDispatch();
   const location = useLocation();
@@ -91,28 +94,28 @@ const PlacesPage = () => {
 
   const {
     isOpen,
-    isAddToPopupOpen
+
   } = useSelector((state) => state.popup);
 
   const {
     isAuthenticated
   } = useSelector((state) => state.auth);
 
-  const {
-    travelLiteList
-  } = useSelector((state) => state.itineriesInCity);
+  // const {
+  //   travelLiteList
+  // } = useSelector((state) => state.itineriesInCity);
 
   const {
     bannerBlocks, bannerLoading
   } = useSelector((state) => state.cms.blocks);
 
   // Constants
-const RATINGS = [
-  { label: t('ratings.labels.4'), value: 4 },
-  { label: t('ratings.labels.3'), value: 3 },
-  { label: t('ratings.labels.2'), value: 2 },
-  { label: t('ratings.labels.1'), value: 1 }
-];
+  const RATINGS = [
+    { label: t('ratings.labels.4'), value: 4 },
+    { label: t('ratings.labels.3'), value: 3 },
+    { label: t('ratings.labels.2'), value: 2 },
+    { label: t('ratings.labels.1'), value: 1 }
+  ];
 
   // State Management
   const [state, setState] = useState({
@@ -150,21 +153,49 @@ const RATINGS = [
     ? JSON.parse(localStorage.getItem('tripType')).type
     : "solo";
 
-  const [formState, setFormState] = useState({
-    tripType: tripType,
-    tripName: '',
-    startDate: null,
-    endDate: null,
-    destinationSearchQuery: "",
-    mode: 'driving',
-    destinations: [{
-      destinationSearchQuery: '',
-      destinationId: null,
-      destinationName: ''
-    }],
-    stops: [],
-    selectedPlaceName: ""
-  });
+  // const [formState, setFormState] = useState({
+  //   tripType: tripType,
+  //   tripName: '',
+  //   startDate: null,
+  //   endDate: null,
+  //   destinationSearchQuery: "",
+  //   mode: 'driving',
+  //   destinations: [{
+  //     destinationSearchQuery: '',
+  //     destinationId: null,
+  //     destinationName: ''
+  //   }],
+  //   stops: [],
+  //   selectedPlaceName: ""
+  // });
+
+
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
 
   useEffect(() => {
     if (state.selectedPlaceName) {
@@ -175,13 +206,15 @@ const RATINGS = [
     }
   }, [state.selectedPlaceName]);
 
-  const [formErrors, setFormErrors] = useState({});
+  // const [formErrors, setFormErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const [successTitle, setSuccessTitle] = useState("");
-  const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
-  const [citiesSearchResults, setCitiesSearchResults] = useState([]);
-  const [isSearchingCities, setIsSearchingCities] = useState(false);
+  // const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
+  // const [citiesSearchResults, setCitiesSearchResults] = useState([]);
+  // const [isSearchingCities, setIsSearchingCities] = useState(false);
   const [showMapPopup, setShowMapPopup] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
 
   // Helper Functions
   const removeDuplicates = (str) => {
@@ -193,16 +226,16 @@ const RATINGS = [
     state ? dispatch(openPopup()) : dispatch(closePopup());
   };
 
-  const updateDestination = (index, field, value) => {
-    setFormState(prev => {
-      const newDestinations = [...prev.destinations];
-      newDestinations[index] = {
-        ...newDestinations[index],
-        [field]: value
-      };
-      return { ...prev, destinations: newDestinations };
-    });
-  };
+  // const updateDestination = (index, field, value) => {
+  //   setFormState(prev => {
+  //     const newDestinations = [...prev.destinations];
+  //     newDestinations[index] = {
+  //       ...newDestinations[index],
+  //       [field]: value
+  //     };
+  //     return { ...prev, destinations: newDestinations };
+  //   });
+  // };
 
   // Event Handlers
   const handleShowMapPopup = () => {
@@ -217,46 +250,105 @@ const RATINGS = [
     setState(prev => ({ ...prev, points: "" }));
   };
 
-  const handleActions = (e, action, id) => {
+  // const handleActions = (e, action, id) => {
+  //   e.stopPropagation();
+  //   switch (action) {
+  //     case 'addToFavorites':
+  //       handleFavClick(e, id);
+  //       break;
+  //     case 'addToTrip':
+  //       handleTripClick(e, id);
+  //       break;
+  //     case 'addToStop':
+  //       setFormState(prev => ({
+  //         ...prev,
+  //         stops: [...prev.stops, id]
+  //       }));
+  //       break;
+  //     case 'viewMore':
+  //       handleViewMoreDetails(e, id);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+
+
+
+  const handleViewMoreDetails = (e, id) => {
+    if (isAuthenticated) {
+      navigate('/places/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
+
+  // const handleFavClick = (e, id) => {
+  //   e.stopPropagation();
+  //      if (isAuthenticated) {
+  //         dispatch(toggleFavorite(id));
+  //         dispatch(setFavTogglingId(id));
+  //       } else {
+  //         setAlertTitle(tCommon('authAlert.favorites.title'));
+  //         setAlertMessage(tCommon('authAlert.favorites.description'));
+  //         togglePopup("alert", true);
+  //       }
+  // };
+
+  // const handleTripClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     const selectedPlace = places.find(place => place.id === id);
+  //     setState(prev => ({
+  //       ...prev,
+  //       selectedPlaceName: selectedPlace?.display_text,
+  //       selectedPlaceId: id
+  //     }));
+  //     togglePopup("addTrip", true);
+  //   } else {
+  //     togglePopup("alert", true);
+  //     setAlertTitle(tCommon('authAlert.favorites.title'));
+  //     setAlertMessage(tCommon('authAlert.favorites.description'));
+  //   }
+  // };
+
+  const handleActions = (e, action, id, name) => {
+    console.log(action, 'action');
     e.stopPropagation();
     switch (action) {
       case 'addToFavorites':
         handleFavClick(e, id);
         break;
       case 'addToTrip':
-        handleTripClick(e, id);
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "place" }));
         break;
-      case 'addToStop':
-        setFormState(prev => ({
-          ...prev,
-          stops: [...prev.stops, id]
-        }));
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
         break;
       default:
         break;
     }
   };
 
-  const handleFavClick = (e, id) => {
-    e.stopPropagation();
-       if (isAuthenticated) {
-          dispatch(toggleFavorite(id));
-          dispatch(setFavTogglingId(id));
-        } else {
-          togglePopup("alert", true);
-        }
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
+    }
   };
 
-  const handleTripClick = (e, id) => {
+  const handleFavClick = (e, id) => {
     e.stopPropagation();
     if (isAuthenticated) {
-      const selectedPlace = places.find(place => place.id === id);
-      setState(prev => ({
-        ...prev,
-        selectedPlaceName: selectedPlace?.display_text,
-        selectedPlaceId: id
-      }));
-      togglePopup("addTrip", true);
+      dispatch(toggleFavorite(id));
+      dispatch(setFavTogglingId(id));
     } else {
       togglePopup("alert", true);
     }
@@ -266,33 +358,32 @@ const RATINGS = [
     navigate('/login', { state: { from: location } });
   };
 
-  const handleSubmitTrip = () => {
-    if (state.selectedTripId !== "new") {
-      dispatch(addSite({ id: state.selectedPlaceId, order: 5 }))
-        .then((res) => {
-          console.log(res, 'res.type')
-          if (res.type === "places/addSite/fulfilled") {
-            toast.success(<>
-              Place added to itinerary!<br />
-              A new place has been added to your "{state.existingTripName}". Keep adding destinations and events.
-            </>);
-            togglePopup("addTrip", false);
-          } else if (res.type === "places/addSite/rejected") {
-            // Use error_description from handleApiError
-            const errorMsg = res.type?.payload?.error_description || "Failed to add place";
-            toast.error(`Error: ${errorMsg}`);
-          }
-        })
-        .catch((error) => {
-          console.error("Dispatch error:", error);
-          toast.error("An unexpected error occurred");
-        });
-    } else {
-      togglePopup("addTrip", false);
-      dispatch(openAddToTripPopup());
-      dispatch(openPopup());
-    }
-  };
+  // const handleSubmitTrip = () => {
+  //   if (state.selectedTripId !== "new") {
+  //     dispatch(addSite({ id: state.selectedPlaceId, order: 5 }))
+  //       .then((res) => {
+  //         console.log(res, 'res.type')
+  //         if (res.type === "places/addSite/fulfilled") {
+  //           toast.success(
+  //             tAddTrip('AddTrip.success.placeAdded.message', { tripName: tripState.existingTripName })
+  //           );
+  //           togglePopup("addTrip", false);
+  //         } else if (res.type === "places/addSite/rejected") {
+  //           // Use error_description from handleApiError
+  //           const errorMsg = res.type?.payload?.error_description || tAddTrip('AddTrip.errors.addPlaceFailed');
+  //           toast.error(`Error: ${errorMsg}`);
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Dispatch error:", error);
+  //         toast.error(tAddTrip('AddTrip.errors.unexpectedError'));
+  //       });
+  //   } else {
+  //     togglePopup("addTrip", false);
+  //     dispatch(openAddToTripPopup());
+  //     dispatch(openPopup());
+  //   }
+  // };
 
   // Data Fetching
   const debouncedFetchCountries = useCallback(
@@ -309,25 +400,25 @@ const RATINGS = [
     [dispatch]
   );
 
-  const debouncedFetchCitiesForAddTrip = useCallback(
-    debounce(async (query) => {
-      if (query.trim()) {
-        setIsSearchingCities(true);
-        try {
-          const result = await dispatch(fetchCities({ searchQuery: query }));
-          setCitiesSearchResults(result.payload || []);
-        } catch (error) {
-          console.error('Search error:', error);
-          setCitiesSearchResults([]);
-        } finally {
-          setIsSearchingCities(false);
-        }
-      } else {
-        setCitiesSearchResults([]);
-      }
-    }, 500),
-    [dispatch]
-  );
+  // const debouncedFetchCitiesForAddTrip = useCallback(
+  //   debounce(async (query) => {
+  //     if (query.trim()) {
+  //       setIsSearchingCities(true);
+  //       try {
+  //         const result = await dispatch(fetchCities({ searchQuery: query }));
+  //         setCitiesSearchResults(result.payload || []);
+  //       } catch (error) {
+  //         console.error('Search error:', error);
+  //         setCitiesSearchResults([]);
+  //       } finally {
+  //         setIsSearchingCities(false);
+  //       }
+  //     } else {
+  //       setCitiesSearchResults([]);
+  //     }
+  //   }, 500),
+  //   [dispatch]
+  // );
 
   // Effects
   useEffect(() => {
@@ -443,13 +534,13 @@ const RATINGS = [
     }
   }, [state.selectedDestinationId, navigate]);
 
-  useEffect(() => {
-    // Search effect for add trip
-    const activeQuery = formState.destinations?.[activeDestinationIndex]?.destinationSearchQuery;
-    debouncedFetchCitiesForAddTrip(activeQuery);
+  // useEffect(() => {
+  //   // Search effect for add trip
+  //   const activeQuery = formState.destinations?.[activeDestinationIndex]?.destinationSearchQuery;
+  //   debouncedFetchCitiesForAddTrip(activeQuery);
 
-    return () => debouncedFetchCitiesForAddTrip.cancel();
-  }, [formState.destinations, activeDestinationIndex, debouncedFetchCitiesForAddTrip]);
+  //   return () => debouncedFetchCitiesForAddTrip.cancel();
+  // }, [formState.destinations, activeDestinationIndex, debouncedFetchCitiesForAddTrip]);
 
   // Modal props
   const modalSearchProps = {
@@ -465,30 +556,30 @@ const RATINGS = [
 
     // Validate trip name
     if (!formState.tripName.trim()) {
-      errors.tripName = 'Trip name is required';
+      errors.tripName = tAddTrip('AddTrip.popups.validation.tripNameRequired');
     }
 
     // Validate dates
     if (!formState.startDate) {
-      errors.startDate = 'Start date is required';
+      errors.startDate = tAddTrip('AddTrip.popups.validation.startDateRequired');
     }
     if (!formState.endDate) {
-      errors.endDate = 'End date is required';
+      errors.endDate = tAddTrip('AddTrip.popups.validation.endDateRequired');
     }
 
     // Validate that end date is not before start date
     if (formState.startDate && formState.endDate && formState.endDate < formState.startDate) {
-      errors.endDate = 'End date cannot be before start date';
+      errors.endDate = tAddTrip('AddTrip.popups.validation.endDateBeforeStart');
     }
 
     // Validate destinations
     if (formState.destinations.length === 0) {
-      errors.destinations = 'At least one destination is required';
+      errors.destinations = tAddTrip('AddTrip.popups.validation.destinationRequired');
     } else {
       // Check each destination for validity
       formState.destinations.forEach((dest, index) => {
         if (!dest.destinationName.trim()) {
-          errors[`destinations[${index}]`] = 'Destination is required';
+          errors[`destinations[${index}]`] = tAddTrip('AddTrip.popups.validation.specificDestinationRequired');
         }
         // Add more destination validations as needed
       });
@@ -501,73 +592,75 @@ const RATINGS = [
 
   const storedTripType = localStorage.getItem('tripType')
 
-  const handleSubmit = async (e) => {
-    console.log("storedTripType submit", storedTripType)
-    if (!storedTripType) {
-      dispatch(setTripType({ id: state.selectedPlaceId, type: formState.tripType }))
-      // dispatch(closeAddToTripPopup())
-      // togglePopup("success", true);
-      // setSuccessMessage(`A new stop has been added to your trip ${state.selectedPlaceName}. Continue adding destinations and events as you wish.`);
-      // setSuccessTitle("Route added!");
-      return
-    }
+  // const handleSubmit = async (e) => {
+  //   console.log("storedTripType submit", storedTripType)
+  //   if (!storedTripType) {
+  //     dispatch(setTripType({ id: state.selectedPlaceId, type: formState.tripType }))
+  //     // dispatch(closeAddToTripPopup())
+  //     // togglePopup("success", true);
+  //     // setSuccessMessage(`A new stop has been added to your trip ${state.selectedPlaceName}. Continue adding destinations and events as you wish.`);
+  //     // setSuccessTitle("Route added!");
+  //     return
+  //   }
 
-    e.preventDefault();
+  //   e.preventDefault();
 
-    if (!validateForm()) return;
+  //   if (!validateForm()) return;
 
-    try {
-      dispatch(setTripType({ id: id, type: formState.tripType }))
-      if (isCreatingNewTrip) {
-        const tripData = {
-          title: formState.tripName,
-          type: formState.tripType,
-          cities: formState.destinations.map((destination) => destination.destinationId),
-          initial_date: formState.startDate.toISOString().split('T')[0],
-          end_date: formState.endDate.toISOString().split('T')[0],
-          stops: formState.stops,
-        };
-        dispatch(addTrip(tripData))
-        .then((response) => {
-          console.log('Trip add response:', response);
-          
-          if (response.type === "places/addTrip/fulfilled") {
-            // Success case
-            dispatch(resetTripType());
-            togglePopup("success", true);
-            setSuccessMessage(`A new trip has been added to your account. Continue adding destinations and events as you wish.`);
-            setSuccessTitle("Trip added!");
-          } 
-          else if (response.type === "places/addTrip/rejected") {
-            // Error case
-            const errorMsg = response.payload?.error_description || 
-                            response.error?.message || 
-                            "Failed to create trip";
-            
-            togglePopup("error", true);
-            setSuccessMessage(errorMsg);
-            setSuccessTitle("Error creating trip");
-            console.error('Trip creation failed:', response.payload || response.error);
-          }
-        })
-        .catch((error) => {
-          // Unexpected errors
-          console.error('Unexpected error in dispatch:', error);
-          togglePopup("error", true);
-          setSuccessMessage("An unexpected error occurred while creating the trip");
-          setSuccessTitle("Error");
-        });
-      } else {
-        // Logic to add itinerary to existing trip would go here
-        console.log('Adding to existing trip:', selectedTripId);
-      }
+  //   try {
+  //     dispatch(setTripType({ id: state.selectedPlaceId, type: formState.tripType }))
+  //     if (isCreatingNewTrip) {
+  //       const tripData = {
+  //         title: formState.tripName,
+  //         type: formState.tripType,
+  //         cities: formState.destinations.map((destination) => destination.destinationId),
+  //         initial_date: formState.startDate.toISOString().split('T')[0],
+  //         end_date: formState.endDate.toISOString().split('T')[0],
+  //         stops: formState.stops,
+  //       };
+  //       dispatch(addTrip(tripData))
+  //       .then((response) => {
+  //         console.log('Trip add response:', response);
 
-      dispatch(closeAddToTripPopup());
-      dispatch(closePopup());
-    } catch (error) {
-      console.error('Error adding trip:', error);
-    }
-  };
+  //         if (response.type === "places/addTrip/fulfilled") {
+  //           // Success case
+  //           dispatch(resetTripType());
+  //           togglePopup("success", true);
+  //           setSuccessMessage(tAddTrip('AddTrip.success.tripAdded.message'));
+  //           setSuccessTitle(tAddTrip('AddTrip.success.tripAdded.title'));
+  //         } 
+  //         else if (response.type === "places/addTrip/rejected") {
+  //           // Error case
+  //           const errorMsg = response.payload?.error_description || 
+  //                           response.error?.message || 
+  //                           tAddTrip('AddTrip.errors.createTripFailed');
+
+  //           togglePopup("error", true);
+  //           setSuccessMessage(errorMsg);
+  //           setSuccessTitle('');
+  //           console.error('Trip creation failed:', response.payload || response.error);
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         // Unexpected errors
+  //         console.error('Unexpected error in dispatch:', error);
+  //         togglePopup("error", true);
+  //         setSuccessMessage( tAddTrip('AddTrip.errors.unexpectedError'),);
+  //         // setSuccessMessage("An unexpected error occurred while creating the trip");
+  //         setSuccessTitle("Error");
+
+  //       });
+  //     } else {
+  //       // Logic to add itinerary to existing trip would go here
+  //       console.log('Adding to existing trip:', selectedTripId);
+  //     }
+
+  //     dispatch(closeAddToTripPopup());
+  //     dispatch(closePopup());
+  //   } catch (error) {
+  //     console.error('Error adding trip:', error);
+  //   }
+  // };
 
   useEffect(() => {
     if (formState.destinations.length > 0 && formState.destinations[0].destinationId !== null) {
@@ -578,34 +671,34 @@ const RATINGS = [
   }, [formState.destinations])
 
 
-   useEffect(() => {
-      let timer;
-      if (popupState.success) {
-        timer = setTimeout(() => {
-          togglePopup("success", false);
-          setSuccessMessage("");
-          setSuccessTitle("");
-        }, 5000); // 5 seconds in milliseconds
-      }
-  
-      // Clean up the timer when the component unmounts or when popupState.success changes
-      return () => {
-        if (timer) clearTimeout(timer);
-      };
-    }, [popupState.success]);
+  useEffect(() => {
+    let timer;
+    if (popupState.success) {
+      timer = setTimeout(() => {
+        togglePopup("success", false);
+        setSuccessMessage("");
+        setSuccessTitle("");
+      }, 5000); // 5 seconds in milliseconds
+    }
 
-    useEffect(() => {
-      if(isAddToPopupOpen || popupState.addTrip){
-        document.body.classList.add('overflowHide');
-      }else{
-        document.body.classList.remove('overflowHide');
-      }
-  
-      // Cleanup: Remove class when component unmounts
-      return () => {
-        document.body.classList.remove('overflowHide');
-      };
-    }, [isAddToPopupOpen, popupState.addTrip]);
+    // Clean up the timer when the component unmounts or when popupState.success changes
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [popupState.success]);
+
+  useEffect(() => {
+    if (isAddToPopupOpen || tripPopupState.addTripPopup) {
+      document.body.classList.add('overflowHide');
+    } else {
+      document.body.classList.remove('overflowHide');
+    }
+
+    // Cleanup: Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overflowHide');
+    };
+  }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
 
   return (
     <>
@@ -625,29 +718,26 @@ const RATINGS = [
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
           <AlertPopup
             handleNavigateToLogin={handleNavigateToLogin}
-            title="Log in and save time"
-            description="Sign in to save your favorites and create new itineraries on Local Secrets."
-            buttonText="Sign in or create an account"
+            title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}
           />
         </Modal>
       )}
 
-      {isOpen && popupState.addTrip && (
+      {isOpen && tripPopupState.addTripPopup && (
         <AddTripPopup
-          onClose={() => togglePopup("addTrip", false)}
+          onClose={closeAddTripPopup}
           travelLiteList={travelLiteList}
-          state={state}
-          setState={setState}
+          state={tripState}
+          setState={setTripState}
           handleSubmitTrip={handleSubmitTrip}
         />
       )}
-
       {isOpen && isAddToPopupOpen && (
         <AddToTripPopup
           closeModal={() => {
-            dispatch(closeAddToTripPopup());
-            dispatch(closePopup());
-            dispatch(resetTripType());
+            closeAddToTrip();
           }}
           state={formState}
           setState={setFormState}
@@ -682,41 +772,41 @@ const RATINGS = [
         {/* {filterLoading ? (
           <PlacesPageSkeleton filterLoading={filterLoading} placesLoading={placesLoading} />
         ) : ( */}
-          <>
-            <div className="page-center">
-              <div className={styles.content}>
-                {filterLoading ? (
-                  <SidebarSkeleton />
-                )
-                  :
-                  (
-                    <Sidebar
+        <>
+          <div className="page-center">
+            <div className={styles.content}>
+              {filterLoading ? (
+                <SidebarSkeleton />
+              )
+                :
+                (
+                  <Sidebar
                     handleShowMapPopup={handleShowMapPopup}
                     categories={categories}
                     ratings={RATINGS}
                     state={state}
                     setState={setState}
                   />
-                  )
-                }
-              
-                { placesLoading ? (
-                  <MainContentSkeleton />
-                ) : (
-                  <MainContent
-                    state={state}
-                    setState={setState}
-                    countries={countries}
-                    cities={cities}
-                    handleActions={handleActions}
-                  />
-                )}
-              </div>
-              <div className={styles.content}>
-                <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
-              </div>
+                )
+              }
+
+              {placesLoading ? (
+                <MainContentSkeleton />
+              ) : (
+                <MainContent
+                  state={state}
+                  setState={setState}
+                  countries={countries}
+                  cities={cities}
+                  handleActions={handleActions}
+                />
+              )}
             </div>
-          </>
+            <div className={styles.content}>
+              <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
+            </div>
+          </div>
+        </>
         {/* )} */}
 
         <Newsletter />

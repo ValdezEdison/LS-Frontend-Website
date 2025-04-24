@@ -83,7 +83,7 @@
   align-items: center;
   gap: 10px;
   justify-content: start;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   padding: 15px 20px;
   cursor: pointer;
   transition: all ease .3s;
@@ -106,6 +106,9 @@
 .suggestionText {
   align-self: stretch;
   margin: auto 0;
+  text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .searchClose{

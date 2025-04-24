@@ -15,7 +15,8 @@ export const fetchEvents = createAsyncThunk(
     levels,
     startDate,
     endDate,
-    keyword
+    keyword,
+    sortBy
   }, { rejectWithValue }) => {
     try {
       const response = await eventService.getEvents({
@@ -27,7 +28,8 @@ export const fetchEvents = createAsyncThunk(
         levels,
         startDate,
         endDate,
-        keyword
+        keyword,
+        sortBy
       });
       return response;
     } catch (error) {

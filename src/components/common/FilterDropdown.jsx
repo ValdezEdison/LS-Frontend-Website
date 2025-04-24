@@ -62,7 +62,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
       </div>
 
       {isOpen && !disabled && (
-        <div className={styles.filterContent}>
+        <div className={styles.filterContent + " " + (type === "datePicker" ? styles.bgTransparent : "")}>
           {type === "datePicker" ? (
             <DatePicker
               selectsRange={true}

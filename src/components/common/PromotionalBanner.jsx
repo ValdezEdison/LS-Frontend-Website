@@ -97,7 +97,7 @@ const PromotionalBanner = ({ bannerBlocks, bannerLoading }) => {
                   className={styles.promotionalImage}
                   onError={(e) => {
                     e.currentTarget.src = PlaceHolderImg4;
-                    e.currentTarget.alt = partner.name || "Partner logo";
+                    // e.currentTarget.alt = partner.name || "Partner logo";
                   }}
                 />
                 <div className={styles.promotionalContent}>

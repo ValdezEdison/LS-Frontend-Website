@@ -14,13 +14,15 @@ import ImageGalleryPopupContent from "../../../components/PlacesDetailPage/Place
 import { openPopup, closePopup } from "../../../features/popup/PopupSlice";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 import { LanguageContext } from "../../../context/LanguageContext";
+import PartnersSection from "../../../components/common/PartnersSection";
+import { fetchOurPartners } from "../../../features/cms/Pages/PagesAction";
 
 
 const Destination = () => {
 
   const dispatch = useDispatch();
 
-   const { language } = useContext(LanguageContext);
+   const { language, languageId } = useContext(LanguageContext);
 
   const location = useLocation();
   const { id } = location.state || {};
@@ -28,13 +30,14 @@ const Destination = () => {
   const { loading, destination } = useSelector((state) => state.destination);
   const {loading: NearbyPlacesLoading, NearbyPlaces } = useSelector((state) => state.places);
   const { isOpen } = useSelector((state) => state.popup);
+  const { heroContent, loading: heroContentLoading, error: heroContentError, ourPartners, ourPartnersLoading, ourPartnersError } = useSelector((state) => state.cms.pages);
 
   const [showImgGalleryPopup, setShowImgGalleryPopup] = useState(false);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchDestinationInfo({ id }));
-      // dispatch(fetchNearbyPlaces(id)); 
+       dispatch(fetchOurPartners(languageId));
 
     }
   }, [dispatch, language]);
@@ -63,7 +66,7 @@ const Destination = () => {
         {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
       </div>
     
-      <Partners />
+      <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Footer />
     </>
   );

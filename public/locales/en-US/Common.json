@@ -2,6 +2,7 @@
   "seeMore": "Show more",
   "noResults": "No results found",
   "seeMap": "See map",
+  "filters": "Filters",
   "removeFilters": "Remove filters",
   "nearbyPlaces": "Other nearby places",
   "logInButton": "Sign in",
@@ -17,5 +18,24 @@
     "events": "Events",
     "places": "Places",
     "itineraries": "Itineraries"
+  },
+  "authAlert": {
+    "favorites": {
+      "title": "Log in and save time",
+      "description": "Sign in to save your favorites and create new itineraries on Local Secrets.",
+      "button": "Sign in or create an account"
+    },
+    "viewDetails": {
+      "title": "Sign in to see more",
+      "description": "Sign in to see all our options and save your favorite local secrets."
+    },
+    "tripCreation": {
+      "title": "Want to add a trip to your list?",
+      "description": "Sign up or log in to add a trip and create itineraries to your liking."
+    }
+  },
+  "events": {
+    "searchTitle": "Find your event",
+    "searchPlaceholder": "Search by keywords"
   }
 }

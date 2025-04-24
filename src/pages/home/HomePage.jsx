@@ -4,7 +4,7 @@ import HeroSection from "../../components/layouts/HeroSection";
 import PlacesSection from "../../components/HomePage/PlacesSection";
 import EventsSection from "../../components/HomePage/EventsSection";
 import ArticlesSection from "../../components/HomePage/ArticlesSection";
-import PartnersSection from "../../components/HomePage/PartnersSection";
+import PartnersSection from "../../components/common/PartnersSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
 import styles from "./HomePage.module.css";

@@ -33,7 +33,7 @@ import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { fetchTravelLiteList } from "../../features/places/placesInfo/itinerary/ItineraryAction";
 import { fetchCities } from "../../features/common/cities/CityAction";
-import { debounce } from "lodash";
+import { debounce, sortBy } from "lodash";
 import { fetchBannerBlocks } from "../../features/cms/Blocks/BlocksAction";
 
 const EventsPage = () => {
@@ -42,6 +42,8 @@ const EventsPage = () => {
   const dispatch = useDispatch();
   const { language, languageId } = useContext(LanguageContext);
   const { t } = useTranslation('places');
+  const { t: tEventsPage } = useTranslation('EventsPage');
+  const { t: tCommon } = useTranslation('Common');
 
   // Selectors
   const { loading: eventLoading, error, next, count, events } = useSelector((state) => state.events);
@@ -96,6 +98,7 @@ const EventsPage = () => {
     startDate: null,
     endDate: null,
     keyword: "",
+    selectedOrder: ""
   });
 
   const [popupState, setPopupState] = useState({
@@ -107,6 +110,9 @@ const EventsPage = () => {
     deleteConfirm: false,
     filterPanel: false
   });
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
 
   // Fetch events and locations
   useEffect(() => {
@@ -121,19 +127,19 @@ const EventsPage = () => {
     return () => {
       dispatch(closePopup());
       closeAddToTrip()
-      setState({
-        selectedLevel: "",
-        selectedCategory: "", 
-        selectedSubcategory: "",
-        selectedDateRange: { startDate: null, endDate: null },  
-        page: 1,
-        type: "event",
-        selectedCityId: null,
-        selectedDestinationId: null,
-        destinationSearchQuery: "",
-        startDate: null,
-        endDate: null
-      });
+      // setState({
+      //   selectedLevel: "",
+      //   selectedCategory: "", 
+      //   selectedSubcategory: "",
+      //   selectedDateRange: { startDate: null, endDate: null },  
+      //   page: 1,
+      //   type: "event",
+      //   selectedCityId: null,
+      //   selectedDestinationId: null,
+      //   destinationSearchQuery: "",
+      //   startDate: null,
+      //   endDate: null
+      // });
     }
   }, [dispatch, language]);
 
@@ -168,6 +174,8 @@ const EventsPage = () => {
   const handleAddToTripClick = (e, id, name) => {
     const result = handleTripClick(e, id, name);
     if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
     }
   };
@@ -183,7 +191,14 @@ const EventsPage = () => {
   };
 
   const handleViewMoreDetails = (e, id) => {
-    navigate('/events/details', { state: { id } });
+    
+    if (isAuthenticated) {
+      navigate('/events/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
   };
 
   // Modal props
@@ -226,18 +241,31 @@ const EventsPage = () => {
   }, [state.selectedCityId]);
 
   const onApplyFilters = () => {
-    dispatch(fetchEvents({
+    console.log('state', state);
+    
+    const params = {
       type: state.type,
       page: state.page,
       cityId: state.selectedCityId,
       categories: state.selectedCategory,
       subcategories: state.selectedSubcategory,
       levels: state.selectedLevel,
-      startDate: state.selectedDateRange.startDate,
-      endDate: state.selectedDateRange.endDate
-    }));
-    dispatch(closePopup())
-    togglePopup("filterPanel", false)
+      sortBy: state.selectedOrder
+    };
+  
+    // Only add startDate if it exists
+    if (state.startDate) {
+      params.startDate = state.startDate.toISOString().split('T')[0];
+    }
+  
+    // Only add endDate if it exists
+    if (state.endDate) {
+      params.endDate = state.endDate.toISOString().split('T')[0];
+    }
+  
+    dispatch(fetchEvents(params));
+    dispatch(closePopup());
+    togglePopup("filterPanel", false);
   }
 
  useEffect(() => {
@@ -255,26 +283,34 @@ const EventsPage = () => {
 
 
 
-    const debouncedSearchEvents = useMemo(
-      () => debounce((query) => {
-        if (query.trim() !== "") {
-          dispatch(fetchEvents({ keyword: query })); // Use the query parameter directly
-        } else {
-          // Clear results when query is empty
-          dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
-        }
-      }, 500),
-      [dispatch]
-    );
-    
     useEffect(() => {
-      debouncedSearchEvents(state.keyword);
+      const debounceTimer = setTimeout(() => {
+        const params = {
+          type: state.type,
+          page: 1, // Reset to first page when searching
+          keyword: state.keyword,
+          cityId: state.selectedCityId,
+          categories: state.selectedCategory,
+          subcategories: state.selectedSubcategory,
+          levels: state.selectedLevel
+        };
     
-      // Cleanup function to cancel debounce on unmount
-      return () => {
-        debouncedSearchEvents.cancel();
-      };
-    }, [state.keyword, debouncedSearchEvents]);
+        if (state.startDate) {
+          params.startDate = state.startDate.toISOString().split('T')[0];
+        }
+    
+        if (state.endDate) {
+          params.endDate = state.endDate.toISOString().split('T')[0];
+        }
+    
+        dispatch(fetchEvents(params));
+      }, 500);
+    
+      return () => clearTimeout(debounceTimer);
+    }, [
+      state.keyword, // Triggers when search term changes
+      dispatch,
+    ]);
     
     const handleSearch = (e) => {
       const value = e.target.value;
@@ -288,9 +324,9 @@ const EventsPage = () => {
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
           <AlertPopup
             handleNavigateToLogin={handleNavigateToLogin}
-            title="Log in and save time"
-            description="Sign in to save your favorites and create new itineraries on Local Secrets."
-            buttonText="Sign in or create an account"
+            title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}
           />
         </Modal>
       )}
@@ -353,16 +389,16 @@ const EventsPage = () => {
       <div className={styles.eventsPage}>
         <Header />
         <main className="page-center">
-          <h1 className={styles.eventCount}>{count} eventos disponibles</h1>
+          <h1 className={styles.eventCount}>{tEventsPage('events.availableEvents', { count })}</h1>
           <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state}/>
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
-          <h2 className={styles.sectionTitle}>Eventos más populares</h2>
+          <h2 className={styles.sectionTitle}>{tEventsPage('events.popularEvents')}</h2>
           <EventList
             events={visibleEvents}
             handleActions={handleActions}
           />
           {visibleEvents?.length === 0 &&
-          <div className="no-results-wrapper">No results</div>
+          <div className="no-results-wrapper">{tCommon("noResults")}</div>
           }
         
           <div className={styles.showMoreWrapper}>

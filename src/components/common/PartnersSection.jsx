@@ -14,7 +14,7 @@ const PartnersSection = ({ ourPartners, ourPartnersLoading }) => {
 
 
 
-  if (true) {
+  if (ourPartnersLoading) {
     return (
       <section className={styles.partnersSection}>
         <div className={styles.sectionTitle}>

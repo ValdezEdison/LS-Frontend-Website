@@ -64,6 +64,9 @@ const ItineraryList = () => {
     success: false,
   });
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -80,7 +83,13 @@ const ItineraryList = () => {
 
   const handleViewMoreDetails = (e, id) => {
 
-    navigate('/places/itineraries-details', { state: { id } });
+    if(isAuthenticated){
+      navigate('/places/itineraries-details', { state: { id } });
+    }else{
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.viewDetails.title'));
+        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
   };
 
 
@@ -194,6 +203,10 @@ const ItineraryList = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
+    }else{
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
     }
   };
 
@@ -203,6 +216,8 @@ const ItineraryList = () => {
       dispatch(openAddToTripPopup());
       navigate('/places/itineraries-details', { state: { id } });
     } else {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
     }
   };
@@ -220,7 +235,9 @@ const ItineraryList = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}/>
         </Modal>
       )}
       <Header />

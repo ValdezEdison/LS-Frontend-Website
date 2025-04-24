@@ -105,6 +105,9 @@ const Places = () => {
         success: false,
     });
 
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertTitle, setAlertTitle] = useState("");
+
     const togglePopup = (name, state) => {
         setPopupState((prev) => ({ ...prev, [name]: state }));
         state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -152,7 +155,14 @@ const Places = () => {
 
 
     const handleViewMoreDetails = (e, id) => {
-        navigate('/places/details', { state: { id } });
+        
+        if(isAuthenticated){
+            navigate('/places/details', { state: { id } });
+        }else{
+            togglePopup("alert", true);
+            setAlertTitle(tCommon('authAlert.viewDetails.title'));
+            setAlertMessage(tCommon('authAlert.viewDetails.description'));
+        }
     };
 
     const getResponsiveOffset = () => {
@@ -292,6 +302,8 @@ const Places = () => {
         const result = handleTripClick(e, id, name);
         if (result?.needsAuth) {
             togglePopup("alert", true);
+            setAlertTitle(tCommon('authAlert.favorites.title'));
+            setAlertMessage(tCommon('authAlert.favorites.description'));
         }
     };
 
@@ -300,7 +312,11 @@ const Places = () => {
         if (isAuthenticated) {
             dispatch(toggleFavorite(id));
             dispatch(setFavTogglingId(id));
-        }
+        }else {
+            setAlertTitle(tCommon('authAlert.favorites.title'));
+            setAlertMessage(tCommon('authAlert.favorites.description'));
+            togglePopup("alert", true);
+          }
     };
 
 
@@ -346,7 +362,9 @@ const Places = () => {
                     onClose={() => togglePopup("alert", false)}
                     customClass="modalSmTypeOne"
                 >
-                    <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+                    <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}/>
                 </Modal>
             )}
 

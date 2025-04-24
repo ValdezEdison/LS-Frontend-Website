@@ -2,6 +2,7 @@
   "seeMore": "Mostrar más",
   "noResults": "No se encontraron resultados",
   "seeMap": "Ver mapa",
+  "filters": "Filtros",
   "removeFilters": "Eliminar filtros",
   "nearbyPlaces": "Otros lugares cercanos",
   "logInButton": "Iniciar sesión",
@@ -17,5 +18,24 @@
     "events": "Eventos",
     "places": "Lugares",
     "itineraries": "Itinerarios"
+  },
+  "authAlert": {
+    "favorites": {
+      "title": "Inicia sesión y ahorra tiempo",
+      "description": "Inicia sesión para guardar tus favoritos y crear nuevos itinerarios en Local Secrets.",
+      "button": "Inicia sesión o crea una cuenta"
+    },
+    "viewDetails": {
+      "title": "Inicia sesión para ver más",
+      "description": "Inicia sesión para ver todas nuestras opciones y guardar tus secretos locales favoritos."
+    },
+    "tripCreation": {
+      "title": "¿Quieres añadir un viaje a tu lista?",
+      "description": "Regístrate o inicia sesión para añadir un viaje y crear itinerarios a tu gusto."
+    }
+  },
+  "events": {
+    "searchTitle": "Encuentra tu evento",
+    "searchPlaceholder": "Busca por palabras clave"
   }
 }

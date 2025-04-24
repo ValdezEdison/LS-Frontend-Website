@@ -1,0 +1,23 @@
+{
+    "events": {
+      "pageTitle": "Events",
+      "availableEvents": "{{count}} events available",
+      "popularEvents": "Popular Events",
+      "noResults": "No results found",
+      "showMore": "Show more",
+      "loginBanner": {
+        "title": "Log in and save time",
+        "description": "Sign in to save your favorites and create new itineraries on Local Secrets.",
+        "buttonText": "Sign in or create an account"
+      },
+      "alertPopup": {
+        "title": "Log in and save time",
+        "description": "Sign in to save your favorites and create new itineraries on Local Secrets.",
+        "buttonText": "Sign in or create an account"
+      },
+      "successPopup": {
+        "addedToTrip": "Added to trip",
+        "tripCreated": "Trip created successfully"
+      }
+    }
+  }

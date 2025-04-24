@@ -132,8 +132,8 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   }, [showSuggestionDropDown]);
 
   const handleViewMoreDetails = (e, id) => {
-    ;
-    navigate('/places/details', { state: { id } });
+    handleActions(e, 'viewMore', id);
+    // navigate('/places/details', { state: { id } });
   };
 
   const getResponsiveOffset = () => {
@@ -328,7 +328,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
       />
         :
         <div className={styles.loginButtonWrapper}>
-          <button class={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+          <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
         </div>
       }
 

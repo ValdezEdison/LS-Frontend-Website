@@ -166,7 +166,7 @@ const PlaceDetails = () => {
       dispatch(fetchPlaceComments(id));
       dispatch(fetchNearbyPlaces(id));
     }
-  }, [id, dispatch, language, state.latitude]);
+  }, [id, dispatch, language]);
 
   const handleClickViewMoreDetails = () => {
     togglePopup("gallery", true);
@@ -525,6 +525,23 @@ const PlaceDetails = () => {
     
   },[shareableLink])
 
+  const handleNavActions = (e, id, action) => {
+    console.log('entered', id)
+    if (isAuthenticated && action === "viewDetail") {
+      navigate('/places/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
+  const handleNavigate = () => {
+    navigate('/places')
+  }
+
 
   return (
     <>
@@ -689,7 +706,7 @@ const PlaceDetails = () => {
             {isLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} />
+              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} handleNavActions={handleNavActions}/>
             )}
           </div>
         </main>

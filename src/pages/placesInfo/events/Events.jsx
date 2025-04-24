@@ -126,6 +126,9 @@ const Events = () => {
     success: false,
   });
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -133,27 +136,37 @@ const Events = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
       dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
       dispatch(fetchGeoLocations({ cityId: id, type: "event" }));
       if (isAuthenticated) {
         dispatch(fetchTravelLiteList());
       }
       dispatch(fetchCities({}));
+      
       return () => {
         dispatch(closePopup());
-        closeAddToTrip()
-      }
+        closeAddToTrip();
+      };
     }
-  }, [dispatch, id, state.selectedLevel, language]);
-
-   useEffect(() => {
-          if (id) {
-              dispatch(fetchEventsByCityId({ cityId: id, page: 1, type: 'event', points: state.points, levels: state.selectedLevel }));
+  }, [dispatch, id, isAuthenticated, language]);
   
-          }
-      }, [dispatch, id, state.points]);
-
+  // Events with filters
+  useEffect(() => {
+    if (id) {
+      const params = {
+        cityId: id,
+        page: 1,
+        type: 'event',
+        levels: state.selectedLevel,
+        points: state.points,
+        ...(state.selectedDateRange.startDate && {
+          startDate: state.selectedDateRange?.startDate.toISOString().split('T')[0],
+          endDate: state.selectedDateRange?.endDate?.toISOString().split('T')[0]
+        })
+      };
+      dispatch(fetchEventsByCityId(params));
+    }
+  }, [dispatch, id, state.selectedLevel, state.points, state.selectedDateRange, language]);
 
 
   const handleShowMapPopup = () => {
@@ -220,6 +233,8 @@ const Events = () => {
   const handleAddToTripClick = (e, id, name) => {
     const result = handleTripClick(e, id, name);
     if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
     }
   };
@@ -230,6 +245,10 @@ const Events = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
+    }else {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
     }
   };
 
@@ -248,8 +267,14 @@ const Events = () => {
   }
 
   const handleViewMoreDetails = (e, id) => {
-    ;
-    navigate('/events/details', { state: { id } });
+    
+    if(isAuthenticated){
+      navigate('/events/details', { state: { id } });
+    }else{
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
   };
 
   // Modal props
@@ -284,7 +309,9 @@ const Events = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}/>
         </Modal>
       )}
 

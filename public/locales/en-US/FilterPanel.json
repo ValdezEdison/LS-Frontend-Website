@@ -1,0 +1,22 @@
+{
+    "filterPanel": {
+      "title": "All filters",
+      "close": "Close filter panel",
+      "dateRange": "Event start dates - end dates",
+      "destination": "Destination",
+      "searchPlaceholder": "Search for a destination",
+      "levels": "Levels",
+      "categories": "Categories",
+      "subcategories": "Subcategories",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "recent": "Most recent",
+        "rated": "Top rated",
+        "recommended": "Our recommendation"
+      },
+      "viewMore": "View more",
+      "viewLess": "View less",
+      "apply": "Apply",
+      "clear": "Clear filters"
+    }
+  }

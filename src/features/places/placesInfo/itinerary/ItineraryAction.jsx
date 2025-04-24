@@ -110,3 +110,15 @@ export const fetchItineriesInCity = createAsyncThunk(
       }
     }
   );
+
+  export const addToExistingTrip = createAsyncThunk(
+    'places/addToExistingTrip',
+    async ({tripId, siteId}, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.addToExistingTrip(tripId, siteId);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );

@@ -43,6 +43,10 @@ const itineraryService = {
         return ApiService.post(`/travels/${id}/add_site`, {id: id, order: order});
     },
 
+    addToExistingTrip: async (tripId, siteId) => {
+        return ApiService.post(`/routes/${tripId}/add_to_travel`, {id: siteId});
+    },
+
 }
 
 export default itineraryService

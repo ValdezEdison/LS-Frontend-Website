@@ -8,7 +8,7 @@ import TripTypeList from '../../common/TripTypeList';
 import { fetchCities } from '../../../features/common/cities/CityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import PlaceCard from '../../common/PlaceCard';
-import { getTripsTypes } from '../../../constants/TripTypeList';
+// import { getTripsTypes } from '../../../constants/TripTypeList';
 
 const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors, activeDestinationIndex,
   setActiveDestinationIndex,
@@ -17,6 +17,7 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   updateDestination,
   handleActions }) => {
   const { t } = useTranslation('Places');
+  const { t: tAddTrip } = useTranslation('AddTrip');
   const suggestionRef = useRef(null);
   const placeRefs = useRef({});
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
@@ -26,25 +27,8 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   const [storedTripType, setStoredTripType] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
-console.log(state, "stateggg")
-  const suggestions = [
-    {
-      title: 'Las Artes y las Ciencias',
-      location: 'Valencia, España',
-      description: 'Puntos de interés, patrimonio histórico',
-      rating: 4.5,
-      reviews: 234,
-      image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/de90cfe54bee2e1894362963b216e6912785bed2'
-    },
-    {
-      title: 'Las Artes y las Ciencias',
-      location: 'Valencia, España',
-      description: 'Puntos de interés, patrimonio histórico',
-      rating: 4.5,
-      reviews: 234,
-      image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/de90cfe54bee2e1894362963b216e6912785bed2'
-    }
-  ];
+
+
 
   const dispatch = useDispatch();
 
@@ -226,7 +210,7 @@ console.log(state, "stateggg")
       <div className={styles.modal}>
         <div className={styles.modalContent}>
           <div className={styles.modalHeader}>
-            <h2 className={styles.modalTitle}>Añadir a mis viajes</h2>
+            <h2 className={styles.modalTitle}> {tAddTrip('AddTrip.popups.addToTrip.title')}</h2>
             <button onClick={closeModal} className={styles.closeButton} aria-label="Cerrar modal">
               <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M25.5 8.5L8.5 25.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -237,26 +221,26 @@ console.log(state, "stateggg")
 
           <p className={styles.modalDescription}>
 
-            Add '{state?.selectedPlaceName}' to any of your planned trips
+          {tAddTrip('AddTrip.popups.addToTrip.description', { placeName: state?.selectedPlaceName })}
           </p>
 
-          <TripTypeList styles={styles} updateState={updateState} state={state} tripsData={getTripsTypes} />
+          <TripTypeList styles={styles} updateState={updateState} state={state} tripsData={[]} />
 
           <div className={styles.divider} />
           {state.tripType && (
             <>
               <div className={styles.formSection}>
                 <p className={styles.formDescription}>
-                  Use our trip planner to create new itineraries, plan your stops, and share different trips.
+                {tAddTrip('AddTrip.popups.addToTrip.formDescription')}
                 </p>
                 <div className={styles.formContainer}>
                   <form onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
-                      <label htmlFor="tripName" className={styles.label}>Nombre del viaje</label>
+                      <label htmlFor="tripName" className={styles.label}>{tAddTrip('AddTrip.popups.addToTrip.tripNameLabel')}</label>
                       <input
                         type="text"
                         id="tripName"
-                        placeholder="Text input"
+                        placeholder={tAddTrip('AddTrip.popups.addToTrip.tripNamePlaceholder')}
                         className={styles.input}
                         value={state.tripName}
                         onChange={(e) => updateState("tripName", e.target.value)}
@@ -324,11 +308,11 @@ console.log(state, "stateggg")
 
                     <div className={styles.addDestination} onClick={addDestination}>
                       <img src={AddCircle} alt="Add" />
-                      <span>Añade otro destino</span>
+                      <span>{tAddTrip('AddTrip.popups.addToTrip.addDestination')}</span>
                     </div>
 
                     <div className={styles.formGroup}>
-                      <label htmlFor="dates" className={styles.label}>Fechas</label>
+                      <label htmlFor="dates" className={styles.label}> {tAddTrip('AddTrip.popups.addToTrip.datesLabel')}</label>
                       <div className={styles.inputWithIcon}>
                         <img src={CalendarIcon} alt="Calendar" />
                         <DatePicker
@@ -336,7 +320,7 @@ console.log(state, "stateggg")
                           startDate={startDate}
                           endDate={endDate}
                           onChange={handleDateChange}
-                          placeholderText="Fecha inicio - fecha fin"
+                          placeholderText={tAddTrip('AddTrip.popups.addToTrip.datePlaceholder')}
                           className={styles.datePickerInput}
                           minDate={new Date()}
                           dateFormat="dd/MM/yyyy"
@@ -358,7 +342,7 @@ console.log(state, "stateggg")
 
               <div className={styles.suggestionSection}>
                 <div className={styles.suggestionTitleMain}>
-                  <h3 className={styles.suggestionTitle}>Sugerencias para empezar</h3>
+                  <h3 className={styles.suggestionTitle}>{tAddTrip('AddTrip.popups.addToTrip.suggestionsTitle')}</h3>
                   <div className={styles.suggestionAdd}></div>
                 </div>
 
@@ -383,14 +367,14 @@ console.log(state, "stateggg")
                         />
                       ))
                   ) : (
-                    <p>No new suggestions available</p>
+                    <p>{tAddTrip('AddTrip.popups.addToTrip.noSuggestions')}</p>
                   )}
                 </div>
               </div>
             </>
           )}
 
-          <button className={styles.confirmButton} onClick={onSubmit}>Confirmar</button>
+          <button className={styles.confirmButton} onClick={onSubmit}>{tAddTrip('AddTrip.popups.addToTrip.confirmButton')}</button>
         </div>
       </div>
     </div>

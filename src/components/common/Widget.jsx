@@ -6,7 +6,7 @@ import styles from "./Widget.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
 
-const Widget = ({ data = [], title, count}) => {
+const Widget = ({ data = [], title, count, handleNavActions}) => {
 
   const { t } = useTranslation("Common");
   
@@ -37,13 +37,13 @@ const Widget = ({ data = [], title, count}) => {
     <section className={styles.nearbyPlaces}>
       <div className={styles.nearbyPlaceTitle}>
         <h2 className={styles.sectionTitle}>{title}</h2>
-        <div className="seeMoreLink" >{t('seeMore')}</div>
+        <div className="seeMoreLink" onClick={(e) => handleNavActions(e, null, "viewList")}>{t('seeMore')}</div>
       </div>
       
       {data.length > 0 ? 
       <Slider {...settings}>
         {data.map((place, index) => (
-          <div key={index} className={styles.placeCard}>
+          <div key={index} className={styles.placeCard} onClick={(e) =>handleNavActions(e, place.id, "viewDetail")}>
             <img
               src={place.images[0] ? place.images[0]?.original : PlaceHolderImg2}
               alt={place.name}
