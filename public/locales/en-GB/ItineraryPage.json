@@ -1,0 +1,14 @@
+{
+    "itinerary": {
+      "title": "{{count}} itineraries available",
+      "searchLabel": "Looking for itineraries in",
+      "searchPlaceholder": "Search for a destination",
+      "recommended": "Recommended events",
+      "loginPrompt": "Log in to save your favorite itineraries and create trips",
+      "loginButton": "Log in",
+      "loading": "Loading itineraries...",
+      "loadMore": "Load more",
+      "noMore": "No more itineraries to load",
+      "popularItineraries": "Most viewed itineraries by travelers"
+    }
+  }

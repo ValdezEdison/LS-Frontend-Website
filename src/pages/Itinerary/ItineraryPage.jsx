@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 import CardSkeleton from "../../components/skeleton/common/CardSkeleton";
 
 const ItineraryPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("Common");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -130,7 +130,7 @@ const ItineraryPage = () => {
 
 
   useEffect(() => {
-    if(state.cityId){
+    if(state.selectedDestinationId){
       dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId}));
     }
 
@@ -140,7 +140,7 @@ const ItineraryPage = () => {
       <Header />
       <main className="page-center">
         {/* <h1 className={styles.eventCount}>{"1.240"} itinerarios disponibles</h1> */}
-        <SearchBar state={state} setState={setState} cities={cities} />
+        <SearchBar state={state} setState={setState} cities={cities} count={count}/>
         {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
         {itinerariesLoading ? (
           Array.from({ length: 5 }).map((_, index) => (
