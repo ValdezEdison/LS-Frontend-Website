@@ -19,7 +19,7 @@ const PlaceCard = forwardRef(
 
     const handleFavClick = (e) => {
        
-        handleActions(e, 'addToFavorites', place?.id, place?.display_text);
+        handleActions(e, 'addToFavorites', place?.id, place?.display_text || place?.title);
         e.stopPropagation();
     };
 
@@ -30,11 +30,11 @@ const PlaceCard = forwardRef(
 
     const handleStopClick = (e) => {
         e.stopPropagation();
-        handleActions(e, 'addToStop', place?.id, place?.display_text);
+        handleActions(e, 'addToStop', place?.id, place?.display_text || place?.title);
     };
 
     const handleCardClick = (e) => {
-        handleViewMoreDetails(e, place?.id, place?.display_text);
+        handleViewMoreDetails(e, place?.id, place?.display_text || place?.title);
     };
 
     return (
@@ -57,7 +57,7 @@ const PlaceCard = forwardRef(
                     alt={place?.display_text || place?.title || translate("placeCard.place_image")}
                     className={styles.placeImage}
                 />
-                {isAuthenticated && (
+                {isAuthenticated && !isItineraryPage && (
                     <div 
                         className={`${styles.favIcon} ${place?.is_fav ? styles.clicked : ""}`} 
                         onClick={handleFavClick}
@@ -76,7 +76,7 @@ const PlaceCard = forwardRef(
                         
                     </div>
                 
-                    <p className={styles.placeLocation}>
+                    {!isItineraryPage && <><p className={styles.placeLocation}>
                         {place?.city?.name}
                         {place?.city?.name && place?.city?.country?.name && ", "}
                         {place?.city?.country?.name}
@@ -84,6 +84,8 @@ const PlaceCard = forwardRef(
                     <p className={styles.placeCategory}>
                         {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
                     </p>
+                    </>
+                    }
                     {place?.num_of_stops !== undefined && (
                             <p className={styles.placeStops}>{translate("placeCard.stops")} {place.num_of_stops}</p>
                     )}
@@ -93,9 +95,10 @@ const PlaceCard = forwardRef(
                 {/* Conditionally render the stops and views section */}
                 {hasStopsOrTags && !hasComments && isItineraryPage && (
                     <div className={styles.placeStopsTags}>
-                       <p className={styles.placeItenary}>Itinerario</p>
-                       <p className={styles.placeLocation}>Atenas, Grecia</p>
-                        {place?.tags?.length > 0 && (
+                       <p className={styles.placeItenary}>{translate("placeCard.itinerary")}</p>
+                       <p className={styles.placeLocation}> {place?.cities[0]?.name}
+                       {place?.cities[0]?.country?.name && `, ${place.cities[0].country.name}`} </p>
+                        {/* {place?.tags?.length > 0 && (
                             <div className={styles.placeTags}>
                                 {place.tags.map((tag) => (
                                     <span key={tag.id} className={styles.tag}>
@@ -103,7 +106,7 @@ const PlaceCard = forwardRef(
                                     </span>
                                 ))}
                             </div>
-                        )}
+                        )} */}
                     </div>
                 )}
 

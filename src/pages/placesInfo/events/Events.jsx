@@ -225,6 +225,12 @@ const Events = () => {
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
       default:
         break;
     }

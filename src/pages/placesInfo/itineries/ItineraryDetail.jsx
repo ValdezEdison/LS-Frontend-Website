@@ -134,9 +134,11 @@ const ItineraryDetail = () => {
   }, [dispatch, id, language]);
 
   const handleViewMoreDetails = (id) => {
+
     
     if(isAuthenticated){
-      navigate('/places/details', { formState: { id } });
+
+      navigate('/places/details', { state: { id } });
     }else{
         togglePopup("alert", true);
         setAlertTitle(tCommon('authAlert.viewDetails.title'));

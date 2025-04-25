@@ -166,6 +166,12 @@ const EventsPage = () => {
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
       default:
         break;
     }
@@ -390,7 +396,7 @@ const EventsPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{tEventsPage('events.availableEvents', { count })}</h1>
-          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state} />
+          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state} setState={setState}/>
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>{tEventsPage('events.popularEvents')}</h2>
           <EventList

@@ -15,13 +15,13 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
               alt={title}
               className={styles.placeImage}
             />
-            <button className={styles.favoriteButton} aria-label="Add to favorites">
+            {/* <button className={styles.favoriteButton} aria-label="Add to favorites">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/9140b40ebf360338b9f5f1817977859dcc6c34cd3c67c7a8bb2be210d9539a5f?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
                 alt=""
                 className={styles.favoriteIcon}
               />
-            </button>
+            </button> */}
           </div>
           <div className={styles.placeInfo}>
             <div className={styles.placeInfoTop}>
@@ -33,13 +33,13 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
                     {city?.country?.name}
                 </p>
             </div>
-            <div className={styles.ratingContainer}>
+            {/* <div className={styles.ratingContainer}>
               <span className={styles.ratingScore}>{rating}</span>
               <div className={styles.ratingText}>
                 <span className={styles.ratingLabel}>Excelente</span>
                 <span className={styles.reviewCount}>0 comentarios</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
