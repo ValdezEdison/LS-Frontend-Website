@@ -19,6 +19,11 @@ const EventSearch = ({togglePopup, handleSearch, state, setState}) => {
             <label htmlFor="searchInput" className={styles.visuallyHidden}>
             {t('search.label')}
             </label>
+            <img
+                src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/23adcc496c13e14503025c9ac82cf17842b7cfed?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+                alt=""
+                className={styles.searchIcon}
+              />
             <input
               type="text"
               id="searchInput"
@@ -26,13 +31,8 @@ const EventSearch = ({togglePopup, handleSearch, state, setState}) => {
               placeholder={t('search.placeholder')}
               aria-label={t('search.label')}
             />
-            <button type="submit" className={styles.searchButton} aria-label={t('search.buttonAriaLabel')}>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/23adcc496c13e14503025c9ac82cf17842b7cfed?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-                alt=""
-                className={styles.searchIcon}
-              />
-            </button>
+            {/* <button type="submit" className={styles.searchButton} aria-label={t('search.buttonAriaLabel')}>
+            </button> */}
           </form>
       :
       <div className={styles.searchContainer}>
