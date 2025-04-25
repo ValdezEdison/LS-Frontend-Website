@@ -22,6 +22,10 @@ import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
 import FilterSiderbar from "../../components/popup/FavoritesFilterPanel/FilterSidebar"
+import SeeMoreButton from "../../components/common/SeeMoreButton";
+import { useTranslation } from "react-i18next";
+import useSeeMore from "../../hooks/useSeeMore";
+import Loader from "../../components/common/Loader";
 
 
 
@@ -59,10 +63,14 @@ const FavoritesPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { loading, favorites, isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites)
+  const { loading: loadingFavorites, favorites, isFavoriteToggling, favTogglingId, next } = useSelector((state) => state.favorites)
+  const { data: visibleFavorites, loading, next: hasNext, loadMore } = useSeeMore(favorites, next);
   const { isAuthenticated } = useSelector((state) => state.auth)
-  const { isOpen } = useSelector((state) => state.popup) 
+  const { isOpen } = useSelector((state) => state.popup)
   const { cities } = useSelector((state) => state.cities)
+
+  const { t: tCommon } = useTranslation('Common');
+  const { t: tFavoritesPage } = useTranslation('FavoritesPage');
 
 
   // Add trip functionality
@@ -94,6 +102,9 @@ const FavoritesPage = () => {
   } = useAddTrip();
 
   const [vanishingItems, setVanishingItems] = useState([]);
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
 
   const [popupState, setPopupState] = useState({
     map: false,
@@ -245,8 +256,8 @@ const FavoritesPage = () => {
     navigate('/login', { state: { from: location } });
   };
 
-   // Modal props
-   const modalSearchProps = {
+  // Modal props
+  const modalSearchProps = {
     activeDestinationIndex,
     setActiveDestinationIndex,
     citiesSearchResults,
@@ -254,29 +265,32 @@ const FavoritesPage = () => {
     updateDestination
   };
 
-   useEffect(() => {
-        if( tripPopupState.addTripPopup || isAddToPopupOpen ){
-          document.body.classList.add('overflowHide');
-        }else{
-          document.body.classList.remove('overflowHide');
-        }
-    
-        // Cleanup: Remove class when component unmounts
-        return () => {
-          document.body.classList.remove('overflowHide');
-        };
-      }, [ tripPopupState.addTripPopup, isAddToPopupOpen ]);
+  useEffect(() => {
+    if (tripPopupState.addTripPopup || isAddToPopupOpen) {
+      document.body.classList.add('overflowHide');
+    } else {
+      document.body.classList.remove('overflowHide');
+    }
+
+    // Cleanup: Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overflowHide');
+    };
+  }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
   return (
     <>
       {/* <FilterSiderbar/> */}
+      { isOpen && popupState.filterPanel && (
+        <FilterSiderbar onClose={() => togglePopup("filterPanel", false)}/> 
+      )}
       {isOpen && popupState.alert && (
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
           <AlertPopup
             handleNavigateToLogin={handleNavigateToLogin}
-            title="Log in and save time"
-            description="Sign in to save your favorites and create new itineraries on Local Secrets."
-            buttonText="Sign in or create an account"
+            title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')}
           />
         </Modal>
       )}
@@ -327,40 +341,50 @@ const FavoritesPage = () => {
       <div className={styles.favoritesPage}>
         <Header />
         <main className="page-center">
-          <h1 className={styles.pageTitle}>Todos los favoritos</h1>
+          <h1 className={styles.pageTitle}>{tFavoritesPage('pageTitle')}</h1>
           <SearchBar togglePopup={togglePopup} handleSearch={handleSearch} state={state} />
           <div className={styles.favoritesList}>
             {/* {favoriteItems.map((item) => (
             <FavoriteItem key={item.id} {...item} />
           ))} */}
 
-            {loading ? (
+            {loadingFavorites ? (
               Array.from({ length: 6 }).map((_, index) => (
                 <EventCardSkeleton key={index} />
               ))
             ) : (
-              favorites?.map((favorite, index) => (
+              visibleFavorites?.map((favorite, index) => (
                 // <div
                 //   key={index}
                 //   className={`${styles.favoriteItem} ${vanishingItems.includes(favorite.id) ? styles.vanishing : ''
                 //     }`}
                 // >
-                  <EventCard
-                    key={index}
-                    event={favorite}
-                    handleActions={handleActions}
-                    isFavoriteToggling={
-                      isFavoriteToggling && favTogglingId === favorite.id
-                    }
-                  />
+                <EventCard
+                  key={index}
+                  event={favorite}
+                  handleActions={handleActions}
+                  isFavoriteToggling={
+                    isFavoriteToggling && favTogglingId === favorite.id
+                  }
+                />
                 // </div>
               ))
             )}
           </div>
-          <button className={styles.showMoreButton}>Mostrar más</button>
+          {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+            onClick={loadMore}
+            loading={loading}
+            next={hasNext}
+            translate={''}
+          />}
+          {!isAuthenticated && next &&
+            <div className={styles.loginButtonWrapper}>
+              <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+            </div>
+          }
           <section className={styles.recommendedSection}>
             <h2 className={styles.recommendedTitle}>
-              Otras personas tambien han visto
+            {tFavoritesPage('recommendedTitle')}
             </h2>
             <div className={styles.recommendedList}>
               {recommendedItems.map((item) => (

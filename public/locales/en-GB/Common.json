@@ -37,5 +37,10 @@
   "events": {
     "searchTitle": "Find your event",
     "searchPlaceholder": "Search by keywords"
+  },
+  "search": {
+    "label": "Search destinations",
+    "placeholder": "City, country, events...",
+    "buttonAriaLabel": "Search"
   }
 }

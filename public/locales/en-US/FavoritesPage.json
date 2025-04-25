@@ -1,0 +1,9 @@
+{
+    "pageTitle": "All Favorites",
+    "recommendedTitle": "Others also viewed",
+    "loginButton": "Log in to see more",
+    "commentPopup": {
+      "editComment": "Edit Comment",
+      "addComment": "Add Comment"
+    }
+  }

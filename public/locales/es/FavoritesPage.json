@@ -1,0 +1,9 @@
+{
+    "pageTitle": "Todos los favoritos",
+    "recommendedTitle": "Otros también vieron",
+    "loginButton": "Inicia sesión para ver más",
+    "commentPopup": {
+      "editComment": "Editar comentario",
+      "addComment": "Añadir comentario"
+    }
+  }
