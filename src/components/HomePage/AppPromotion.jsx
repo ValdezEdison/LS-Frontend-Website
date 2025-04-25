@@ -21,7 +21,7 @@ const AppPromotion = () => {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 67px 0px;
+          padding: 67px 0px 60px;
         }
         .app-promotion__container {
           align-items: start;

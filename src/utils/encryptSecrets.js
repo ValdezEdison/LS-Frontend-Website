@@ -23,6 +23,8 @@ if (!localStorage.getItem(ENCRYPTION_KEY_NAME)) {
 // Now get the key
 const VITE_SECRET_KEY = localStorage.getItem(ENCRYPTION_KEY_NAME);
 
+console.log(VITE_SECRET_KEY, 'VITE_SECRET_KEY')
+
 // 3. Encrypt the entire object
 const encrypted = CryptoJS.AES.encrypt(JSON.stringify(secrets), VITE_SECRET_KEY).toString();
 

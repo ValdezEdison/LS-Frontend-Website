@@ -8,7 +8,7 @@
   color: var(--Negro-blue, #151820);
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin: 30px 0 20px;
 }
 
 .tagContainer {
@@ -39,8 +39,17 @@
   cursor: pointer;
 }
 
-@media (max-width: 991px) {
-  .itineraryList {
-    padding: 0 20px;
-  }
+.ItineraryPlaceCards{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
+@media (max-width:991px) {
+  .ItineraryPlaceCards{
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+}
+

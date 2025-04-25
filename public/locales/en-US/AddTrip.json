@@ -1,0 +1,56 @@
+{
+    "AddTrip": {
+        "types": {
+            "solo": "Solo",
+            "familiar": "Family",
+            "business": "Business",
+            "romantic": "Romantic",
+            "group": "Group"
+        },
+        "popups": {
+            "addTrip": {
+                "title": "Add to my trips",
+                "description": "Add '{{placeName}}' to any of your planned trips",
+                "newTrip": "New Trip",
+                "confirmButton": "Confirm"
+            },
+            "addToTrip": {
+                "title": "Add to my trips",
+                "description": "Add '{{placeName}}' to any of your planned trips",
+                "formDescription": "Use our trip planner to create new itineraries, plan your stops, and share different trips.",
+                "tripNameLabel": "Trip name",
+                "tripNamePlaceholder": "Text input",
+                "destinationLabel": "Destination",
+                "addDestination": "Add another destination",
+                "datesLabel": "Dates",
+                "datePlaceholder": "Start date - End date",
+                "suggestionsTitle": "Suggestions to get started",
+                "noSuggestions": "No new suggestions available",
+                "confirmButton": "Confirm"
+            },
+            "validation": {
+                "tripNameRequired": "Trip name is required",
+                "startDateRequired": "Start date is required",
+                "endDateRequired": "End date is required",
+                "endDateBeforeStart": "End date cannot be before start date",
+                "destinationRequired": "At least one destination is required",
+                "specificDestinationRequired": "Destination is required"
+            },
+            "success": {
+                "placeAdded": {
+                    "title": "Place added!",
+                    "message": "A new place has been added to your \"{tripName}\". Keep adding destinations and events."
+                },
+                "tripAdded": {
+                    "title": "Trip added!",
+                    "message": "A new trip has been added to your account. Continue adding destinations and events."
+                }
+            },
+            "errors": {
+                "addPlaceFailed": "Failed to add place",
+                "createTripFailed": "Failed to create trip",
+                "unexpectedError": "An unexpected error occurred"
+            }
+        }
+    }
+}

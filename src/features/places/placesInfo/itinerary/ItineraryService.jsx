@@ -39,8 +39,12 @@ const itineraryService = {
         return ApiService.get(`/sites/?type=${type}&city_id=${encodedCityId}&page=${page}`);
     },
 
-    addSite: async (id, order) => {
-        return ApiService.post(`/travels/${id}/add_site`, {id: id, order: order});
+    addSite: async (id, siteId, order) => {
+        return ApiService.post(`/travels/${id}/add_site`, {id: siteId,  order: order});
+    },
+
+    addToExistingTrip: async (tripId, siteId) => {
+        return ApiService.post(`/routes/${siteId}/add_to_travel`, {id: tripId});
     },
 
 }

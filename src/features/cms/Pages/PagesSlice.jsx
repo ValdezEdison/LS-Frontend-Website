@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeroContent } from "./PagesAction";
+import { fetchHeroContent, fetchOurPartners } from "./PagesAction";
 
 const initialState = {
     heroContent: null,
     loading: false,
     error: null,
+    ourPartners: [],
+    ourPartnersLoading: false
 };
 
 const pagesSlice = createSlice({
@@ -25,6 +27,19 @@ const pagesSlice = createSlice({
             })
             .addCase(fetchHeroContent.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchOurPartners.pending, (state) => {
+                state.ourPartnersLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchOurPartners.fulfilled, (state, action) => {
+                state.ourPartnersLoading = false;                
+                state.ourPartners = action.payload?.results;                
+            })
+            .addCase(fetchOurPartners.rejected, (state, action) => {
+                state.ourPartnersLoading = false;
                 state.error = action.payload;
             });
     },

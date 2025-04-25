@@ -4,6 +4,7 @@ const useSeeMore = (initialData = [], nextPageUrl) => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [next, setNext] = useState(nextPageUrl);
+  const [hasLoadedMore, setHasLoadedMore] = useState(false);
 
   useEffect(() => {
     setData(initialData);
@@ -14,6 +15,7 @@ const useSeeMore = (initialData = [], nextPageUrl) => {
     if (!next || loading) return;
 
     setLoading(true);
+    setHasLoadedMore(true);
     try {
       const response = await fetch(next); // Assuming `next` is a URL
       const newData = await response.json();
@@ -31,6 +33,7 @@ const useSeeMore = (initialData = [], nextPageUrl) => {
     loading,
     next,
     loadMore,
+    hasLoadedMore,
   };
 };
 

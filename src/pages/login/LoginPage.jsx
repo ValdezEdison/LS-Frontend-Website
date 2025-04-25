@@ -229,10 +229,11 @@ const LoginPage = () => {
       // let token;
       
       // // Google Login
-      // // if (provider === 'google') {
-      // //   await initializeGoogleSDK();
-      // //   token = await handleGoogleLogin();
-      // // } 
+      if (provider === 'google-oauth2') {
+        await initializeGoogleSDK();
+        token = await handleGoogleLogin();
+        console.log(token, 'token');
+      } 
       // // Facebook Login
       //  if (provider === 'facebook') {
 

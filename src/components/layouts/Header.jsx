@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
-import { fetchHeaderBlocks, fetchNewsLetterBlocks } from "../../features/cms/Blocks/BlocksAction";
+import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchFooterBlocks } from "../../features/cms/Blocks/BlocksAction";
 import UserMenu from "../UserMenu/UserMenu";
 import { logout } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
@@ -46,7 +46,10 @@ const Header = () => {
     dispatch(fetchLanguages());
     dispatch(fetchImages());
     dispatch(fetchHeaderBlocks());
-    dispatch(fetchNewsLetterBlocks(languageId));
+    dispatch(fetchFooterBlocks(languageId));
+    if(!isAuthenticated){
+      dispatch(fetchNewsLetterBlocks(languageId));  
+    }
   }, [dispatch, language]); // Re-fetch data when language changes
 
   const handleClickHamburger = () => {

@@ -574,7 +574,7 @@ const EventDetails = () => {
 
       {isOpen && popupState.comment && (
         <Modal
-          title={isEditing ? "Edit Comment" : "Add Comment"}
+        title={isEditing ? tDetail('commentPopup.editComment') : tDetail('commentPopup.addComment') }
           onClose={() => {
             togglePopup("comment", false);
             setCommentForm({

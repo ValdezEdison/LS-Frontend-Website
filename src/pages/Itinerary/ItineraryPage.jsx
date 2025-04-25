@@ -22,9 +22,14 @@ import Loader from "../../components/common/Loader";
 import SeeMoreButton from "../../components/common/SeeMoreButton";
 import { useTranslation } from 'react-i18next';
 import CardSkeleton from "../../components/skeleton/common/CardSkeleton";
+import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
+import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
+import { useAddTrip } from "../../hooks/useAddTrip";
+import AlertPopup from "../../components/popup/Alert/AlertPopup";
+import Modal from "../../components/modal/Modal";
 
 const ItineraryPage = () => {
-  const { t } = useTranslation();
+  const { t: tCommon } = useTranslation("Common");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +61,37 @@ const ItineraryPage = () => {
     success: false,
   });
 
+  // Add trip functionality
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -64,7 +100,7 @@ const ItineraryPage = () => {
   useEffect(() => {
     dispatch(fetchCities({}));
     // dispatch(fetchItineraries(state.page));
-    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId}));
+    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId }));
   }, [dispatch, language]);
 
   const debouncedSearch = useMemo(
@@ -93,14 +129,66 @@ const ItineraryPage = () => {
 
   }
 
-  const handleActions = (e, action, id) => {
+  // const handleActions = (e, action, id) => {
+  //   e.stopPropagation();
+  //   if (action === 'addToFavorites') {
+  //     handleFavClick(e, id);
+  //   } else if (action === 'addToTrip') {
+  //     handleTripClick(e, id);
+  //   } else if (action === 'viewMore') {
+  //     handleViewMoreDetails(e, id);
+  //   }
+  // };
+
+  // const handleFavClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     dispatch(toggleFavorite(id));
+  //     dispatch(setFavTogglingId(id));
+  //   }
+  // };
+
+  // const handleTripClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     dispatch(openAddToTripPopup());
+  //     navigate('/places/itineraries-details', { state: { id } });
+  //   } else {
+  //     togglePopup("alert", true);
+  //   }
+  // };
+
+
+  const handleActions = (e, action, id, name) => {
     e.stopPropagation();
-    if (action === 'addToFavorites') {
-      handleFavClick(e, id);
-    } else if (action === 'addToTrip') {
-      handleTripClick(e, id);
-    } else if (action === 'viewMore') {
-      handleViewMoreDetails(e, id);
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "itinerary" }));
+        break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
     }
   };
 
@@ -109,14 +197,6 @@ const ItineraryPage = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
-    }
-  };
-
-  const handleTripClick = (e, id) => {
-    e.stopPropagation();
-    if (isAuthenticated) {
-      dispatch(openAddToTripPopup());
-      navigate('/places/itineraries-details', { state: { id } });
     } else {
       togglePopup("alert", true);
     }
@@ -124,44 +204,93 @@ const ItineraryPage = () => {
 
 
   const handleViewMoreDetails = (e, id) => {
-    ;
-    navigate('/itineraries/details', { state: { id } });
+
+    if (isAuthenticated) {
+      navigate('/itineraries/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
   };
 
 
   useEffect(() => {
-    if(state.cityId){
-      dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId}));
-    }
+    // if (state.selectedDestinationId) {
+    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId }));
+    // }
 
-  },[language, state.selectedDestinationId])
+  }, [language, state.selectedDestinationId])
+
+
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
+
   return (
-    <div className={styles.itineraryPage}>
-      <Header />
-      <main className="page-center">
-        {/* <h1 className={styles.eventCount}>{"1.240"} itinerarios disponibles</h1> */}
-        <SearchBar state={state} setState={setState} cities={cities} />
-        {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
-        {itinerariesLoading ? (
-          Array.from({ length: 5 }).map((_, index) => (
-            <CardSkeleton key={index} />
-          ))
-        ) : (
-          <ItineraryList visibleItineraries={visibleItineraries} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
-        )}
+    <>
 
-        {loading ? <Loader /> : next && <SeeMoreButton
-          onClick={loadMore}
-          loading={loading}
-          next={hasNext}
-          translate={t}
+      {isOpen && popupState.alert && (
+        <Modal
+          onClose={() => togglePopup("alert", false)}
+          customClass="modalSmTypeOne"
+        >
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')} />
+        </Modal>
+      )}
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
         />
-        }
-        <RecommendedEvents />
-      </main>
-      <Newsletter />
-      <Footer />
-    </div>
+      )}
+
+      {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
+        dispatch(closeAddToTrip());
+        dispatch(closePopup());
+        dispatch(resetTripType());
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
+      <div className={styles.itineraryPage}>
+        <Header />
+        <main className="page-center">
+          {/* <h1 className={styles.eventCount}>{"1.240"} itinerarios disponibles</h1> */}
+          <SearchBar state={state} setState={setState} cities={cities} count={count} />
+          {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
+          {itinerariesLoading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <CardSkeleton key={index} />
+            ))
+          ) : (
+            <ItineraryList visibleItineraries={visibleItineraries} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
+          )}
+
+          {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+            onClick={loadMore}
+            loading={loading}
+            next={hasNext}
+            translate={''}
+          />}
+          {!isAuthenticated && next && next &&
+            <div className={styles.loginButtonWrapper}>
+              <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+            </div>
+          }
+
+          <RecommendedEvents />
+        </main>
+        <Newsletter />
+        <Footer />
+      </div>
+    </>
   );
 };
 

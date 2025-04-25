@@ -101,9 +101,21 @@ export const fetchItineriesInCity = createAsyncThunk(
 
   export const addSite = createAsyncThunk(
     'places/addSite',
-    async ({id, order}, { rejectWithValue }) => {
+    async ({id, siteId, order}, { rejectWithValue }) => {
       try {
-        const response = await itineraryService.addSite(id, order);
+        const response = await itineraryService.addSite(id, siteId, order);
+        return response;
+      } catch (error) {
+        return rejectWithValue(handleApiError(error));
+      }
+    }
+  );
+
+  export const addToExistingTrip = createAsyncThunk(
+    'places/addToExistingTrip',
+    async ({tripId, siteId}, { rejectWithValue }) => {
+      try {
+        const response = await itineraryService.addToExistingTrip(tripId, siteId);
         return response;
       } catch (error) {
         return rejectWithValue(handleApiError(error));

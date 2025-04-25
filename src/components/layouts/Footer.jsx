@@ -2,10 +2,14 @@ import React from "react";
 import styles from "./Footer.module.css";
 import { useTranslation } from "react-i18next";
 import { LSLogo2, FacebookWhite, InstagramWhite, LinkedinWhite } from "../common/Images";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
 
   const { t } = useTranslation("Footer");
+
+  const { footerBlocks, footerLoading, footerError } = useSelector((state) => state.cms.blocks);
+  console.log("footerBlocks", footerBlocks);
 
   return (
     <footer className={styles.footer}>

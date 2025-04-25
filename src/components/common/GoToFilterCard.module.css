@@ -1,0 +1,114 @@
+.placesBlueBanner {
+    background-color: #212D94;
+    width: 100%;
+    padding: 24px 26px 0 23px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.placesBlueBannerLeft img {
+    display: block;
+    border-radius: 8px 8px 0 0;
+}
+
+.placesBlueBanner{
+    background-color: #212D94;
+    width: 100%;
+    padding: 24px 26px 0 23px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+  }
+  
+  
+  .placesBlueBannerLeft img{
+    display: block;
+  }
+  
+  .placesBlueBannerRight{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    color: #fff;
+    flex-grow: 1;
+  }
+  
+  .placesBannerDescrption h3{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    width: 90%;
+  }
+  
+  .placesBannerDescrption p{
+    margin: 5px 0 0;
+    font-size: 12px;
+  }
+  
+  .placesBannerDescrption{
+    flex-grow: 1;
+  }
+  
+
+
+.filterButton {
+    background-color: #f4c031;
+    color: #000000;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 42px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all ease .3s;
+    flex-shrink: 0;
+}
+
+.filterButton:hover {
+    background-color: #e5b22e;
+}
+
+@media (max-width: 991px) {
+    .filterButton {
+        padding: 10px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .placesBlueBanner{
+        flex-direction: column;
+        gap: 10px;
+        padding: 24px;
+    }
+
+    .placesBlueBannerRight {
+        gap: 15px;
+        padding: 0;
+        width: 100%;
+      }
+    
+      .placesBlueBanner{
+        flex-direction: column;
+        gap: 15px;
+        padding: 24px 24px 23px;
+    }
+    
+}
+
+@media (max-width: 640px) {
+    
+
+      .placesBlueBannerRight{
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .placesBannerDescrption h3{
+        width: 100%;
+      }
+}

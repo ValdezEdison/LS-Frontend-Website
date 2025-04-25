@@ -3,10 +3,13 @@ import styles from "../PlacesPage/FilterBar.module.css";
 import CustomInput from "./CustomInput";
 import DatePicker from "react-datepicker"; // Import date picker
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, searchQuery, disabled = false, checkbox = false, type = "select" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const { t } = useTranslation("Common");
 
   const toggleDropdown = () => {
     if (!disabled) setIsOpen(!isOpen);
@@ -62,7 +65,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
       </div>
 
       {isOpen && !disabled && (
-        <div className={styles.filterContent}>
+        <div className={styles.filterContent + " " + (type === "datePicker" ? styles.bgTransparent : "")}>
           {type === "datePicker" ? (
             <DatePicker
               selectsRange={true}
@@ -128,7 +131,7 @@ const FilterDropdown = ({ label, options = [], selectedId, onSelect, onSearch, s
                   </li>
                         ))
                       ) : (
-                        <div className={styles.filterNoResults}>No results</div>
+                        <div className={styles.filterNoResults}>{t("noResults")}</div>
                       )}
               </ul>
             </>

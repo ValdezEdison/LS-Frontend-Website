@@ -43,7 +43,9 @@
         "title": "Deja tu reseña",
         "ratingLabel": "Puntuación:",
         "commentLabel": "Comentario:",
-        "placeholder": "Escribe tu comentario aquí"
+        "placeholder": "Escribe tu comentario aquí",
+        "addComment": "Añadir comentario",
+        "editComment": "Editar comentario"
     },
     "authAlert": {
         "title": "¿Quieres darnos tu opinión?",

@@ -54,23 +54,27 @@ const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActio
   const { loading, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineraries);
 
   const { t } = useTranslation('Places');
-
+  const { t: tItineraryPage } = useTranslation("ItineraryPage")
+  const { t: tCommon } = useTranslation("Common")
+ 
   return (
     <section className={styles.itineraryList}>
       <h2 className={styles.sectionTitle}>
-        Itinerarios más vistos por los viajeros
+        {tItineraryPage("itinerary.popularItineraries")}
       </h2>
       <div className={styles.tagContainer}>
         {/* <span className={styles.tag}>#Patrimonio histórico</span> */}
       </div>
+      <div className={styles.ItineraryPlaceCards}>
       {visibleItineraries?.length > 0 ? (
           visibleItineraries?.map((place, index) => (
             <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id} />
           ))
         ) : (
-          <div className="no-results-wrapper">No results</div>
+          <div className="no-results-wrapper">{tCommon('noResults')}</div>
         )}
       {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
+      </div>
     </section>
   );
 };

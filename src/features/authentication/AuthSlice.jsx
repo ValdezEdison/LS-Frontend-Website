@@ -1,6 +1,7 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail } from "./AuthActions";
+import { socialLogin } from "./socialLogin/SocialAuthAction";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
 const initialState = {
@@ -125,7 +126,23 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload; // Set the error from the rejected action
       })
-      ;
+      .addCase(socialLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+    })
+    .addCase(socialLogin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true; // Set authenticated to true
+        state.error = null; // Clear any previous errors
+    })
+    .addCase(socialLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Set the error from the rejected action
+        state.isAuthenticated = false; // Ensure authenticated is false on error
+    });
+      
   },
 });
 

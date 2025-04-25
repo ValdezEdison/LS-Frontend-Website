@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./SeeMoreButton.module.css";
+import { useTranslation } from "react-i18next";
 
 const SeeMoreButton = ({ onClick, loading, next, translate }) => {
+
+  const { t } =  useTranslation("Common")
   return (
     <div className={styles.seeMoreContainer}>
       {next && (
@@ -10,7 +13,7 @@ const SeeMoreButton = ({ onClick, loading, next, translate }) => {
           onClick={onClick}
           disabled={loading}
         >
-          {loading ? translate('loading') : translate('seeMore')}
+          {loading ? translate('loading') : t("seeMore")}
         </button>
       )}
     </div>

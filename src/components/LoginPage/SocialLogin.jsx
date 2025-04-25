@@ -51,9 +51,7 @@ const SocialLogin = ({ onSocialLogin }) => {
             className={styles.socialIcon}
           />
         </button> */}
-        {/* <button className={styles.socialButton} onClick={() => onSocialLogin('google')}>
-          <img src={Google}/>
-        </button> */}
+        
         <FacebookLogin
           appId={import.meta.env.VITE_FACEBOOK_ID} // Add this to your .env
           onSuccess={handleFacebookSuccess}
@@ -67,13 +65,16 @@ const SocialLogin = ({ onSocialLogin }) => {
             className={styles.socialIcon}
           />
         </FacebookLogin>
+        <button className={styles.socialButton} onClick={() => onSocialLogin('google-oauth2')}>
+          <img src={Google}/>
+        </button>
         {/* <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_ID}> */}
-        <GoogleLoginButton
+        {/* <GoogleLoginButton
           onSuccess={handleGoogleSuccess}
           onFailure={handleGoogleFailure}
           // disabled={loading}
           styles={styles}
-        />
+        /> */}
         {/* </GoogleOAuthProvider> */}
         {/* <button className={styles.socialButton} >
           <img

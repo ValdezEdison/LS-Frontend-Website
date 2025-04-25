@@ -50,7 +50,12 @@ const stops = [
 ];
 
 const ItineraryStop = ({ stop }) => (
-  <div className={styles.stopCard}>
+  <>
+ 
+  
+  <div className={styles.stopCardWrapper}>
+    <div className={styles.menuIcon}></div>
+    <div className={styles.stopCard}>
     <div className={styles.stopImageContainer}>
       <img src={stop.image} alt={stop.name} className={styles.stopImage} />
       <img
@@ -59,20 +64,28 @@ const ItineraryStop = ({ stop }) => (
         className={styles.stopIcon}
       />
     </div>
-    <div className={styles.stopInfo}>
-      <h3 className={styles.stopName}>{stop.name}</h3>
-      <p className={styles.stopAddress}>{stop.address}</p>
-      <div className={styles.stopRating}>
-        Continuing from where we left off:
-        <div className={styles.ratingScore}>{stop.rating}</div>
-        <div className={styles.ratingInfo}>
-          <div className={styles.ratingText}>Excelente</div>
-          <div className={styles.reviewCount}>{stop.reviews} comentarios</div>
+    <div className={styles.stopInfoWrapper}>
+      <div className={styles.stopInfo}>
+      <div className={styles.stopInfoTop}>
+        <h3 className={styles.stopName}>{stop.name}</h3>
+        <p className={styles.stopAddress}>{stop.address}</p>
+      </div>
+        
+        <div className={styles.stopRating}>
+          {/* Continuing from where we left off: */}
+          <div className={styles.ratingScore}>{stop.rating}</div>
+          <div className={styles.ratingInfo}>
+            <div className={styles.ratingText}>Excelente</div>
+            <div className={styles.reviewCount}>{stop.reviews} comentarios</div>
+          </div>
         </div>
       </div>
+      <button className={styles.removeButton}>Eliminar</button>
     </div>
-    <button className={styles.removeButton}>Eliminar</button>
+    
   </div>
+  </div>
+  </>
 );
 
 const ItineraryStops = () => {

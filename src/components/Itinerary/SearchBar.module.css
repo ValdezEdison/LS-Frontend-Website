@@ -1,7 +1,7 @@
 .banner {
   width: 100%;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 40px auto 30px;
 }
 
 .bannerContent {
@@ -9,6 +9,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .title {
@@ -23,14 +24,15 @@
   /* display: flex; */
   align-items: center;
   position: relative;
-
+  max-width: 308px;
+  width: 100%;
 }
 
 .searchLabel {
   color: var(--Negro-blue, #151820);
   font-size: 16px;
   font-weight: 600;
-  margin-right: 20px;
+  /* margin-right: 20px; */
 }
 
 .searchInput {
@@ -94,6 +96,16 @@
 .itenarySearchWrapper{
   display: flex;
   align-items: center;
+  flex-grow: 1;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 1024px) {
+  .title {
+    font-size: 28px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -103,7 +115,7 @@
   }
 
   .searchContainer {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     flex-direction: column;
     align-items: flex-start;
   }
@@ -119,5 +131,16 @@
 
   .loginMessage {
     margin-bottom: 20px;
+  }
+
+  .itenarySearchWrapper{
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media  (max-width: 480px) {
+  .title {
+    font-size: 24px;
   }
 }

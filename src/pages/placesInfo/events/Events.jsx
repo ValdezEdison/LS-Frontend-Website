@@ -103,6 +103,7 @@ const Events = () => {
 
 
   const { t } = useTranslation('Places');
+  const { t: tCommon } = useTranslation('Common');
 
   const { id } = location.state || {};
   ;
@@ -112,7 +113,7 @@ const Events = () => {
     latAndLng: "",
     selectedDateRange: { startDate: null, endDate: null },
     type: "event",
-    points:"",
+    points: "",
   })
 
   const [popupState, setPopupState] = useState({
@@ -125,6 +126,9 @@ const Events = () => {
     success: false,
   });
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -132,27 +136,37 @@ const Events = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchEventsByCityId({ city_id: id, page: 1, type: 'event', levels: state.selectedLevel }));
       dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
       dispatch(fetchGeoLocations({ cityId: id, type: "event" }));
       if (isAuthenticated) {
         dispatch(fetchTravelLiteList());
       }
       dispatch(fetchCities({}));
+
       return () => {
         dispatch(closePopup());
-        closeAddToTrip()
-      }
+        closeAddToTrip();
+      };
     }
-  }, [dispatch, id, state.selectedLevel, language]);
+  }, [dispatch, id, isAuthenticated, language]);
 
-   useEffect(() => {
-          if (id) {
-              dispatch(fetchEventsByCityId({ cityId: id, page: 1, type: 'event', points: state.points, levels: state.selectedLevel }));
-  
-          }
-      }, [dispatch, id, state.points]);
-
+  // Events with filters
+  useEffect(() => {
+    if (id) {
+      const params = {
+        cityId: id,
+        page: 1,
+        type: 'event',
+        levels: state.selectedLevel,
+        points: state.points,
+        ...(state.selectedDateRange.startDate && {
+          startDate: state.selectedDateRange?.startDate.toISOString().split('T')[0],
+          endDate: state.selectedDateRange?.endDate?.toISOString().split('T')[0]
+        })
+      };
+      dispatch(fetchEventsByCityId(params));
+    }
+  }, [dispatch, id, state.selectedLevel, state.points, state.selectedDateRange, language]);
 
 
   const handleShowMapPopup = () => {
@@ -171,7 +185,7 @@ const Events = () => {
   // Define filters array
   const filters = [
     {
-      label: "Select Date Range",
+      label: t('Events.filters.dateRange'),
       type: "datePicker",
       selectedId: state.selectedDateRange,
       onSelect: (dates) => {
@@ -182,7 +196,7 @@ const Events = () => {
       },
     },
     {
-      label: "Select Level",
+      label: t('Events.filters.level'),
       type: "select",
       options: categories.map(category => ({ id: category.id, title: category.title })),
       selectedId: state.selectedLevel,
@@ -211,6 +225,12 @@ const Events = () => {
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
       default:
         break;
     }
@@ -219,6 +239,8 @@ const Events = () => {
   const handleAddToTripClick = (e, id, name) => {
     const result = handleTripClick(e, id, name);
     if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
     }
   };
@@ -229,6 +251,10 @@ const Events = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
+    } else {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
     }
   };
 
@@ -247,8 +273,14 @@ const Events = () => {
   }
 
   const handleViewMoreDetails = (e, id) => {
-    ;
-    navigate('/events/details', { state: { id } });
+
+    if (isAuthenticated) {
+      navigate('/events/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
   };
 
   // Modal props
@@ -283,7 +315,9 @@ const Events = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')} />
         </Modal>
       )}
 
@@ -335,7 +369,7 @@ const Events = () => {
 
         <div className={styles.searchSection}>
           <div className={styles.mapButtonContainer}>
-            <button className={styles.mapButton} onClick={handleShowMapPopup}>Ver mapa</button>
+            <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
           </div>
           <div className={styles.filterContainer}>
             <FilterBar filters={filters} />
@@ -352,7 +386,7 @@ const Events = () => {
         </div>
         <section className={styles.eventsSection}>
           <h2 className={styles.sectionTitle}>
-            Eventos más populares en Atenas
+            {t('Events.popularEvents', { city: destination?.name })}
           </h2>
           <div className={styles.eventGrid}>
             {eventLoading ? (
@@ -368,20 +402,24 @@ const Events = () => {
             )}
           </div>
 
-          {visibleEvents.length === 0 && <div className="no-results-wrapper">There are currently no events published for this city.</div>}
+          {visibleEvents.length === 0 && <div className="no-results-wrapper">{t('Events.noEvents')}</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-          {loading ? <Loader /> : next && <SeeMoreButton
-            onClick={loadMore}
-            loading={loading}
-            next={hasNext}
-            translate={t}
-          />
-          }
+          {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+          onClick={loadMore}
+          loading={loading}
+          next={hasNext}
+          translate={t}
+        />}
+        {!isAuthenticated && next &&
+          <div className={styles.loginButtonWrapper}>
+            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+          </div>
+        }
         </section>
         <div className={styles.divider} />
         <section className={styles.recommendedSection}>
           <h2 className={styles.sectionTitle}>
-            Otras personas tambien han visto
+            {t('Events.recommendedEvents')}
           </h2>
           <div className={styles.recommendedGrid}>
             {recommendedEvents.map((event, index) => (

@@ -51,15 +51,61 @@
         "comments": "Comments",
         "view_more": "View more",
         "add_to_trip": "Add to trip",
-        "stops": "Stops"
+        "stops": "Stops",
+        "itinerary": "Itinerary"
     },
     "ratings": {
-    "title": "Rating",
-   "labels": {
-      "4": "Excellent: 4+",
-      "3": "Very Good: 3+",
-      "2": "Good: 2+",
-      "1": "Needs Improvement: below 2"
-    }
+        "title": "Rating",
+        "labels": {
+            "4": "Excellent: 4+",
+            "3": "Very Good: 3+",
+            "2": "Good: 2+",
+            "1": "Needs Improvement: below 2"
+        }
+    },
+    "Events": {
+        "filters": {
+            "dateRange": "Select Date Range",
+            "level": "Select Level"
+        },
+        "popularEvents": "Popular events in {{city}}",
+        "noEvents": "There are currently no events published for this city.",
+        "recommendedEvents": "Others also viewed",
+        "recommended": {
+            "KensingtonDollshouseFestival": "Kensington Dollshouse Festival",
+            "SummerSocial2024": "Summer Social 2024",
+            "OpenBarAfroCaribbean": "Open Bar Afro Caribbean",
+            "AsburyParkVeganFoodFestival": "Asbury Park Vegan Food Festival"
+        }
+    },
+    "Places": {
+        "availableCount": "{{count}} places available",
+        "noResults": "No results found",
+        "popular": "Popular places in {{city}}",
+        "recommended": "Recommended places"
+    },
+    "Filters": {
+        "level": "Select Level",
+        "category": "Select Category",
+        "subcategory": "Select Subcategory",
+        "sortBy": "Sort by",
+        "all": "All",
+        "mostRecent": "Most Recent",
+        "highestRated": "Highest Rated",
+        "recommendations": "Our Recommendations"
+    },
+    "scrollToTop": "Scroll to top",
+    "arrowIcon": "Up arrow icon",
+    "Itineraries": {
+    "availableCount": "{{count}} itineraries available",
+    "noResults": "No itineraries found",
+    "popular": "Popular itineraries in {{city}}"
+  },
+  "Itinerary": {
+    "detailTitle": "Itinerary Detail",
+    "addToTrip": "Add to trip",
+    "stopCount": "{{count}} stops",
+    "noStops": "No stops available"
   }
+  
 }

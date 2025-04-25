@@ -43,7 +43,9 @@
         "title": "Leave your review",
         "ratingLabel": "Rating:",
         "commentLabel": "Comment:",
-        "placeholder": "Write your comment here"
+        "placeholder": "Write your comment here",
+        "addComment": "Add Comment",
+        "editComment": "Edit Comment"
     },
     "authAlert": {
         "title": "Do you want to give us your opinion?",

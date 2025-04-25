@@ -38,6 +38,7 @@ import SuccessMessagePopup from "../../../components/popup/SuccessMessage/Succes
 
 const Places = () => {
     const { t } = useTranslation('Places');
+    const { t: tCommon } = useTranslation('Common');
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -104,6 +105,9 @@ const Places = () => {
         success: false,
     });
 
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertTitle, setAlertTitle] = useState("");
+
     const togglePopup = (name, state) => {
         setPopupState((prev) => ({ ...prev, [name]: state }));
         state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -151,7 +155,14 @@ const Places = () => {
 
 
     const handleViewMoreDetails = (e, id) => {
-        navigate('/places/details', { state: { id } });
+
+        if (isAuthenticated) {
+            navigate('/places/details', { state: { id } });
+        } else {
+            togglePopup("alert", true);
+            setAlertTitle(tCommon('authAlert.viewDetails.title'));
+            setAlertMessage(tCommon('authAlert.viewDetails.description'));
+        }
     };
 
     const getResponsiveOffset = () => {
@@ -211,7 +222,7 @@ const Places = () => {
 
     const filters = [
         {
-            label: "Select Level",
+            label: t('Filters.level'),
             type: "select",
             options: categories.map(category => ({ id: category.id, title: category.title })),
             selectedId: state.selectedLevel,
@@ -225,7 +236,7 @@ const Places = () => {
             },
         },
         {
-            label: "Select Category",
+            label: t('Filters.category'),
             type: "select",
             options: state.selectedLevel
                 ? categories.find(cat => cat.id === state.selectedLevel)?.categories || []
@@ -240,7 +251,7 @@ const Places = () => {
             },
         },
         {
-            label: "Select Subcategory",
+            label: t('Filters.subcategory'),
             type: "select",
             options: state.selectedCategory
                 ? categories
@@ -282,6 +293,12 @@ const Places = () => {
             case 'viewMore':
                 handleViewMoreDetails(e, id);
                 break;
+            case 'addToStop':
+                setFormState(prev => ({
+                    ...prev,
+                    stops: [...prev.stops, id]
+                }));
+                break;
             default:
                 break;
         }
@@ -291,6 +308,8 @@ const Places = () => {
         const result = handleTripClick(e, id, name);
         if (result?.needsAuth) {
             togglePopup("alert", true);
+            setAlertTitle(tCommon('authAlert.favorites.title'));
+            setAlertMessage(tCommon('authAlert.favorites.description'));
         }
     };
 
@@ -299,6 +318,10 @@ const Places = () => {
         if (isAuthenticated) {
             dispatch(toggleFavorite(id));
             dispatch(setFavTogglingId(id));
+        } else {
+            setAlertTitle(tCommon('authAlert.favorites.title'));
+            setAlertMessage(tCommon('authAlert.favorites.description'));
+            togglePopup("alert", true);
         }
     };
 
@@ -345,7 +368,9 @@ const Places = () => {
                     onClose={() => togglePopup("alert", false)}
                     customClass="modalSmTypeOne"
                 >
-                    <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title="Log in and save time" description="Sign in to save your favorites and create new itineraries on Local Secrets." buttonText="Sign in or create an account" />
+                    <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+                        description={alertMessage}
+                        buttonText={tCommon('authAlert.favorites.button')} />
                 </Modal>
             )}
 
@@ -396,7 +421,7 @@ const Places = () => {
                 <SubNavMenu activeLink="lugares" />
                 <div className={styles.searchFilters}>
                     <div className={styles.mapButtonContainer}>
-                        <button className={styles.mapButton} onClick={handleShowMapPopup}>Ver mapa</button>
+                        <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
                     </div>
                     <div className={styles.filterContainer}>
                         <FilterBar filters={filters} />
@@ -411,9 +436,9 @@ const Places = () => {
                         type="submenu-places"
                     />
                 </div>
-                <p className={commonStyle.availablePlaces}>{count} lugares disponibles</p>
+                <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
                 <div className={styles.placesList} ref={placesListRef}>
-                    <button
+                    {/* <button
                         style={{
                             display: state.showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
                         }}
@@ -421,8 +446,8 @@ const Places = () => {
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                         ref={gotoTopButtonRef}
                     >
-                        <img src={Arrow} alt="arrow" />
-                    </button>
+                        <img src={Arrow} alt={t('arrowIcon')} />
+                    </button> */}
                     {placesLoading ? (
                         Array.from({ length: 5 }).map((_, index) => (
                             <CardSkeleton key={index} />
@@ -440,14 +465,18 @@ const Places = () => {
                             />
                         ))
                     ) : (
-                        <div className="no-results-wrapper">No results</div>
+                        <div className="no-results-wrapper">{t('Places:noResults')}</div>
                     )}
-                    {loading ? <Loader /> : next && <SeeMoreButton
+                    {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
                         onClick={loadMore}
                         loading={loading}
                         next={hasNext}
                         translate={t}
-                    />
+                    />}
+                    {!isAuthenticated && next &&
+                        <div className={styles.loginButtonWrapper}>
+                            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+                        </div>
                     }
                 </div>
                 <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>

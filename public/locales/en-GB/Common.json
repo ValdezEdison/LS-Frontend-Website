@@ -1,8 +1,51 @@
 {
-    "seeMore": "Show more",
-    "noResults": "No results found",
-    "seeMap": "See map",
-    "removeFilters": "Remove filters",
-    "nearbyPlaces": "Other nearby places"
+  "seeMore": "Show more",
+  "noResults": "No results found",
+  "seeMap": "See map",
+  "filters": "Filters",
+  "removeFilters": "Remove filters",
+  "nearbyPlaces": "Other nearby places",
+  "logInButton": "Sign in",
+  "showMore": "See more",
+  "visitWebsite": "Visit website",
+  "banner": {
+    "title": "Apply our filters to get better results",
+    "description": "67% of our customers are doing it",
+    "button": "Go to filters"
+  },
+  "subNav": {
+    "destination": "Destination",
+    "events": "Events",
+    "places": "Places",
+    "itineraries": "Itineraries"
+  },
+  "authAlert": {
+    "favorites": {
+      "title": "Log in and save time",
+      "description": "Sign in to save your favourites and create new itineraries on Local Secrets.",
+      "button": "Sign in or create an account"
+    },
+    "viewDetails": {
+      "title": "Sign in to see more",
+      "description": "Sign in to see all our options and save your favourite local secrets."
+    },
+    "tripCreation": {
+      "title": "Want to add a trip to your list?",
+      "description": "Sign up or log in to add a trip and create itineraries to your liking."
+    }
+  },
+  "events": {
+    "searchTitle": "Find your event",
+    "searchPlaceholder": "Search by keywords"
+  },
+  "search": {
+    "label": "Search destinations",
+    "placeholder": "City, country, events...",
+    "buttonAriaLabel": "Search"
+  },
+  "userMenu": {
+    "manageAccount": "Manage account",
+    "favorites": "Favourites",
+    "logout": "Log out"
   }
-  
+}

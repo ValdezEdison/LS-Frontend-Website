@@ -92,6 +92,11 @@
   display: block;
 }
 
+.filterContent.bgTransparent {
+  border: none;
+  background-color: transparent;
+}
+
 
 .selectedItem {
   justify-content: space-between;

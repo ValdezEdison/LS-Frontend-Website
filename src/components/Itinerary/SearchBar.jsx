@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./SearchBar.module.css";
 import SearchInput from "../common/SearchInput";
+import { useTranslation } from 'react-i18next';
 
-const SearchBar = ({state , setState, cities}) => {
+const SearchBar = ({state , setState, cities, count}) => {
 
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
   const suggestionRef = useRef(null);
+
+  const { t } = useTranslation("ItineraryPage");
 
   const handleSearch = (value) => {
     updateState("destinationSearchQuery", value);
@@ -49,17 +52,17 @@ const SearchBar = ({state , setState, cities}) => {
       setState((prev) => ({ ...prev, [key]: value }));
       if (key === "selectedDestinationId" && value) {
         setState((prev) => ({ ...prev, "destinationSearchQuery" : ""}));
+        setShowSuggestionDropDown(false);
       }
-    
-      setShowSuggestionDropDown(false);
+      
     };
 
   return (
     <section className={styles.banner}>
       <div className={styles.bannerContent}>
-      <h1 className={styles.title}>1.240 itinerarios disponibles</h1>
+      <h1 className={styles.title}>{t('itinerary.title', { count: count })}</h1>
       <div className={styles.itenarySearchWrapper}>
-        <span className={styles.searchLabel}>Mirando itinerarios en</span>
+        <span className={styles.searchLabel}>{t('itinerary.searchLabel')}</span>
         <div className={styles.searchContainer}>
           <SearchInput
             handleSearchClick={() => setShowSuggestionDropDown(true)}
@@ -69,7 +72,7 @@ const SearchBar = ({state , setState, cities}) => {
             handleSearchClose={handleSearchClose}
             searchValue={state.destinationSearchQuery}
             suggestionsList={cities}
-            placeholder="Busca un destino"
+            placeholder={t('itinerary.searchPlaceholder')}
             onSelect={(value) => updateState("selectedDestinationId", value)}
             customClassName="placesSearchInputContainer"
             selectedValue={state.selectedDestinationId}

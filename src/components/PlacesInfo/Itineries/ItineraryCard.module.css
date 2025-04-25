@@ -7,12 +7,18 @@
   background-color: #fff;
   padding: 8px;
   flex-grow: 1;
+  cursor: pointer;
 }
 
 .placeInfoTop{
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+}
+
+.placeLocation{
+  margin: 0;
+  font-size: 12px;
 }
 
 .itenaryCardWrapper{
@@ -76,13 +82,13 @@
   color: #000;
   font-size: 16px;
   font-weight: 600;
-  margin: 0 0 0px;
+  margin: 0 0 4px;
 }
 
 .placeAddress {
   color: #000;
   font-size: 12px;
-  margin: 0 0 21px;
+  margin: 0 0 0px;
 }
 
 .ratingContainer {

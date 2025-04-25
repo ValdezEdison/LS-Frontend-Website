@@ -13,3 +13,15 @@ export const fetchHeroContent = createAsyncThunk(
         }
     }
 );
+
+export const fetchOurPartners = createAsyncThunk(
+    "pages/fetchOurPartners",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getOurPartners(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
