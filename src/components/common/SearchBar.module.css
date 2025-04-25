@@ -93,6 +93,13 @@
   color: var(--Color-principal-azul, #212d94);
 }
 
+.searchClose{
+  background: url(../../../images/close.png) no-repeat 0 0;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
 @media (max-width: 991px) {
   .eventSearch {
     flex-direction: column;

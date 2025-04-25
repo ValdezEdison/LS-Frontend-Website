@@ -31,6 +31,7 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
               value={state.keyword}
               onChange={(e) => handleSearch(e)}
             />
+            <span className={styles.searchClose}></span>
           </div>
         </form>
       </div>
