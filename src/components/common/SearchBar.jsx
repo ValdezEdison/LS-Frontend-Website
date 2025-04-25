@@ -6,7 +6,7 @@ import CustomInput from "./CustomInput";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const EventSearch = ({togglePopup, handleSearch, state}) => {
+const EventSearch = ({togglePopup, handleSearch, state, setState}) => {
 
   const location = useLocation();
   const isFavorites = location.pathname.includes('favorites')
@@ -31,7 +31,7 @@ const EventSearch = ({togglePopup, handleSearch, state}) => {
               value={state.keyword}
               onChange={(e) => handleSearch(e)}
             />
-            <span className={styles.searchClose}></span>
+           {state.keyword && <span className={styles.searchClose} onClick={() => setState({...state, keyword: ''})}></span>}
           </div>
         </form>
       </div>

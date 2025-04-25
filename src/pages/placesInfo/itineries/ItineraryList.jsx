@@ -267,6 +267,12 @@ const ItineraryList = () => {
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
       default:
         break;
     }
@@ -316,7 +322,7 @@ const ItineraryList = () => {
       )}
 
       {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
-        dispatch(closeAddToTripPopup());
+        dispatch(closeAddToTrip());
         dispatch(closePopup());
         dispatch(resetTripType());
       }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}

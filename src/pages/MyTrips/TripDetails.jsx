@@ -37,7 +37,7 @@ const TripDetails = () => {
 
   const handleViewMoreDetails = (id) => {
     ;
-    navigate('/places/details', { formState: { id } });
+    navigate('/places/details', { state: { id } });
   };
 
   const handleActions = (e, action, id) => {

@@ -140,6 +140,12 @@ const FavoritesPage = () => {
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
       default:
         break;
     }
@@ -263,7 +269,7 @@ const FavoritesPage = () => {
 
   return (
     <>
-      <FilterSiderbar/>
+      {/* <FilterSiderbar/> */}
       {isOpen && popupState.alert && (
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
           <AlertPopup

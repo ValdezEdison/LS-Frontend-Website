@@ -51,7 +51,8 @@
         "comments": "Comments",
         "view_more": "View more",
         "add_to_trip": "Add to trip",
-        "stops": "Stops"
+        "stops": "Stops",
+        "itinerary": "Itinerary"
     },
     "ratings": {
         "title": "Rating",

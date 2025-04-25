@@ -5,7 +5,10 @@ const itineraryService = {
         return ApiService.get(`/routes/by_city?page=${page}`);
     },
     getItinerariesInCity: async (cityId, page = 1) => {
-        return ApiService.get(`/routes?city_id=${cityId}&page=${page}`);
+        const query = [`page=${page}`];
+        if (cityId) query.push(`city_id=${cityId}`);
+        
+        return ApiService.get(`/routes?${query.join('&')}`);
     },
     getItinerary: async (itineraryId) => {
         return ApiService.get(`/itineraries/${itineraryId}`);

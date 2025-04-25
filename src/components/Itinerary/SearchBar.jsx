@@ -52,9 +52,9 @@ const SearchBar = ({state , setState, cities, count}) => {
       setState((prev) => ({ ...prev, [key]: value }));
       if (key === "selectedDestinationId" && value) {
         setState((prev) => ({ ...prev, "destinationSearchQuery" : ""}));
+        setShowSuggestionDropDown(false);
       }
-    
-      setShowSuggestionDropDown(false);
+      
     };
 
   return (
