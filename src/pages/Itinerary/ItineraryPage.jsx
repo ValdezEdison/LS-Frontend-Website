@@ -64,7 +64,7 @@ const ItineraryPage = () => {
   useEffect(() => {
     dispatch(fetchCities({}));
     // dispatch(fetchItineraries(state.page));
-    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId}));
+    dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId }));
   }, [dispatch, language]);
 
   const debouncedSearch = useMemo(
@@ -130,17 +130,17 @@ const ItineraryPage = () => {
 
 
   useEffect(() => {
-    if(state.selectedDestinationId){
-      dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId}));
+    if (state.selectedDestinationId) {
+      dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.selectedDestinationId }));
     }
 
-  },[language, state.selectedDestinationId])
+  }, [language, state.selectedDestinationId])
   return (
     <div className={styles.itineraryPage}>
       <Header />
       <main className="page-center">
         {/* <h1 className={styles.eventCount}>{"1.240"} itinerarios disponibles</h1> */}
-        <SearchBar state={state} setState={setState} cities={cities} count={count}/>
+        <SearchBar state={state} setState={setState} cities={cities} count={count} />
         {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
         {itinerariesLoading ? (
           Array.from({ length: 5 }).map((_, index) => (
@@ -150,13 +150,18 @@ const ItineraryPage = () => {
           <ItineraryList visibleItineraries={visibleItineraries} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
         )}
 
-        {loading ? <Loader /> : next && <SeeMoreButton
+        {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
           onClick={loadMore}
           loading={loading}
           next={hasNext}
           translate={t}
-        />
+        />}
+        {!isAuthenticated && next && next &&
+          <div className={styles.loginButtonWrapper}>
+            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{t('logInButton')}</button>
+          </div>
         }
+
         <RecommendedEvents />
       </main>
       <Newsletter />

@@ -37,3 +37,15 @@ export const fetchBannerBlocks = createAsyncThunk(
         }
     }
 );
+
+export const fetchFooterBlocks = createAsyncThunk(
+    'blocks/fetchFooterBlocks',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getFooterBlocks(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

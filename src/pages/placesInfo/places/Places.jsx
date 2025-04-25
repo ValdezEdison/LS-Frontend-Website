@@ -155,10 +155,10 @@ const Places = () => {
 
 
     const handleViewMoreDetails = (e, id) => {
-        
-        if(isAuthenticated){
+
+        if (isAuthenticated) {
             navigate('/places/details', { state: { id } });
-        }else{
+        } else {
             togglePopup("alert", true);
             setAlertTitle(tCommon('authAlert.viewDetails.title'));
             setAlertMessage(tCommon('authAlert.viewDetails.description'));
@@ -312,11 +312,11 @@ const Places = () => {
         if (isAuthenticated) {
             dispatch(toggleFavorite(id));
             dispatch(setFavTogglingId(id));
-        }else {
+        } else {
             setAlertTitle(tCommon('authAlert.favorites.title'));
             setAlertMessage(tCommon('authAlert.favorites.description'));
             togglePopup("alert", true);
-          }
+        }
     };
 
 
@@ -363,8 +363,8 @@ const Places = () => {
                     customClass="modalSmTypeOne"
                 >
                     <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
-            description={alertMessage}
-            buttonText={tCommon('authAlert.favorites.button')}/>
+                        description={alertMessage}
+                        buttonText={tCommon('authAlert.favorites.button')} />
                 </Modal>
             )}
 
@@ -432,7 +432,7 @@ const Places = () => {
                 </div>
                 <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
                 <div className={styles.placesList} ref={placesListRef}>
-                    <button
+                    {/* <button
                         style={{
                             display: state.showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
                         }}
@@ -441,7 +441,7 @@ const Places = () => {
                         ref={gotoTopButtonRef}
                     >
                         <img src={Arrow} alt={t('arrowIcon')} />
-                    </button>
+                    </button> */}
                     {placesLoading ? (
                         Array.from({ length: 5 }).map((_, index) => (
                             <CardSkeleton key={index} />
@@ -461,12 +461,16 @@ const Places = () => {
                     ) : (
                         <div className="no-results-wrapper">{t('Places:noResults')}</div>
                     )}
-                    {loading ? <Loader /> : next && <SeeMoreButton
+                    {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
                         onClick={loadMore}
                         loading={loading}
                         next={hasNext}
                         translate={t}
-                    />
+                    />}
+                    {!isAuthenticated && next &&
+                        <div className={styles.loginButtonWrapper}>
+                            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+                        </div>
                     }
                 </div>
                 <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>

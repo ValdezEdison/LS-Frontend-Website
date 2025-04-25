@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks } from "./BlocksAction";
+import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks, fetchFooterBlocks } from "./BlocksAction";
 
 const initialState = {
     headerBlocks: [],
@@ -12,7 +12,11 @@ const initialState = {
     
     bannerBlocks: [],
     bannerLoading: false,
-    bannerError: null
+    bannerError: null,
+
+    footerBlocks: [],
+    footerLoading: false,
+    footerError: null
 };
 
 const blocksSlice = createSlice({
@@ -63,6 +67,20 @@ const blocksSlice = createSlice({
             .addCase(fetchBannerBlocks.rejected, (state, action) => {
                 state.bannerLoading = false;
                 state.bannerError = action.payload;
+            })
+
+            // Footer Blocks
+            .addCase(fetchFooterBlocks.pending, (state) => {
+                state.footerLoading = true;
+                state.footerError = null;
+            })
+            .addCase(fetchFooterBlocks.fulfilled, (state, action) => {
+                state.footerLoading = false;
+                state.footerBlocks = action.payload?.results;
+            })
+            .addCase(fetchFooterBlocks.rejected, (state, action) => {
+                state.footerLoading = false;
+                state.footerError = action.payload;
             });
     },
 });

@@ -27,6 +27,7 @@ const ExplorePage = () => {
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
   const { citiesInContinent, loading: citiesLoading, next, count } = useSelector((state) => state.explore);
   const { data: visibleCitiesInContinent, loading, next: hasNext, loadMore } = useSeeMore(citiesInContinent, next);
+  const { isAuthenticated } = useSelector((state) => state.auth)
   
   // Set default continent to the first one when loaded
   const [activeContinent, setActiveContinent] = useState(null);
@@ -59,6 +60,10 @@ const ExplorePage = () => {
    if(action === 'showSites') {
     navigate('/places/destination', { state: { id: id } });
    }
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
   };
 
 
@@ -110,13 +115,17 @@ const ExplorePage = () => {
           handleActions={handleActions}
         />
         {!citiesLoading && visibleCitiesInContinent?.length === 0 && <div className="no-results-wrapper">{tCommon('noResults')}</div>}
-        {loading ? <Loader /> : next && <SeeMoreButton
-        onClick={loadMore}
-        loading={loading}
-        next={hasNext}
-        translate={tCommon}
-      />
-      }
+        {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+          onClick={loadMore}
+          loading={loading}
+          next={hasNext}
+          translate={''}
+        />}
+        {!isAuthenticated && next &&
+          <div className={styles.loginButtonWrapper}>
+            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+          </div>
+        }
       </main>
       <BlogSection />
       <Newsletter />

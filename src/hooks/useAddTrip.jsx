@@ -58,6 +58,44 @@ export const useAddTrip = () => {
     type:"place",
   });
 
+  const resetAllStates = () => {
+    // Reset trip state
+    setTripState({
+      selectedTripId: "new",
+      selectedPlaceId: null,
+      selectedPlaceName: "",
+      existingTripName: ""
+    });
+  
+    // Reset form state
+    setFormState({
+      tripType: JSON.parse(localStorage.getItem('tripType'))?.type || "solo",
+      tripName: '',
+      startDate: null,
+      endDate: null,
+      mode: 'driving',
+      destinations: [{
+        destinationSearchQuery: '',
+        destinationId: null,
+        destinationName: ''
+      }],
+      stops: [],
+      selectedPlaceName: "",
+      type: "place",
+    });
+  
+    // Reset other states
+    setFormErrors({});
+    setActiveDestinationIndex(0);
+    setCitiesSearchResults([]);
+    setIsSearchingCities(false);
+    setSuccessData({
+      message: "",
+      title: "",
+      show: false
+    });
+  };
+
   const [formErrors, setFormErrors] = useState({});
   const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
   const [citiesSearchResults, setCitiesSearchResults] = useState([]);
@@ -72,6 +110,20 @@ export const useAddTrip = () => {
     addTripPopup: false,
     addToTripPopup: false
   });
+
+  useEffect(() => {
+
+   dispatch(fetchTravelLiteList());
+   return () => {
+    // Cleanup function that runs when component unmounts
+    resetAllStates();
+    
+    // Close any open popups
+    dispatch(closePopup());
+    dispatch(closeAddToTripPopup());
+  };
+   
+  }, []);
 
   useEffect(() => {
     if (tripState.selectedPlaceName) {
@@ -152,14 +204,17 @@ export const useAddTrip = () => {
   // Handle adding to existing trip
   const handleSubmitTrip = () => {
     if (tripState.selectedTripId !== "new") {
-      dispatch(formState.type === "event" ? addSite({ id: tripState.selectedPlaceId, order: 5 }) : addToExistingTrip({ tripId: tripState.selectedTripId, siteId: tripState.selectedPlaceId }))
+      dispatch(formState.type === "event" || formState.type === "place" ? addSite({ id: tripState.selectedTripId, siteId: tripState.selectedPlaceId, order: 5 }) : addToExistingTrip({ tripId: tripState.selectedTripId, siteId: tripState.selectedPlaceId }))
         .then((res) => {
-          if (res.type === "places/addSite/fulfilled") {
-            toast.success(
-              t('AddTrip.success.placeAdded.message', { tripName: tripState.existingTripName })
-            );
+          
+          console.log(res, 'res');
+          if (res.type === "places/addSite/fulfilled" || res.type === "places/addToExistingTrip/fulfilled") {
+           if(res.payload?.detail){
+            toast.success(res.payload.detail);
+           }
             closeAddTripPopup();
-          } else if (res.type === "places/addSite/rejected") {
+            resetAllStates();
+          } else if (res.type === "places/addSite/rejected" || res.type === "places/addToExistingTrip/rejected") {
             const errorMsg = res.payload?.error_description ||  t('AddTrip.errors.addPlaceFailed');
             toast.error(`Error: ${errorMsg}`);
           }
@@ -208,6 +263,7 @@ export const useAddTrip = () => {
           show: true
         });
         dispatch(resetTripType());
+        resetAllStates(); 
       } else {
         setSuccessData({
           message: result.payload?.error_description || 
@@ -250,6 +306,7 @@ export const useAddTrip = () => {
     dispatch(closePopup());
     dispatch(closeAddToTripPopup());
     setFormErrors({});
+    resetAllStates();
   };
 
   // Handle trip click (main entry point)

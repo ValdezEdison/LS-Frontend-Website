@@ -52,9 +52,9 @@ const EventsPage = () => {
   const { isOpen } = useSelector((state) => state.popup);
   const { cities } = useSelector((state) => state.cities);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
-    const {
-      bannerBlocks, bannerLoading
-    } = useSelector((state) => state.cms.blocks);
+  const {
+    bannerBlocks, bannerLoading
+  } = useSelector((state) => state.cms.blocks);
 
   // Add trip functionality
   const {
@@ -191,7 +191,7 @@ const EventsPage = () => {
   };
 
   const handleViewMoreDetails = (e, id) => {
-    
+
     if (isAuthenticated) {
       navigate('/events/details', { state: { id } });
     } else {
@@ -242,7 +242,7 @@ const EventsPage = () => {
 
   const onApplyFilters = () => {
     console.log('state', state);
-    
+
     const params = {
       type: state.type,
       page: state.page,
@@ -252,71 +252,71 @@ const EventsPage = () => {
       levels: state.selectedLevel,
       sortBy: state.selectedOrder
     };
-  
+
     // Only add startDate if it exists
     if (state.startDate) {
       params.startDate = state.startDate.toISOString().split('T')[0];
     }
-  
+
     // Only add endDate if it exists
     if (state.endDate) {
       params.endDate = state.endDate.toISOString().split('T')[0];
     }
-  
+
     dispatch(fetchEvents(params));
     dispatch(closePopup());
     togglePopup("filterPanel", false);
   }
 
- useEffect(() => {
-      if(popupState.filterPanel || tripPopupState.addTripPopup || isAddToPopupOpen){
-        document.body.classList.add('overflowHide');
-      }else{
-        document.body.classList.remove('overflowHide');
-      }
-  
-      // Cleanup: Remove class when component unmounts
-      return () => {
-        document.body.classList.remove('overflowHide');
-      };
-    }, [popupState.filterPanel, tripPopupState.addTripPopup, isAddToPopupOpen]);
+  useEffect(() => {
+    if (popupState.filterPanel || tripPopupState.addTripPopup || isAddToPopupOpen) {
+      document.body.classList.add('overflowHide');
+    } else {
+      document.body.classList.remove('overflowHide');
+    }
 
-
-
-    useEffect(() => {
-      const debounceTimer = setTimeout(() => {
-        const params = {
-          type: state.type,
-          page: 1, // Reset to first page when searching
-          keyword: state.keyword,
-          cityId: state.selectedCityId,
-          categories: state.selectedCategory,
-          subcategories: state.selectedSubcategory,
-          levels: state.selectedLevel
-        };
-    
-        if (state.startDate) {
-          params.startDate = state.startDate.toISOString().split('T')[0];
-        }
-    
-        if (state.endDate) {
-          params.endDate = state.endDate.toISOString().split('T')[0];
-        }
-    
-        dispatch(fetchEvents(params));
-      }, 500);
-    
-      return () => clearTimeout(debounceTimer);
-    }, [
-      state.keyword, // Triggers when search term changes
-      dispatch,
-    ]);
-    
-    const handleSearch = (e) => {
-      const value = e.target.value;
-      setState((prev) => ({ ...prev, keyword: value }));
-      // Don't call debouncedSearchEvents here - it will be triggered by the useEffect
+    // Cleanup: Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overflowHide');
     };
+  }, [popupState.filterPanel, tripPopupState.addTripPopup, isAddToPopupOpen]);
+
+
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      const params = {
+        type: state.type,
+        page: 1, // Reset to first page when searching
+        keyword: state.keyword,
+        cityId: state.selectedCityId,
+        categories: state.selectedCategory,
+        subcategories: state.selectedSubcategory,
+        levels: state.selectedLevel
+      };
+
+      if (state.startDate) {
+        params.startDate = state.startDate.toISOString().split('T')[0];
+      }
+
+      if (state.endDate) {
+        params.endDate = state.endDate.toISOString().split('T')[0];
+      }
+
+      dispatch(fetchEvents(params));
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [
+    state.keyword, // Triggers when search term changes
+    dispatch,
+  ]);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setState((prev) => ({ ...prev, keyword: value }));
+    // Don't call debouncedSearchEvents here - it will be triggered by the useEffect
+  };
   return (
     <>
       {/* Popups and Modals */}
@@ -390,7 +390,7 @@ const EventsPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{tEventsPage('events.availableEvents', { count })}</h1>
-          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state}/>
+          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>{tEventsPage('events.popularEvents')}</h2>
           <EventList
@@ -398,18 +398,21 @@ const EventsPage = () => {
             handleActions={handleActions}
           />
           {visibleEvents?.length === 0 &&
-          <div className="no-results-wrapper">{tCommon("noResults")}</div>
+            <div className="no-results-wrapper">{tCommon("noResults")}</div>
           }
-        
+
           <div className={styles.showMoreWrapper}>
-            {loading ? <Loader /> : next && (
-              <SeeMoreButton
-                onClick={loadMore}
-                loading={loading}
-                next={hasNext}
-                translate={t}
-              />
-            )}
+            {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+              onClick={loadMore}
+              loading={loading}
+              next={hasNext}
+              translate={t}
+            />}
+            {!isAuthenticated && next &&
+              <div className={styles.loginButtonWrapper}>
+                <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+              </div>
+            }
           </div>
           <hr className={styles.divider} />
           <PopularEvents />

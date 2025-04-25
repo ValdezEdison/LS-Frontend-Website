@@ -25,7 +25,7 @@ const PlaceCard = forwardRef(
 
     const handleTripClick = (e) => {
         e.stopPropagation();
-        handleActions(e, 'addToTrip', place?.id, place?.display_text);
+        handleActions(e, 'addToTrip', place?.id, place?.display_text || place?.title);
     };
 
     const handleStopClick = (e) => {

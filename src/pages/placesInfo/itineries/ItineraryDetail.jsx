@@ -153,7 +153,7 @@ const ItineraryDetail = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "place" }));
+        setFormState(prev => ({ ...prev, type: "itinerary" }));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);

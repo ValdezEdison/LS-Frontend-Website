@@ -103,7 +103,7 @@ const Events = () => {
 
 
   const { t } = useTranslation('Places');
-  const { t:tCommon } = useTranslation('Common');
+  const { t: tCommon } = useTranslation('Common');
 
   const { id } = location.state || {};
   ;
@@ -113,7 +113,7 @@ const Events = () => {
     latAndLng: "",
     selectedDateRange: { startDate: null, endDate: null },
     type: "event",
-    points:"",
+    points: "",
   })
 
   const [popupState, setPopupState] = useState({
@@ -142,14 +142,14 @@ const Events = () => {
         dispatch(fetchTravelLiteList());
       }
       dispatch(fetchCities({}));
-      
+
       return () => {
         dispatch(closePopup());
         closeAddToTrip();
       };
     }
   }, [dispatch, id, isAuthenticated, language]);
-  
+
   // Events with filters
   useEffect(() => {
     if (id) {
@@ -245,7 +245,7 @@ const Events = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
-    }else {
+    } else {
       setAlertTitle(tCommon('authAlert.favorites.title'));
       setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
@@ -267,10 +267,10 @@ const Events = () => {
   }
 
   const handleViewMoreDetails = (e, id) => {
-    
-    if(isAuthenticated){
+
+    if (isAuthenticated) {
       navigate('/events/details', { state: { id } });
-    }else{
+    } else {
       togglePopup("alert", true);
       setAlertTitle(tCommon('authAlert.viewDetails.title'));
       setAlertMessage(tCommon('authAlert.viewDetails.description'));
@@ -311,7 +311,7 @@ const Events = () => {
         >
           <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
             description={alertMessage}
-            buttonText={tCommon('authAlert.favorites.button')}/>
+            buttonText={tCommon('authAlert.favorites.button')} />
         </Modal>
       )}
 
@@ -398,18 +398,22 @@ const Events = () => {
 
           {visibleEvents.length === 0 && <div className="no-results-wrapper">{t('Events.noEvents')}</div>}
           {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
-          {loading ? <Loader /> : next && <SeeMoreButton
-            onClick={loadMore}
-            loading={loading}
-            next={hasNext}
-            translate={t}
-          />
-          }
+          {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+          onClick={loadMore}
+          loading={loading}
+          next={hasNext}
+          translate={t}
+        />}
+        {!isAuthenticated && next &&
+          <div className={styles.loginButtonWrapper}>
+            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+          </div>
+        }
         </section>
         <div className={styles.divider} />
         <section className={styles.recommendedSection}>
           <h2 className={styles.sectionTitle}>
-          {t('Events.recommendedEvents')}
+            {t('Events.recommendedEvents')}
           </h2>
           <div className={styles.recommendedGrid}>
             {recommendedEvents.map((event, index) => (

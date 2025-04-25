@@ -28,7 +28,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { loading: countriesLoading } = useSelector((state) => state.countries);
   const { loading: citiesLoading } = useSelector((state) => state.cities);
 
-  const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(places, next);
+  const { data: visiblePlaces, loading, next: hasNext, loadMore, hasLoadedMore } = useSeeMore(places, next);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isOpen } = useSelector((state) => state.popup);
@@ -277,7 +277,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
       <div className={styles.placesList} ref={placesListRef}>
         <button
           style={{
-            display: showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
+            display: showArrow && !isOpen && !loading && visiblePlaces.length > 0 && hasLoadedMore ? 'block' : 'none'
           }}
 
           className={styles3.gotoTopButton}
@@ -314,23 +314,23 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
             return placeCard;
           })
         ) : (
-          <div className="no-results-wrapper">No results</div>
+          <div className="no-results-wrapper">{tCommon('noResult')}</div>
         )}
 
     
       </div>
 
-      {loading ? <Loader /> : next && isAuthenticated ? <SeeMoreButton
-        onClick={loadMore}
-        loading={loading}
-        next={hasNext}
-        translate={t}
-      />
-        :
-        <div className={styles.loginButtonWrapper}>
-          <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
-        </div>
-      }
+      {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
+          onClick={loadMore}
+          loading={loading}
+          next={hasNext}
+          translate={t}
+        />}
+        {!isAuthenticated && next &&
+          <div className={styles.loginButtonWrapper}>
+            <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+          </div>
+        }
 
 
       <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>

@@ -26,6 +26,8 @@ import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import Modal from "../../../components/modal/Modal";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
+import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
+import { useAddTrip } from "../../../hooks/useAddTrip";
 
 
 const ItineraryList = () => {
@@ -43,7 +45,7 @@ const ItineraryList = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next);
-  const { isOpen, isAddToPopupOpen } = useSelector((state) => state.popup);
+  const { isOpen } = useSelector((state) => state.popup);
 
   const [showArrow, setShowArrow] = useState(true);
 
@@ -64,6 +66,35 @@ const ItineraryList = () => {
     success: false,
   });
 
+  // Add trip functionality
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
+
+
   const [alertMessage, setAlertMessage] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
 
@@ -83,12 +114,12 @@ const ItineraryList = () => {
 
   const handleViewMoreDetails = (e, id) => {
 
-    if(isAuthenticated){
+    if (isAuthenticated) {
       navigate('/places/itineraries-details', { state: { id } });
-    }else{
-        togglePopup("alert", true);
-        setAlertTitle(tCommon('authAlert.viewDetails.title'));
-        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
     }
   };
 
@@ -189,12 +220,64 @@ const ItineraryList = () => {
   ];
 
 
-  const handleActions = (e, action, id) => {
+  // const handleActions = (e, action, id) => {
+  //   e.stopPropagation();
+  //   if (action === 'addToFavorites') {
+  //     handleFavClick(e, id);
+  //   } else if (action === 'addToTrip') {
+  //     handleTripClick(e, id);
+  //   }
+  // };
+
+  // const handleFavClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     dispatch(toggleFavorite(id));
+  //     dispatch(setFavTogglingId(id));
+  //   } else {
+  //     setAlertTitle(tCommon('authAlert.favorites.title'));
+  //     setAlertMessage(tCommon('authAlert.favorites.description'));
+  //     togglePopup("alert", true);
+  //   }
+  // };
+
+  // const handleTripClick = (e, id) => {
+  //   e.stopPropagation();
+  //   if (isAuthenticated) {
+  //     dispatch(openAddToTripPopup());
+  //     navigate('/places/itineraries-details', { state: { id } });
+  //   } else {
+  //     setAlertTitle(tCommon('authAlert.favorites.title'));
+  //     setAlertMessage(tCommon('authAlert.favorites.description'));
+  //     togglePopup("alert", true);
+  //   }
+  // };
+
+
+  const handleActions = (e, action, id, name) => {
     e.stopPropagation();
-    if (action === 'addToFavorites') {
-      handleFavClick(e, id);
-    } else if (action === 'addToTrip') {
-      handleTripClick(e, id);
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "itinerary" }));
+        break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
     }
   };
 
@@ -203,21 +286,7 @@ const ItineraryList = () => {
     if (isAuthenticated) {
       dispatch(toggleFavorite(id));
       dispatch(setFavTogglingId(id));
-    }else{
-      setAlertTitle(tCommon('authAlert.favorites.title'));
-      setAlertMessage(tCommon('authAlert.favorites.description'));
-      togglePopup("alert", true);
-    }
-  };
-
-  const handleTripClick = (e, id) => {
-    e.stopPropagation();
-    if (isAuthenticated) {
-      dispatch(openAddToTripPopup());
-      navigate('/places/itineraries-details', { state: { id } });
     } else {
-      setAlertTitle(tCommon('authAlert.favorites.title'));
-      setAlertMessage(tCommon('authAlert.favorites.description'));
       togglePopup("alert", true);
     }
   };
@@ -225,11 +294,32 @@ const ItineraryList = () => {
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
   }
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
 
   return (
     // <div className={styles.athenasPlaces}>
     <>
-      {/* {isOpen && isAddToPopupOpen && <AddToTripPopup />} */}
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
+        />
+      )}
+
+      {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
+        dispatch(closeAddToTripPopup());
+        dispatch(closePopup());
+        dispatch(resetTripType());
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
       {isOpen && popupState.alert && (
         <Modal
           onClose={() => togglePopup("alert", false)}
@@ -237,7 +327,7 @@ const ItineraryList = () => {
         >
           <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
             description={alertMessage}
-            buttonText={tCommon('authAlert.favorites.button')}/>
+            buttonText={tCommon('authAlert.favorites.button')} />
         </Modal>
       )}
       <Header />
@@ -254,7 +344,7 @@ const ItineraryList = () => {
         </div>
         <p className={commonStyle.availablePlaces}>{t('Itineraries.availableCount', { count })}</p>
         <div className={styles.placesList} ref={placesListRef}>
-          <button
+          {/* <button
             style={{
               display: showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
             }}
@@ -264,7 +354,7 @@ const ItineraryList = () => {
             ref={gotoTopButtonRef}
           >
             <img src={Arrow} alt={t('arrowIcon')} />
-          </button>
+          </button> */}
           {itineriesLoading ?
             (Array.from({ length: 5 }).map((_, index) => (
               <CardSkeleton key={index} />
@@ -284,12 +374,16 @@ const ItineraryList = () => {
             ) : (
               <div className="no-results-wrapper">{t('Itineraries.noResults')}</div>
             )}
-          {loading ? <Loader /> : next && <SeeMoreButton
+          {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
             onClick={loadMore}
             loading={loading}
             next={hasNext}
             translate={t}
-          />
+          />}
+          {!isAuthenticated && next &&
+            <div className={styles.loginButtonWrapper}>
+              <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
+            </div>
           }
         </div>
         <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
