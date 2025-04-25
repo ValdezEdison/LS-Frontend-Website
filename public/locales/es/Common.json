@@ -42,5 +42,10 @@
     "label": "Buscar destinos",
     "placeholder": "Ciudad, país, eventos...",
     "buttonAriaLabel": "Buscar"
+  },
+  "userMenu": {
+    "manageAccount": "Gestionar cuenta",
+    "favorites": "Favoritos",
+    "logout": "Cerrar sesión"
   }
 }

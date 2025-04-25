@@ -42,5 +42,10 @@
     "label": "Search destinations",
     "placeholder": "City, country, events...",
     "buttonAriaLabel": "Search"
+  },
+  "userMenu": {
+    "manageAccount": "Manage account",
+    "favorites": "Favorites",
+    "logout": "Log out"
   }
 }
