@@ -112,6 +112,7 @@ function FilterSidebar({
           {/* <div className={styles.searchInput}> */}
             {/* <i className={styles.searchIcon} /> */}
             {/* <img src={SearchBlack}/> */}
+            <div className={styles.searchContainer}>
             <SearchInput
             handleSearchClick={() => setShowSuggestionDropDown(true)}
             suggestionRef={suggestionRef}
@@ -125,6 +126,7 @@ function FilterSidebar({
             customClassName="placesSearchInputContainer"
             selectedValue={state.selectedDestinationId}
           />
+            </div> 
           {/* </div> */}
         </div>
         
@@ -315,7 +317,7 @@ function FilterSidebar({
 
         <div className={styles.buttonGroup}>
           <button 
-            className={styles.resetButton}
+            className={styles.clearButton}
             onClick={resetFilters}
           >
             {t('filters.buttons.clear')}

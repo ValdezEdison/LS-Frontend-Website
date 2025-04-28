@@ -51,6 +51,10 @@
   margin-bottom: 20px;
 }
 
+.searchContainer {
+  position: relative;
+}
+
 .filterTitle {
   color: #000;
   font:
@@ -138,6 +142,24 @@
     sans-serif;
     transition: all ease .3s;
 }
+
+.clearButton {
+  width: 146px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  color: #151820;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  font:
+    600 15px "Source Sans Pro",
+    sans-serif;
+    transition: all ease .3s;
+}
+.clearButton:hover {
+  background-color: #e7e7e7;
+}
 .applyButton.active {
   background-color: #f4c031;
 }
@@ -182,7 +204,7 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 15px;
+  padding: 4px 15px 4px 8px;
   height: 40px;
 }
 
@@ -239,7 +261,19 @@
   top: 40px;
   left: 0px;
   z-index: 2;
-  overflow:hidden ;
+  overflow:auto ;
+  max-height: 200px;
+}
+
+.filterContent ul{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.filterContent ul li{
+  padding: 4px 8px;
 }
 
 .filterContent.active {
@@ -339,4 +373,11 @@
 .filterNoResults{
   font-size: 13px;
   text-align: center;
+}
+
+.buttonGroup{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
