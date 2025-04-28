@@ -54,6 +54,10 @@ const itineriesInCitySlice = createSlice({
         name: null
       }
       localStorage.removeItem('tripType')
+    },
+    listUpdater: (state, action) => {
+      state.itineries = [...state.itineries, ...action.payload?.results];
+      state.next = action.payload.next;
     }
   },
   extraReducers: (builder) => {
@@ -239,5 +243,5 @@ const itineriesInCitySlice = createSlice({
   },
 });
 
-export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } = itineriesInCitySlice.actions;
+export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType, listUpdater } = itineriesInCitySlice.actions;
 export default itineriesInCitySlice.reducer;

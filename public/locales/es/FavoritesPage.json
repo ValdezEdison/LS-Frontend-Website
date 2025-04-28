@@ -5,5 +5,29 @@
     "commentPopup": {
       "editComment": "Editar comentario",
       "addComment": "Añadir comentario"
+    },
+    "filters": {
+      "title": "Filtros favoritos",
+      "destination": "Destino",
+      "type": "Tipo",
+      "level": "Nivel",
+      "category": "Categoría",
+      "subcategory": "Subcategoría",
+      "selectLevel": "Selecciona un nivel",
+      "selectCategory": "Selecciona una categoría",
+      "selectSubcategory": "Selecciona una subcategoría",
+      "selected": "Seleccionado",
+      "types": {
+        "event": "Eventos",
+        "place": "Lugares",
+        "all": "Todo"
+      },
+      "buttons": {
+        "clear": "Limpiar",
+        "apply": "Aplicar"
+      }
+    },
+    "search": {
+      "placeholder": "Buscar destinos..."
     }
   }

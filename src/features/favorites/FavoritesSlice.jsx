@@ -3,10 +3,12 @@ import { fetchFavorites, toggleFavorite } from "./FavoritesAction";
 
 const initialState = {
     favorites: [],
-    loading: false,
+    favLoading: false,
     error: null,
     isFavoriteToggling: false,
-    favTogglingId: null
+    favTogglingId: null,
+    next: null,
+    count: null
 
 };
 
@@ -16,21 +18,31 @@ const favoritesSlice = createSlice({
     reducers: {
         setFavTogglingId: (state, action) => {
             state.favTogglingId = action.payload;
-        }
+        },
+        listUpdater: (state, action) => {
+            state.favorites = [...state.favorites, ...action.payload?.results];
+            state.next = action.payload.next;
+          },
+        removeFavorite: (state, action) => {
+            const idToRemove = action.payload;
+            state.favorites = state.favorites.filter(item => item.id !== idToRemove);
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchFavorites.pending, (state) => {
-                state.loading = true;
+                state.favLoading = true;
                 state.error = null;
             })
             .addCase(fetchFavorites.fulfilled, (state, action) => {
-                state.loading = false;
+                state.favLoading = false;
                 state.error = null;
-                state.favorites = action.payload;
+                state.favorites = action.payload?.results;
+                state.next = action.payload?.next;
+                state.count = action.payload?.count;
             })
             .addCase(fetchFavorites.rejected, (state, action) => {
-                state.loading = false;
+                state.favLoading = false;
                 state.error = action.error.message;
             })
 
@@ -66,4 +78,4 @@ const favoritesSlice = createSlice({
 });
 
 export default favoritesSlice.reducer;
-export const { setFavTogglingId } = favoritesSlice.actions;
+export const { setFavTogglingId, listUpdater, removeFavorite } = favoritesSlice.actions;

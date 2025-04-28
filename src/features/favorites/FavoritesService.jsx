@@ -1,9 +1,12 @@
 import ApiService from "../../services/ApiService";
 
 const FavoritesService = {
-    getFavorites: async (keyword) => {
+    getFavorites: async (page, keyword) => {
         if(keyword) {
             return ApiService.get(`/sites/favorites?keyword=${encodeURIComponent(keyword)}`);
+        }
+        if(page) {
+            return ApiService.get(`/sites/favorites?page=${page}`);
         }
         return ApiService.get('/sites/favorites');
     },

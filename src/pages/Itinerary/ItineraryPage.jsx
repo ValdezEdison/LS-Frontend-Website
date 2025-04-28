@@ -27,6 +27,7 @@ import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../hooks/useAddTrip";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
+import { listUpdater } from "../../features/itineraries/ItinerarySlice";
 
 const ItineraryPage = () => {
   const { t: tCommon } = useTranslation("Common");
@@ -40,7 +41,7 @@ const ItineraryPage = () => {
 
   const { cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.cities);
   const { itineraries, loading: itinerariesLoading, error: itinerariesError, next, count } = useSelector((state) => state.itineraries);
-  const { data: visibleItineraries, loading, next: hasNext, loadMore } = useSeeMore(itineraries, next);
+  const { data: visibleItineraries, loading, next: hasNext, loadMore } = useSeeMore(itineraries, next, listUpdater);
 
   const { isOpen } = useSelector((state) => state.popup);
 

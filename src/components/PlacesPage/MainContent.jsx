@@ -19,6 +19,7 @@ import FilterBar from "../common/FilterBar";
 import styles4 from "../common/FilterBar.module.css";
 import SelectedItemList from "../common/SelectedItemList";
 import GoToFilterCard from "../common/GoToFilterCard";
+import { listUpdater } from "../../features/places/PlaceSlice";
 
 const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
@@ -28,7 +29,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { loading: countriesLoading } = useSelector((state) => state.countries);
   const { loading: citiesLoading } = useSelector((state) => state.cities);
 
-  const { data: visiblePlaces, loading, next: hasNext, loadMore, hasLoadedMore } = useSeeMore(places, next);
+  const { data: visiblePlaces, loading, next: hasNext, loadMore, hasLoadedMore } = useSeeMore(places, next, listUpdater);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isOpen } = useSelector((state) => state.popup);

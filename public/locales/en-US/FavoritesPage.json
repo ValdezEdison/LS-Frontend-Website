@@ -5,5 +5,29 @@
     "commentPopup": {
       "editComment": "Edit Comment",
       "addComment": "Add Comment"
+    },
+    "filters": {
+      "title": "Favorite filters",
+      "destination": "Destination",
+      "type": "Type",
+      "level": "Level",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "selectLevel": "Select a level",
+      "selectCategory": "Select a category",
+      "selectSubcategory": "Select a subcategory",
+      "selected": "Selected",
+      "types": {
+        "event": "Events",
+        "place": "Places",
+        "all": "All"
+      },
+      "buttons": {
+        "clear": "Clear",
+        "apply": "Apply"
+      }
+    },
+    "search": {
+      "placeholder": "Search destinations..."
     }
   }

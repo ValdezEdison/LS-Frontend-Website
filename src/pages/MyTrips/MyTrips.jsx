@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMyFutureTrips, fetchMyPastTrips } from "../../features/myTrips/MyTripsAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import { listUpdater } from "../../features/myTrips/MyTripsSlice";
 
 const MyTrips = () => {
   const [state, setState] = useState({

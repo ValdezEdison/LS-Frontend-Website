@@ -49,6 +49,10 @@ const placeSlice = createSlice({
         },
         resetShareableLink: (state) => {
             state.shareableLink = null
+        },
+        listUpdater: (state, action) => {
+            state.places = [...state.places, ...action.payload?.results];
+            state.next = action.payload.next;
         }
     },
     extraReducers: (builder) => {
@@ -298,5 +302,5 @@ const placeSlice = createSlice({
     },
 });
 
-export const { setFavTogglingId, resetShareableLink } = placeSlice.actions;
+export const { setFavTogglingId, resetShareableLink, listUpdater } = placeSlice.actions;
 export default placeSlice.reducer;

@@ -4,9 +4,9 @@ import { handleApiError } from "../../utils/Helper";
 
 export const fetchFavorites = createAsyncThunk(
     "favorites/fetchFavorites",
-    async (keyword, { rejectWithValue }) => {
+    async ({page, keyword}, { rejectWithValue }) => {
         try {
-            const response = await FavoriteService.getFavorites(keyword);
+            const response = await FavoriteService.getFavorites(page, keyword);
             return response;
         } catch (error) {
             return rejectWithValue(handleApiError(error));

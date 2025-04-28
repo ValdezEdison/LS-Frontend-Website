@@ -28,6 +28,7 @@ import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
+import { listUpdater } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 
 
 const ItineraryList = () => {
@@ -44,7 +45,7 @@ const ItineraryList = () => {
   const { loading: itineriesLoading, error, itineries, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineriesInCity);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
-  const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next);
+  const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, listUpdater);
   const { isOpen } = useSelector((state) => state.popup);
 
   const [showArrow, setShowArrow] = useState(true);
