@@ -143,6 +143,12 @@
     transition: all ease .3s;
 }
 
+
+.applyButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .clearButton {
   width: 146px;
   height: 40px;

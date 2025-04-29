@@ -335,16 +335,17 @@ const FavoritesPage = () => {
     togglePopup("filterPanel", false);
     
     const filters = {
-      page: 1,
-      ...(state.type && { type: state.type }),
-      ...(state.levelId && { level_id: state.levelId }),
-      ...(state.categoryId && { category_id: state.categoryId }),
-      ...(state.subcategoryId && { subcategory_id: state.subcategoryId })
+        page: state.page,
+        ...(state.selectedDestinationId && { city: cities.find(city => city.id === state.selectedDestinationId).name }),
+        ...(state.type && { type: state.type }),
+        ...(state.levelId && { level_id: state.levelId }),
+        ...(state.categoryId && { category_id: state.categoryId }),
+        ...(state.subcategoryId && { subcategory_id: state.subcategoryId })
     };
-
+    
     dispatch(fetchFavorites(filters));
-  };
-
+    // resetFilters()
+};
   const resetFilters = () => {
     setState(prev => ({
       ...prev,
@@ -352,6 +353,8 @@ const FavoritesPage = () => {
       levelId: null,
       categoryId: null,
       subcategoryId: null,
+      selectedDestinationId: null,
+      destinationSearchQuery: "",
       page: 1
     }));
     dispatch(fetchFavorites({ page: 1 }));
@@ -362,7 +365,9 @@ const FavoritesPage = () => {
     <>
       {/* <FilterSiderbar/> */}
       {isOpen && popupState.filterPanel && (
-        <FilterSiderbar onClose={() => togglePopup("filterPanel", false)} state={state} setState={setState} cities={cities} categories={categories} handleTypeChange={handleTypeChange}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} applyFilters={applyFilters} resetFilters={resetFilters}/>
+        <FilterSiderbar onClose={() => {togglePopup("filterPanel", false)
+          
+        }} state={state} setState={setState} cities={cities} categories={categories} handleTypeChange={handleTypeChange}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} applyFilters={applyFilters} resetFilters={resetFilters}/>
       )}
       {isOpen && popupState.alert && (
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">

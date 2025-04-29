@@ -4,9 +4,9 @@ import { SearchBlack } from "../../common/Images";
 import SearchInput from "../../common/SearchInput";
 import { useTranslation } from "react-i18next";
 
-function FilterSidebar({ 
-  onClose, 
-  state, 
+function FilterSidebar({
+  onClose,
+  state,
   setState,
   cities,
   categories,
@@ -23,14 +23,34 @@ function FilterSidebar({
     subcategories: false
   });
 
-    const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
-     const suggestionRef = useRef(null);
-     const levelDropdownRef = useRef(null);
-     const categoryDropdownRef = useRef(null);
-     const subcategoryDropdownRef = useRef(null);
+  const defaultFilters = {
+    type: "",
+    levelId: null,
+    categoryId: null,
+    subcategoryId: null,
+    selectedDestinationId: null,
+  };
 
-     const { t } = useTranslation('FavoritesPage');
-     const { t: tCommon } = useTranslation('Common');
+  const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
+  const [filtersChanged, setFiltersChanged] = useState(false);
+  const suggestionRef = useRef(null);
+  const levelDropdownRef = useRef(null);
+  const categoryDropdownRef = useRef(null);
+  const subcategoryDropdownRef = useRef(null);
+
+  const { t } = useTranslation('FavoritesPage');
+
+  const checkForFilterChanges = (currentState) => {
+    const hasChanges = Object.keys(defaultFilters).some(
+      key => currentState[key] !== defaultFilters[key]
+    );
+    setFiltersChanged(hasChanges);
+  };
+
+
+  useEffect(() => {
+    checkForFilterChanges(state);
+  }, [state]);
 
   const toggleDropdown = (name) => {
     setOpenDropdown(prev => ({
@@ -56,46 +76,60 @@ function FilterSidebar({
     ?.subcategories || [];
 
 
-    const handleSearch = (value) => {
-      updateState("destinationSearchQuery", value);
-  
-    };
+  const handleSearch = (value) => {
+    updateState("destinationSearchQuery", value);
 
-    const handleSearchClose = (e) => {
-      e.stopPropagation();
-      updateState("destinationSearchQuery", "");
-      updateState("selectedDestinationId", null);
+  };
+
+  const handleSearchClose = (e) => {
+    e.stopPropagation();
+    updateState("destinationSearchQuery", "");
+    updateState("selectedDestinationId", null);
+    setShowSuggestionDropDown(false);
+  };
+
+
+  const updateState = (key, value) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+    if (key === "selectedDestinationId" && value) {
       setShowSuggestionDropDown(false);
-    };
+    }
+    // setShowSuggestionDropDown(false);
+  };
 
 
-    const updateState = (key, value) => {
-      setState((prev) => ({ ...prev, [key]: value }));
-      if (key === "selectedCountryId" && value) {
-        setState((prev) => ({ ...prev, "selectedCountryName": countries.find((country) => country.id === value).name }));
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (levelDropdownRef.current && !levelDropdownRef.current.contains(event.target)) {
+        setOpenDropdown(prev => ({ ...prev, levels: false }));
       }
-      // setShowSuggestionDropDown(false);
+      if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
+        setOpenDropdown(prev => ({ ...prev, categories: false }));
+      }
+      if (subcategoryDropdownRef.current && !subcategoryDropdownRef.current.contains(event.target)) {
+        setOpenDropdown(prev => ({ ...prev, subcategories: false }));
+      }
+      if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
+        setShowSuggestionDropDown(false);
+      }
     };
 
-
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (levelDropdownRef.current && !levelDropdownRef.current.contains(event.target)) {
-          setOpenDropdown(prev => ({ ...prev, levels: false }));
-        }
-        if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
-          setOpenDropdown(prev => ({ ...prev, categories: false }));
-        }
-        if (subcategoryDropdownRef.current && !subcategoryDropdownRef.current.contains(event.target)) {
-          setOpenDropdown(prev => ({ ...prev, subcategories: false }));
-        }
-      };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+
+  const handleApplyFilters = () => {
+    applyFilters();
+    setFiltersChanged(false);
+  };
+
+  const handleResetFilters = () => {
+    resetFilters();
+    setFiltersChanged(false);
+  };
 
   return (
     <div className={styles.sidebarOverlay}>
@@ -106,39 +140,39 @@ function FilterSidebar({
             <i className={styles.popupcloseIcon} />
           </button>
         </div>
-        
-           <div className={styles.filterSection}>
+
+        <div className={styles.filterSection}>
           <h3 className={styles.title}>{t('filters.destination')}</h3>
           {/* <div className={styles.searchInput}> */}
-            {/* <i className={styles.searchIcon} /> */}
-            {/* <img src={SearchBlack}/> */}
-            <div className={styles.searchContainer}>
+          {/* <i className={styles.searchIcon} /> */}
+          {/* <img src={SearchBlack}/> */}
+          <div className={styles.searchContainer}>
             <SearchInput
-            handleSearchClick={() => setShowSuggestionDropDown(true)}
-            suggestionRef={suggestionRef}
-            handleSearch={handleSearch}
-            showSuggestionDropDown={showSuggestionDropDown}
-            handleSearchClose={handleSearchClose}
-            searchValue={state.destinationSearchQuery}
-            suggestionsList={cities}
-            placeholder={t("search.placeholder")}
-            onSelect={(value) => updateState("selectedDestinationId", value)}
-            customClassName="placesSearchInputContainer"
-            selectedValue={state.selectedDestinationId}
-          />
-            </div> 
+              handleSearchClick={() => setShowSuggestionDropDown(true)}
+              suggestionRef={suggestionRef}
+              handleSearch={handleSearch}
+              showSuggestionDropDown={showSuggestionDropDown}
+              handleSearchClose={handleSearchClose}
+              searchValue={state.destinationSearchQuery}
+              suggestionsList={cities}
+              placeholder={t("search.placeholder")}
+              onSelect={(value) => updateState("selectedDestinationId", value)}
+              customClassName="placesSearchInputContainer"
+              selectedValue={state.selectedDestinationId}
+            />
+          </div>
           {/* </div> */}
         </div>
-        
+
         {/* Type Selection */}
         <div className={styles.filterSection}>
           <h3 className={styles.title}>{t('filters.type')}</h3>
           <div className={styles.radioGroup}>
             <div className={styles.typesRadiowrapper}>
               <label className="radioContainer">
-                <input 
-                  type="radio" 
-                  name="type" 
+                <input
+                  type="radio"
+                  name="type"
                   value="event"
                   checked={state.type === "event"}
                   onChange={() => handleTypeChange("event")}
@@ -149,9 +183,9 @@ function FilterSidebar({
             </div>
             <div className={styles.typesRadiowrapper}>
               <label className="radioContainer">
-                <input 
-                  type="radio" 
-                  name="type" 
+                <input
+                  type="radio"
+                  name="type"
                   value="place"
                   checked={state.type === "place"}
                   onChange={() => handleTypeChange("place")}
@@ -162,9 +196,9 @@ function FilterSidebar({
             </div>
             <div className={styles.typesRadiowrapper}>
               <label className="radioContainer">
-                <input 
-                  type="radio" 
-                  name="type" 
+                <input
+                  type="radio"
+                  name="type"
                   value=""
                   checked={state.type === ""}
                   onChange={() => handleTypeChange("")}
@@ -180,15 +214,15 @@ function FilterSidebar({
         <div className={styles.filterSection}>
           <h3 className={styles.title}>{t('filters.level')}</h3>
           <div className={styles.dropdown} ref={levelDropdownRef}>
-            <div 
-              className={styles.filterBlock} 
+            <div
+              className={styles.filterBlock}
               onClick={() => toggleDropdown('levels')}
             >
-              <div className={styles.filterHeader}>
+              <div className={`${styles.filterHeader} ${openDropdown.levels ? styles.open : ''}`}>
                 <div className={styles.filterHeaderContent}>
                   <div className={styles.filterTitle}>
-                    {state.levelId ? 
-                      levels.find(l => l.id === state.levelId)?.title || t('filters.selected') 
+                    {state.levelId ?
+                      levels.find(l => l.id === state.levelId)?.title || t('filters.selected')
                       : t('filters.selectLevel')}
                   </div>
                 </div>
@@ -199,12 +233,12 @@ function FilterSidebar({
                 />
               </div>
             </div>
-            
+
             {openDropdown.levels && (
               <div className={styles.filterContent}>
                 <ul className={styles.filterList}>
                   {levels.map(level => (
-                    <li 
+                    <li
                       key={level.id}
                       className={state.levelId === level.id ? styles.selected : ''}
                       onClick={() => {
@@ -222,19 +256,19 @@ function FilterSidebar({
         </div>
 
         {/* Category Selection (only shown if level is selected) */}
-        {state.levelId && (
+        {/* {state.levelId && ( */}
           <div className={styles.filterSection}>
             <h3 className={styles.title}>{t('filters.category')}</h3>
-            <div className={styles.dropdown} ref={categoryDropdownRef}>
-              <div 
-                className={styles.filterBlock} 
-                onClick={() => toggleDropdown('categories')}
+            <div className={`${styles.dropdown} ${state.levelId ? '' : styles.disabled}`} ref={categoryDropdownRef}>
+              <div
+                className={styles.filterBlock}
+                onClick={state.levelId ? () => toggleDropdown('categories') : undefined}
               >
-                <div className={styles.filterHeader}>
+                <div className={`${styles.filterHeader} ${openDropdown.categories ? styles.open : ''}`}>
                   <div className={styles.filterHeaderContent}>
                     <div className={styles.filterTitle}>
-                      {state.categoryId ? 
-                        filteredCategories.find(c => c.id === state.categoryId)?.title || t('filters.selected') 
+                      {state.categoryId ?
+                        filteredCategories.find(c => c.id === state.categoryId)?.title || t('filters.selected')
                         : t('filters.selectCategory')}
                     </div>
                   </div>
@@ -245,12 +279,12 @@ function FilterSidebar({
                   />
                 </div>
               </div>
-              
+
               {openDropdown.categories && (
                 <div className={styles.filterContent}>
                   <ul className={styles.filterList}>
                     {filteredCategories.map(category => (
-                      <li 
+                      <li
                         key={category.id}
                         className={state.categoryId === category.id ? styles.selected : ''}
                         onClick={() => {
@@ -266,22 +300,22 @@ function FilterSidebar({
               )}
             </div>
           </div>
-        )}
+        {/* )} */}
 
         {/* Subcategory Selection (only shown if category is selected and has subcategories) */}
         {state.categoryId && filteredSubcategories.length > 0 && (
           <div className={styles.filterSection}>
             <h3 className={styles.title}>{t('filters.subcategory')}</h3>
             <div className={styles.dropdown} ref={subcategoryDropdownRef}>
-              <div 
-                className={styles.filterBlock} 
+              <div
+                className={styles.filterBlock}
                 onClick={() => toggleDropdown('subcategories')}
               >
-                <div className={styles.filterHeader}>
+                <div className={`${styles.filterHeader} ${openDropdown.subcategories ? styles.open : ''}`}>
                   <div className={styles.filterHeaderContent}>
                     <div className={styles.filterTitle}>
-                      {state.subcategoryId ? 
-                        filteredSubcategories.find(s => s.id === state.subcategoryId)?.title || t('filters.selected') 
+                      {state.subcategoryId ?
+                        filteredSubcategories.find(s => s.id === state.subcategoryId)?.title || t('filters.selected')
                         : t('filters.selectSubcategory')}
                     </div>
                   </div>
@@ -292,12 +326,12 @@ function FilterSidebar({
                   />
                 </div>
               </div>
-              
+
               {openDropdown.subcategories && (
                 <div className={styles.filterContent}>
                   <ul className={styles.filterList}>
                     {filteredSubcategories.map(subcategory => (
-                      <li 
+                      <li
                         key={subcategory.id}
                         className={state.subcategoryId === subcategory.id ? styles.selected : ''}
                         onClick={() => {
@@ -316,15 +350,16 @@ function FilterSidebar({
         )}
 
         <div className={styles.buttonGroup}>
-          <button 
+          <button
             className={styles.clearButton}
-            onClick={resetFilters}
+            onClick={handleResetFilters}
           >
             {t('filters.buttons.clear')}
           </button>
-          <button 
-            className={styles.applyButton}
-            onClick={applyFilters}
+          <button
+          className={`${styles.applyButton} ${filtersChanged ? styles.active : ''}`}
+          onClick={handleApplyFilters}
+          disabled={!filtersChanged}
           >
             {t('filters.buttons.apply')}
           </button>
