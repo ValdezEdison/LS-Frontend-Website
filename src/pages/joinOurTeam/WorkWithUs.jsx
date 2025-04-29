@@ -15,21 +15,28 @@ function WorkWithUs() {
   return (
     <div className={styles.trabajaconnosotros}>
       <Header />
-      <main className={styles.mainContent}>
-        <div className={styles.contentWrapper}>
-          <Sidebar />
-          <JobSearch />
-        </div>
-        <h2 className={styles.sectionTitle}>
-          Explora posiciones abiertas por departamento
-        </h2>
-        <DepartmentSection />
-        <button className={styles.viewAllButton}>Ver todo</button>
-      </main>
+      <div className="page-center">
+        <main className={styles.mainContent}>
+          <div className={styles.contentWrapper}>
+            <Sidebar />
+            <JobSearch />
+          </div>
+          <h2 className={styles.sectionTitle}>
+            Explora posiciones abiertas por departamento
+          </h2>
+          <DepartmentSection />
+          <button className={styles.viewAllButton}>Ver todo</button>
+        </main>
+        
+      </div>
       <CompanyStats />
-      <Testimonials />
+      <div className="page-center">
+        <Testimonials />
+        
+      </div>
       <NewsletterBanner title="Si no encuentras la posición que buscas, puedes ponerte en contacto
           con nosotros" buttonText="Contactar"/>
+     
       <Footer />
     </div>
   );
