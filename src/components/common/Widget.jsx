@@ -6,7 +6,7 @@ import styles from "./Widget.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
 
-const Widget = ({ data = [], title, count, handleNavActions}) => {
+const Widget = ({ data = [], title, count, handleNavActions, seeMore = true}) => {
 
   const { t } = useTranslation("Common");
   
@@ -37,7 +37,9 @@ const Widget = ({ data = [], title, count, handleNavActions}) => {
     <section className={styles.nearbyPlaces}>
       <div className={styles.nearbyPlaceTitle}>
         <h2 className={styles.sectionTitle}>{title}</h2>
+        {seeMore &&
         <div className="seeMoreLink" onClick={(e) => handleNavActions(e, null, "viewList")}>{t('seeMore')}</div>
+        }
       </div>
       
       {data.length > 0 ? 

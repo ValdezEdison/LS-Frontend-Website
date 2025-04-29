@@ -1,7 +1,7 @@
- import { getClientId, getClientSecret } from "./decryptSecrets";
+ import { getGoogleAuthId } from "./decryptSecrets";
 
- const clientSecret = getClientSecret();
- const clientId = getClientId();
+ const clientId = getGoogleAuthId();
+ console.log('clientSecret', clientId)
 export const initializeGoogleSDK = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
