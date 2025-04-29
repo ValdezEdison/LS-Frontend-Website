@@ -43,6 +43,7 @@ function CompanyStats() {
 
   return (
     <section className={styles.statsSection}>
+      <div className="page-center">
       <div className={styles.statsSectionContent}>
         <h2 className={styles.statsSectionTitle}>Ayudamos al mundo a viajar</h2>
         <p className={styles.statsSectionDescription}>
@@ -79,6 +80,8 @@ function CompanyStats() {
           </div>
         </div>
       </div>
+      </div>
+      
     </section>
   );
 }

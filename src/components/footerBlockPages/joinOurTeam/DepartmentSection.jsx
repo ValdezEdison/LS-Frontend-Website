@@ -43,9 +43,9 @@ function DepartmentSection() {
   ];
 
   // First row of departments
-  const firstRowDepartments = departments.slice(0, 3);
+  const firstRowDepartments = departments.slice(0, 6);
   // Second row of departments
-  const secondRowDepartments = departments.slice(3);
+  // const secondRowDepartments = departments.slice(3);
 
   return (
     <>
@@ -65,23 +65,7 @@ function DepartmentSection() {
             />
           ))}
         </div>
-      </div>
-      <div className={styles.departmentRow}>
-        <div className={styles.departmentGrid}>
-          {secondRowDepartments.map((dept, index) => (
-            <DepartmentCard
-              key={index}
-              title={dept.title}
-              jobCount={dept.jobCount}
-              columnClass={
-                styles[`column${index + 1}`] || styles.departmentColumn
-              }
-              cardClass={
-                styles[`departmentCard${index + 4}`] || styles.departmentCard
-              }
-            />
-          ))}
-        </div>
+       
       </div>
     </>
   );

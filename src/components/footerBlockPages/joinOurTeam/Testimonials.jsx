@@ -62,14 +62,14 @@ function Testimonials() {
                     testimonial.imageClass
                   }
                 />
-                <blockquote
+                <div
                   className={
                     styles[`testimonialText${index + 1}`] ||
                     testimonial.textClass
                   }
                 >
                   {testimonial.text}
-                </blockquote>
+                </div>
               </article>
             </div>
           ))}
