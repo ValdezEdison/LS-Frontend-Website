@@ -233,7 +233,7 @@
   align-self: start;
   font-size: 25px;
   font-weight: 600;
-  margin-top: 0;
+  margin: 0;
 }
 .aboutDescription {
   text-align: justify;
@@ -267,14 +267,7 @@
   align-items: stretch;
   width: 958px;
   max-width: 100%;
-  margin-top: 40px;
-  margin-right: 117px;
-  font-family:
-    Source Sans Pro,
-    -apple-system,
-    Roboto,
-    Helvetica,
-    sans-serif;
+  margin: 40px auto 0;
   display: flex;
 }
 @media (width<=991px) {
@@ -291,7 +284,7 @@
 @media (width<=991px) {
   .missionContainer {
     max-width: 100%;
-    margin-right: 3px;
+    gap: 20px;
   }
 }
 .missionTitle {
@@ -308,6 +301,7 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+  margin: 0;
 }
 @media (width<=991px) {
   .missionDescription {
@@ -325,7 +319,7 @@
 .valuesTitle {
   text-align: center;
   align-self: start;
-  margin-top: 30px;
+  margin: 30px 0 0;
   font-size: 25px;
   font-weight: 600;
 }
@@ -338,29 +332,35 @@
   gap: 20px;
   width: 521px;
   max-width: 100%;
-  margin-top: 20px;
-  margin-left: 29px;
+  margin: 20px 0 0;
   font-size: 16px;
   font-weight: 400;
   display: flex;
 }
 .valueItem {
   align-self: end;
-  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 @media (width<=991px) {
   .valueItem {
-    margin-top: 40px;
+    margin-top: 0px;
   }
 }
 .valueIcon {
-  background-color: #d9d9d9;
   border-radius: 50%;
   flex-shrink: 0;
   width: 40px;
   height: 40px;
   display: flex;
 }
+
+.grey{
+  background-color: #d9d9d9;
+}
+
+
 @media (width<=991px) {
   .valueIcon {
     margin-right: 3px;
@@ -379,12 +379,14 @@
 @media (width<=991px) {
   .visionContainer {
     max-width: 100%;
+    gap: 20px;
   }
 }
 .visionTitle {
   text-align: center;
   font-size: 25px;
   font-weight: 600;
+  margin: 0;
 }
 .visionDescription {
   text-align: justify;
@@ -394,7 +396,6 @@
   margin-bottom: auto;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1;
 }
 @media (width<=991px) {
   .visionDescription {
@@ -415,17 +416,13 @@
   align-self: end;
   align-items: stretch;
   gap: 20px;
-  width: 743px;
-  max-width: 100%;
+  max-width: 743px;
+  width: 100%;
   margin-top: 20px;
   margin-right: 63px;
   display: flex;
 }
-@media (width<=991px) {
-  .statsContainer {
-    margin-right: 10px;
-  }
-}
+
 .statItem {
   white-space: nowrap;
   flex-direction: column;
@@ -436,6 +433,12 @@
   .statItem {
     white-space: initial;
   }
+
+  .statsContainer{
+    margin-right: 0;
+  }
+
+ 
 }
 .statNumber {
   font-size: 40px;
@@ -471,6 +474,9 @@
   .teamStatsContainer,
   .teamStatItem {
     white-space: initial;
+  }
+  .teamStatsContainer{
+    margin-left: 0;
   }
 }
 .teamStatNumber {
@@ -734,6 +740,12 @@
 
   .sidebarNav{
     width: 100%;
+  }
+}
+
+@media (max-width:480px) {
+  .statNumber,.teamStatNumber {
+    font-size: 28px;
   }
 }
 

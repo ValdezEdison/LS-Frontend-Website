@@ -47,6 +47,7 @@ const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
 const Notification = "/images/notification.png";
 const Oceana = "/images/oceana@2x.png";
+const People = "/images/people.svg";
 const PlaceFilter = "/images/places-filter.jpg";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
 const PlaceHolderImg2 = "/images/placeholder2.jpg"
@@ -122,6 +123,7 @@ export {
     Notch,
     Notification,
     Oceana,
+    People,
     PlaceFilter,
     PlaceHolderImg1,
     PlaceHolderImg2,
