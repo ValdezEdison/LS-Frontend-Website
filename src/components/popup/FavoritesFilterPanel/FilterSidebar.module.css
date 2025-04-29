@@ -170,6 +170,10 @@
   background-color: #f4c031;
 }
 
+.applyButton.active:hover {
+  background-color: #e5b22e;
+}
+
 .typesRadiowrapper{
   display: flex;
   align-items: center;
