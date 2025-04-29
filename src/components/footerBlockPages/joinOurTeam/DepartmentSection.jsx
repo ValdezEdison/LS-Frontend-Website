@@ -57,7 +57,7 @@ function DepartmentSection() {
               title={dept.title}
               jobCount={dept.jobCount}
               columnClass={
-                styles[`column${index + 1}`] || styles.departmentColumn
+                 styles.departmentColumn
               }
               cardClass={
                 styles[`departmentCard${index + 1}`] || styles.departmentCard
