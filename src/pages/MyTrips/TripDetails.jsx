@@ -69,7 +69,7 @@ const TripDetails = () => {
         {similarStopsLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={similarStops} title="Similar places" count={4} />
+              <Widget data={similarStops} title="Similar places" count={4} seeMore={false}/>
             )}
       </main>
       <Footer />

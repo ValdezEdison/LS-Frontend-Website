@@ -14,23 +14,23 @@ const StopList = ({ tripDetails, handleViewMoreDetails }) => {
   };
 
   // Get trip type based on the type from API
-  const getTripType = () => {
-    switch(tripDetails?.type) {
-      case 'romantic':
-        return 'Romántico';
-      case 'family':
-        return 'Familiar';
-      case 'adventure':
-        return 'Aventura';
-      default:
-        return tripDetails?.type || 'Viaje';
-    }
-  };
+  // const getTripType = () => {
+  //   switch(tripDetails?.type) {
+  //     case 'romantic':
+  //       return 'Romántico';
+  //     case 'family':
+  //       return 'Familiar';
+  //     case 'adventure':
+  //       return 'Aventura';
+  //     default:
+  //       return tripDetails?.type || 'Viaje';
+  //   }
+  // };
 
   return (
     <>
       <div className={styles.tripType}>
-        <div className={styles.tripTypeTag}>{getTripType()}</div>
+        <div className={styles.tripTypeTag}>{tripDetails?.type}</div>
         <div className={styles.icon}>
           <svg
             id="249:12022"
