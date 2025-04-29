@@ -43,6 +43,7 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
             </div> */}
           </div>
         </div>
+        <button className={styles.deleteButton}>Eliminar</button>
       </div>
     </div>
   );

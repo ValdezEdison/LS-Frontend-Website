@@ -1,13 +1,26 @@
 .itineraryCard {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
   border-radius: 12px;
   border: 1px solid var(--Gray-3, #828282);
   background-color: #fff;
-  padding: 8px;
+  padding: 8px 50px 8px 8px;
   flex-grow: 1;
   cursor: pointer;
+}
+
+.deleteButton {
+  background-color: #E0E0E0;
+  border: none;
+  color: #151820;
+  transition: all ease .3s;
+  cursor: pointer;
+  height: 40px;
+  padding: 4px 25px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .placeInfoTop{
@@ -23,7 +36,7 @@
 
 .itenaryCardWrapper{
   display: flex;
-  gap:10px;
+  gap:25px;
   align-items: center;
   width: 100%;
 }
@@ -140,6 +153,16 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 20px;
+  }
+
+  .itineraryCard{
+    flex-direction: column;
+    padding: 8px;
+    align-items: flex-start;
+  }
+
+  .itenaryCardWrapper{
+    gap: 12px;
   }
 
 }
