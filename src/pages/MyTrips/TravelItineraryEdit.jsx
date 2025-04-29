@@ -3,7 +3,7 @@ import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import ItineraryForm from "../../components/TravelItinerary/ItineraryForm";
 import ItineraryMap from "../../components/PlacesInfo/Itineries/ItineraryMap";
-import ItineraryStops from "../../components/TravelItinerary/ItineraryStops";
+// import ItineraryStops from "../../components/TravelItinerary/ItineraryStops";
 import SuggestedStops from "../../components/TravelItinerary/SuggestedStops";
 import SimilarPlaces from "../../components/TravelItinerary/SimilarPlaces";
 import styles from "./TravelItinerary.module.css";
