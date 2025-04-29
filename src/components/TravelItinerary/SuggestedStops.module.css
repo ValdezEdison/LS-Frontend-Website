@@ -140,6 +140,12 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all ease .3s;
+}
+
+.showMoreButton:hover {
+  border-color:  #000;
+  color: #000;
 }
 
 @media (max-width: 991px) {

@@ -14,6 +14,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import StopList from "../../components/TripDetails/StopList";
+import { Arrow, Down } from "../../components/common/Images";
 
 const TravelItineraryEdit = () => {
   const location = useLocation();
@@ -76,22 +77,27 @@ const TravelItineraryEdit = () => {
           formState={formState} 
           setFormState={setFormState} 
         />
-        <div className={styles.dropdown}>
-          <div className={styles.filterBlock}>
-            <div className={`${styles.filterHeader} ${styles.open}`}>
-              <div className={styles.filterHeaderContent}>
-                <div className={styles.filterTitle}>Familiar</div>
+        <div className={styles.dropdownWrapper}>
+          <label>Tipo de viaje</label>
+          <div className={styles.dropdown}>
+            <div className={styles.filterBlock}>
+              <div className={`${styles.filterHeader} `}> {/* ${styles.open} */}
+                <div className={styles.filterHeaderContent}>
+                  <div className={styles.filterTitle}>Familiar</div>
+                </div>
+                <div className={styles.dropdownIcon}><img src={Down}/></div>
               </div>
             </div>
-          </div>
-          <div className={`${styles.filterContent} ${styles.active}`}>
-            <ul className={styles.filterChecklist}>
-              {similarStops?.map((stop, index) => (
-                <li key={index}>{stop.name}</li>
-              ))}
-            </ul>
+            <div className={`${styles.filterContent} }`}> {/* ${styles.active*/}
+              <ul className={styles.filterChecklist}>
+                {similarStops?.map((stop, index) => (
+                  <li key={index}>{stop.name}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+        
         {tripDetails?.stops?.length > 0 && (
          <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} />
         )}

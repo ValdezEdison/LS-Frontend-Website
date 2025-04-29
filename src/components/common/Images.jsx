@@ -14,6 +14,7 @@ const Cap = "/images/cap.svg";
 const Card = "/images/card.png";
 const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
+const Down = "/images/down.svg";
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
 const Filter = "/images/filter.svg";
@@ -90,6 +91,7 @@ export {
     Card,
     CellularConnection,
     Delete,
+    Down,
     FacebookWhite,
     QR,
     Favorite,

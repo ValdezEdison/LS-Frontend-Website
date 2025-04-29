@@ -6,7 +6,8 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
 
   return (
     <div className={styles.itenaryCardWrapper} onClick={() => handleViewMoreDetails(place?.id)}>
-      <div className={styles.cardIndex}>{index}</div>
+      {/* <div className={styles.cardIndex}>{index}</div> */}
+      <div className={styles.menuIcon}></div>
       <div className={styles.itineraryCard}>
         <div className={styles.cardContent}>
           <div className={styles.imageContainer}>

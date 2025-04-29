@@ -3,12 +3,6 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #fff;
-  font-family:
-    Source Sans Pro,
-    -apple-system,
-    Roboto,
-    Helvetica,
-    sans-serif;
 }
 
 .mainContent {
@@ -82,12 +76,12 @@
   object-position: center;
   width: 16px;
   /* margin-top: 8px; */
-  transform: rotate(180deg);
+  transform: rotate(0deg);
   transition: transform 0.3s ease-in-out;
 }
 
 .filterHeader.open .dropdownIcon {
-  transform: rotate(0deg);
+  transform: rotate(180deg);
 }
 
 .filterContent {
@@ -185,6 +179,18 @@
 .filterNoResults{
   font-size: 13px;
   text-align: center;
+}
+
+.dropdownWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.dropdownWrapper label{
+  font-size: 16px;
+  font-weight: 600;
 }
 
 @media (max-width: 991px) {
