@@ -1,3 +1,7 @@
+ import { getGoogleAuthId } from "./decryptSecrets";
+
+ const clientId = getGoogleAuthId();
+ console.log('clientSecret', clientId)
 export const initializeGoogleSDK = () => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -13,7 +17,7 @@ export const initializeGoogleSDK = () => {
     return new Promise((resolve, reject) => {
       try {
         const client = google.accounts.oauth2.initTokenClient({
-          client_id: import.meta.env.VITE_GOOGLE_AUTH_ID,
+          client_id: clientId,
           scope: 'profile email',
           callback: (response) => {
             if (response.error) {

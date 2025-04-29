@@ -7,8 +7,10 @@ import SimilarPlaces from "../../components/TripDetails/SimilarPlaces";
 import ItineraryMap from "../../components/PlacesInfo/Itineries/ItineraryMap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fetchTripDetails } from "../../features/myTrips/MyTripsAction";
+import { fetchTripDetails, fetchSimilarStops, fetchTravelTime } from "../../features/myTrips/MyTripsAction";
 import { LanguageContext } from "../../context/LanguageContext";
+import Widget from "../../components/common/Widget";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 const TripDetails = () => {
 
@@ -19,6 +21,7 @@ const TripDetails = () => {
   const [formState, setFormState] = useState({
      
       mode: 'driving',
+      page: 1
     
     });
 
@@ -26,11 +29,15 @@ const TripDetails = () => {
   const dispatch = useDispatch();
 
   const { language } = useContext(LanguageContext);
-  const { tripDetails } = useSelector((state) => state.myTrips);
+  const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
+
+  console.log('tripDetails', tripDetails)
 
   useEffect(() => {
     if(id){
       dispatch(fetchTripDetails(id));
+      dispatch(fetchSimilarStops({page: 1, tripId: id}));
+      dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
     }
     
   }, [language, id, dispatch]);
@@ -46,14 +53,24 @@ const TripDetails = () => {
    }
   };
 
+    useEffect(() => {
+      if (formState.mode) {
+        dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+      }
+    }, [formState.mode, dispatch, id]);
+
   return (
     <>
       <Header />
       <main className="page-center">
-        <TripInfo handleActions={handleActions} id={id}/>
-        <ItineraryMap places={[]} formState={formState} setFormState={setFormState} />
+        <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails}/>
+        <ItineraryMap places={tripDetails?.stops} formState={formState} setFormState={setFormState} />
         <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} />
-        <SimilarPlaces />
+        {similarStopsLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={similarStops} title="Similar places" count={4} seeMore={false}/>
+            )}
       </main>
       <Footer />
     </>
