@@ -35,6 +35,7 @@ import { fetchTravelLiteList } from "../../features/places/placesInfo/itinerary/
 import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce, sortBy } from "lodash";
 import { fetchBannerBlocks } from "../../features/cms/Blocks/BlocksAction";
+import { listUpdater } from "../../features/events/EventSlice";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const EventsPage = () => {
   // Selectors
   const { loading: eventLoading, error, next, count, events } = useSelector((state) => state.events);
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
+  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next, listUpdater);
   const { isOpen } = useSelector((state) => state.popup);
   const { cities } = useSelector((state) => state.cities);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);

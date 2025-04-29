@@ -37,3 +37,28 @@ export const fetchTripDetails = createAsyncThunk(
         }
     }
 );
+
+export const fetchSimilarStops = createAsyncThunk(
+    "myTrips/fetchSimilarStops",
+    async ({page = 1, tripId}, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.getSimilarStops(page, tripId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
+
+
+export const fetchTravelTime = createAsyncThunk(
+  'myTrips/fetchTravelTime',
+  async (tripId, { rejectWithValue }) => {
+    try {
+      const response = await MyTripsService.getTravelTime(tripId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);

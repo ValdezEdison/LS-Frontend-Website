@@ -1,19 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails } from "./MyTripsAction";
+import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarStops, fetchTravelTime } from "./MyTripsAction";
 
 const initialState = {
     futureTrips: [],
     pastTrips: [],
     loading: false,
     error: null,
-    tripDetails: null
+    tripDetails: null,
+    similarStops: [],
+    similarStopsLoading: false,
+    travelTime: null,
+    travelTimeLoading: false
 };
 
 const myTripsSlice = createSlice({
     name: "myTrips",
     initialState,
     reducers: {
-        // You can add synchronous reducers here if needed
+        listUpdater: (state, action) => {
+            state.futureTrips = [...state.futureTrips, ...action.payload?.results];
+            state.next = action.payload.next;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -57,10 +64,38 @@ const myTripsSlice = createSlice({
             .addCase(fetchTripDetails.rejected, (state, action) => {
                 state.loading = false;  
                 state.error = action.payload;               
-            });
+            })
+
+            .addCase(fetchSimilarStops.pending, (state) => {
+                state.similarStopsLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchSimilarStops.fulfilled, (state, action) => {
+                state.similarStopsLoading = false;
+                state.error = null;
+                state.similarStops = action.payload?.results;
+            })
+            .addCase(fetchSimilarStops.rejected, (state, action) => {
+                state.similarStopsLoading = false;  
+                state.error = action.payload;               
+            })
+
+            .addCase(fetchTravelTime.pending, (state) => {
+                state.travelTimeLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchTravelTime.fulfilled, (state, action) => {
+                state.travelTimeLoading = false;
+                state.error = null;
+                state.travelTime = action.payload;
+            })
+            .addCase(fetchTravelTime.rejected, (state, action) => {
+                state.travelTimeLoading = false;  
+                state.error = action.payload;               
+            })
 
 
     },
 });
-
+export const { listUpdater } = myTripsSlice.actions;
 export default myTripsSlice.reducer;

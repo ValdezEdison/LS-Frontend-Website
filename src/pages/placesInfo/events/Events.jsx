@@ -30,6 +30,7 @@ import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
+import { listUpdater } from "../../../features/places/placesInfo/events/EventSlice";
 
 const recommendedEvents = [
   {
@@ -63,7 +64,7 @@ const Events = () => {
   const { language } = useContext(LanguageContext);
   const { loading: eventLoading, error, events, next, isFavoriteToggling, favTogglingId } = useSelector((state) => state.eventsByCity);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
-  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next);
+  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next, listUpdater);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { cities } = useSelector((state) => state.cities);

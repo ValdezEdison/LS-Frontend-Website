@@ -19,6 +19,10 @@ const placesInCitySlice = createSlice({
   reducers: {
     setFavTogglingId: (state, action) => {
       state.favTogglingId = action.payload;
+    },
+    listUpdater: (state, action) => {
+      state.placesList = [...state.placesList, ...action.payload?.results];
+      state.next = action.payload.next;
     }
   },
   extraReducers: (builder) => {
@@ -67,5 +71,5 @@ const placesInCitySlice = createSlice({
 
   },
 });
-export const { setFavTogglingId } = placesInCitySlice.actions;
+export const { setFavTogglingId, listUpdater } = placesInCitySlice.actions;
 export default placesInCitySlice.reducer;

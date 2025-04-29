@@ -15,6 +15,7 @@ import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import { useTranslation } from 'react-i18next';
 import Loader from "../../components/common/Loader";
+import { listUpdater } from "../../features/explore/ExploreSlice";
 
 const ExplorePage = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const ExplorePage = () => {
 
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
   const { citiesInContinent, loading: citiesLoading, next, count } = useSelector((state) => state.explore);
-  const { data: visibleCitiesInContinent, loading, next: hasNext, loadMore } = useSeeMore(citiesInContinent, next);
+  const { data: visibleCitiesInContinent, loading, next: hasNext, loadMore } = useSeeMore(citiesInContinent, next, listUpdater);
   const { isAuthenticated } = useSelector((state) => state.auth)
   
   // Set default continent to the first one when loaded

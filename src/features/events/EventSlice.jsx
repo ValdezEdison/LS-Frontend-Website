@@ -19,6 +19,10 @@ const eventSlice = createSlice({
   reducers: {
     setFavTogglingId: (state, action) => {
       state.favTogglingId = action.payload;
+    },
+    listUpdater: (state, action) => {
+      state.events = [...state.events, ...action.payload?.results];
+      state.next = action.payload.next;
     }
   },
   extraReducers: (builder) => {
@@ -125,5 +129,5 @@ const eventSlice = createSlice({
   },
 });
 
-export const { setFavTogglingId } = eventSlice.actions;
+export const { setFavTogglingId, listUpdater } = eventSlice.actions;
 export default eventSlice.reducer;

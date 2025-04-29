@@ -35,6 +35,7 @@ import { fetchTravelLiteList } from "../../../features/places/placesInfo/itinera
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { listUpdater } from "../../../features/places/placesInfo/places/PlacesSlice";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -49,7 +50,7 @@ const Places = () => {
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
     const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
-    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next);
+    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next, listUpdater);
     const { isOpen } = useSelector((state) => state.popup);
     const { cities } = useSelector((state) => state.cities);
 

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./SuggestedStops.module.css";
+import EventCard from "../common/EventCard";
 
 const suggestedStops = [
   {
@@ -101,9 +102,9 @@ const SuggestedStops = () => {
     <section className={styles.suggestedStops}>
       <h2 className={styles.sectionTitle}>Añade más paradas a tu itinerario</h2>
       <div className={styles.stopsGrid}>
-        {suggestedStops.map((stop) => (
-          <SuggestedStop key={stop.id} stop={stop} />
-        ))}
+        {/* {suggestedStops.map((stop) => (
+          <EventCard key={stop.id} stop={stop} />
+        ))} */}
       </div>
       <button className={styles.showMoreButton}>Mostrar más</button>
     </section>

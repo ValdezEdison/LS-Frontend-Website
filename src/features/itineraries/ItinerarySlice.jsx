@@ -18,6 +18,10 @@ const itinerarySlice = createSlice({
     reducers: {
         setFavTogglingId: (state, action) => {
             state.favTogglingId = action.payload;
+        },
+        listUpdater: (state, action) => {
+            state.itineraries = [...state.itineraries, ...action.payload?.results];
+            state.next = action.payload.next;
         }
     },
     extraReducers: (builder) => {
@@ -77,5 +81,5 @@ const itinerarySlice = createSlice({
             });
     },
 });
-export const { setFavTogglingId } = itinerarySlice.actions;
+export const { setFavTogglingId, listUpdater } = itinerarySlice.actions;
 export default itinerarySlice.reducer;

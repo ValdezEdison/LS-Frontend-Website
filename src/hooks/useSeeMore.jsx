@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { ApiInstance } from "../services/AxiosConfig";
 
-const useSeeMore = (initialData = [], nextPageUrl) => {
+const useSeeMore = (initialData = [], nextPageUrl, listUpdater) => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [next, setNext] = useState(nextPageUrl);
   const [hasLoadedMore, setHasLoadedMore] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setData(initialData);
@@ -17,9 +21,12 @@ const useSeeMore = (initialData = [], nextPageUrl) => {
     setLoading(true);
     setHasLoadedMore(true);
     try {
-      const response = await fetch(next); // Assuming `next` is a URL
-      const newData = await response.json();
+      // const response = await fetch(next); // Assuming `next` is a URL
+      const response = await ApiInstance.get(next);
+      console.log(response, 'response');
+      const newData = response?.data;
       setData((prevData) => [...prevData, ...newData.results]);
+      dispatch(listUpdater({ results: newData.results, next: newData.next }));
       setNext(newData.next);
     } catch (error) {
       console.error("Failed to load more places:", error);

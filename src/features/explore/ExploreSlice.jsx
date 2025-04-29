@@ -13,7 +13,10 @@ const exploreSlice = createSlice({
     name: "explore",
     initialState,
     reducers: {
-        // You can add synchronous reducers here if needed
+        listUpdater: (state, action) => {
+            state.citiesInContinent = [...state.citiesInContinent, ...action.payload?.results];
+            state.next = action.payload.next;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -33,5 +36,5 @@ const exploreSlice = createSlice({
             })
     },
 });
-
+export const { listUpdater } = exploreSlice.actions;
 export default exploreSlice.reducer;

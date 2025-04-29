@@ -26,6 +26,8 @@ import SeeMoreButton from "../../components/common/SeeMoreButton";
 import { useTranslation } from "react-i18next";
 import useSeeMore from "../../hooks/useSeeMore";
 import Loader from "../../components/common/Loader";
+import { listUpdater, removeFavorite } from "../../features/favorites/FavoritesSlice";
+import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 
 
 
@@ -63,8 +65,12 @@ const FavoritesPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { loading: loadingFavorites, favorites, isFavoriteToggling, favTogglingId, next } = useSelector((state) => state.favorites)
-  const { data: visibleFavorites, loading, next: hasNext, loadMore } = useSeeMore(favorites, next);
+  const { favLoading, favorites, isFavoriteToggling, favTogglingId, next, count } = useSelector((state) => state.favorites)
+  const {
+    categories,
+  } = useSelector((state) => state.places);
+
+  const { data: visibleFavorites, loading, next: hasNext, loadMore } = useSeeMore(favorites, next, listUpdater);
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { isOpen } = useSelector((state) => state.popup)
   const { cities } = useSelector((state) => state.cities)
@@ -123,11 +129,17 @@ const FavoritesPage = () => {
     destinationSearchQuery: "",
     startDate: null,
     endDate: null,
+    page: 1,
+    type: "",
+    levelId: null,     
+    categoryId: null,  
+    subcategoryId: null
   })
 
   useEffect(() => {
-    dispatch(fetchFavorites())
+    dispatch(fetchFavorites({ page: state.page }))
     dispatch(fetchCities({}));
+    dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type }))
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
@@ -180,6 +192,7 @@ const FavoritesPage = () => {
         if (res.payload?.response?.detail === "Unmarked as favorite") {
           console.log('entered');
           debouncedSearchFavorites(state.keyword);
+          dispatch(removeFavorite(id));
 
           setTimeout(() => {
             setVanishingItems(prev => prev.filter(itemId => itemId !== id));
@@ -278,11 +291,83 @@ const FavoritesPage = () => {
     };
   }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
+
+  // Filter handlers
+  const handleTypeChange = (type) => {
+    setState(prev => ({
+      ...prev,
+      type,
+      levelId: null,
+      categoryId: null,
+      subcategoryId: null,
+      page: 1
+    }));
+  };
+
+  const handleLevelChange = (levelId) => {
+    setState(prev => ({
+      ...prev,
+      levelId,
+      categoryId: null,
+      subcategoryId: null,
+      page: 1
+    }));
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    setState(prev => ({
+      ...prev,
+      categoryId,
+      subcategoryId: null,
+      page: 1
+    }));
+  };
+
+  const handleSubcategoryChange = (subcategoryId) => {
+    setState(prev => ({
+      ...prev,
+      subcategoryId,
+      page: 1
+    }));
+  };
+
+  const applyFilters = () => {
+    togglePopup("filterPanel", false);
+    
+    const filters = {
+        page: state.page,
+        ...(state.selectedDestinationId && { city: cities.find(city => city.id === state.selectedDestinationId).name }),
+        ...(state.type && { type: state.type }),
+        ...(state.levelId && { level_id: state.levelId }),
+        ...(state.categoryId && { category_id: state.categoryId }),
+        ...(state.subcategoryId && { subcategory_id: state.subcategoryId })
+    };
+    
+    dispatch(fetchFavorites(filters));
+    // resetFilters()
+};
+  const resetFilters = () => {
+    setState(prev => ({
+      ...prev,
+      type: "",
+      levelId: null,
+      categoryId: null,
+      subcategoryId: null,
+      selectedDestinationId: null,
+      destinationSearchQuery: "",
+      page: 1
+    }));
+    dispatch(fetchFavorites({ page: 1 }));
+  };
+
+
   return (
     <>
       {/* <FilterSiderbar/> */}
-      { isOpen && popupState.filterPanel && (
-        <FilterSiderbar onClose={() => togglePopup("filterPanel", false)}/> 
+      {isOpen && popupState.filterPanel && (
+        <FilterSiderbar onClose={() => {togglePopup("filterPanel", false)
+          
+        }} state={state} setState={setState} cities={cities} categories={categories} handleTypeChange={handleTypeChange}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} applyFilters={applyFilters} resetFilters={resetFilters}/>
       )}
       {isOpen && popupState.alert && (
         <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
@@ -348,7 +433,7 @@ const FavoritesPage = () => {
             <FavoriteItem key={item.id} {...item} />
           ))} */}
 
-            {loadingFavorites ? (
+            {favLoading ? (
               Array.from({ length: 6 }).map((_, index) => (
                 <EventCardSkeleton key={index} />
               ))
@@ -384,7 +469,7 @@ const FavoritesPage = () => {
           }
           <section className={styles.recommendedSection}>
             <h2 className={styles.recommendedTitle}>
-            {tFavoritesPage('recommendedTitle')}
+              {tFavoritesPage('recommendedTitle')}
             </h2>
             <div className={styles.recommendedList}>
               {recommendedItems.map((item) => (
