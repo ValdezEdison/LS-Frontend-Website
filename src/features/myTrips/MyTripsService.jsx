@@ -9,6 +9,12 @@ const MyTripsService = {
     },
     getTripDetails: async (tripId) => {
         return ApiService.get('/travels/' + tripId);
+    },
+    getSimilarStops: async (page, tripId) => {
+        return ApiService.get('/travels/' + tripId + '/similar_stops?page=' + page);
+    },
+    getTravelTime: async ({ travelId, mode }) => {
+        return ApiService.get('/travels/' + travelId + '/directions?mode=' + mode);
     }
 };
 

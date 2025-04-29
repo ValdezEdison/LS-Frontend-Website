@@ -8,7 +8,7 @@ import SuggestedStops from "../../components/TravelItinerary/SuggestedStops";
 import SimilarPlaces from "../../components/TravelItinerary/SimilarPlaces";
 import styles from "./TravelItinerary.module.css";
 
-const TravelItinerary = () => {
+const TravelItineraryEdit = () => {
   return (
     <div className={styles.travelItineraryContainer}>
       <Header />
@@ -42,4 +42,4 @@ const TravelItinerary = () => {
   );
 };
 
-export default TravelItinerary;
+export default TravelItineraryEdit;

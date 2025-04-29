@@ -1,61 +1,36 @@
 import React from "react";
 import styles from "./TripDetails.module.css";
-import StopCard from "./StopCard";
 import ItineraryCard from "../PlacesInfo/Itineries/ItineraryCard";
 
-const stops = [
-  {
-    number: 1,
-    name: "Museo de la Armada",
-    address: "129 Rue de Grenelle, 75007 Paris, Francia",
-    images:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/fa7c966e1c531c4adb9701082fd4069899d8a2fb",
-    rating: 4.1,
-    reviews: 234,
-  },
-  {
-    number: 2,
-    name: "Musée du Louvre",
-    address: "75001 Paris, Francia",
-    images:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/2569026bfdc764dddbfb9391caf8dbd9391a92dd",
-    rating: 4.5,
-    reviews: 234,
-  },
-  {
-    number: 3,
-    name: "Catedral de Notre Dame",
-    address: "6 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris, Francia",
-    images:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/662ac0cc71d9ad5e12ee34285994622cf4600f34",
-    rating: 4.2,
-    reviews: 234,
-  },
-  {
-    number: 4,
-    name: "Disneyland Paris",
-    address: "Boulevard de Parc, s/n 77700 París, Francia",
-    images:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/fe4e51665e76df4ba50ec786b6e5680114fb4349",
-    rating: 4.1,
-    reviews: 234,
-  },
-  {
-    number: 5,
-    name: "Tour Eiffel",
-    address: "Av. Gustave Eiffel, 75007 Paris, Francia",
-    images:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/85c8090215f3a085a80fbc7a7ce0f4ae100f010a",
-    rating: 4.7,
-    reviews: 234,
-  },
-];
-
 const StopList = ({ tripDetails, handleViewMoreDetails }) => {
+  // Calculate trip duration in days
+  const getTripDuration = () => {
+    if (!tripDetails?.initial_date || !tripDetails?.end_date) return '';
+    const start = new Date(tripDetails.initial_date);
+    const end = new Date(tripDetails.end_date);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    return `${diffDays} days`;
+  };
+
+  // Get trip type based on the type from API
+  const getTripType = () => {
+    switch(tripDetails?.type) {
+      case 'romantic':
+        return 'Romántico';
+      case 'family':
+        return 'Familiar';
+      case 'adventure':
+        return 'Aventura';
+      default:
+        return tripDetails?.type || 'Viaje';
+    }
+  };
+
   return (
     <>
       <div className={styles.tripType}>
-        <div className={styles.tripTypeTag}>Familiar</div>
+        <div className={styles.tripTypeTag}>{getTripType()}</div>
         <div className={styles.icon}>
           <svg
             id="249:12022"
@@ -69,15 +44,26 @@ const StopList = ({ tripDetails, handleViewMoreDetails }) => {
           </svg>
         </div>
       </div>
-      <h2 className={styles.tripSummary}>París - 5 paradas, 3h y 30 min</h2>
+      
+      <h2 className={styles.tripSummary}>
+        {tripDetails?.stops?.length > 0 ? (
+          `${tripDetails.stops.length} paradas`
+        ) : (
+          'No stops added yet'
+        )}
+      </h2>
+      
       <div className={styles.stopList}>
         {tripDetails?.stops && tripDetails.stops.length > 0 ? (
-          // Render itinerary stops if available
           tripDetails.stops.map((stop, index) => (
-            <ItineraryCard key={stop.id} place={stop} index={index + 1} handleViewMoreDetails={handleViewMoreDetails} />
+            <ItineraryCard 
+              key={stop.id} 
+              place={stop} 
+              index={index + 1} 
+              handleViewMoreDetails={handleViewMoreDetails} 
+            />
           ))
         ) : (
-          // Show "No results" message if no stops are found
           <div className="no-results-wrapper">No stops available</div>
         )}
       </div>

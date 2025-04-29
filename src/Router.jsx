@@ -22,7 +22,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import MyTrips from "./pages/MyTrips/MyTrips";
 import TripDetails from "./pages/MyTrips/TripDetails";
-import TravelItinerary from "./pages/MyTrips/TravelItinerary";
+import TravelItineraryEdit from "./pages/MyTrips/TravelItineraryEdit";
 import WhoWeAre from "./pages/whoWrAre/WhoWeAre";
 import WorkWithUs from "./pages/joinOurTeam/WorkWithUs";
 const Router = () => {
@@ -62,7 +62,7 @@ const Router = () => {
 
                 <Route path="/my-trips" element={<MyTrips />} />
                 <Route path="/my-trips/details" element={<TripDetails/>} />
-                <Route path="/my-trips/edit" element={<TravelItinerary/>} />
+                <Route path="/my-trips/edit" element={<TravelItineraryEdit/>} />
 
                 <Route path="/who-we-are" element={<WhoWeAre />} />
                 <Route path="/work-with-us" element={<WorkWithUs />} />
