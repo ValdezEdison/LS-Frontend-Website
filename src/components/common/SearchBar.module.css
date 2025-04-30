@@ -117,7 +117,7 @@
   border: none;
   font-size: 14px;
   color: var(--Gray-3, #828282);
-  padding: 10px;
+  /* padding: 10px; */
   background: transparent;
 }
 
