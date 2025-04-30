@@ -147,7 +147,7 @@ const ItineraryForm = ({
             />
           </div>
 
-          <div className={styles.formGroup}>
+          <div className={`${styles.formGroup} ${styles.calendarFormGroup}`}>
             <label htmlFor="tripDates" className={styles.label}>
               Fechas
             </label>
@@ -187,7 +187,7 @@ const ItineraryForm = ({
                   suggestionsList={ cities }
                   placeholder={''}
                   onSelect={(value) => handleSelectDestination(value, index)}
-                  customClassName="placesSearchInputContainer"
+                  customClassName="destplacesSearchInputContainer"
                   selectedValue={destination.destinationId}
                   customClassNameForSuggestions="suggestionsContainerSm"
                 />
