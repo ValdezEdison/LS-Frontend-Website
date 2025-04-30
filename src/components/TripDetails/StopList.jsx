@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/sortable";
 import styles from "./TripDetails.module.css";
 import ItineraryCard from "../PlacesInfo/Itineries/ItineraryCard";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+// import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { useLocation } from "react-router-dom";
 
 const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleActions }) => {
@@ -61,7 +61,7 @@ console.log(items,'items')
       <DndContext
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
-        modifiers={[restrictToVerticalAxis]}
+        // modifiers={[restrictToVerticalAxis]}
       >
         <SortableContext items={items.map((stop) => stop.id)} strategy={verticalListSortingStrategy}>
           <div className={styles.stopList}>
