@@ -1,0 +1,33 @@
+{
+    "pageTitle": "My Trips",
+    "addTripButton": "Add trip",
+    "futureTrips": "Upcoming trips",
+    "pastTrips": "Past trips",
+    "tripActions": {
+        "showDetails": "View details"
+    },
+    "tripCard": {
+        "defaultTitle": "Trip",
+        "sitesAdded": "{{count}} sites added",
+        "editButton": "Edit",
+        "deleteButton": "Delete",
+        "dateFormat": "MMMM d, yyyy",
+        "dateFormatNoYear": "MMMM d",
+        "dateRangeFormatSameYear": "{{startDate}} to {{endDate}}",
+        "dateRangeFormatDifferentYear": "{{startDate}} to {{endDate}}"
+    },
+    "tripInfo": {
+        "dateFormat": {
+            "day": "numeric",
+            "month": "short",
+            "year": "numeric"
+        },
+        "dateRange": "From {{startDate}} to {{endDate}}",
+        "noDates": "No dates specified",
+        "ariaLabels": {
+            "editTrip": "Edit trip",
+            "shareTrip": "Share trip",
+            "moreOptions": "More options"
+        }
+    }
+}

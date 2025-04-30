@@ -8,6 +8,7 @@ import { fetchMyFutureTrips, fetchMyPastTrips } from "../../features/myTrips/MyT
 import { LanguageContext } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { listUpdater } from "../../features/myTrips/MyTripsSlice";
+import { useTranslation } from "react-i18next";
 
 const MyTrips = () => {
   const [state, setState] = useState({
@@ -17,7 +18,9 @@ const MyTrips = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
-  const { futureTrips, pastTrips } = useSelector((state) => state.myTrips);
+  const { futureTrips, pastTrips, futureTripsLoading, pastTripsLoading } = useSelector((state) => state.myTrips);
+
+  const { t } = useTranslation('MyTrips');
 
   useEffect(() => {
     dispatch(fetchMyFutureTrips(state.page));
@@ -36,13 +39,13 @@ const MyTrips = () => {
       <Header />
       <main className={styles.mainContent}>
         <div className={styles.titleSection}>
-          <h1 className={styles.pageTitle}>Mis viajes</h1>
-          <button className={styles.addTripButton}>Añadir viaje</button>
+          <h1 className={styles.pageTitle}>{t('pageTitle')}</h1>
+          <button className={styles.addTripButton}>{t('addTripButton')}</button>
         </div>
         <div className={styles.divider} />
         {futureTrips?.length > 0 && (
           <TripList
-            title="Viajes futuros"
+            title={t('futureTrips')}
             trips={futureTrips}
             isPast={false}
             handleActions={handleActions}
@@ -50,7 +53,7 @@ const MyTrips = () => {
         )}
         {pastTrips?.length > 0 && (
           <TripList
-            title="Viajes pasados"
+            title={t('pastTrips')}
             trips={pastTrips}
             isPast={true}
             handleActions={handleActions}

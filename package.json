@@ -13,6 +13,8 @@
     "encrypt-secrets": "node ./src/utils/encryptSecrets.js"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
     "@greatsumini/react-facebook-login": "^3.4.0",
     "@react-google-maps/api": "^2.20.6",
     "@react-oauth/google": "^0.12.1",

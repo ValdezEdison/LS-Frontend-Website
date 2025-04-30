@@ -1,13 +1,37 @@
 import React from "react";
 import styles from "./ItineraryCard.module.css";
+import { useLocation } from "react-router-dom";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
+const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions=() => {} }) => {
   const { title, address, images, rating, tags, city } = place;
 
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id:place.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  const location = useLocation();
+
+  const isTripEditPage = location.pathname === '/my-trips/edit';
+
   return (
-    <div className={styles.itenaryCardWrapper} onClick={() => handleViewMoreDetails(place?.id)}>
+    <div   ref={setNodeRef}
+    style={style}
+    {...attributes}
+    {...listeners} className={styles.itenaryCardWrapper}  {...(isTripEditPage 
+      ? { onDoubleClick: (e) => handleViewMoreDetails(e, place?.id) }
+      : { onClick: (e) => handleViewMoreDetails(e, place?.id) }
+    )}>
       {/* <div className={styles.cardIndex}>{index}</div> */}
-      <div className={styles.menuIcon}></div>
+
+      {isTripEditPage? <div className={styles.menuIcon} onClick={(e) => handleActions(e, 'dragAndDrop', place?.id)}></div>
+      :
+      <div className={styles.cardIndex}>{index}</div>
+      }
       <div className={styles.itineraryCard}>
         <div className={styles.cardContent}>
           <div className={styles.imageContainer}>
@@ -43,7 +67,7 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails }) => {
             </div> */}
           </div>
         </div>
-        <button className={styles.deleteButton}>Eliminar</button>
+       { isTripEditPage && <button className={styles.deleteButton} onClick={(e) => handleActions(e, 'delete', place?.id)}>Eliminar</button> }
       </div>
     </div>
   );

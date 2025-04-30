@@ -1,12 +1,21 @@
 import React from "react";
 import styles from "./TripDetails.module.css";
+import { useTranslation } from "react-i18next";
 
 const TripInfo = ({ handleActions, id, tripDetails }) => {
+
+  const { t } = useTranslation('MyTrips');
   // Format dates to display
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+    try {
+      return new Date(dateString).toLocaleDateString(
+        i18n.language,
+        t('tripInfo.dateFormat', { returnObjects: true })
+      );
+    } catch {
+      return dateString;
+    }
   };
 
   return (
@@ -15,23 +24,27 @@ const TripInfo = ({ handleActions, id, tripDetails }) => {
         <h1 className={styles.tripTitle}>{tripDetails?.title || ''}</h1>
         <p className={styles.tripDates}>
           {tripDetails?.initial_date && tripDetails?.end_date ? (
-            `Desde ${formatDate(tripDetails.initial_date)} hasta el ${formatDate(tripDetails.end_date)}`
+            t('tripInfo.dateRange', {
+              startDate: formatDate(tripDetails.initial_date),
+              endDate: formatDate(tripDetails.end_date)
+            })
           ) : (
-            'No dates specified'
+            t('tripInfo.noDates')
           )}
         </p>
       </div>
       <div className={styles.tripActions}>
         <button 
           className={`${styles.actionButton} ${styles.editButton}`} 
-          aria-label="Edit trip" 
+          aria-label={t('tripInfo.ariaLabels.editTrip')}
           onClick={(e) => handleActions(e, 'editTrip', id)}
         >
           
         </button>
         <button 
           className={`${styles.actionButton} ${styles.shareButton}`} 
-          aria-label="More options"
+          aria-label={t('tripInfo.ariaLabels.shareTrip')}
+          onClick={(e) => handleActions(e, 'shareTrip', id)}
         >
           
         </button>

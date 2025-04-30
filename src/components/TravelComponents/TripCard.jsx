@@ -1,15 +1,63 @@
-import React from "react";
+import React, { useContext} from "react";
 import styles from "./TripCard.module.css";
+import { useTranslation } from "react-i18next";
+import { LanguageContext } from "../../context/LanguageContext";
+
 
 const TripCard = ({ trip, isPast, handleActions }) => {
   console.log('trip', trip)
+
+  const { t } = useTranslation('MyTrips');
+
+  const { currentLanguage } = useContext(LanguageContext);
+
   const firstCity = trip.cities?.[0];
   const firstImage = firstCity?.images?.[0]?.thumbnail;
-  const title = trip.title || `${firstCity?.name || 'Unknown'} Trip`;
+  const title = trip.title || `${firstCity?.name || t('tripCard.defaultTitle')} ${t('tripCard.defaultTitle')}`;
+
+    // Function to format date as "Month Day, Year"
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString(currentLanguage, {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    };
+  
+    // Function to format the date range
+    const formatDateRange = (startDate, endDate) => {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      // If same year
+      if (start.getFullYear() === end.getFullYear()) {
+        const startStr = start.toLocaleDateString(currentLanguage, { 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        const endStr = end.toLocaleDateString(currentLanguage, { 
+          month: 'long', 
+          day: 'numeric', 
+          year: 'numeric' 
+        });
+        return t('tripCard.dateRangeFormatSameYear', { 
+          startDate: startStr, 
+          endDate: endStr 
+        });
+      }
+      // If different years
+      return t('tripCard.dateRangeFormatDifferentYears', { 
+        startDate: formatDate(startDate), 
+        endDate: formatDate(endDate) 
+      });
+    };
+  
+    const dateRange = formatDateRange(trip.initial_date, trip.end_date);
 
   return (
     <>
-    <div className={styles.tripDate}>24 Ene al 30 Ene de 2025</div>
+    <div className={styles.tripDate}>{dateRange}</div>
     <div className={styles.tripCard} onClick={(e) => handleActions(e, 'showTripDetails', trip.id)}>
       <div className={styles.tripInfo}>
         <img 
@@ -28,21 +76,21 @@ const TripCard = ({ trip, isPast, handleActions }) => {
             </p>
           )} */}
           {/* <p className={styles.tripType}>{trip.type}</p> */}
-          <p className={styles.tripSites}>{trip.num_of_places} sitios añadidos</p>
+          <p className={styles.tripSites}> {t('tripCard.sitesAdded', { count: trip.num_of_places || 0 })}</p>
           <p className={styles.tripDates}>
-            {trip.initial_date} - {trip.end_date}
+           {dateRange}
           </p>
         </div>
       </div>
       {/* {!isPast && ( */}
         <div className={styles.tripActions}>
           <div className={styles.tripActionsDropdown}>
-            <div  className={styles.editButton}>Editar</div>
-            <div className={styles.deleteButton}>Eliminar</div>
+            <div className={styles.editButton}>{t('tripCard.editButton')}</div>
+            <div className={styles.deleteButton}>{t('tripCard.deleteButton')}</div>
           </div>
         </div>
-      {/* )} */}
-    </div>
+        {/* )} */}
+      </div>
     </>
   );
 };

@@ -1,0 +1,33 @@
+{
+    "pageTitle": "Mis viajes",
+    "addTripButton": "Añadir viaje",
+    "futureTrips": "Viajes futuros",
+    "pastTrips": "Viajes pasados",
+    "tripActions": {
+        "showDetails": "Ver detalles"
+    },
+    "tripCard": {
+    "defaultTitle": "Viaje",
+    "sitesAdded": "{{count}} sitios añadidos",
+    "editButton": "Editar",
+    "deleteButton": "Eliminar",
+    "dateFormat": "d MMM yyyy",
+    "dateFormatNoYear": "d MMM",
+    "dateRangeFormatSameYear": "{{startDate}} al {{endDate}}",
+    "dateRangeFormatDifferentYear": "{{startDate}} al {{endDate}}"
+  },
+    "tripInfo": {
+        "dateFormat": {
+            "day": "numeric",
+            "month": "short",
+            "year": "numeric"
+        },
+        "dateRange": "Desde {{startDate}} hasta el {{endDate}}",
+        "noDates": "No hay fechas especificadas",
+        "ariaLabels": {
+            "editTrip": "Editar viaje",
+            "shareTrip": "Compartir viaje",
+            "moreOptions": "Más opciones"
+        }
+    }
+}

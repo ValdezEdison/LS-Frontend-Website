@@ -3,8 +3,10 @@ import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarSto
 
 const initialState = {
     futureTrips: [],
+    futureTripsLoading: false,
     pastTrips: [],
     loading: false,
+    pastTripsLoading: false,
     error: null,
     tripDetails: null,
     similarStops: [],
@@ -25,30 +27,30 @@ const myTripsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchMyFutureTrips.pending, (state) => {
-                state.loading = true;
+                state.futureTripsLoading = true;
                 state.error = null;
             })
             .addCase(fetchMyFutureTrips.fulfilled, (state, action) => {
-                state.loading = false;
+                state.futureTripsLoading = false;
                 state.error = null;
                 state.futureTrips = action.payload?.results;
             })
             .addCase(fetchMyFutureTrips.rejected, (state, action) => {
-                state.loading = false;  
+                state.futureTripsLoading = false;  
                 state.error = action.payload;               
             })
 
             .addCase(fetchMyPastTrips.pending, (state) => {
-                state.loading = true;
+                state.pastTripsLoading = true;
                 state.error = null;
             })
             .addCase(fetchMyPastTrips.fulfilled, (state, action) => {
-                state.loading = false;
+                state.pastTripsLoading = false;
                 state.error = null;
                 state.pastTrips = action.payload?.results;
             })
             .addCase(fetchMyPastTrips.rejected, (state, action) => {
-                state.loading = false;  
+                state.pastTripsLoading = false;  
                 state.error = action.payload;               
             })
 
