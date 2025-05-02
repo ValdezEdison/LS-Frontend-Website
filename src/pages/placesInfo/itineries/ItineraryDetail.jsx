@@ -147,7 +147,7 @@ const ItineraryDetail = () => {
   };
 
   const handleActions = (e, action, id, name) => {
-    console.log(action, 'action');
+    
     e.stopPropagation();
     switch (action) {
       case 'addToFavorites':
@@ -214,7 +214,7 @@ const ItineraryDetail = () => {
             const result = await dispatch(fetchCities({ searchQuery: query }));
             setCitiesSearchResults(result.payload || []);
           } catch (error) {
-            console.error('Search error:', error);
+            
             setCitiesSearchResults([]);
           } finally {
             setIsSearchingCities(false);
@@ -291,7 +291,7 @@ const ItineraryDetail = () => {
   const storedTripType = localStorage.getItem('tripType')
 
   // const handleSubmit = async (e) => {
-  //   console.log("storedTripType submit", storedTripType)
+  //   
   //   if (!storedTripType) {
   //     dispatch(setTripType({  id: id, type: formState.tripType }))
   //     dispatch(closeAddToTripPopup())
@@ -318,7 +318,7 @@ const ItineraryDetail = () => {
   //       };
   //       dispatch(addTrip(tripData))
   //       .then((response) => {
-  //         console.log('Trip add response:', response);
+  //         
           
   //         if (response.type === "places/addTrip/fulfilled") {
   //           // Success case
@@ -336,29 +336,29 @@ const ItineraryDetail = () => {
   //           togglePopup("error", true);
   //           setSuccessMessage(errorMsg);
   //           setSuccessTitle("Error creating trip");
-  //           console.error('Trip creation failed:', response.payload || response.error);
+  //           
   //         }
   //       })
   //       .catch((error) => {
   //         // Unexpected errors
-  //         console.error('Unexpected error in dispatch:', error);
+  //         
   //         togglePopup("error", true);
   //         setSuccessMessage("An unexpected error occurred while creating the trip");
   //         setSuccessTitle("Error");
   //       });
   //     } else {
   //       // Logic to add itinerary to existing trip would go here
-  //       console.log('Adding to existing trip:', selectedTripId);
+  //       
   //     }
 
   //     dispatch(closeAddToTripPopup());
   //     dispatch(closePopup());
   //   } catch (error) {
-  //     console.error('Error adding trip:', error);
+  //     
   //   }
   // };
 
-  console.log("formState", formState);
+  
 
   useEffect(() => {
     if (formState.mode) {
@@ -367,7 +367,7 @@ const ItineraryDetail = () => {
   }, [formState.mode, dispatch, id]);
 
   const handleGenerateLink = () => {
-    console.log("idghrgdjhgdjtjythjtjtjyj", id);
+    
     if (id) {
       dispatch(resetShareableLink());
       dispatch(generateLink(id));
@@ -440,11 +440,11 @@ const ItineraryDetail = () => {
     updateDestination
   };
 
-  console.log("formErrors", formErrors);
+  
 
   useEffect(() => {
     if (formState.destinations.length > 0 && formState.destinations[0].destinationId !== null) {
-      console.log("formState.destinations", formState.destinations);
+      
       dispatch(fetchStops({cityId: formState.destinations.map((destination) => destination.destinationId), type: "place", page: 1}))
     }
     

@@ -62,3 +62,27 @@ export const fetchTravelTime = createAsyncThunk(
     }
   }
 );
+
+export const updateTrip = createAsyncThunk(
+    "myTrips/updateTrip",
+    async ({tripId, tripData}, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.updateTrip(tripId, tripData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
+
+export const updateStops = createAsyncThunk(
+    "myTrips/updateStops",
+    async ({tripId, sites}, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.updateStops(tripId, sites);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

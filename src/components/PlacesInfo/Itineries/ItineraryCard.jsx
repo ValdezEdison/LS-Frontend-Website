@@ -4,10 +4,10 @@ import { useLocation } from "react-router-dom";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions=() => {} }) => {
+const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions = () => { } }) => {
   const { title, address, images, rating, tags, city } = place;
 
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id:place.id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: place.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -18,19 +18,26 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions=() =
 
   const isTripEditPage = location.pathname === '/my-trips/edit';
 
+  const handleDeleteClick = (e) => {
+    
+    e.stopPropagation(); // Stop event from bubbling to drag handlers
+    e.preventDefault();  // Prevent any default behavior
+    handleActions(e, 'delete', place?.id);
+  };
+
   return (
-    <div   ref={setNodeRef}
-    style={style}
-    {...attributes}
-    {...listeners} className={styles.itenaryCardWrapper}  {...(isTripEditPage 
-      ? { onDoubleClick: (e) => handleViewMoreDetails(e, place?.id) }
-      : { onClick: (e) => handleViewMoreDetails(e, place?.id) }
-    )}>
+    <div ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners} className={styles.itenaryCardWrapper}  {...(isTripEditPage
+        ? { onDoubleClick: (e) => handleViewMoreDetails(e, place?.id) }
+        : { onClick: (e) => handleViewMoreDetails(e, place?.id) }
+      )}>
       {/* <div className={styles.cardIndex}>{index}</div> */}
 
-      {isTripEditPage? <div className={styles.menuIcon} onClick={(e) => handleActions(e, 'dragAndDrop', place?.id)}></div>
-      :
-      <div className={styles.cardIndex}>{index}</div>
+      {isTripEditPage ? <div className={styles.menuIcon}></div>
+        :
+        <div className={styles.cardIndex}>{index}</div>
       }
       <div className={styles.itineraryCard}>
         <div className={styles.cardContent}>
@@ -52,11 +59,11 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions=() =
             <div className={styles.placeInfoTop}>
               <h3 className={styles.placeName}>{title}</h3>
               <p className={styles.placeAddress}>{address?.street}</p>
-               <p className={styles.placeLocation}>
-                    {city?.name}
-                    {city?.name && city?.country?.name && ", "}
-                    {city?.country?.name}
-                </p>
+              <p className={styles.placeLocation}>
+                {city?.name}
+                {city?.name && city?.country?.name && ", "}
+                {city?.country?.name}
+              </p>
             </div>
             {/* <div className={styles.ratingContainer}>
               <span className={styles.ratingScore}>{rating}</span>
@@ -67,7 +74,10 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions=() =
             </div> */}
           </div>
         </div>
-       { isTripEditPage && <button className={styles.deleteButton} onClick={(e) => handleActions(e, 'delete', place?.id)}>Eliminar</button> }
+        {isTripEditPage && <button className={styles.deleteButton} onClick={handleDeleteClick}
+          // Add this to prevent the sortable from capturing the event
+          onPointerDown={e => e.stopPropagation()}
+        >Eliminar</button>}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const Newsletter = () => {
   const { t } = useTranslation("Newsletter");
 
   const { newsLetterBlocks, newsLetterLoading, newsLetterError } = useSelector((state) => state.cms.blocks);
-console.log(newsLetterBlocks, 'newsLetterBlocks')
+
 
 const createMarkup = (html) => {
   return { __html: html };

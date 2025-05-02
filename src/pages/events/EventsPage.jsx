@@ -154,7 +154,7 @@ const EventsPage = () => {
   };
 
   const handleActions = (e, action, id, name) => {
-    console.log(action, 'action');
+    
     e.stopPropagation();
     switch (action) {
       case 'addToFavorites':
@@ -248,7 +248,7 @@ const EventsPage = () => {
   }, [state.selectedCityId]);
 
   const onApplyFilters = () => {
-    console.log('state', state);
+    
 
     const params = {
       type: state.type,

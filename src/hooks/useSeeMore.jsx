@@ -23,13 +23,13 @@ const useSeeMore = (initialData = [], nextPageUrl, listUpdater) => {
     try {
       // const response = await fetch(next); // Assuming `next` is a URL
       const response = await ApiInstance.get(next);
-      console.log(response, 'response');
+      
       const newData = response?.data;
       setData((prevData) => [...prevData, ...newData.results]);
       dispatch(listUpdater({ results: newData.results, next: newData.next }));
       setNext(newData.next);
     } catch (error) {
-      console.error("Failed to load more places:", error);
+      
     } finally {
       setLoading(false);
     }

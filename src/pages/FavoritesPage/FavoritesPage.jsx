@@ -188,9 +188,9 @@ const FavoritesPage = () => {
       setVanishingItems(prev => [...prev, id]);
 
       dispatch(toggleFavorite(id)).then((res) => {
-        console.log(res, 'res');
+        
         if (res.payload?.response?.detail === "Unmarked as favorite") {
-          console.log('entered');
+          
           debouncedSearchFavorites(state.keyword);
           dispatch(removeFavorite(id));
 

@@ -197,7 +197,7 @@ const ItineraryDetails = () => {
     if (place?.url) {
       window.open(place.url, "_blank"); // Open the external URL in a new tab
     } else {
-      console.error("No website URL provided for this place.");
+      
     }
   };
 
@@ -282,7 +282,7 @@ const ItineraryDetails = () => {
   //         dispatch(fetchPlaceComments(id)); // Refresh comments
   //       })
   //       .catch((error) => {
-  //         console.error("Failed to submit comment:", error);
+  //         
   //       });
   //   }
   // };
@@ -309,7 +309,7 @@ const ItineraryDetails = () => {
         setCommentToDelete(null);
       })
       .catch((error) => {
-        console.error("Failed to delete comment:", error);
+        
       });
   };
 
@@ -439,7 +439,7 @@ const ItineraryDetails = () => {
           dispatch(fetchPlaceComments(id));
         })
         .catch((error) => {
-          console.error("Failed to submit comment:", error);
+          
           togglePopup("comment", false);
           setCommentForm({
             text: "",

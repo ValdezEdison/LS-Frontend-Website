@@ -5,7 +5,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 
 
 const TripCard = ({ trip, isPast, handleActions }) => {
-  console.log('trip', trip)
+  
 
   const { t } = useTranslation('MyTrips');
 

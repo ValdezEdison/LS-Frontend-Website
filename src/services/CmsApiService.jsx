@@ -7,7 +7,7 @@ const CmsApiService = {
       const response = await CmsInstance.get(url, config);
       return response.data;
     } catch (error) {
-      console.error('CMS GET request failed:', error);
+      
       throw error;
     }
   },
@@ -17,7 +17,7 @@ const CmsApiService = {
       const response = await CmsInstance.post(url, data, config);
       return response.data;
     } catch (error) {
-      console.error('CMS POST request failed:', error);
+      
       throw error;
     }
   },
@@ -27,7 +27,7 @@ const CmsApiService = {
       const response = await CmsInstance.put(url, data, config);
       return response.data;
     } catch (error) {
-      console.error('CMS PUT request failed:', error);
+      
       throw error;
     }
   },
@@ -37,7 +37,7 @@ const CmsApiService = {
       const response = await CmsInstance.delete(url, config);
       return response.data;
     } catch (error) {
-      console.error('CMS DELETE request failed:', error);
+      
       throw error;
     }
   },

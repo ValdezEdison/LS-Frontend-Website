@@ -140,6 +140,11 @@
   transition: all ease .3s;
 }
 
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .addDestinationButton {
   background-color: #f4c031;
   border: none;

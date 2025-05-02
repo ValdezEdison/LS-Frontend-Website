@@ -7,7 +7,7 @@ export const socialLogin = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const response = await SocialAuthService.socialLogin(data);
-            console.log(response, 'response');
+            
             setAuthTokens(response, false);
             return response;
         } catch (error) {

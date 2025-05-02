@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarStops, fetchTravelTime } from "./MyTripsAction";
+import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarStops, fetchTravelTime, updateTrip, updateStops } from "./MyTripsAction";
 
 const initialState = {
     futureTrips: [],
@@ -96,6 +96,31 @@ const myTripsSlice = createSlice({
                 state.error = action.payload;               
             })
 
+            .addCase(updateTrip.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateTrip.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(updateTrip.rejected, (state, action) => {
+                state.loading = false;  
+                state.error = action.payload;               
+            })
+
+            .addCase(updateStops.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateStops.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(updateStops.rejected, (state, action) => {
+                state.loading = false;  
+                state.error = action.payload;               
+            })
 
     },
 });

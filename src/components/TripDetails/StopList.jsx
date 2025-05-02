@@ -10,8 +10,12 @@ import ItineraryCard from "../PlacesInfo/Itineries/ItineraryCard";
 // import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { useLocation } from "react-router-dom";
 
-const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleActions }) => {
+const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
+
+  
   const [items, setItems] = useState(tripDetails?.stops || []);
+
+  
   
   const location = useLocation();
   const isTripEditPage = location.pathname === '/my-trips/edit';
@@ -25,7 +29,7 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleActi
           sites: tripDetails.stops.map(stop => stop.id)
         }));
       } catch (error) {
-        console.error("Error updating stops:", error);
+        
         // Handle error appropriately
       }
     }
@@ -44,11 +48,25 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleActi
       setFormState(prev => ({ ...prev, sites: newOrderIds }));
     }
   };
-console.log(items,'items')
+
+
+const handleActions = (e, action, id) => {
+  
+  e.stopPropagation();
+  if (isTripEditPage) {
+    setItems(prevItems => prevItems.filter(item => item.id !== id));
+    setFormState(prev => ({
+      ...prev,
+      sites: prev.sites.filter(siteId => siteId !== id),
+      // stops: prev.stops.filter(stop => stop.id !== id)
+    }));
+  }
+
+}
   return (
     <>
       <div className={styles.tripType}>
-        <div className={styles.tripTypeTag}>{tripDetails?.type}</div>
+        {/* <div className={styles.tripTypeTag}>{tripDetails?.type}</div> */}
         <div className={styles.icon}>
           {/* Your SVG Icon */}
         </div>

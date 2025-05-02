@@ -213,7 +213,7 @@ const Events = () => {
 
 
   const handleActions = (e, action, id, name) => {
-    console.log(action, 'action');
+    
     e.stopPropagation();
     switch (action) {
       case 'addToFavorites':

@@ -11,7 +11,7 @@ const GoogleLoginButton = ({ onSuccess, onFailure, styles }) => {
     googleLoginRef.current.click();
   };
   const clientId = getGoogleAuthId();
-  console.log(import.meta.env.VITE_GOOGLE_AUTH_ID, 'clientId');
+  
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_ID}>

@@ -208,7 +208,7 @@ const LoginPage = () => {
       })
       .catch((err) => {
         toast.error(err.message || t('messages.error'));
-        console.error(err);
+        
       });
   };
 
@@ -232,7 +232,7 @@ const LoginPage = () => {
       if (provider === 'google-oauth2') {
         await initializeGoogleSDK();
         token = await handleGoogleLogin();
-        console.log(token, 'token');
+        
       } 
       // // Facebook Login
       //  if (provider === 'facebook') {
@@ -265,7 +265,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       toast.error(error.message || t('messages.error'));
-      console.error("Social login error:", error);
+      
     }
   };
 

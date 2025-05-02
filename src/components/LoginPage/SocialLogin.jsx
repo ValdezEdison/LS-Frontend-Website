@@ -11,7 +11,7 @@ const SocialLogin = ({ onSocialLogin }) => {
   const { t } = useTranslation('Login');
 
   const handleGoogleSuccess = (response) => {
-    console.log("response", response);
+    
     onSocialLogin('google-oauth2', response.token);
   };
 

@@ -10,7 +10,8 @@ const ItineraryForm = ({
   activeDestinationIndex,
   setActiveDestinationIndex,
   cities,
-  debouncedSearch // Add this prop if you need to fetch cities
+  debouncedSearch, // Add this prop if you need to fetch cities
+  handleSubmit
 }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -129,6 +130,14 @@ const ItineraryForm = ({
     };
   }, [showSuggestionDropDown]);
 
+  useEffect(() => {
+    if (tripDetails?.initial_date && tripDetails?.end_date) {
+      const start = new Date(tripDetails.initial_date);
+      const end = new Date(tripDetails.end_date);
+      setDateRange([start, end]);
+    }
+  }, [tripDetails]);
+
   return (
     <>
       <form className={styles.itineraryForm}>
@@ -166,12 +175,12 @@ const ItineraryForm = ({
               />
             </div>
           </div>
-
+          <label htmlFor={`destination`} className={styles.label}>
+                Destino
+              </label>
           {formState.destinations.map((destination, index) => (
             <div className={styles.formGroup} key={index}>
-              <label htmlFor={`destination-${index}`} className={styles.label}>
-                {index === 0 ? 'Destino' : `Destino adicional ${index + 1}`}
-              </label>
+       
               <div className={styles.destinationInput}>
                 <SearchInput
                   handleSearchClick={() => {
@@ -209,7 +218,7 @@ const ItineraryForm = ({
           <button type="button" className={styles.cancelButton}>
             Cancelar
           </button>
-          <button type="submit" className={styles.saveButton}>
+          <button type="submit" className={styles.saveButton} onClick={handleSubmit}>
             Guardar
           </button>
         </div>

@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import { useTranslation } from 'react-i18next';
 
 const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilters }) => {
-  console.log(state, 'selectedOrder')
+  
   const [selectedTags, setSelectedTags] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;

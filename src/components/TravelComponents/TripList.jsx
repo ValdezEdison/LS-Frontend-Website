@@ -3,7 +3,7 @@ import TripCard from "./TripCard";
 import styles from "./TripList.module.css";
 
 const TripList = ({ title, trips, isPast, handleActions }) => {
-  console.log("trips", trips)
+  
   return (
     <section className={styles.tripListSection}>
       <h2 className={styles.tripListTitle}>{title}</h2>

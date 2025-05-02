@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext, useCallback, useRef } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import ItineraryForm from "../../components/TravelItinerary/ItineraryForm";
@@ -17,10 +17,18 @@ import StopList from "../../components/TripDetails/StopList";
 import { Arrow, Down } from "../../components/common/Images";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce } from "lodash";
+import { useTripsTypes } from "../../constants/TripTypeList";
+import { useTranslation } from "react-i18next";
+import { updateTrip, updateStops } from "../../features/myTrips/MyTripsAction";
+
 
 const TravelItineraryEdit = () => {
   const location = useLocation();
   const { id } = location.state;
+
+  const tripTypeRef = useRef(null);
+  const previousSitesRef = useRef([]);
+  const hasStopsChangedRef = useRef(false);
 
   const [formState, setFormState] = useState({
     mode: 'driving',
@@ -35,6 +43,7 @@ const TravelItineraryEdit = () => {
       destinationName: ''
     }],
     stops: [],
+    tripType: '',
   });
 
   const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
@@ -44,9 +53,28 @@ const TravelItineraryEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { t } = useTranslation('TravelItinerary');
+
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
   const { cities } = useSelector((state) => state.cities);
+
+  const tripTypes = useTripsTypes();
+
+  // Add state to manage the selected trip type and dropdown visibility
+  const [selectedTripType, setSelectedTripType] = useState(tripDetails?.type || 'familiar');
+  const [isTripTypeDropdownOpen, setIsTripTypeDropdownOpen] = useState(false);
+
+  // Create a function to handle trip type selection
+  const handleTripTypeSelect = (type) => {
+    setSelectedTripType(type);
+    setIsTripTypeDropdownOpen(false);
+    // You might want to update the formState or make an API call here
+    setFormState(prev => ({
+      ...prev,
+      tripType: type
+    }));
+  };
 
   useEffect(() => {
     if (id) {
@@ -57,18 +85,12 @@ const TravelItineraryEdit = () => {
     }
   }, [language, id, dispatch]);
 
-  const handleViewMoreDetails = (e,id) => {
+  const handleViewMoreDetails = (e, id) => {
+    e.stopPropagation();
     navigate('/places/details', { state: { id } });
   };
 
-  const handleActions = (e, action, id) => {
-    e.stopPropagation();
-    if (action === 'dragAndDrop') {
-      
-    }else if(action === 'delete') {
-
-    }
-  };
+ 
 
   useEffect(() => {
     if (formState.mode) {
@@ -76,13 +98,7 @@ const TravelItineraryEdit = () => {
     }
   }, [formState.mode, dispatch, id]);
 
-  // Calculate trip duration in days
-  const calculateTripDuration = () => {
-    if (!tripDetails?.initial_date || !tripDetails?.end_date) return 0;
-    const start = new Date(tripDetails.initial_date);
-    const end = new Date(tripDetails.end_date);
-    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end days
-  };
+
 
   useEffect(() => {
     if (tripDetails) {
@@ -91,6 +107,7 @@ const TravelItineraryEdit = () => {
         tripName: tripDetails.title || '',
         startDate: tripDetails.initial_date || null,
         endDate: tripDetails.end_date || null,
+        tripType: tripDetails.type || '',
         destinations: tripDetails.cities?.map(city => ({
           destinationSearchQuery: city.name,
           destinationId: city.id,
@@ -102,16 +119,86 @@ const TravelItineraryEdit = () => {
         }],
         stops: tripDetails.stops || []
       }));
+
+      const newSites = tripDetails.stops?.map(stop => stop.id) || [];
+      
+      setFormState(prev => ({
+        ...prev,
+        // ... other state updates ...
+        sites: newSites,
+      }));
+      previousSitesRef.current = newSites;
+      hasStopsChangedRef.current = false;
     }
   }, [tripDetails, setFormState]);
 
-  console.log(formState, 'formState');
+
+  useEffect(() => {
+    if (JSON.stringify(previousSitesRef.current) !== JSON.stringify(formState.sites)) {
+      hasStopsChangedRef.current = true;
+    }
+  }, [formState.sites]);
+
+  
 
   const debouncedSearch = debounce((query) => {
     if (query) {
-      dispatch(fetchCities({ searchQuery: query  }));
+      dispatch(fetchCities({ searchQuery: query }));
     }
   }, 300);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formatDate = (date) => {
+      if (date instanceof Date) {
+        return date.toISOString().split('T')[0];
+      }
+      // If it's already in YYYY-MM-DD format, return as-is
+      if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return date;
+      }
+      // Fallback - try to parse or use current date
+      return new Date(date).toISOString().split('T')[0];
+    };
+
+    const tripData = {
+      title: formState.tripName,
+      type: formState.tripType,
+      cities: formState.destinations.map(d => d.destinationId),
+      initial_date: formatDate(formState.startDate),
+      end_date: formatDate(formState.endDate),
+      stops: formState.sites,
+    };
+    
+    dispatch(updateTrip({ tripId: id, tripData: tripData }));
+    if (hasStopsChangedRef.current) {
+      dispatch(updateStops({ tripId: id, sites: formState.sites }));
+      hasStopsChangedRef.current = false; // Reset change flag
+      previousSitesRef.current = formState.sites; // Update reference
+    }
+  }
+
+
+  const handleClickOutside = (event) => {
+    // Check if the click is outside the dropdown wrapper
+    if (tripTypeRef.current && !tripTypeRef.current.contains(event.target)) {
+      setIsTripTypeDropdownOpen(false); // Close the dropdown
+    }
+  };
+  
+  useEffect(() => {
+    // Only add the event listener if the dropdown is open
+    if (isTripTypeDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    // Always remove the event listener when the dropdown closes or component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isTripTypeDropdownOpen]);
+
 
   return (
     <div className={styles.travelItineraryContainer}>
@@ -125,35 +212,45 @@ const TravelItineraryEdit = () => {
           setActiveDestinationIndex={setActiveDestinationIndex}
           cities={cities}
           debouncedSearch={debouncedSearch}
+          handleSubmit={handleSubmit}
         />
         <ItineraryMap
           places={tripDetails?.stops}
           formState={formState}
           setFormState={setFormState}
         />
-        <div className={styles.dropdownWrapper}>
-          <label>Tipo de viaje</label>
+        <div className={styles.dropdownWrapper} ref={tripTypeRef}>
+          <label>{t('AddTrip.tripType')}</label>
           <div className={styles.dropdown}>
             <div className={styles.filterBlock}>
-              <div className={`${styles.filterHeader} `}> {/* ${styles.open} */}
+              <div
+                className={`${styles.filterHeader} ${isTripTypeDropdownOpen ? styles.open : ''}`}
+                onClick={() => setIsTripTypeDropdownOpen(!isTripTypeDropdownOpen)}
+              >
                 <div className={styles.filterHeaderContent}>
-                  <div className={styles.filterTitle}>Familiar</div>
+                  <div className={styles.filterTitle}>{tripTypes[formState.tripType]}</div>
                 </div>
                 <div className={styles.dropdownIcon}><img src={Down} /></div>
               </div>
             </div>
-            <div className={`${styles.filterContent} }`}> {/* ${styles.active*/}
+            <div className={`${styles.filterContent} ${isTripTypeDropdownOpen ? styles.active : ''}`}>
               <ul className={styles.filterChecklist}>
-                {similarStops?.map((stop, index) => (
-                  <li key={index}>{stop.name}</li>
+                {Object.entries(tripTypes).map(([key, value]) => (
+                  <li
+                    key={key}
+                    className={formState.tripType === key ? styles.selected : ''}
+                    onClick={() => handleTripTypeSelect(key)}
+                  >
+                    {value}
+                  </li>
                 ))}
               </ul>
             </div>
           </div>
         </div>
-        
+
         {tripDetails?.stops?.length > 0 && (
-         <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} handleActions={handleActions}/>
+          <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} />
         )}
         <SuggestedStops />
         {similarStopsLoading ? (

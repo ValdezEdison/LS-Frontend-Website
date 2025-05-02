@@ -31,7 +31,7 @@ const TripDetails = () => {
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
 
-  console.log('tripDetails', tripDetails)
+  
 
   useEffect(() => {
     if(id){

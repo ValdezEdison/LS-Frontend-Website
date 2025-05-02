@@ -63,7 +63,7 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   };
 
   // const updateDestination = (index, field, value) => {
-  //   console.log('Updating destination', index, field, value);
+  //   
   //   setState(prev => {
   //     const newDestinations = [...prev.destinations];
   //     newDestinations[index] = {
@@ -103,7 +103,7 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   };
 
   const handleSelectDestination = (destination, index) => {
-    console.log('Selected destination:', destination);
+    
     updateDestination(index, 'destinationId', destination);
     updateDestination(index, 'destinationName', cities.find(city => city.id === destination)?.name);
     // updateDestination(index, 'destinationSearchQuery', destination.name);

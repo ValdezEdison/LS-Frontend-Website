@@ -15,7 +15,14 @@ const MyTripsService = {
     },
     getTravelTime: async ({ travelId, mode }) => {
         return ApiService.get('/travels/' + travelId + '/directions?mode=' + mode);
-    }
+    },
+    updateTrip: async (tripId, tripData) => {
+        return ApiService.patch('/travels/' + tripId, tripData);
+    },
+    updateStops: async (tripId, sites) => {
+        return ApiService.patch('/travels/' + tripId + '/update_stops', { sites: sites });
+    },
+
 };
 
 export default MyTripsService;

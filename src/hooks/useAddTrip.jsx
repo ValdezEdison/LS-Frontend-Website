@@ -144,7 +144,7 @@ export const useAddTrip = () => {
           const result = await dispatch(fetchCities({ searchQuery: query }));
           setCitiesSearchResults(result.payload || []);
         } catch (error) {
-          console.error('Search error:', error);
+          
           setCitiesSearchResults([]);
         } finally {
           setIsSearchingCities(false);
@@ -207,7 +207,7 @@ export const useAddTrip = () => {
       dispatch(formState.type === "event" || formState.type === "place" ? addSite({ id: tripState.selectedTripId, siteId: tripState.selectedPlaceId, order: 5 }) : addToExistingTrip({ tripId: tripState.selectedTripId, siteId: tripState.selectedPlaceId }))
         .then((res) => {
           
-          console.log(res, 'res');
+          
           if (res.type === "places/addSite/fulfilled" || res.type === "places/addToExistingTrip/fulfilled") {
            if(res.payload?.detail){
             toast.success(res.payload.detail);
@@ -220,7 +220,7 @@ export const useAddTrip = () => {
           }
         })
         .catch((error) => {
-          console.error("Dispatch error:", error);
+          
           toast.error(t('AddTrip.errors.unexpectedError'));
         });
     } else {
@@ -276,7 +276,7 @@ export const useAddTrip = () => {
       dispatch(closeAddToTripPopup());
       dispatch(closePopup());
     } catch (error) {
-      console.error('Error adding trip:', error);
+      
       setSuccessData({
         message: t('AddTrip.errors.unexpectedError'),
         title: 'Error',
@@ -311,7 +311,7 @@ export const useAddTrip = () => {
 
   // Handle trip click (main entry point)
   const handleTripClick = (e, id, name) => {
-    console.log('handleTripClick', id, name);
+    
     e.stopPropagation();
     if (isAuthenticated) {
       openAddTripPopup(id, name);
@@ -329,7 +329,7 @@ export const useAddTrip = () => {
   // Fetch stops when destinations change
   useEffect(() => {
     if (formState.destinations.length > 0 && formState.destinations[0].destinationId !== null) {
-      console.log("formState.destinations", formState.destinations);
+      
       dispatch(fetchStops({ cityId: formState.destinations.map((destination) => destination.destinationId), type: formState.type, page: 1 }))
     }
 
