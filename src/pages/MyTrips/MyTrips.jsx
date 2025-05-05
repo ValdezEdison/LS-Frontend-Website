@@ -18,6 +18,7 @@ import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
 import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
+import { Close, Warning } from "../../components/common/Images";
 
 const MyTrips = () => {
   const [state, setState] = useState({
@@ -230,6 +231,10 @@ const MyTrips = () => {
       )}
 
       <div className={styles.myTrips}>
+        <div className={styles.warningToaster}>
+          <div className={styles.warningToasterLeft}><img src={Warning}/>Se ha eliminado un viaje.</div>
+          <div className={styles.warningToasterRight}>  <span className={styles.undoButton}>Deshacer</span> <span className={styles.closeButton}><img src={Close}/></span></div>
+        </div>
         <Header />
         <main className={styles.mainContent}>
           <div className={styles.titleSection}>
