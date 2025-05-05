@@ -154,7 +154,7 @@ export const useAddTrip = () => {
       } else {
         setCitiesSearchResults([]);
       }
-    }, 500),
+    }, 1000),
     [dispatch]
   );
 

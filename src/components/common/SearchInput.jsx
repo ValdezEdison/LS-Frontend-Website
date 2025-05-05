@@ -4,6 +4,8 @@ import SuggestionItem from "./SuggestionItem";
 import { SearchBlack } from "../common/Images";
 import { useTranslation } from "react-i18next";
 import CustomInput from "./CustomInput";
+import { useSelector } from "react-redux";
+import Loader from "./Loader";
 
 const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "", customClassNameForSuggestions = "" }) => {
   const [defaultSuggestions] = useState([
@@ -12,6 +14,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
 
   const { t } = useTranslation("SearchInput");
   const inputPlaceholder = placeholder || t("placeholder");
+  const { loading } = useSelector((state) => state.cities);
 
   const suggestions = Array.isArray(suggestionsList) && suggestionsList.length > 0 ? suggestionsList : defaultSuggestions;
 
@@ -44,22 +47,24 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           />
         ))} */}
         <div className={styles.suggestionsContainerInner}>
-        {Array.isArray(suggestions) && suggestions.length > 0 ? (
-          // Render suggestions if available
-          suggestions.map((suggestion, index) => (
-            <SuggestionItem
-              key={index}
-              id={suggestion.id}
-              text={`${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
-              onSelect={onSelect}
-            />
-          ))
-        ) : (
-          // Show "No results" message if no suggestions are found
-          <div className={styles.filterNoResults}>No results</div>
-        )}
+          {loading ? <Loader /> :
+            Array.isArray(suggestions) && suggestions.length > 0 ? (
+              // Render suggestions if available
+              suggestions.map((suggestion, index) => (
+                <SuggestionItem
+                  key={index}
+                  id={suggestion.id}
+                  text={`${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
+                  onSelect={onSelect}
+                />
+              ))
+            ) : (
+              // Show "No results" message if no suggestions are found
+              <div className={styles.filterNoResults}>No results</div>
+            )
+          }
         </div>
-       
+
       </div>
     </div>
   );
