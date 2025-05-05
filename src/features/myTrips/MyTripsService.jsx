@@ -25,6 +25,9 @@ const MyTripsService = {
     deleteTrip: async (tripId) => {
         return ApiService.delete('/travels/' + tripId);
     },
+    updateCities: async (tripId, cities) => {
+        return ApiService.patch('/travels/' + tripId + '/update_cities', { cities: cities });
+    },
 
 };
 

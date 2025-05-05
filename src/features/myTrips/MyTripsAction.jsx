@@ -98,3 +98,15 @@ export const deleteTrip = createAsyncThunk(
         }
     }
 );
+
+export const updateCities = createAsyncThunk(
+    "myTrips/updateCities",
+    async ({tripId, cities}, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.updateCities(tripId, cities);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

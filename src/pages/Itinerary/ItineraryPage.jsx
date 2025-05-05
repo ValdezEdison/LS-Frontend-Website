@@ -232,6 +232,19 @@ const ItineraryPage = () => {
     updateDestination
   };
 
+    useEffect(() => {
+      if (isAddToPopupOpen || tripPopupState.addTripPopup) {
+        document.body.classList.add('overflowHide');
+      } else {
+        document.body.classList.remove('overflowHide');
+      }
+  
+      // Cleanup: Remove class when component unmounts
+      return () => {
+        document.body.classList.remove('overflowHide');
+      };
+    }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
+
   return (
     <>
 

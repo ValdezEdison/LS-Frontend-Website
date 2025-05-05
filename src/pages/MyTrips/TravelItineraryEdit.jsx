@@ -19,7 +19,7 @@ import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce } from "lodash";
 import { useTripsTypes } from "../../constants/TripTypeList";
 import { useTranslation } from "react-i18next";
-import { updateTrip, updateStops } from "../../features/myTrips/MyTripsAction";
+import { updateTrip, updateStops, updateCities } from "../../features/myTrips/MyTripsAction";
 import { fetchStops } from "../../features/places/placesInfo/itinerary/ItineraryAction";
 import EventCard from "../../components/common/EventCard";
 import EventCardSkeleton from "../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
@@ -39,6 +39,8 @@ const TravelItineraryEdit = () => {
   const tripTypeRef = useRef(null);
   const previousSitesRef = useRef([]);
   const hasStopsChangedRef = useRef(false);
+  const previousCitiesRef = useRef([]);
+  const hasCitiesChangedRef = useRef(false);
 
   const [formState, setFormState] = useState({
     mode: 'driving',
@@ -137,14 +139,18 @@ const TravelItineraryEdit = () => {
       }));
 
       const newSites = tripDetails.stops?.map(stop => stop.id) || [];
+      const newCities = tripDetails.cities?.map(city => city.id) || [];
 
       setFormState(prev => ({
         ...prev,
         // ... other state updates ...
         sites: newSites,
+        cityIds: newCities,
       }));
       previousSitesRef.current = newSites;
       hasStopsChangedRef.current = false;
+      previousCitiesRef.current = newCities;
+      hasCitiesChangedRef.current = false;
     }
   }, [tripDetails, setFormState]);
 
@@ -154,6 +160,18 @@ const TravelItineraryEdit = () => {
       hasStopsChangedRef.current = true;
     }
   }, [formState.sites]);
+
+
+  useEffect(() => {
+    const currentCityIds = formState.destinations.map(d => d.destinationId);
+    if (JSON.stringify(previousCitiesRef.current) !== JSON.stringify(currentCityIds)) {
+      hasCitiesChangedRef.current = true;
+      setFormState(prev => ({
+        ...prev,
+        cityIds: currentCityIds
+      }));
+    }
+  }, [formState.destinations]);
 
 
 
@@ -181,10 +199,10 @@ const TravelItineraryEdit = () => {
     const tripData = {
       title: formState.tripName,
       type: formState.tripType,
-      cities: formState.destinations.map(d => d.destinationId),
+      // cities: formState.destinations.map(d => d.destinationId),
       initial_date: formatDate(formState.startDate),
       end_date: formatDate(formState.endDate),
-      stops: formState.sites,
+      // stops: formState.sites,
     };
 
     dispatch(updateTrip({ tripId: id, tripData: tripData }));
@@ -192,6 +210,23 @@ const TravelItineraryEdit = () => {
       dispatch(updateStops({ tripId: id, sites: formState.sites }));
       hasStopsChangedRef.current = false; // Reset change flag
       previousSitesRef.current = formState.sites; // Update reference
+    }
+
+     // Update cities if changed
+     if (hasCitiesChangedRef.current) {
+      dispatch(updateCities({ 
+        tripId: id, 
+        cities: currentCityIds 
+      })).then(() => {
+        // Refresh stops after cities update
+        dispatch(fetchStops({
+          cityId: currentCityIds.join(','),
+          type: formState.type,
+          page: 1
+        }));
+      });
+      hasCitiesChangedRef.current = false;
+      previousCitiesRef.current = currentCityIds;
     }
   }
 

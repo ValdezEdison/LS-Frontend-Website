@@ -402,6 +402,7 @@ const PlaceDetails = () => {
     }));
 
     if (validateCommentForm()) {
+      togglePopup("comment", false);
       const action = isEditing
         ? dispatch(editComment({
           commentId: editingCommentId,

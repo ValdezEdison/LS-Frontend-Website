@@ -13,6 +13,11 @@ import { openPopup, closePopup } from "../../features/popup/PopupSlice"
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import Modal from "../../components/modal/Modal";
 import Skeleton from "react-loading-skeleton";
+import { useAddTrip } from "../../hooks/useAddTrip";
+import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
+import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
+import AlertPopup from "../../components/popup/Alert/AlertPopup";
+import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 
 const MyTrips = () => {
   const [state, setState] = useState({
@@ -31,14 +36,46 @@ const MyTrips = () => {
     success: false,
   });
 
+  // Add trip functionality
+  const {
+    tripState,
+    formState,
+    formErrors,
+    citiesSearchResults,
+    isSearchingCities,
+    activeDestinationIndex,
+    successData,
+    isAddToPopupOpen,
+    travelLiteList,
+    tripPopupState,
+    setTripPopupState,
+    setFormState,
+    setTripState,
+    setFormErrors,
+    handleTripClick,
+    handleSubmitTrip,
+    handleSubmit,
+    updateDestination,
+    setActiveDestinationIndex,
+    debouncedFetchCitiesForAddTrip,
+    openAddTripPopup,
+    closeAddTripPopup,
+    closeSuccessMessage,
+    closeAddToTrip
+  } = useAddTrip();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
   const { futureTrips, pastTrips, futureTripsLoading, pastTripsLoading } = useSelector((state) => state.myTrips);
+  const { cities } = useSelector((state) => state.cities);
 
   const { isOpen } = useSelector((state) => state.popup);
 
   const { t } = useTranslation('MyTrips');
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
 
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
@@ -50,41 +87,127 @@ const MyTrips = () => {
     dispatch(fetchMyPastTrips(state.page));
   }, [dispatch, language, state.page]);
 
-  const handleActions = (e, action, id) => {
+  const handleActions = (e, action, id, name) => {
     e.stopPropagation();
-    if (action === 'showTripDetails') {
-      navigate('/my-trips/details', { state: { id: id } });
-    } else if (action === 'deleteTrip') {
-      const trip = futureTrips.find(trip => trip.id === id) || pastTrips.find(trip => trip.id === id);
-      console.log(trip, 'trip');
-      setState(prev => ({ 
-        ...prev, 
-        tripName: trip?.title || '' 
-      }));
-      setState(prev => ({
-        ...prev,
-        tripId: id
-      }))
-      togglePopup("deleteConfirm", true);
 
-    }else if (action === 'editTrip') {
-      navigate('/my-trips/edit', { state: { id: id } });
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "itinerary" }));
+        break;
+
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
+      case 'showTripDetails':
+        navigate('/my-trips/details', { state: { id: id } });
+        break;
+      case 'deleteTrip':
+        const trip = futureTrips.find(trip => trip.id === id) || pastTrips.find(trip => trip.id === id);
+        console.log(trip, 'trip');
+        setState(prev => ({
+          ...prev,
+          tripName: trip?.title || ''
+        }));
+        setState(prev => ({
+          ...prev,
+          tripId: id
+        }));
+        togglePopup("deleteConfirm", true);
+        break;
+      case 'editTrip':
+        navigate('/my-trips/edit', { state: { id: id } });
+        break;
+      default:
+        break;
     }
   };
 
-   const handleConfirmDelete = () => {
-      dispatch(deleteTrip())
-        .unwrap()
-        .then(() => {
-      
-        })
-        .catch((error) => {
-          
-        });
-    };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
+    }
+  };
+
+  const handleFavClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(toggleFavorite(id));
+      dispatch(setFavTogglingId(id));
+    } else {
+      togglePopup("alert", true);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteTrip())
+      .unwrap()
+      .then(() => {
+
+      })
+      .catch((error) => {
+
+      });
+  };
+
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
+
+    useEffect(() => {
+      if (isAddToPopupOpen || tripPopupState.addTripPopup) {
+        document.body.classList.add('overflowHide');
+      } else {
+        document.body.classList.remove('overflowHide');
+      }
+  
+      // Cleanup: Remove class when component unmounts
+      return () => {
+        document.body.classList.remove('overflowHide');
+      };
+    }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
 
   return (
     <>
+      {isOpen && popupState.alert && (
+        <Modal
+          onClose={() => togglePopup("alert", false)}
+          customClass="modalSmTypeOne"
+        >
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={alertTitle}
+            description={alertMessage}
+            buttonText={tCommon('authAlert.favorites.button')} />
+        </Modal>
+      )}
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
+        />
+      )}
+
+      {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
+        dispatch(closeAddToTrip());
+        dispatch(closePopup());
+        dispatch(resetTripType());
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
       {isOpen && popupState.deleteConfirm && (
         <Modal
           onClose={() => togglePopup("deleteConfirm", false)}
@@ -94,7 +217,8 @@ const MyTrips = () => {
           <ConfirmationPopup
             title={t('confirmationPopup.deleteTrip.title', { tripName: state.tripName })}
             description={t('confirmationPopup.deleteTrip.description', { tripName: state.tripName })}
-            onCancel={() => {togglePopup("deleteConfirm", false)
+            onCancel={() => {
+              togglePopup("deleteConfirm", false)
               setState(prev => ({
                 ...prev,
                 tripId: null
@@ -110,35 +234,35 @@ const MyTrips = () => {
         <main className={styles.mainContent}>
           <div className={styles.titleSection}>
             <h1 className={styles.pageTitle}>   {futureTripsLoading || pastTripsLoading ? (
-                <Skeleton width={200} />
-              ) : (
-                t('pageTitle')
-              )}
+              <Skeleton width={200} />
+            ) : (
+              t('pageTitle')
+            )}
             </h1>
             {futureTripsLoading || pastTripsLoading ? (
               <Skeleton width={120} height={40} />
             ) : (
-              <button className={styles.addTripButton}>{t('addTripButton')}</button>
+              <button className={styles.addTripButton} onClick={(e) => handleActions(e, 'addToTrip', null, 'new')}>{t('addTripButton')}</button>
             )}
           </div>
           <div className={styles.divider} />
           {/* {futureTrips?.length > 0 && ( */}
-            <TripList
-              title={t('futureTrips')}
-              trips={futureTrips}
-              isPast={false}
-              handleActions={handleActions}
-              isLoading={futureTripsLoading}
-            />
+          <TripList
+            title={t('futureTrips')}
+            trips={futureTrips}
+            isPast={false}
+            handleActions={handleActions}
+            isLoading={futureTripsLoading}
+          />
           {/* )} */}
           {/* {pastTrips?.length > 0 && ( */}
-            <TripList
-              title={t('pastTrips')}
-              trips={pastTrips}
-              isPast={true}
-              handleActions={handleActions}
-              isLoading={pastTripsLoading}
-            />
+          <TripList
+            title={t('pastTrips')}
+            trips={pastTrips}
+            isPast={true}
+            handleActions={handleActions}
+            isLoading={pastTripsLoading}
+          />
           {/* )} */}
         </main>
         <Footer />

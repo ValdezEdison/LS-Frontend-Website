@@ -119,32 +119,7 @@ const PlaceCard = forwardRef(
 
 
                     {/* Conditionally render the stops and views section */}
-                    {hasStopsOrTags && !hasComments && isItineraryPage && (
-                        <div className={styles.placeStopsTags}>
-                            {/* <p className={styles.placeItenary}>{translate("placeCard.itinerary")}</p> */}
-                            {/* <p className={styles.placeLocation}> {place?.cities[0]?.name}
-                       {place?.cities[0]?.country?.name && `, ${place.cities[0].country.name}`} </p> */}
-
-                            {(() => {
-                                const { city, country } = getLocationInfo(place);
-                                return (
-                                    <p className={styles.placeLocation}>
-                                        {city}
-                                        {country && `, ${country}`}
-                                    </p>
-                                );
-                            })()}
-                            {place?.tags?.length > 0 && (
-                            <div className={styles.placeTags}>
-                                {place.tags.map((tag) => (
-                                    <span key={tag.id} className={styles.tag}>
-                                        {tag.title}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                        </div>
-                    )}
+                    
 
                     {/* Conditionally render the rating section */}
                     {hasComments && (
