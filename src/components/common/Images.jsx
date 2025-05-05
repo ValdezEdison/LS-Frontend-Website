@@ -14,6 +14,7 @@ const Cap = "/images/cap.svg";
 const Card = "/images/card.png";
 const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
+const Close = "/images/close.png";
 const Down = "/images/down.svg";
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
@@ -68,7 +69,9 @@ const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
+const Warning = "/images/warning.svg";
 const Wifi = "/images/wifi.svg";
+
 
 
 
@@ -84,6 +87,7 @@ export {
     ArrowRight,
     ArrowRight1,
     Banner,
+    Close,
     Flag,
     Filter,
     CalendarIcon,
@@ -143,5 +147,6 @@ export {
     userAdd,
     Wifi,
     Star,
-    StarFill
+    StarFill,
+    Warning
 };

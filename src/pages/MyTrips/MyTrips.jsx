@@ -13,6 +13,7 @@ import { openPopup, closePopup } from "../../features/popup/PopupSlice"
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import Modal from "../../components/modal/Modal";
 import Skeleton from "react-loading-skeleton";
+import { Close, Warning } from "../../components/common/Images";
 
 const MyTrips = () => {
   const [state, setState] = useState({
@@ -106,6 +107,10 @@ const MyTrips = () => {
       )}
 
       <div className={styles.myTrips}>
+        <div className={styles.warningToaster}>
+          <div className={styles.warningToasterLeft}><img src={Warning}/>Se ha eliminado un viaje.</div>
+          <div className={styles.warningToasterRight}>  <span className={styles.undoButton}>Deshacer</span> <span className={styles.closeButton}><img src={Close}/></span></div>
+        </div>
         <Header />
         <main className={styles.mainContent}>
           <div className={styles.titleSection}>
