@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import SearchInput from "../common/SearchInput";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useTranslation } from "react-i18next";
 
 const ItineraryForm = ({
   tripDetails,
@@ -19,6 +20,8 @@ const ItineraryForm = ({
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
   const suggestionRef = useRef(null);
+
+  const { t } = useTranslation('MyTrips');
 
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
 
@@ -190,7 +193,7 @@ const ItineraryForm = ({
         <div className={styles.itineraryFormInputsWrapper}>
           <div className={styles.formGroup}>
             <label htmlFor="tripName" className={styles.label}>
-              Nombre del viaje
+            {t('travelItineraryEdit.form.tripNameLabel')}
             </label>
             <input
               type="text"
@@ -198,13 +201,13 @@ const ItineraryForm = ({
               className={styles.input}
               value={formState.tripName}
               onChange={handleTripNameChange}
-              placeholder="Nombre del viaje"
+              placeholder={t('travelItineraryEdit.form.tripNamePlaceholder')}
             />
           </div>
 
           <div className={`${styles.formGroup} ${styles.calendarFormGroup}`}>
             <label htmlFor="tripDates" className={styles.label}>
-              Fechas
+            {t('travelItineraryEdit.form.datesLabel')}
             </label>
             <div className={styles.dateInput}>
               <span className={styles.calendarIcon} />
@@ -213,7 +216,7 @@ const ItineraryForm = ({
                 startDate={startDate}
                 endDate={endDate}
                 onChange={handleDateChange}
-                placeholderText={''}
+                placeholderText={t('travelItineraryEdit.form.datesPlaceholder')}
                 className={styles.datePickerInput}
                 minDate={new Date()}
                 dateFormat="dd/MM/yyyy"
@@ -222,7 +225,7 @@ const ItineraryForm = ({
             </div>
           </div>
           <label htmlFor={`destination`} className={styles.label}>
-                Destino
+          {t('travelItineraryEdit.form.destinationLabel')}
               </label>
           {formState.destinations.map((destination, index) => (
             <div className={styles.formGroup} key={index}>
@@ -240,7 +243,7 @@ const ItineraryForm = ({
                   handleSearchClose={(e) => handleSearchClose(e, index)}
                   searchValue={destination.destinationSearchQuery}
                   suggestionsList={ cities }
-                  placeholder={''}
+                  placeholder={t('travelItineraryEdit.form.destinationPlaceholder')}
                   onSelect={(value) => handleSelectDestination(value, index)}
                   customClassName="destplacesSearchInputContainer"
                   selectedValue={destination.destinationId}
@@ -252,7 +255,7 @@ const ItineraryForm = ({
                     className={styles.deleteButton}
                     onClick={() => handleRemoveDestination(index)}
                   >
-                    Eliminar
+                   {/* {t('buttons.remove')} */}
                   </button>
                 )}
               </div>
@@ -262,10 +265,10 @@ const ItineraryForm = ({
 
         <div className={styles.formActions}>
           <button type="button" className={styles.cancelButton}>
-            Cancelar
+          {t('travelItineraryEdit.buttons.cancel')}
           </button>
           <button type="submit" className={styles.saveButton} onClick={handleSubmit}>
-            Guardar
+          {t('travelItineraryEdit.buttons.save')}
           </button>
         </div>
       </form>
@@ -275,7 +278,7 @@ const ItineraryForm = ({
         className={styles.addDestinationButton}
         onClick={handleAddDestination}
       >
-        Añadir destino
+        {t('travelItineraryEdit.buttons.addDestination')}
       </button>
     </>
   );

@@ -22,6 +22,9 @@ const MyTripsService = {
     updateStops: async (tripId, sites) => {
         return ApiService.patch('/travels/' + tripId + '/update_stops', { sites: sites });
     },
+    deleteTrip: async (tripId) => {
+        return ApiService.delete('/travels/' + tripId);
+    },
 
 };
 

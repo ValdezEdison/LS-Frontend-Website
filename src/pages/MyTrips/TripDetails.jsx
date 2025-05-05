@@ -12,6 +12,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import { resetTripDetails } from "../../features/myTrips/MyTripsSlice";
+import { useTranslation } from "react-i18next";
 
 const TripDetails = () => {
 
@@ -28,6 +29,8 @@ const TripDetails = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { t } = useTranslation('MyTrips');
 
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
@@ -77,7 +80,7 @@ const TripDetails = () => {
         {similarStopsLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={similarStops} title="Similar places" count={4} seeMore={false}/>
+              <Widget data={similarStops} title={t('tripDetails.similarPlaces')} count={4} seeMore={false}/>
             )}
       </main>
       <Footer />

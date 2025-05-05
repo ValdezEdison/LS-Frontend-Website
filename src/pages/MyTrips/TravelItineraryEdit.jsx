@@ -65,7 +65,7 @@ const TravelItineraryEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { t } = useTranslation('TravelItinerary');
+  const { t } = useTranslation('MyTrips');
 
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading: tripDetailsLoading, similarStopsLoading } = useSelector((state) => state.myTrips);
@@ -302,7 +302,7 @@ const TravelItineraryEdit = () => {
           </div>
         ) : (
           <div className={styles.dropdownWrapper} ref={tripTypeRef}>
-            <label>Tipo de viaje</label>
+            <label>{t('travelItineraryEdit.tripType.label')}</label>
             <div className={styles.dropdown}>
               <div className={styles.filterBlock}>
                 <div
@@ -310,7 +310,7 @@ const TravelItineraryEdit = () => {
                   onClick={() => setIsTripTypeDropdownOpen(!isTripTypeDropdownOpen)}
                 >
                   <div className={styles.filterHeaderContent}>
-                    <div className={styles.filterTitle}>{tripTypes[formState.tripType]}</div>
+                    <div className={styles.filterTitle}>{tripTypes[formState.tripType] || t('travelItineraryEdit.tripType.label')}</div>
                   </div>
                   <div className={styles.dropdownIcon}><img src={Down} /></div>
                 </div>
@@ -336,7 +336,7 @@ const TravelItineraryEdit = () => {
         <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} />
 
         {/* <SuggestedStops /> */}
-        <h2 className={styles.sectionTitle}>Añade más paradas a tu itinerario</h2>
+        <h2 className={styles.sectionTitle}>{t('travelItineraryEdit.addMoreStops')}</h2>
         <div className={styles.eventGrid}>
           {stopsLoading ? (
             Array.from({ length: 4 }).map((_, index) => (
@@ -362,7 +362,7 @@ const TravelItineraryEdit = () => {
         {similarStopsLoading ? (
           <WidgetSkeleton />
         ) : (
-          <Widget data={similarStops} title="Similar places" count={4} seeMore={false} />
+          <Widget data={similarStops} title={t('travelItineraryEdit.similarPlaces')}  count={4} seeMore={false} />
         )}
       </main>
       <Footer />
