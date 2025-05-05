@@ -83,5 +83,10 @@
             "destinationLabel": "Destination",
             "destinationPlaceholder": "Search destination"
           }
+      },
+      "toast": {
+        "tripDeleted": "A trip has been deleted.",
+        "undo": "Undo",
+        "close": "Close"
       }
 }

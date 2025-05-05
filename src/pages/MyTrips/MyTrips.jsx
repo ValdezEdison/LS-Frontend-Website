@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, act } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import TripList from "../../components/TravelComponents/TripList";
@@ -35,7 +35,10 @@ const MyTrips = () => {
     comment: false,
     deleteConfirm: false,
     success: false,
+    warning: false
   });
+
+  const deleteTimerRef = useRef(null);
 
   // Add trip functionality
   const {
@@ -151,15 +154,55 @@ const MyTrips = () => {
   };
 
   const handleConfirmDelete = () => {
-    dispatch(deleteTrip())
-      .unwrap()
-      .then(() => {
+    togglePopup("deleteConfirm", false);
+    togglePopup("warning", true);
 
-      })
-      .catch((error) => {
-
-      });
+    deleteTimerRef.current = setTimeout(() => {
+      dispatch(deleteTrip(state.tripId))
+        .unwrap()
+        .then(() => {
+          togglePopup("warning", false);
+          // Refresh trips list
+          dispatch(fetchMyFutureTrips(state.page));
+          dispatch(fetchMyPastTrips(state.page));
+        })
+        .catch((error) => {
+          console.error("Failed to delete trip:", error);
+          togglePopup("warning", false);
+        });
+    }, 5000);
   };
+
+
+  const handleUndoDelete = () => {
+    // Clear the timer if undo is clicked
+    clearTimeout(deleteTimerRef.current);
+    togglePopup("warning", false);
+    setState(prev => ({
+      ...prev,
+      tripId: null
+    }));
+  };
+
+  const handleCloseToaster = () => {
+    // Clear the timer if user closes the toaster
+    clearTimeout(deleteTimerRef.current);
+    togglePopup("warning", false);
+    setState(prev => ({
+      ...prev,
+      tripId: null
+    }));
+  };
+
+  // Clean up the timer when component unmounts
+  useEffect(() => {
+    return () => {
+      if (deleteTimerRef.current) {
+        clearTimeout(deleteTimerRef.current);
+      }
+    };
+  }, []);
+
 
   const modalSearchProps = {
     activeDestinationIndex,
@@ -169,18 +212,18 @@ const MyTrips = () => {
     updateDestination
   };
 
-    useEffect(() => {
-      if (isAddToPopupOpen || tripPopupState.addTripPopup) {
-        document.body.classList.add('overflowHide');
-      } else {
-        document.body.classList.remove('overflowHide');
-      }
-  
-      // Cleanup: Remove class when component unmounts
-      return () => {
-        document.body.classList.remove('overflowHide');
-      };
-    }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
+  useEffect(() => {
+    if (isAddToPopupOpen || tripPopupState.addTripPopup) {
+      document.body.classList.add('overflowHide');
+    } else {
+      document.body.classList.remove('overflowHide');
+    }
+
+    // Cleanup: Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('overflowHide');
+    };
+  }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
 
   return (
     <>
@@ -231,10 +274,13 @@ const MyTrips = () => {
       )}
 
       <div className={styles.myTrips}>
-        <div className={styles.warningToaster}>
-          <div className={styles.warningToasterLeft}><img src={Warning}/>Se ha eliminado un viaje.</div>
-          <div className={styles.warningToasterRight}>  <span className={styles.undoButton}>Deshacer</span> <span className={styles.closeButton}><img src={Close}/></span></div>
-        </div>
+        {isOpen && popupState.warning && (
+          <div className={styles.warningToaster}>
+            <div className={styles.warningToasterLeft}><img src={Warning} alt={t('myTrips.toast.warning')}/> {t('myTrips.toast.tripDeleted')}</div>
+            <div className={styles.warningToasterRight}>  <span className={styles.undoButton} onClick={handleUndoDelete}>{t('myTrips.toast.undo')}</span> <span className={styles.closeButton} onClick={handleCloseToaster}><img src={Close} alt={t('myTrips.toast.close')}/></span></div>
+          </div>
+        )}
+
         <Header />
         <main className={styles.mainContent}>
           <div className={styles.titleSection}>

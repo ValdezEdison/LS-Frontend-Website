@@ -205,7 +205,9 @@ const TravelItineraryEdit = () => {
       // stops: formState.sites,
     };
 
-    dispatch(updateTrip({ tripId: id, tripData: tripData }));
+    dispatch(updateTrip({ tripId: id, tripData: tripData })).then(() => {
+      
+    });
     if (hasStopsChangedRef.current) {
       dispatch(updateStops({ tripId: id, sites: formState.sites }));
       hasStopsChangedRef.current = false; // Reset change flag
