@@ -57,6 +57,7 @@ const PlaceHolderImg3 = "/images/placeholder3.jpg"
 const PlaceHolderImg4 = "/images/placeholder4.jpg"
 const PhoneMockup = "/images/Phone Mockup.png";
 const Profilecircle = "/images/profile-circle.svg";
+const ProfilePlaceholder = "/images/profile-placeholder.png";
 const Rectangle = "/images/rectangle-19290@2x.png";
 const SearchBlack = "/images/search-black-24dp-1.svg";
 const Search = "/images/search.svg";
@@ -135,6 +136,7 @@ export {
     PlaceHolderImg2,
     PlaceHolderImg3,
     PlaceHolderImg4,
+    ProfilePlaceholder,
     PhoneMockup,
     Profilecircle,
     Rectangle,

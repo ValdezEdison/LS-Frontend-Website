@@ -1,41 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PersonalDetails.module.css";
+import { ProfilePlaceholder } from "../common/Images";
 
-const PersonalDetails = () => {
+const PersonalDetails = ({ user }) => {
+  const [editingField, setEditingField] = useState(null);
+  const [editedValue, setEditedValue] = useState("");
+  
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not provided";
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const handleEditClick = (label, currentValue) => {
+    setEditingField(label);
+    setEditedValue(currentValue);
+  };
+
+  const handleSave = () => {
+    // Here you would typically make an API call to save the changes
+    console.log(`Saving ${editingField}: ${editedValue}`);
+    setEditingField(null);
+  };
+
+  const handleCancel = () => {
+    setEditingField(null);
+  };
+
+  const handleInputChange = (e) => {
+    setEditedValue(e.target.value);
+  };
+
   const details = [
-    { label: "Tipo de perfil", value: "Viajero", action: "Información" },
-    { label: "Nombre", value: "Pablo Perez", action: "Editar" },
+    { 
+      label: "Profile Type", 
+      value: user.current_trip.type || "Not provided", 
+      action: "Info" 
+    },
+    { 
+      label: "Name", 
+      value: `${user.first_name} ${user.last_name}` || "Not provided", 
+      action: "Edit" 
+    },
     {
-      label: "Dirección de email",
-      value: "pablop@gmail.com",
-      action: "Editar",
+      label: "Email Address",
+      value: user.email || "Not provided",
+      action: "Edit",
       verified: true,
     },
-    { label: "Número de teléfono", value: "+34 123 456 789", action: "Editar" },
-    {
-      label: "Fecha de nacimiento",
-      value: "Introduce tu fecha de nacimiento",
-      action: "Editar",
+    { 
+      label: "Phone Number", 
+      value: user.phone ? `+${user.phone_prefix} ${user.phone}` : "Not provided", 
+      action: "Edit" 
     },
     {
-      label: "Nacionalidad",
-      value: "Selecciona el país/región de nacimiento",
-      action: "Editar",
+      label: "Member Since",
+      value: formatDate(user.date_joined),
+      action: "Info"
     },
-    { label: "Dirección", value: "Introduce tu dirección", action: "Editar" },
+    {
+      label: "Current Trip",
+      value: user.current_trip ? user.current_trip.title : "Not traveling now",
+      action: "View"
+    },
+    {
+      label: "Past Travels",
+      value: user.num_of_past_travels || "0",
+      action: "View"
+    },
   ];
 
   return (
     <div className={styles.personalDetails}>
       <div className={styles.header}>
         <div>
-          <h2 className={styles.title}>Detalles personales</h2>
+          <h2 className={styles.title}>Personal Details</h2>
           <p className={styles.subtitle}>
-            Actualiza tu información personal editando el perfil
+            Update your personal information by editing the profile
           </p>
         </div>
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/35c1ae669b6a59673cc682ded7cdd6d74bbdca31?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+          src={user.profile_picture?.fullsize || ProfilePlaceholder}
           alt="Profile"
           className={styles.profileImage}
         />
@@ -47,28 +92,57 @@ const PersonalDetails = () => {
               <span className={styles.label}>{detail.label}</span>
               <div className={styles.valueRow}>
                 <div className={styles.valueRowTop}>
-                  <span className={styles.value}>{detail.value}</span>
-                  {detail.verified && (
-                    <span className={styles.verifiedBadge}>Verificado</span>
+                  {editingField === detail.label ? (
+                    <input
+                      type="text"
+                      value={editedValue}
+                      onChange={handleInputChange}
+                      className={styles.editInput}
+                    />
+                  ) : (
+                    <span className={styles.value}>{detail.value}</span>
+                  )}
+                  {detail.verified && !editingField && (
+                    <span className={styles.verifiedBadge}>Verified</span>
                   )}
                 </div>
                 <div className={styles.valueRowBottom}>
-                  {detail.verified && (
+                  {detail.verified && !editingField && (
                     <p className={styles.emailNote}>
-                      Esta dirección de email es la que has utilizado para iniciar sesión y
-                      a la que se envían todas las notificaciones
+                      This email address is used for login and receiving all notifications
                     </p>
                   )}
                 </div>
               </div>
-             
             </div>
-            <button className={styles.actionButton}>{detail.action}</button>
+            {editingField === detail.label ? (
+              <div className={styles.editActions}>
+                <button 
+                  className={`${styles.actionButton} ${styles.saveButton}`}
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+                <button 
+                  className={`${styles.actionButton} ${styles.cancelButton}`}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button 
+                className={styles.actionButton}
+                onClick={() => handleEditClick(detail.label, detail.value)}
+                disabled={detail.action === "Info" || detail.action === "View"}
+              >
+                {detail.action}
+              </button>
+            )}
           </div>
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}
-     
     </div>
   );
 };

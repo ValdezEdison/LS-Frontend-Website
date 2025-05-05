@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/ProfileSection/Sidebar";
 import PersonalDetails from "../../components/ProfileSection/PersonalDetails";
@@ -9,10 +9,22 @@ import PreferencesForm from "../../components/ProfileSection/PreferencesForm";
 import SecurityContent from "../../components/ProfileSection/SecurityContent";
 import NotificationForm from "../../components/ProfileSection/NotificationForm";
 import PrivacyContent from "../../components/ProfileSection/PrivacyContent";
+import { getProfile } from "../../features/authentication/AuthActions";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const ProfilePage = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+
+  console.log( user, 'profile');
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
 
   const handleTabChange = (newTab) => {
     navigate(`/profile/${newTab}`);
@@ -21,9 +33,9 @@ const ProfilePage = () => {
   const renderContent = () => {
     switch (tab) {
       case "personal":
-        return <PersonalDetails />;
+        return <PersonalDetails user={user}/>;
       case "preferences":
-        return <PreferencesForm />;
+        return <PreferencesForm user={user}/>;
       case "security":
         return <SecurityContent />;
       case "privacy":
