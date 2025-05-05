@@ -79,7 +79,7 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
 
         setMapLoaded(true);
       } catch (error) {
-        console.error("Failed to load Google Maps:", error);
+        
         setMapError(true);
       }
     };
@@ -188,7 +188,7 @@ const ItineraryMap = ({ places, formState, setFormState }) => {
           }
         }
       } catch (error) {
-        console.error("Error updating markers:", error);
+        
       }
     };
 

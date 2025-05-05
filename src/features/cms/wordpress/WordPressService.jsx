@@ -61,7 +61,7 @@ const WordPressService = {
         }
       };
     } catch (error) {
-      console.error('WordPress API Error:', error);
+      
       throw new Error(
         error.response?.data?.message || 
         'Failed to fetch posts from WordPress'

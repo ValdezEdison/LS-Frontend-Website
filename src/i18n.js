@@ -8,11 +8,12 @@ i18n
   .use(LanguageDetector) // Detect user language
   .use(initReactI18next) // Pass i18n instance to react-i18next
   .init({
-    fallbackLng: 'en-US', // Default language
+    fallbackLng: 'en', // Default language
     debug: true, // Enable debug mode in development
     interpolation: {
       escapeValue: false, // React already escapes values
     },
+    defaultNS: 'Common',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json', // Path to your translation files
     },

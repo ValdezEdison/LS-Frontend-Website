@@ -1,0 +1,92 @@
+{
+  "pageTitle": "My Trips",
+  "addTripButton": "Add trip",
+  "futureTrips": "Upcoming trips",
+  "pastTrips": "Past trips",
+  "tripActions": {
+    "showDetails": "View details"
+  },
+  "tripCard": {
+    "defaultTitle": "Trip",
+    "sitesAdded": "{{count}} sites added",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "dateFormat": "MMMM d, yyyy",
+    "dateFormatNoYear": "MMMM d",
+    "dateRangeFormatSameYear": "{{startDate}} to {{endDate}}",
+    "dateRangeFormatDifferentYear": "{{startDate}} to {{endDate}}"
+  },
+  "tripInfo": {
+    "dateFormat": {
+      "day": "numeric",
+      "month": "short",
+      "year": "numeric"
+    },
+    "dateRange": "From {{startDate}} to {{endDate}}",
+    "noDates": "No dates specified",
+    "ariaLabels": {
+      "editTrip": "Edit trip",
+      "shareTrip": "Share trip",
+      "moreOptions": "More options"
+    }
+  },
+  "confirmationPopup": {
+    "deleteTrip": {
+      "title": "Are you sure you want to delete '{{tripName}}'?",
+      "description": "You're about to permanently delete '{{tripName}}' from your list."
+    }
+  },
+  "tripDetails": {
+    "similarPlaces": "Similar places",
+    "noStops": "No stops added yet",
+    "stopsCount": "{{count}} stops",
+    "tripType": {
+      "roadTrip": "Road trip",
+      "cityBreak": "City break",
+      "beachHoliday": "Beach vacation",
+      "adventure": "Adventure",
+      "cultural": "Cultural"
+    }
+  },
+  "travelItineraryEdit": {
+    "pageTitle": "Edit Trip",
+    "addMoreStops": "Add more stops to your itinerary",
+    "tripType": {
+      "label": "Trip type",
+      "familiar": "Family",
+      "couple": "Couple",
+      "friends": "Friends",
+      "solo": "Solo",
+      "business": "Business"
+    },
+    "buttons": {
+      "viewMore": "View more",
+      "addToTrip": "Add to trip",
+      "saveChanges": "Save changes",
+      "remove": "Remove",
+      "cancel": "Cancel",
+      "save": "Save",
+      "addDestination": "Add destination"
+    },
+    "eventCard": {
+      "dateNotAvailable": "Date not available",
+      "categoryNotAvailable": "Category not available",
+      "locationNotAvailable": "Location not available",
+      "addToFavorites": "Add to favorites"
+    },
+    "similarPlaces": "Similar places",
+    "form": {
+      "tripNameLabel": "Trip name",
+      "tripNamePlaceholder": "Enter trip name",
+      "datesLabel": "Dates",
+      "datesPlaceholder": "Select dates",
+      "destinationLabel": "Destination",
+      "destinationPlaceholder": "Search destination"
+    }
+  },
+  "toast": {
+    "tripDeleted": "A trip has been deleted.",
+    "undo": "Undo",
+    "close": "Close"
+  }
+}

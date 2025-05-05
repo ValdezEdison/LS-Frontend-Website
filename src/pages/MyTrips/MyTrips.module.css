@@ -37,7 +37,7 @@
   background-color: #f4c031;
   border: none;
   border-radius: 12px;
-  padding: 15px 16px;
+  padding: 10px 34px;
   font-size: 15px;
   color: #151820;
   font-weight: 600;
@@ -55,9 +55,53 @@
   margin-bottom: 20px;
 }
 
+.warningToaster{
+  padding: 16px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: #FFECEB;
+  color: #151820;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  z-index: 9;
+}
+
+.warningToasterLeft,.warningToasterRight{
+  display: flex;
+  align-items: center;
+  gap:8px
+}
+
+.undoButton{
+  font-weight: 600;
+}
+
+.closeButton img{
+  display: block;
+  position: relative;
+  top: 2px;
+}
+
+.closeButton,.undoButton{
+  cursor: pointer;
+}
 @media (max-width: 991px) {
   .titleSection {
     gap: 20px;
   }
 
+}
+
+@media (max-width: 480px) {
+  .warningToaster{
+    padding: 12px;
+    font-size: 14px;
+    right: 10px;
+    gap: 30px;
+  }
 }

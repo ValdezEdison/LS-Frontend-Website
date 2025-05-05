@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import DestinationGrid from "../../components/exoplore/DestinationGrid";
@@ -16,6 +16,7 @@ import useSeeMore from "../../hooks/useSeeMore";
 import { useTranslation } from 'react-i18next';
 import Loader from "../../components/common/Loader";
 import { listUpdater } from "../../features/explore/ExploreSlice";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const ExplorePage = () => {
   const dispatch = useDispatch();
@@ -32,10 +33,11 @@ const ExplorePage = () => {
   
   // Set default continent to the first one when loaded
   const [activeContinent, setActiveContinent] = useState(null);
+   const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     dispatch(fetchContinents());
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   // Set initial active continent when continents load
   useEffect(() => {
@@ -50,7 +52,7 @@ const ExplorePage = () => {
     if (activeContinent?.id) {
       dispatch(fetchCitiesInContinent( {continentId: activeContinent.id, page: 1} ));
     }
-  }, [dispatch, activeContinent]);
+  }, [dispatch, activeContinent, language]);
 
   const handleContinentClick = (continent) => {
     setActiveContinent(continent);

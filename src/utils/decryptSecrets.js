@@ -6,7 +6,7 @@ const ENCRYPTION_KEY_NAME = 'encryptedSecretKey';
 const SECRET_KEY = localStorage.getItem(ENCRYPTION_KEY_NAME);
 
 if (!SECRET_KEY) {
-  console.error('Missing decryption key in localStorage');
+  
   // throw new Error('Decryption key missing');
 }
 
@@ -19,7 +19,7 @@ const decryptSecrets = () => {
   try {
     const encrypted = import.meta.env.VITE_ENCRYPTED_SECRETS;
     if (!encrypted) throw new Error('No encrypted secrets found');
-    console.log('SECRET_KEY', SECRET_KEY)
+    
     const bytes = CryptoJS.AES.decrypt(encrypted, SECRET_KEY);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     if (!decrypted) throw new Error('Decryption failed - check your key');
@@ -27,7 +27,7 @@ const decryptSecrets = () => {
     cachedSecrets = JSON.parse(decrypted);
     return cachedSecrets;
   } catch (error) {
-    console.error('Secrets decryption failed:', error);
+    
     return {};
   }
 };

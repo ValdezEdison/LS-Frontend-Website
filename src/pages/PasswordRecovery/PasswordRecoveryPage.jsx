@@ -119,7 +119,7 @@ function PasswordRecoveryPage() {
 
     dispatch(forgotPassword(formData.email))
     .then((response) => {
-      console.log(response);
+      
       if (response.error) {
         // Handle cases where the API returns error in success response
         toast.error(response.error_description || t('passwordRecovery.toast.error'));

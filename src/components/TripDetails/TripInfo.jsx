@@ -1,13 +1,63 @@
 import React from "react";
 import styles from "./TripDetails.module.css";
+import { useTranslation } from "react-i18next";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-const TripInfo = ({ handleActions, id, tripDetails }) => {
+const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
+
+  const { t } = useTranslation('MyTrips');
   // Format dates to display
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+    try {
+      return new Date(dateString).toLocaleDateString(
+        i18n.language,
+        t('tripInfo.dateFormat', { returnObjects: true })
+      );
+    } catch {
+      return dateString;
+    }
   };
+
+
+  if (loading) {
+    return (
+      <div className={styles.tripHeader}>
+        <div className={styles.tripInfo}>
+          {/* Trip Title Skeleton */}
+          <Skeleton 
+            width={200} 
+            height={32} 
+            style={{ marginBottom: '8px' }} 
+          />
+          
+          {/* Trip Dates Skeleton */}
+          <Skeleton 
+            width={180} 
+            height={20} 
+          />
+        </div>
+        
+        <div className={styles.tripActions}>
+          {/* Edit Button Skeleton */}
+          <Skeleton 
+            circle={true}
+            width={40} 
+            height={40} 
+            style={{ marginRight: '8px' }}
+          />
+          
+          {/* Share Button Skeleton */}
+          <Skeleton 
+            circle={true}
+            width={40} 
+            height={40} 
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.tripHeader}>
@@ -15,23 +65,27 @@ const TripInfo = ({ handleActions, id, tripDetails }) => {
         <h1 className={styles.tripTitle}>{tripDetails?.title || ''}</h1>
         <p className={styles.tripDates}>
           {tripDetails?.initial_date && tripDetails?.end_date ? (
-            `Desde ${formatDate(tripDetails.initial_date)} hasta el ${formatDate(tripDetails.end_date)}`
+            t('tripInfo.dateRange', {
+              startDate: formatDate(tripDetails.initial_date),
+              endDate: formatDate(tripDetails.end_date)
+            })
           ) : (
-            'No dates specified'
+            t('tripInfo.noDates')
           )}
         </p>
       </div>
       <div className={styles.tripActions}>
         <button 
           className={`${styles.actionButton} ${styles.editButton}`} 
-          aria-label="Edit trip" 
+          aria-label={t('tripInfo.ariaLabels.editTrip')}
           onClick={(e) => handleActions(e, 'editTrip', id)}
         >
           
         </button>
         <button 
           className={`${styles.actionButton} ${styles.shareButton}`} 
-          aria-label="More options"
+          aria-label={t('tripInfo.ariaLabels.shareTrip')}
+          onClick={(e) => handleActions(e, 'shareTrip', id)}
         >
           
         </button>

@@ -1,13 +1,13 @@
 import { useTripsTypes } from "../../constants/TripTypeList";
 const TripTypeList = ({styles, updateState, state, storedTripType}) => {
     const tripsTypes = useTripsTypes();
-    console.log(useTripsTypes, 'getTripsTypes')
+    
     
     return (
         <div className={styles.tripList}>
             {Object.entries(tripsTypes).map(([key, displayName]) => (
                 <>
-                {/* {console.log(displayName, 'displayName')} */}
+                {/* {} */}
                 <div key={key} className={styles.tripItem}>
                     <div className={styles.tripName}>{displayName}</div>
                     <label className="radioContainer">

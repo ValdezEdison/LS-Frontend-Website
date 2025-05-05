@@ -201,7 +201,7 @@ const EventDetails = () => {
     if (place?.url) {
       window.open(place.url, "_blank"); // Open the external URL in a new tab
     } else {
-      console.error("No website URL provided for this place.");
+      
     }
   };
 
@@ -286,7 +286,7 @@ const EventDetails = () => {
   //         dispatch(fetchPlaceComments(id)); // Refresh comments
   //       })
   //       .catch((error) => {
-  //         console.error("Failed to submit comment:", error);
+  //         
   //       });
   //   }
   // };
@@ -313,7 +313,7 @@ const EventDetails = () => {
         setCommentToDelete(null);
       })
       .catch((error) => {
-        console.error("Failed to delete comment:", error);
+        
       });
   };
 
@@ -403,6 +403,7 @@ const EventDetails = () => {
     }));
 
     if (validateCommentForm()) {
+      togglePopup("comment", false);
       const action = isEditing
         ? dispatch(editComment({
           commentId: editingCommentId,
@@ -448,7 +449,7 @@ const EventDetails = () => {
           dispatch(fetchPlaceComments(id));
         })
         .catch((error) => {
-          console.error("Failed to submit comment:", error);
+          
           togglePopup("comment", false);
           setCommentForm({
             text: "",

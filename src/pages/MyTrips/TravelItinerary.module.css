@@ -3,12 +3,6 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #fff;
-  font-family:
-    Source Sans Pro,
-    -apple-system,
-    Roboto,
-    Helvetica,
-    sans-serif;
 }
 
 .mainContent {
@@ -82,12 +76,12 @@
   object-position: center;
   width: 16px;
   /* margin-top: 8px; */
-  transform: rotate(180deg);
+  transform: rotate(0deg);
   transition: transform 0.3s ease-in-out;
 }
 
 .filterHeader.open .dropdownIcon {
-  transform: rotate(0deg);
+  transform: rotate(180deg);
 }
 
 .filterContent {
@@ -187,8 +181,39 @@
   text-align: center;
 }
 
+.dropdownWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.dropdownWrapper label{
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20px;
+  /* text-align: center; */
+}
+
 @media (max-width: 991px) {
   .mainContent {
     padding: 20px;
+  }
+
+  .eventGrid {
+    grid-template-columns: 1fr;
   }
 }

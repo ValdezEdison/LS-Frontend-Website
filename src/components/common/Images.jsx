@@ -14,6 +14,8 @@ const Cap = "/images/cap.svg";
 const Card = "/images/card.png";
 const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
+const Close = "/images/close.png";
+const Down = "/images/down.svg";
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
 const Filter = "/images/filter.svg";
@@ -47,6 +49,7 @@ const MarkerYellow = "/images/marker-yellow.svg";
 const Notch = "/images/notch@2x.png";
 const Notification = "/images/notification.png";
 const Oceana = "/images/oceana@2x.png";
+const People = "/images/people.svg";
 const PlaceFilter = "/images/places-filter.jpg";
 const PlaceHolderImg1 = "/images/placeholder1.jpg";
 const PlaceHolderImg2 = "/images/placeholder2.jpg"
@@ -66,7 +69,9 @@ const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
+const Warning = "/images/warning.svg";
 const Wifi = "/images/wifi.svg";
+
 
 
 
@@ -82,6 +87,7 @@ export {
     ArrowRight,
     ArrowRight1,
     Banner,
+    Close,
     Flag,
     Filter,
     CalendarIcon,
@@ -89,6 +95,7 @@ export {
     Card,
     CellularConnection,
     Delete,
+    Down,
     FacebookWhite,
     QR,
     Favorite,
@@ -122,6 +129,7 @@ export {
     Notch,
     Notification,
     Oceana,
+    People,
     PlaceFilter,
     PlaceHolderImg1,
     PlaceHolderImg2,
@@ -139,5 +147,6 @@ export {
     userAdd,
     Wifi,
     Star,
-    StarFill
+    StarFill,
+    Warning
 };

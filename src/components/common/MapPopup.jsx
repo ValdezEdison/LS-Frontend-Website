@@ -119,7 +119,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
 
     useEffect(() => {
         window.gm_authFailure = () => {
-            console.error("Google Maps authentication failed. Please check your API key and restrictions.");
+            
             setIsMapLoaded(false);
         };
     
@@ -232,7 +232,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                 new MarkerClusterer({ map: mapInstance, markers: newMarkers });
             }
         }).catch((error) => {
-            console.error("Failed to load the map:", error);
+            
             setIsMapLoaded(false);
         });
     

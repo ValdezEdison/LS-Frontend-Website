@@ -61,7 +61,7 @@ export const isTokenExpired = () => {
   // Handle API errors
 export const handleApiError = (error) => {
   if (error.response) {
-    console.log(error.response, "error response");
+    
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     return {

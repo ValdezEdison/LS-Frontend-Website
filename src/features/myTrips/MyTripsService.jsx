@@ -15,7 +15,20 @@ const MyTripsService = {
     },
     getTravelTime: async ({ travelId, mode }) => {
         return ApiService.get('/travels/' + travelId + '/directions?mode=' + mode);
-    }
+    },
+    updateTrip: async (tripId, tripData) => {
+        return ApiService.patch('/travels/' + tripId, tripData);
+    },
+    updateStops: async (tripId, sites) => {
+        return ApiService.patch('/travels/' + tripId + '/update_stops', { sites: sites });
+    },
+    deleteTrip: async (tripId) => {
+        return ApiService.delete('/travels/' + tripId);
+    },
+    updateCities: async (tripId, cities) => {
+        return ApiService.patch('/travels/' + tripId + '/update_cities', { cities: cities });
+    },
+
 };
 
 export default MyTripsService;

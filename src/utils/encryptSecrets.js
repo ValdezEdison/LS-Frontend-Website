@@ -14,7 +14,7 @@ const localStorage = new LocalStorage('./scratch');
 // Set the key first (or load it if it exists)
 const ENCRYPTION_KEY_NAME = 'encryptedSecretKey';
 if (!localStorage.getItem(ENCRYPTION_KEY_NAME)) {
-  console.log('No key found, generating a new one');
+  
   // Generate a key if it doesn't exist
   const newKey = CryptoJS.lib.WordArray.random(32).toString();
   localStorage.setItem(ENCRYPTION_KEY_NAME, newKey);
@@ -23,7 +23,7 @@ if (!localStorage.getItem(ENCRYPTION_KEY_NAME)) {
 // Now get the key
 const VITE_SECRET_KEY = localStorage.getItem(ENCRYPTION_KEY_NAME);
 
-console.log(VITE_SECRET_KEY, 'VITE_SECRET_KEY')
+
 
 // 3. Encrypt the entire object
 const encrypted = CryptoJS.AES.encrypt(JSON.stringify(secrets), VITE_SECRET_KEY).toString();
@@ -43,4 +43,3 @@ const envContent = `VITE_ENCRYPTED_SECRETS=${encrypted}\n` +
                    `VITE_APP_NAME=dev\n`;
 
 fs.writeFileSync(path.join(process.cwd(), '.env.development'), envContent);
-console.log('Encrypted .env.development file created!');

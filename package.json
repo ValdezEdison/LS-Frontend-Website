@@ -13,6 +13,8 @@
     "encrypt-secrets": "node ./src/utils/encryptSecrets.js"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
     "@greatsumini/react-facebook-login": "^3.4.0",
     "@react-google-maps/api": "^2.20.6",
     "@react-oauth/google": "^0.12.1",
@@ -46,6 +48,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^1.3.2",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "env-cmd": "^10.1.0",
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.2",

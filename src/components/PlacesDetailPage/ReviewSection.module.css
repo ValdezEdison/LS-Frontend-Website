@@ -114,7 +114,7 @@
 .reviewerNameDetails{
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 14px;
 }
 
 .stars img{

@@ -276,7 +276,7 @@ const TravelerRegistration = () => {
         toast.error(error);
       }
     } catch (err) {
-      console.error("Registration error:", err);
+      
       toast.error(err.message || t('messages.error'));
     }
   };
@@ -346,11 +346,11 @@ const TravelerRegistration = () => {
         }
       } catch (error) {
         toast.error(error.message || t('messages.error'));
-        console.error("Social login error:", error);
+        
       }
     };
 
-console.log(formData, 'formData')
+
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
       <Header />
