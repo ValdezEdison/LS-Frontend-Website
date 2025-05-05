@@ -85,8 +85,8 @@ const TripCard = ({ trip, isPast, handleActions }) => {
       {/* {!isPast && ( */}
         <div className={styles.tripActions}>
           <div className={styles.tripActionsDropdown}>
-            <div className={styles.editButton}>{t('tripCard.editButton')}</div>
-            <div className={styles.deleteButton}>{t('tripCard.deleteButton')}</div>
+            <div className={styles.editButton} onClick={(e) => handleActions(e, 'editTrip', trip.id)}>{t('tripCard.editButton')}</div>
+            <div className={styles.deleteButton} onClick={(e) => handleActions(e, 'deleteTrip', trip.id)}>{t('tripCard.deleteButton')}</div>
           </div>
         </div>
         {/* )} */}

@@ -86,3 +86,15 @@ export const updateStops = createAsyncThunk(
         }
     }
 );
+
+export const deleteTrip = createAsyncThunk(
+    "myTrips/deleteTrip",
+    async (tripId, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.deleteTrip(tripId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

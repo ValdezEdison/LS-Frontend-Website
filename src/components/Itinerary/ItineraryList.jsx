@@ -4,6 +4,7 @@ import styles from "./ItineraryList.module.css";
 import PlaceCard from "../../components/common/PlaceCard";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import CardSkeleton from "../skeleton/common/CardSkeleton";
 
 const itineraries = [
   {
@@ -66,13 +67,19 @@ const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActio
         {/* <span className={styles.tag}>#Patrimonio histórico</span> */}
       </div>
       <div className={styles.ItineraryPlaceCards}>
-      {visibleItineraries?.length > 0 ? (
+      {loading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <CardSkeleton key={index} />
+            ))
+          ) : (
+      visibleItineraries?.length > 0 ? (
           visibleItineraries?.map((place, index) => (
             <PlaceCard key={index} place={place} translate={t} isAuthenticated={isAuthenticated} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} isFavoriteToggling={isFavoriteToggling && favTogglingId === place.id} />
           ))
         ) : (
           <div className="no-results-wrapper">{tCommon('noResults')}</div>
-        )}
+        )
+      )}
       {/* <button className={styles.showMoreButton}>Mostrar más</button> */}
       </div>
     </section>

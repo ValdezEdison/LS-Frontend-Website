@@ -266,13 +266,9 @@ const ItineraryPage = () => {
           {/* <h1 className={styles.eventCount}>{"1.240"} itinerarios disponibles</h1> */}
           <SearchBar state={state} setState={setState} cities={cities} count={count} />
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
-          {itinerariesLoading ? (
-            Array.from({ length: 5 }).map((_, index) => (
-              <CardSkeleton key={index} />
-            ))
-          ) : (
+        
             <ItineraryList visibleItineraries={visibleItineraries} handleViewMoreDetails={handleViewMoreDetails} handleActions={handleActions} />
-          )}
+          
 
           {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
             onClick={loadMore}

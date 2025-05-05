@@ -11,12 +11,15 @@ import ItineraryCard from "../PlacesInfo/Itineries/ItineraryCard";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CardSkeleton from "../skeleton/common/CardSkeleton";
+import { useTranslation } from "react-i18next";
 
 const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
 
 
   const [items, setItems] = useState(tripDetails?.stops || []);
   const { loading: tripDetailsLoading } = useSelector((state) => state.myTrips);
+
+  const { t } = useTranslation('MyTrips');
 
 
 
@@ -78,7 +81,8 @@ console.log(tripDetails, "tripDetails");
       </div>
 
       <h2 className={styles.tripSummary}>
-        {items.length > 0 ? `${items.length} paradas` : "No stops added yet"}
+        {items.length > 0 ?  t('tripDetails.stopsCount', { count: items.length }) 
+          : t('tripDetails.noStops')}
       </h2>
 
       <DndContext
