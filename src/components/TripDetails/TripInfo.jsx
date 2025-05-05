@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./TripDetails.module.css";
 import { useTranslation } from "react-i18next";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-const TripInfo = ({ handleActions, id, tripDetails }) => {
+const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
 
   const { t } = useTranslation('MyTrips');
   // Format dates to display
@@ -17,6 +19,45 @@ const TripInfo = ({ handleActions, id, tripDetails }) => {
       return dateString;
     }
   };
+
+
+  if (loading) {
+    return (
+      <div className={styles.tripHeader}>
+        <div className={styles.tripInfo}>
+          {/* Trip Title Skeleton */}
+          <Skeleton 
+            width={200} 
+            height={32} 
+            style={{ marginBottom: '8px' }} 
+          />
+          
+          {/* Trip Dates Skeleton */}
+          <Skeleton 
+            width={180} 
+            height={20} 
+          />
+        </div>
+        
+        <div className={styles.tripActions}>
+          {/* Edit Button Skeleton */}
+          <Skeleton 
+            circle={true}
+            width={40} 
+            height={40} 
+            style={{ marginRight: '8px' }}
+          />
+          
+          {/* Share Button Skeleton */}
+          <Skeleton 
+            circle={true}
+            width={40} 
+            height={40} 
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.tripHeader}>

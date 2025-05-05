@@ -58,6 +58,8 @@ export const useAddTrip = () => {
     type:"place",
   });
 
+
+  console.log(formState, "formState");
   const resetAllStates = () => {
     // Reset trip state
     setTripState({
@@ -166,6 +168,11 @@ export const useAddTrip = () => {
       };
       return { ...prev, destinations: newDestinations };
     });
+
+    if(field === "destinationSearchQuery") {
+      setActiveDestinationIndex(index);
+      debouncedFetchCitiesForAddTrip(value);
+    }
   };
 
   // Form validation
@@ -330,7 +337,10 @@ export const useAddTrip = () => {
   useEffect(() => {
     if (formState.destinations.length > 0 && formState.destinations[0].destinationId !== null) {
       
-      dispatch(fetchStops({ cityId: formState.destinations.map((destination) => destination.destinationId), type: formState.type, page: 1 }))
+      dispatch(fetchStops({ cityId: formState.destinations
+        .map((destination) => destination.destinationId)
+        .filter(id => id) // This removes any falsy values (undefined, null, empty strings)
+        .join(','), type: formState.type === "itinerary" ? "place" : formState.type, page: 1 }))
     }
 
   }, [formState.destinations])

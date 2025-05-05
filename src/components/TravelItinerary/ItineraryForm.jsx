@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./ItineraryForm.module.css";
 import DatePicker from 'react-datepicker';
 import SearchInput from "../common/SearchInput";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ItineraryForm = ({
   tripDetails,
@@ -11,7 +13,8 @@ const ItineraryForm = ({
   setActiveDestinationIndex,
   cities,
   debouncedSearch, // Add this prop if you need to fetch cities
-  handleSubmit
+  handleSubmit,
+  loading,
 }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -137,6 +140,49 @@ const ItineraryForm = ({
       setDateRange([start, end]);
     }
   }, [tripDetails]);
+
+  if (loading) {
+    return (
+      <>
+        <form className={styles.itineraryForm}>
+          <div className={styles.itineraryFormInputsWrapper}>
+            {/* Trip Name Field Skeleton */}
+            <div className={styles.formGroup}>
+              <Skeleton width={100} height={20} style={{ marginBottom: '8px' }} />
+              <Skeleton height={40} />
+            </div>
+  
+            {/* Dates Field Skeleton */}
+            <div className={`${styles.formGroup} ${styles.calendarFormGroup}`}>
+              <Skeleton width={100} height={20} style={{ marginBottom: '8px' }} />
+              <Skeleton height={40} />
+            </div>
+  
+            {/* Destinations Label Skeleton */}
+            <Skeleton width={100} height={20} style={{ marginBottom: '8px' }} />
+  
+            {/* Destination Inputs Skeleton */}
+            <Skeleton height={50} count={2} style={{ marginBottom: '16px' }} />
+          </div>
+  
+          {/* Form Actions Skeleton */}
+          <div className={styles.formActions}>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <Skeleton width={80} height={36} />
+              <Skeleton width={80} height={36} />
+            </div>
+          </div>
+        </form>
+  
+        {/* Add Destination Button Skeleton */}
+        <Skeleton 
+          width={150} 
+          height={36} 
+          style={{ marginTop: '1rem' }}
+        />
+      </>
+    );
+  }
 
   return (
     <>

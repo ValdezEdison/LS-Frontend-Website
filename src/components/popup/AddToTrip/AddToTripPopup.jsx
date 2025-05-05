@@ -9,6 +9,8 @@ import { fetchCities } from '../../../features/common/cities/CityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import PlaceCard from '../../common/PlaceCard';
 // import { getTripsTypes } from '../../../constants/TripTypeList';
+import { listUpdater, resetStops } from '../../../features/places/placesInfo/itinerary/ItinerarySlice';
+import useSeeMore from '../../../hooks/useSeeMore';
 
 const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors, activeDestinationIndex,
   setActiveDestinationIndex,
@@ -26,7 +28,8 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   const [startDate, endDate] = dateRange;
   const [storedTripType, setStoredTripType] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails } = useSelector((state) => state.itineriesInCity);
+  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails, stopsNext } = useSelector((state) => state.itineriesInCity);
+  const { data: visibleStops, loading, next: hasNext, loadMore } = useSeeMore(stops, stopsNext, listUpdater, 'stops');
 
 
 
@@ -49,6 +52,10 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
         }]
       }));
     }
+
+    return () => {
+      dispatch(resetStops());
+    };
   }, []);
 
   const handleDateChange = (dates) => {
@@ -276,7 +283,7 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
                                 showSuggestionDropDown={showSuggestionDropDown && activeDestinationIndex === index}
                                 handleSearchClose={(e) => handleSearchClose(e, index)}
                                 searchValue={destination.destinationSearchQuery}
-                                suggestionsList={citiesSearchResults.length > 0 ? citiesSearchResults : cities}
+                                suggestionsList={ cities }
                                 placeholder={t("search.placeholder")}
                                 onSelect={(value) => handleSelectDestination(value, index)}
                                 customClassName="placesSearchInputContainer"
@@ -343,12 +350,12 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
               <div className={styles.suggestionSection}>
                 <div className={styles.suggestionTitleMain}>
                   <h3 className={styles.suggestionTitle}>{tAddTrip('AddTrip.popups.addToTrip.suggestionsTitle')}</h3>
-                  <div className={styles.suggestionAdd}></div>
+                  { hasNext && <div className={styles.suggestionAdd} onClick={loadMore}></div> }
                 </div>
 
                 <div className={styles.suggestionList}>
-                  {stops.filter(item => !state.stops?.includes(item.id)).length > 0 ? (
-                    stops
+                  {visibleStops.filter(item => !state.stops?.includes(item.id)).length > 0 ? (
+                    visibleStops
                       .filter(item => !state.stops?.includes(item.id))
                       .map((item, index) => (
                         <PlaceCard

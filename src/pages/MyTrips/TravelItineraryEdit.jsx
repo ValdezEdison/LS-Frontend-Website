@@ -20,6 +20,16 @@ import { debounce } from "lodash";
 import { useTripsTypes } from "../../constants/TripTypeList";
 import { useTranslation } from "react-i18next";
 import { updateTrip, updateStops } from "../../features/myTrips/MyTripsAction";
+import { fetchStops } from "../../features/places/placesInfo/itinerary/ItineraryAction";
+import EventCard from "../../components/common/EventCard";
+import EventCardSkeleton from "../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
+import useSeeMore from "../../hooks/useSeeMore";
+import { listUpdater, setFavTogglingId } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
+import SeeMoreButton from "../../components/common/SeeMoreButton";
+import Loader from "../../components/common/Loader";
+import { toggleFavorite } from "../../features/favorites/FavoritesAction";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const TravelItineraryEdit = () => {
@@ -44,6 +54,8 @@ const TravelItineraryEdit = () => {
     }],
     stops: [],
     tripType: '',
+    cityIds: null,
+    type: "place",
   });
 
   const [activeDestinationIndex, setActiveDestinationIndex] = useState(0);
@@ -56,8 +68,11 @@ const TravelItineraryEdit = () => {
   const { t } = useTranslation('TravelItinerary');
 
   const { language } = useContext(LanguageContext);
-  const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
+  const { tripDetails, similarStops, loading: tripDetailsLoading, similarStopsLoading } = useSelector((state) => state.myTrips);
+  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails, stopsNext } = useSelector((state) => state.itineriesInCity);
+  const { data: visibleStops, loading, next: hasNext, loadMore } = useSeeMore(stops, stopsNext, listUpdater, 'stops');
   const { cities } = useSelector((state) => state.cities);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const tripTypes = useTripsTypes();
 
@@ -90,7 +105,7 @@ const TravelItineraryEdit = () => {
     navigate('/places/details', { state: { id } });
   };
 
- 
+
 
   useEffect(() => {
     if (formState.mode) {
@@ -117,11 +132,12 @@ const TravelItineraryEdit = () => {
           destinationId: null,
           destinationName: ''
         }],
-        stops: tripDetails.stops || []
+        stops: tripDetails.stops || [],
+        cityIds: tripDetails.cities?.map(city => city.id)
       }));
 
       const newSites = tripDetails.stops?.map(stop => stop.id) || [];
-      
+
       setFormState(prev => ({
         ...prev,
         // ... other state updates ...
@@ -139,7 +155,7 @@ const TravelItineraryEdit = () => {
     }
   }, [formState.sites]);
 
-  
+
 
   const debouncedSearch = debounce((query) => {
     if (query) {
@@ -170,7 +186,7 @@ const TravelItineraryEdit = () => {
       end_date: formatDate(formState.endDate),
       stops: formState.sites,
     };
-    
+
     dispatch(updateTrip({ tripId: id, tripData: tripData }));
     if (hasStopsChangedRef.current) {
       dispatch(updateStops({ tripId: id, sites: formState.sites }));
@@ -186,73 +202,163 @@ const TravelItineraryEdit = () => {
       setIsTripTypeDropdownOpen(false); // Close the dropdown
     }
   };
-  
+
   useEffect(() => {
     // Only add the event listener if the dropdown is open
     if (isTripTypeDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     // Always remove the event listener when the dropdown closes or component unmounts
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isTripTypeDropdownOpen]);
 
+  console.log(formState, 'formState');
+
+  useEffect(() => {
+    if (formState.cityIds) {
+      console.log(formState.cityIds, 'formState.cityIds');
+      const cityIdsString = formState.cityIds.join(',');
+      console.log(cityIdsString, 'cityIdsString');
+      dispatch(fetchStops({
+        cityId: cityIdsString,
+        type: formState.type,
+        page: 1
+      }));
+    }
+
+  }, [formState.cityIds, dispatch]);
+
+
+  // const handleActions = (e, action, id) => {
+  //   e.stopPropagation();
+  //   if (action === 'showSites') {
+  //     navigate('/places/destination', { state: { id: id } });
+  //   }
+  // }
+
+  const handleActions = (e, action, id, name) => {
+
+    e.stopPropagation();
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        setFormState(prev => ({ ...prev, type: "place" }));
+        break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      case 'addToStop':
+        setFormState(prev => ({
+          ...prev,
+          stops: [...prev.stops, id]
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleFavClick = (e, id) => {
+    e.stopPropagation();
+    if (isAuthenticated) {
+      dispatch(toggleFavorite(id));
+      dispatch(setFavTogglingId(id));
+    } else {
+      togglePopup("alert", true);
+    }
+  };
 
   return (
     <div className={styles.travelItineraryContainer}>
       <Header />
       <main className="page-center">
-        <ItineraryForm
-          tripDetails={tripDetails}
-          setFormState={setFormState}
-          formState={formState}
-          activeDestinationIndex={activeDestinationIndex}
-          setActiveDestinationIndex={setActiveDestinationIndex}
-          cities={cities}
-          debouncedSearch={debouncedSearch}
-          handleSubmit={handleSubmit}
-        />
+   
+          <ItineraryForm
+            tripDetails={tripDetails}
+            setFormState={setFormState}
+            formState={formState}
+            activeDestinationIndex={activeDestinationIndex}
+            setActiveDestinationIndex={setActiveDestinationIndex}
+            cities={cities}
+            debouncedSearch={debouncedSearch}
+            handleSubmit={handleSubmit}
+            loading={tripDetailsLoading}
+          />
         <ItineraryMap
           places={tripDetails?.stops}
           formState={formState}
           setFormState={setFormState}
         />
-        <div className={styles.dropdownWrapper} ref={tripTypeRef}>
-          <label>{t('AddTrip.tripType')}</label>
-          <div className={styles.dropdown}>
-            <div className={styles.filterBlock}>
-              <div
-                className={`${styles.filterHeader} ${isTripTypeDropdownOpen ? styles.open : ''}`}
-                onClick={() => setIsTripTypeDropdownOpen(!isTripTypeDropdownOpen)}
-              >
-                <div className={styles.filterHeaderContent}>
-                  <div className={styles.filterTitle}>{tripTypes[formState.tripType]}</div>
+         {tripDetailsLoading ? (
+          <div style={{ marginBottom: '2rem' }} className={styles.dropdownWrapper}>
+            <Skeleton height={20} width={'20%'} style={{ marginBottom: '0.5rem' }} />
+            <Skeleton height={50} width={'30%'}/>
+          </div>
+        ) : (
+          <div className={styles.dropdownWrapper} ref={tripTypeRef}>
+            <label>Tipo de viaje</label>
+            <div className={styles.dropdown}>
+              <div className={styles.filterBlock}>
+                <div
+                  className={`${styles.filterHeader} ${isTripTypeDropdownOpen ? styles.open : ''}`}
+                  onClick={() => setIsTripTypeDropdownOpen(!isTripTypeDropdownOpen)}
+                >
+                  <div className={styles.filterHeaderContent}>
+                    <div className={styles.filterTitle}>{tripTypes[formState.tripType]}</div>
+                  </div>
+                  <div className={styles.dropdownIcon}><img src={Down} /></div>
                 </div>
-                <div className={styles.dropdownIcon}><img src={Down} /></div>
+              </div>
+              <div className={`${styles.filterContent} ${isTripTypeDropdownOpen ? styles.active : ''}`}>
+                <ul className={styles.filterChecklist}>
+                  {Object.entries(tripTypes).map(([key, value]) => (
+                    <li
+                      key={key}
+                      className={formState.tripType === key ? styles.selected : ''}
+                      onClick={() => handleTripTypeSelect(key)}
+                    >
+                      {value}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-            <div className={`${styles.filterContent} ${isTripTypeDropdownOpen ? styles.active : ''}`}>
-              <ul className={styles.filterChecklist}>
-                {Object.entries(tripTypes).map(([key, value]) => (
-                  <li
-                    key={key}
-                    className={formState.tripType === key ? styles.selected : ''}
-                    onClick={() => handleTripTypeSelect(key)}
-                  >
-                    {value}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
-        </div>
-
-        {tripDetails?.stops?.length > 0 && (
-          <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} />
         )}
-        <SuggestedStops />
+
+
+        <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} />
+
+        {/* <SuggestedStops /> */}
+        <h2 className={styles.sectionTitle}>Añade más paradas a tu itinerario</h2>
+        <div className={styles.eventGrid}>
+          {stopsLoading ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <EventCardSkeleton key={index} />
+            ))
+          ) : visibleStops.length > 0 && (
+            // Render visible events if available
+            visibleStops.map((event, index) => (
+              <EventCard key={index} event={event} handleActions={handleActions}
+                isFavoriteToggling={isFavoriteToggling && favTogglingId === event.id} />
+            ))
+          )}
+        </div>
+        <div className={styles.showMoreWrapper}>
+          {loading ? <Loader /> : stopsNext && isAuthenticated && <SeeMoreButton
+            onClick={loadMore}
+            loading={loading}
+            next={hasNext}
+            translate={''}
+          />}
+
+        </div>
         {similarStopsLoading ? (
           <WidgetSkeleton />
         ) : (

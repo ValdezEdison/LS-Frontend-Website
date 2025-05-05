@@ -27,7 +27,9 @@ const initialState = {
   stops: [],
   stopsLoading: false,
   addTripLoading: false,
-  addToExistingTripLoading: false
+  addToExistingTripLoading: false,
+  stopsNext: null,
+  stopsCount: null
 };
 
 const itineriesInCitySlice = createSlice({
@@ -56,8 +58,19 @@ const itineriesInCitySlice = createSlice({
       localStorage.removeItem('tripType')
     },
     listUpdater: (state, action) => {
-      state.itineries = [...state.itineries, ...action.payload?.results];
-      state.next = action.payload.next;
+      if(action.payload?.listName === 'itineries') {
+        state.itineries = [...state.itineries, ...action.payload?.results];
+        state.next = action.payload.next;
+      }else if(action.payload?.listName === 'stops') {
+        state.stops = [...state.stops, ...action.payload?.results];
+        state.stopsNext = action.payload.next;
+      }
+    
+    },
+    resetStops: (state) => {
+      state.stops = [];
+      state.stopsNext = null;
+      state.stopsCount = null;
     }
   },
   extraReducers: (builder) => {
@@ -208,6 +221,8 @@ const itineriesInCitySlice = createSlice({
       .addCase(fetchStops.fulfilled, (state, action) => {
         state.stopsLoading = false;
         state.stops = action.payload?.results || [];
+        state.stopsNext = action.payload?.next;
+        state.stopsCount = action.payload?.count;
       })
       .addCase(fetchStops.rejected, (state, action) => {
         state.stopsLoading = false;
@@ -243,5 +258,5 @@ const itineriesInCitySlice = createSlice({
   },
 });
 
-export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType, listUpdater } = itineriesInCitySlice.actions;
+export const { setFavTogglingId, resetShareableLink, resetDownloadedTrip, setTripType, resetTripType, listUpdater, resetStops } = itineriesInCitySlice.actions;
 export default itineriesInCitySlice.reducer;

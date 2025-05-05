@@ -22,6 +22,9 @@ const myTripsSlice = createSlice({
         listUpdater: (state, action) => {
             state.futureTrips = [...state.futureTrips, ...action.payload?.results];
             state.next = action.payload.next;
+        },
+        resetTripDetails: (state) => {
+            state.tripDetails = null;
         }
     },
     extraReducers: (builder) => {
@@ -124,5 +127,5 @@ const myTripsSlice = createSlice({
 
     },
 });
-export const { listUpdater } = myTripsSlice.actions;
+export const { listUpdater, resetTripDetails } = myTripsSlice.actions;
 export default myTripsSlice.reducer;

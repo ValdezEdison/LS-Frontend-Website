@@ -9,27 +9,31 @@ import styles from "./TripDetails.module.css";
 import ItineraryCard from "../PlacesInfo/Itineries/ItineraryCard";
 // import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import CardSkeleton from "../skeleton/common/CardSkeleton";
 
 const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
 
-  
-  const [items, setItems] = useState(tripDetails?.stops || []);
 
-  
-  
+  const [items, setItems] = useState(tripDetails?.stops || []);
+  const { loading: tripDetailsLoading } = useSelector((state) => state.myTrips);
+
+
+
   const location = useLocation();
   const isTripEditPage = location.pathname === '/my-trips/edit';
 
   useEffect(() => {
-    if (tripDetails?.stops && isTripEditPage) {
+    if (tripDetails?.stops) {
       try {
         setItems(tripDetails.stops);
         setFormState(prev => ({
           ...prev,
           sites: tripDetails.stops.map(stop => stop.id)
         }));
+
       } catch (error) {
-        
+
         // Handle error appropriately
       }
     }
@@ -48,21 +52,22 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
       setFormState(prev => ({ ...prev, sites: newOrderIds }));
     }
   };
+console.log(items, "items");
+console.log(tripDetails, "tripDetails");
 
+  const handleActions = (e, action, id) => {
 
-const handleActions = (e, action, id) => {
-  
-  e.stopPropagation();
-  if (isTripEditPage) {
-    setItems(prevItems => prevItems.filter(item => item.id !== id));
-    setFormState(prev => ({
-      ...prev,
-      sites: prev.sites.filter(siteId => siteId !== id),
-      // stops: prev.stops.filter(stop => stop.id !== id)
-    }));
+    e.stopPropagation();
+    if (isTripEditPage) {
+      setItems(prevItems => prevItems.filter(item => item.id !== id));
+      setFormState(prev => ({
+        ...prev,
+        sites: prev.sites.filter(siteId => siteId !== id),
+        // stops: prev.stops.filter(stop => stop.id !== id)
+      }));
+    }
+
   }
-
-}
   return (
     <>
       <div className={styles.tripType}>
@@ -79,20 +84,26 @@ const handleActions = (e, action, id) => {
       <DndContext
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
-        // modifiers={[restrictToVerticalAxis]}
+      // modifiers={[restrictToVerticalAxis]}
       >
         <SortableContext items={items.map((stop) => stop.id)} strategy={verticalListSortingStrategy}>
           <div className={styles.stopList}>
-            {items.map((stop, index) => (
-              <ItineraryCard
-                key={stop.id}
-                id={stop.id}
-                place={stop}
-                index={index + 1}
-                handleViewMoreDetails={handleViewMoreDetails}
-                handleActions={handleActions}
-              />
-            ))}
+            {tripDetailsLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))
+            ) : (
+              items.map((stop, index) => (
+                <ItineraryCard
+                  key={stop.id}
+                  id={stop.id}
+                  place={stop}
+                  index={index + 1}
+                  handleViewMoreDetails={handleViewMoreDetails}
+                  handleActions={handleActions}
+                />
+              ))
+            )}
           </div>
         </SortableContext>
       </DndContext>

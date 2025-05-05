@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ApiInstance } from "../services/AxiosConfig";
 
-const useSeeMore = (initialData = [], nextPageUrl, listUpdater) => {
+const useSeeMore = (initialData = [], nextPageUrl, listUpdater, listName="") => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [next, setNext] = useState(nextPageUrl);
@@ -26,7 +26,7 @@ const useSeeMore = (initialData = [], nextPageUrl, listUpdater) => {
       
       const newData = response?.data;
       setData((prevData) => [...prevData, ...newData.results]);
-      dispatch(listUpdater({ results: newData.results, next: newData.next }));
+      dispatch(listUpdater({ results: newData.results, next: newData.next, listName: listName }));
       setNext(newData.next);
     } catch (error) {
       

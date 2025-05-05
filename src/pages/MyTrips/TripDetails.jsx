@@ -11,6 +11,7 @@ import { fetchTripDetails, fetchSimilarStops, fetchTravelTime } from "../../feat
 import { LanguageContext } from "../../context/LanguageContext";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import { resetTripDetails } from "../../features/myTrips/MyTripsSlice";
 
 const TripDetails = () => {
 
@@ -39,6 +40,10 @@ const TripDetails = () => {
       dispatch(fetchSimilarStops({page: 1, tripId: id}));
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
     }
+
+    return () => {
+      dispatch(resetTripDetails());
+    }
     
   }, [language, id, dispatch]);
 
@@ -59,13 +64,16 @@ const TripDetails = () => {
       }
     }, [formState.mode, dispatch, id]);
 
+
   return (
     <>
       <Header />
       <main className="page-center">
-        <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails}/>
+        <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails} loading={loading}/>
         <ItineraryMap places={tripDetails?.stops} formState={formState} setFormState={setFormState} />
-        <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} />
+        {/* {tripDetails?.stops?.length > 0 && ( */}
+        <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState}/>
+        {/* )} */}
         {similarStopsLoading ? (
               <WidgetSkeleton />
             ) : (

@@ -193,8 +193,27 @@
   font-weight: 600;
 }
 
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20px;
+  /* text-align: center; */
+}
+
 @media (max-width: 991px) {
   .mainContent {
     padding: 20px;
+  }
+
+  .eventGrid {
+    grid-template-columns: 1fr;
   }
 }
