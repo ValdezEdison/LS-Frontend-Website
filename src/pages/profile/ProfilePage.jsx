@@ -11,6 +11,7 @@ import NotificationForm from "../../components/ProfileSection/NotificationForm";
 import PrivacyContent from "../../components/ProfileSection/PrivacyContent";
 import { getProfile } from "../../features/authentication/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
 
 
 const ProfilePage = () => {
@@ -19,11 +20,13 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
+  const { phoneCodes } = useSelector((state) => state.countries);
 
   console.log( user, 'profile');
 
   useEffect(() => {
     dispatch(getProfile());
+    dispatch(fetchCountriesPhonecodes());
   }, [dispatch]);
 
   const handleTabChange = (newTab) => {
@@ -33,7 +36,7 @@ const ProfilePage = () => {
   const renderContent = () => {
     switch (tab) {
       case "personal":
-        return <PersonalDetails user={user}/>;
+        return <PersonalDetails user={user} phoneCodes={phoneCodes}/>;
       case "preferences":
         return <PreferencesForm user={user}/>;
       case "security":

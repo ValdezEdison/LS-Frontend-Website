@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./PersonalDetails.module.css";
 import { ProfilePlaceholder } from "../common/Images";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const PersonalDetails = ({ user }) => {
+const PersonalDetails = ({ user, phoneCodes }) => {
   const [editingField, setEditingField] = useState(null);
   const [editedValue, setEditedValue] = useState("");
+  const [firstName, setFirstName] = useState(user.first_name || "");
+  const [lastName, setLastName] = useState(user.last_name || "");
+  const [birthDate, setBirthDate] = useState(user.birth_date ? new Date(user.birth_date) : null);
+  const [phonePrefix, setPhonePrefix] = useState(user.phone_prefix || "");
+  const [phone, setPhone] = useState(user.phone || "");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef(null);
   
   const formatDate = (dateString) => {
     if (!dateString) return "Not provided";
@@ -12,14 +22,48 @@ const PersonalDetails = ({ user }) => {
     return date.toLocaleDateString();
   };
 
+  // Filter phone codes based on search term
+  const filteredPhoneCodes = phoneCodes.filter(code =>
+    code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    code.phone_code.includes(searchTerm)
+  );
+
+  // Handle click outside dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleEditClick = (label, currentValue) => {
     setEditingField(label);
-    setEditedValue(currentValue);
+    if (label === "Name") {
+      setFirstName(user.first_name || "");
+      setLastName(user.last_name || "");
+    } else if (label === "Phone Number") {
+      setPhonePrefix(user.phone_prefix || "");
+      setPhone(user.phone || "");
+    } else {
+      setEditedValue(currentValue);
+    }
   };
 
   const handleSave = () => {
-    // Here you would typically make an API call to save the changes
-    console.log(`Saving ${editingField}: ${editedValue}`);
+    if (editingField === "Name") {
+      console.log(`Saving Name: ${firstName} ${lastName}`);
+    } else if (editingField === "Phone Number") {
+      console.log(`Saving Phone: +${phonePrefix} ${phone}`);
+    } else if (editingField === "Birth Date") {
+      console.log(`Saving Birth Date: ${birthDate}`);
+    } else {
+      console.log(`Saving ${editingField}: ${editedValue}`);
+    }
     setEditingField(null);
   };
 
@@ -29,6 +73,24 @@ const PersonalDetails = ({ user }) => {
 
   const handleInputChange = (e) => {
     setEditedValue(e.target.value);
+  };
+
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);
+  };
+
+  const handlePhonePrefixSelect = (code) => {
+    setPhonePrefix(code.phone_code);
+    setIsDropdownOpen(false);
+    setSearchTerm("");
   };
 
   const details = [
@@ -54,20 +116,25 @@ const PersonalDetails = ({ user }) => {
       action: "Edit" 
     },
     {
-      label: "Member Since",
-      value: formatDate(user.date_joined),
-      action: "Info"
+      label: "Birth Date",
+      value: formatDate(user.birth_date),
+      action: "Edit"
     },
     {
-      label: "Current Trip",
-      value: user.current_trip ? user.current_trip.title : "Not traveling now",
-      action: "View"
+      label: "Nationality",
+      value: user.nationality || "Not provided",
+      action: "Edit"
     },
     {
-      label: "Past Travels",
-      value: user.num_of_past_travels || "0",
-      action: "View"
+      label: "Gender",
+      value: user.gender || "Not provided",
+      action: "Edit"
     },
+    {
+      label: "Address",
+      value: user.address || "Not provided",
+      action: "Edit"
+    }
   ];
 
   return (
@@ -89,7 +156,6 @@ const PersonalDetails = ({ user }) => {
             className={styles.profileImage}
           />
         </div>
-        
       </div>
       {details.map((detail, index) => (
         <React.Fragment key={index}>
@@ -99,26 +165,106 @@ const PersonalDetails = ({ user }) => {
               <div className={styles.valueRow}>
                 <div className={styles.valueRowTop}>
                   {editingField === detail.label ? (
-                    <div className={styles.formNameGroup}>
-                    <div className={styles.valueRowFormGroup}>
-                    <label>Nombre*</label>
-                    <input
-                      type="text"
-                      value={editedValue}
-                      onChange={handleInputChange}
-                      className={styles.editInput}
-                    />
-                    </div>
-                    <div className={styles.valueRowFormGroup}>
-                    <label>Apellido*</label>
-                    <input
-                      type="text"
-                      value={editedValue}
-                      onChange={handleInputChange}
-                      className={styles.editInput}
-                    />
-                    </div>
-                    </div>
+                    detail.label === "Name" ? (
+                      <div className={styles.formNameGroup}>
+                        <div className={styles.valueRowFormGroup}>
+                          <label>First Name*</label>
+                          <input
+                            type="text"
+                            value={firstName}
+                            onChange={handleFirstNameChange}
+                            className={styles.editInput}
+                          />
+                        </div>
+                        <div className={styles.valueRowFormGroup}>
+                          <label>Last Name*</label>
+                          <input
+                            type="text"
+                            value={lastName}
+                            onChange={handleLastNameChange}
+                            className={styles.editInput}
+                          />
+                        </div>
+                      </div>
+                    ) : detail.label === "Phone Number" ? (
+                      <div className={styles.phoneInputGroup}>
+                        <div className={`${styles.phoneInput} ${isDropdownOpen ? styles.open : ""}`}>
+                          <div 
+                            className={styles.phoneCodeWrapper} 
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                          >
+                            {phonePrefix ? (
+                              <span className={styles.placeholderText}>+{phonePrefix}</span>
+                            ) : (
+                              <span className={styles.placeholderText}>Code</span>
+                            )}
+                            <span className={isDropdownOpen ? styles.arrowUp : styles.arrowDown}></span>
+                          </div>
+                          {isDropdownOpen && (
+                            <div 
+                              className={styles.phoneCodeDropdownWrapperOuter}
+                              ref={dropdownRef}
+                            >
+                              <div className={styles.phoneCodeinputWrapper}>
+                                <input
+                                  type="text"
+                                  placeholder="Search country"
+                                  className={styles.selectedItem}
+                                  value={searchTerm}
+                                  onChange={(e) => setSearchTerm(e.target.value)}
+                                  autoFocus
+                                />
+                              </div>
+                              <ul className={styles.droplist}>
+                                {filteredPhoneCodes.length > 0 ? (
+                                  filteredPhoneCodes.map((code) => (
+                                    <li
+                                      key={code.code}
+                                      onClick={() => handlePhonePrefixSelect(code)}
+                                      className={
+                                        phonePrefix === code.phone_code
+                                          ? styles.selectedItem
+                                          : ""
+                                      }
+                                    >
+                                      +{code.phone_code} {code.name}
+                                    </li>
+                                  ))
+                                ) : (
+                                  <li className={styles.selectedItem}>No countries found</li>
+                                )}
+                              </ul>
+                            </div>
+                          )}
+                          <input
+                            type="tel"
+                            placeholder="Phone number"
+                            className={styles.editInput}
+                            value={phone}
+                            onChange={handlePhoneChange}
+                          />
+                        </div>
+                      </div>
+                    ) : detail.label === "Birth Date" ? (
+                      <DatePicker
+                        selected={birthDate}
+                        onChange={(date) => setBirthDate(date)}
+                        dateFormat="MM/dd/yyyy"
+                        placeholderText="Select birth date"
+                        className={styles.editInput}
+                        showYearDropdown
+                        dropdownMode="select"
+                        maxDate={new Date()}
+                        isClearable
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={editedValue}
+                        onChange={handleInputChange}
+                        className={styles.editInput}
+                      />
+                    )
                   ) : (
                     <span className={styles.value}>{detail.value}</span>
                   )}
@@ -137,7 +283,6 @@ const PersonalDetails = ({ user }) => {
             </div>
             {editingField === detail.label ? (
               <div className={styles.editActions}>
-                
                 <button 
                   className={`${styles.actionButton} ${styles.cancelButton}`}
                   onClick={handleCancel}
@@ -155,15 +300,16 @@ const PersonalDetails = ({ user }) => {
               </button>
             )}
           </div>
-          <div className={styles.saveButtonWrapper}>
-            <button 
-                    className={`${styles.actionButton} ${styles.saveButton}`}
-                    onClick={handleSave}
-                  >
-                    Save
-            </button>
-          </div>
-         
+          {editingField === detail.label && (
+            <div className={styles.saveButtonWrapper}>
+              <button 
+                className={`${styles.actionButton} ${styles.saveButton}`}
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            </div>
+          )}
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}
