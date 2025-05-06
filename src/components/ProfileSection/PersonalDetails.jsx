@@ -79,11 +79,17 @@ const PersonalDetails = ({ user }) => {
             Update your personal information by editing the profile
           </p>
         </div>
-        <img
-          src={user.profile_picture?.fullsize || ProfilePlaceholder}
-          alt="Profile"
-          className={styles.profileImage}
-        />
+        <div className={styles.profileImageWrapper}>
+          <div className={styles.galleryEditOverlay}>
+            <div className={styles.galleryEdit}></div>
+          </div>
+          <img
+            src={user.profile_picture?.fullsize || ProfilePlaceholder}
+            alt="Profile"
+            className={styles.profileImage}
+          />
+        </div>
+        
       </div>
       {details.map((detail, index) => (
         <React.Fragment key={index}>
@@ -93,12 +99,26 @@ const PersonalDetails = ({ user }) => {
               <div className={styles.valueRow}>
                 <div className={styles.valueRowTop}>
                   {editingField === detail.label ? (
+                    <div className={styles.formNameGroup}>
+                    <div className={styles.valueRowFormGroup}>
+                    <label>Nombre*</label>
                     <input
                       type="text"
                       value={editedValue}
                       onChange={handleInputChange}
                       className={styles.editInput}
                     />
+                    </div>
+                    <div className={styles.valueRowFormGroup}>
+                    <label>Apellido*</label>
+                    <input
+                      type="text"
+                      value={editedValue}
+                      onChange={handleInputChange}
+                      className={styles.editInput}
+                    />
+                    </div>
+                    </div>
                   ) : (
                     <span className={styles.value}>{detail.value}</span>
                   )}
@@ -117,12 +137,7 @@ const PersonalDetails = ({ user }) => {
             </div>
             {editingField === detail.label ? (
               <div className={styles.editActions}>
-                <button 
-                  className={`${styles.actionButton} ${styles.saveButton}`}
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
+                
                 <button 
                   className={`${styles.actionButton} ${styles.cancelButton}`}
                   onClick={handleCancel}
@@ -140,6 +155,15 @@ const PersonalDetails = ({ user }) => {
               </button>
             )}
           </div>
+          <div className={styles.saveButtonWrapper}>
+            <button 
+                    className={`${styles.actionButton} ${styles.saveButton}`}
+                    onClick={handleSave}
+                  >
+                    Save
+            </button>
+          </div>
+         
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}
