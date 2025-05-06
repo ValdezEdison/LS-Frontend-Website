@@ -158,6 +158,11 @@
   border-radius: 12px;
   text-decoration: none;
   color: #000;
+  transition: all ease .3s;
+}
+
+.saveButtonWrapper .saveButton:hover {
+  background-color: #e5b22e;
 }
 
 .galleryEditOverlay{
@@ -207,11 +212,25 @@
 @media (max-width:640px) {
   .labelValue{
     flex-direction: column;
+    width: 100%;
   }
+  
 }
 
 @media (max-width: 480px) {
   .detailRow {
     flex-direction: column;
+  }
+
+  .formNameGroup{
+    flex-direction: column;
+  }
+
+  .valueRowFormGroup{
+    max-width: 100%;
+  }
+
+  .editInput{
+    max-width: 100%;
   }
 }
