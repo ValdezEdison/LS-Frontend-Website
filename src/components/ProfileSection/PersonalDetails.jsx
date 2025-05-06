@@ -4,31 +4,37 @@ import { CalendarIcon, ProfilePlaceholder } from "../common/Images";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const PersonalDetails = ({ user, phoneCodes }) => {
+const PersonalDetails = ({ 
+  user, 
+  phoneCodes, 
+  personalDetails, 
+  onPersonalDetailsChange, 
+  onSave,
+  onProfilePhotoClick
+}) => {
   const [editingField, setEditingField] = useState(null);
-  const [editedValue, setEditedValue] = useState("");
-  const [firstName, setFirstName] = useState(user.first_name || "");
-  const [lastName, setLastName] = useState(user.last_name || "");
-  const [birthDate, setBirthDate] = useState(user.birth_date ? new Date(user.birth_date) : null);
-  const [phonePrefix, setPhonePrefix] = useState(user.phone_prefix || "");
-  const [phone, setPhone] = useState(user.phone || "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
   
+  const genderOptions = [
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
+    { value: "prefer_not_to_say", label: "Prefer not to say" }
+  ];
+
   const formatDate = (dateString) => {
     if (!dateString) return "Not provided";
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
 
-  // Filter phone codes based on search term
   const filteredPhoneCodes = phoneCodes.filter(code =>
     code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     code.phone_code.includes(searchTerm)
   );
 
-  // Handle click outside dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -41,56 +47,36 @@ const PersonalDetails = ({ user, phoneCodes }) => {
     };
   }, []);
 
-  const handleEditClick = (label, currentValue) => {
+  const handleEditClick = (label) => {
     setEditingField(label);
-    if (label === "Name") {
-      setFirstName(user.first_name || "");
-      setLastName(user.last_name || "");
-    } else if (label === "Phone Number") {
-      setPhonePrefix(user.phone_prefix || "");
-      setPhone(user.phone || "");
-    } else {
-      setEditedValue(currentValue);
-    }
   };
 
   const handleSave = () => {
-    if (editingField === "Name") {
-      console.log(`Saving Name: ${firstName} ${lastName}`);
-    } else if (editingField === "Phone Number") {
-      console.log(`Saving Phone: +${phonePrefix} ${phone}`);
-    } else if (editingField === "Birth Date") {
-      console.log(`Saving Birth Date: ${birthDate}`);
-    } else {
-      console.log(`Saving ${editingField}: ${editedValue}`);
-    }
+    onSave();
     setEditingField(null);
   };
 
   const handleCancel = () => {
+    onPersonalDetailsChange('firstName', user.first_name || "");
+    onPersonalDetailsChange('lastName', user.last_name || "");
+    onPersonalDetailsChange('email', user.email || "");
+    onPersonalDetailsChange('phonePrefix', user.phone_prefix || "");
+    onPersonalDetailsChange('phone', user.phone || "");
+    // onPersonalDetailsChange('birthDate', user.birth_date ? new Date(user.birth_date) : null);
+    // onPersonalDetailsChange('nationality', user.nationality || "");
+    // onPersonalDetailsChange('gender', user.gender || "");
+    // onPersonalDetailsChange('address', user.address || "");
     setEditingField(null);
   };
 
-  const handleInputChange = (e) => {
-    setEditedValue(e.target.value);
-  };
-
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-  };
-
-  const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
-  };
-
   const handlePhonePrefixSelect = (code) => {
-    setPhonePrefix(code.phone_code);
+    onPersonalDetailsChange('phonePrefix', code.phone_code);
     setIsDropdownOpen(false);
     setSearchTerm("");
+  };
+
+  const handleGenderChange = (e) => {
+    onPersonalDetailsChange('gender', e.target.value);
   };
 
   const details = [
@@ -107,7 +93,7 @@ const PersonalDetails = ({ user, phoneCodes }) => {
     {
       label: "Email Address",
       value: user.email || "Not provided",
-      action: "Edit",
+      action: "none", // Changed to "none" to hide button
       verified: true,
     },
     { 
@@ -115,26 +101,26 @@ const PersonalDetails = ({ user, phoneCodes }) => {
       value: user.phone ? `+${user.phone_prefix} ${user.phone}` : "Not provided", 
       action: "Edit" 
     },
-    {
-      label: "Birth Date",
-      value: formatDate(user.birth_date),
-      action: "Edit"
-    },
-    {
-      label: "Nationality",
-      value: user.nationality || "Not provided",
-      action: "Edit"
-    },
-    {
-      label: "Gender",
-      value: user.gender || "Not provided",
-      action: "Edit"
-    },
-    {
-      label: "Address",
-      value: user.address || "Not provided",
-      action: "Edit"
-    }
+    // {
+    //   label: "Birth Date",
+    //   value: formatDate(user.birth_date),
+    //   action: "Edit"
+    // },
+    // {
+    //   label: "Nationality",
+    //   value: user.nationality || "Not provided",
+    //   action: "Edit"
+    // },
+    // {
+    //   label: "Gender",
+    //   value: user.gender ? genderOptions.find(g => g.value === user.gender)?.label || user.gender : "Not provided",
+    //   action: "Edit"
+    // },
+    // {
+    //   label: "Address",
+    //   value: user.address || "Not provided",
+    //   action: "Edit"
+    // }
   ];
 
   return (
@@ -146,14 +132,19 @@ const PersonalDetails = ({ user, phoneCodes }) => {
             Update your personal information by editing the profile
           </p>
         </div>
-        <div className={styles.profileImageWrapper}>
-          <div className={styles.galleryEditOverlay}>
-            <div className={styles.galleryEdit}></div>
+        <div className={styles.profileImageWrapper} onClick={onProfilePhotoClick}>
+          {user.profile_picture?.original && <div className={styles.galleryEditOverlay}>
+            <div className={styles.galleryEdit}>
+            </div>
           </div>
+          }
           <img
-            src={user.profile_picture?.fullsize || ProfilePlaceholder}
+            src={user.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
             alt="Profile"
             className={styles.profileImage}
+            onError={(e) => {
+              e.target.src = ProfilePlaceholder;
+            }}
           />
         </div>
       </div>
@@ -171,8 +162,8 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                           <label>First Name*</label>
                           <input
                             type="text"
-                            value={firstName}
-                            onChange={handleFirstNameChange}
+                            value={personalDetails.firstName}
+                            onChange={(e) => onPersonalDetailsChange('firstName', e.target.value)}
                             className={styles.editInput}
                           />
                         </div>
@@ -180,8 +171,8 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                           <label>Last Name*</label>
                           <input
                             type="text"
-                            value={lastName}
-                            onChange={handleLastNameChange}
+                            value={personalDetails.lastName}
+                            onChange={(e) => onPersonalDetailsChange('lastName', e.target.value)}
                             className={styles.editInput}
                           />
                         </div>
@@ -193,8 +184,8 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                             className={styles.phoneCodeWrapper} 
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                           >
-                            {phonePrefix ? (
-                              <span className={styles.placeholderText}>+{phonePrefix}</span>
+                            {personalDetails.phonePrefix ? (
+                              <span className={styles.placeholderText}>+{personalDetails.phonePrefix}</span>
                             ) : (
                               <span className={styles.placeholderText}>Code</span>
                             )}
@@ -222,7 +213,7 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                                       key={code.code}
                                       onClick={() => handlePhonePrefixSelect(code)}
                                       className={
-                                        phonePrefix === code.phone_code
+                                        personalDetails.phonePrefix === code.phone_code
                                           ? styles.selectedItem
                                           : ""
                                       }
@@ -240,8 +231,8 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                             type="tel"
                             placeholder="Phone number"
                             className={styles.editInput}
-                            value={phone}
-                            onChange={handlePhoneChange}
+                            value={personalDetails.phone}
+                            onChange={(e) => onPersonalDetailsChange('phone', e.target.value)}
                           />
                         </div>
                       </div>
@@ -249,23 +240,40 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                       <div className={`${styles.inputWithIcon} birthDate`}>
                         <img src={CalendarIcon} alt="Calendar"></img>
                           <DatePicker
-                          selected={birthDate}
-                          onChange={(date) => setBirthDate(date)}
+                          selected={personalDetails.birthDate}
+                          onChange={(date) => onPersonalDetailsChange('birthDate', date)}
                           dateFormat="MM/dd/yyyy"
                           placeholderText="Select birth date"
                           className={styles.editInput}
-                          showYearDropdown
                           dropdownMode="select"
                           maxDate={new Date()}
                           isClearable
                         />
                       </div>
-                     
+                    ) : detail.label === "Gender" ? (
+                      <div className={styles.radioGroup}>
+                        {genderOptions.map((option) => (
+                          <label key={option.value} className={styles.radioOption}>
+                            <input
+                              type="radio"
+                              name="gender"
+                              value={option.value}
+                              checked={personalDetails.gender === option.value}
+                              onChange={handleGenderChange}
+                              className={styles.radioInput}
+                            />
+                            <span className={styles.radioLabel}>{option.label}</span>
+                          </label>
+                        ))}
+                      </div>
                     ) : (
                       <input
                         type="text"
-                        value={editedValue}
-                        onChange={handleInputChange}
+                        value={personalDetails[detail.label.toLowerCase().replace(' ', '')] || ""}
+                        onChange={(e) => onPersonalDetailsChange(
+                          detail.label.toLowerCase().replace(' ', ''), 
+                          e.target.value
+                        )}
                         className={styles.editInput}
                       />
                     )
@@ -277,7 +285,7 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                   )}
                 </div>
                 <div className={styles.valueRowBottom}>
-                  {detail.verified && !editingField && (
+                  {detail.verified && !editingField && detail.label === "Email Address" && (
                     <p className={styles.emailNote}>
                       This email address is used for login and receiving all notifications
                     </p>
@@ -285,7 +293,7 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                 </div>
               </div>
             </div>
-            {editingField === detail.label ? (
+            {detail.action === "none" ? null : editingField === detail.label ? (
               <div className={styles.editActions}>
                 <button 
                   className={`${styles.actionButton} ${styles.cancelButton}`}
@@ -297,14 +305,14 @@ const PersonalDetails = ({ user, phoneCodes }) => {
             ) : (
               <button 
                 className={styles.actionButton}
-                onClick={() => handleEditClick(detail.label, detail.value)}
+                onClick={() => handleEditClick(detail.label)}
                 disabled={detail.action === "Info" || detail.action === "View"}
               >
                 {detail.action}
               </button>
             )}
           </div>
-          {editingField === detail.label && (
+          {editingField === detail.label && detail.action !== "none" && (
             <div className={styles.saveButtonWrapper}>
               <button 
                 className={`${styles.actionButton} ${styles.saveButton}`}

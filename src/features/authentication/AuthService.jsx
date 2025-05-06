@@ -1,5 +1,7 @@
 // src/features/auth/authService.js
+import { update } from 'lodash';
 import apiService from '../../services/ApiService';
+import { updateProfile } from './AuthActions';
 
 const authService = {
   login: async (credentials) => {
@@ -27,6 +29,13 @@ const authService = {
 
   resendVerificationMail: async (email) => {
     return apiService.post('users/verification-email', { email });
+  },
+
+  updateProfile: async (userData) => {
+    return apiService.patch('/users/me', userData);
+  },
+  updateProfilePicture: async (userData) => {
+    return apiService.post('/users/update_pfp', userData);
   },
 };
 
