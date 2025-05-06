@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./PersonalDetails.module.css";
-import { ProfilePlaceholder } from "../common/Images";
+import { CalendarIcon, ProfilePlaceholder } from "../common/Images";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -246,17 +246,21 @@ const PersonalDetails = ({ user, phoneCodes }) => {
                         </div>
                       </div>
                     ) : detail.label === "Birth Date" ? (
-                      <DatePicker
-                        selected={birthDate}
-                        onChange={(date) => setBirthDate(date)}
-                        dateFormat="MM/dd/yyyy"
-                        placeholderText="Select birth date"
-                        className={styles.editInput}
-                        showYearDropdown
-                        dropdownMode="select"
-                        maxDate={new Date()}
-                        isClearable
-                      />
+                      <div className={`${styles.inputWithIcon} birthDate`}>
+                        <img src={CalendarIcon} alt="Calendar"></img>
+                          <DatePicker
+                          selected={birthDate}
+                          onChange={(date) => setBirthDate(date)}
+                          dateFormat="MM/dd/yyyy"
+                          placeholderText="Select birth date"
+                          className={styles.editInput}
+                          showYearDropdown
+                          dropdownMode="select"
+                          maxDate={new Date()}
+                          isClearable
+                        />
+                      </div>
+                     
                     ) : (
                       <input
                         type="text"
