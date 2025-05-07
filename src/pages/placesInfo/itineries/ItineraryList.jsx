@@ -29,6 +29,7 @@ import { openPopup, closePopup, openAddToTripPopup } from "../../../features/pop
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
 import { listUpdater } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { fetchCities } from "../../../features/common/cities/CityAction";
 
 
 const ItineraryList = () => {
@@ -47,6 +48,7 @@ const ItineraryList = () => {
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, listUpdater);
   const { isOpen } = useSelector((state) => state.popup);
+  const { cities } = useSelector((state) => state.cities);
 
   const [showArrow, setShowArrow] = useState(true);
 
@@ -110,6 +112,7 @@ const ItineraryList = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchItineriesInCity(id));
+      dispatch(fetchCities({}));
     }
   }, [dispatch, language]);
 
@@ -308,6 +311,19 @@ const ItineraryList = () => {
     isSearchingCities,
     updateDestination
   };
+
+    useEffect(() => {
+          if (tripPopupState.addTripPopup || isAddToPopupOpen) {
+              document.body.classList.add('overflowHide');
+          } else {
+              document.body.classList.remove('overflowHide');
+          }
+  
+          // Cleanup: Remove class when component unmounts
+          return () => {
+              document.body.classList.remove('overflowHide');
+          };
+      }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
   return (
     // <div className={styles.athenasPlaces}>

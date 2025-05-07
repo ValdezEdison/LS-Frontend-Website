@@ -8,7 +8,7 @@ const WordPressService = {
    */
   getPosts: async (params = {}) => {
     const defaultParams = {
-      _embed: true,       // Always embed linked resources
+      // _embed: true,       // Always embed linked resources
       per_page: 4,       // Default to 4 posts per page (matches your API example)
     //   page: 1,           // Default to first page
     //   _fields: [
@@ -34,7 +34,7 @@ const WordPressService = {
           ...defaultParams,
           ...params,
           // Ensure _embed is always true unless explicitly disabled
-          _embed: params._embed === false ? false : true
+          // _embed: params._embed === false ? false : true
         },
     
       });

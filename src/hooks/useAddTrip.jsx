@@ -114,8 +114,10 @@ export const useAddTrip = () => {
   });
 
   useEffect(() => {
-
-   dispatch(fetchTravelLiteList());
+    if(isAuthenticated){
+      dispatch(fetchTravelLiteList());
+    }
+  
    return () => {
     // Cleanup function that runs when component unmounts
     resetAllStates();

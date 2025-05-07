@@ -675,9 +675,10 @@ const EventDetails = () => {
             {isLoading ? (
               <Skeleton count={5} />
             ) : (
-              <p className={styles.museumDescription}>
-                {place?.description}
-              </p>
+              <p 
+                className={styles.museumDescription}
+                dangerouslySetInnerHTML={{ __html: place?.description?.replace(/\r\n/g, '<br />') }} 
+              />
             )}
 
             {isLoading ? (
@@ -688,7 +689,7 @@ const EventDetails = () => {
             {isLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={NearByPlaces} title="Otros lugares cercanos" count={4} />
+              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} />
             )}
           </div>
         </main>

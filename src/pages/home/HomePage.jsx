@@ -42,6 +42,7 @@ const HomePage = () => {
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
   const { heroContent, loading: heroContentLoading, error: heroContentError, ourPartners, ourPartnersLoading, ourPartnersError } = useSelector((state) => state.cms.pages);
   const { randomPlaces, loading: randomPlacesLoading, error: randomPlacesError } = useSelector((state) => state.home);
+  const { posts, loading: postsLoading, error: postsError } = useSelector((state) => state.cms.wordpress);
 
 
   // Fetch places on component mount
@@ -50,7 +51,7 @@ const HomePage = () => {
       dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
       dispatch(fetchOurPartners(languageId));
-      dispatch(fetchPosts({ per_page: 4 }));
+      dispatch(fetchPosts({ per_page: 10 }));
 
   }, [dispatch, language]);
 
@@ -72,7 +73,7 @@ const handleNavigateToLogin = () => {
         buttonText="Saber más"
         imageSrc={LSLogo2_2}
       />
-      <ArticlesSection />
+      <ArticlesSection posts={posts}/>
       <AppPromotion />
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />

@@ -65,7 +65,7 @@ const Router = () => {
                 <Route path="/my-trips/edit" element={<TravelItineraryEdit/>} />
 
                 <Route path="/who-we-are" element={<WhoWeAre />} />
-                <Route path="/work-with-us" element={<WorkWithUs />} />
+                <Route path="/join-our-team" element={<WorkWithUs />} />
             </Routes>
         </>
     );

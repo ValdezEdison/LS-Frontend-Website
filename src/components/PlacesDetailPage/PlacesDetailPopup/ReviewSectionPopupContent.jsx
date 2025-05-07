@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MuseumModal.module.css';
-import { Star, StarFill } from "../../common/Images";
+import { Profilecircle, ProfilePlaceholder, Star, StarFill } from "../../common/Images";
 
 const ReviewSectionPopupContent = ({ placeDetails, reviews }) => {
   const renderStars = (rating) => {
@@ -35,7 +35,7 @@ const ReviewSectionPopupContent = ({ placeDetails, reviews }) => {
             </div>
             <div className={styles.reviewerInfo}>
               <img
-                src={review.user.profile_picture.thumbnail}
+                src={review.user.profile_picture.original || ProfilePlaceholder}
                 alt={review.user.username}
                 className={styles.reviewerAvatar}
               />

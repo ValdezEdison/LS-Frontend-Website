@@ -7,6 +7,7 @@ import { Star, StarFill } from "../common/Images"
 import { startsWith } from "lodash";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { ProfilePlaceholder } from "../common/Images";
 
 const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handleClickEditComment, handleClickDeleteComment, comments, placeDetails }) => {
 
@@ -77,7 +78,7 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handl
                 <div className={styles.reviewHeader}>
                   <div className={styles.reviewHeaderLeft}>
                   <img
-                    src={comment.user?.profile_picture?.thumbnail || "default-avatar.png"}
+                    src={comment.user?.profile_picture?.original || ProfilePlaceholder}
                     alt="User avatar"
                     className={styles.avatar}
                   />

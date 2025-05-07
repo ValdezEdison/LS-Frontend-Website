@@ -1,0 +1,131 @@
+.modalOverlay {
+  background-color: #0003;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 627px;
+  padding: 15px 40px 40px 40px;
+  position: relative;
+}
+
+.profileImageContainer {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  border: 2px solid #f4c031;
+  background-color: lightgray;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalTitle {
+  color: #151820;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  top: 40px;
+  left: 230px;
+  margin: 0;
+}
+
+.changeButton {
+  color: #212d94;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  background: none;
+  border: none;
+}
+
+.saveButton {
+  color: #151820;
+  cursor: pointer;
+  background-color: #f4c031;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  align-self: flex-end;
+  transition: all ease .3s;
+}
+
+.saveButton:hover {
+  background-color: #e4b230;
+}
+
+.closeButton {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 5;
+}
+
+.closeIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.profileImageUploadWrapper{
+  display: flex;
+  gap: 40px;
+}
+
+.profileImageUploadWrapperRight{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profileImageUploadWrapperRight h3{
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.profileImageUploadWrapperLeft{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+
+@media (max-width:480px) {
+  .modalContent {
+    padding: 20px;
+  }
+
+  .profileImageContainer{
+    width: 90px;
+    height:90px;
+  }
+
+  .saveButton{
+    padding: 10px;
+  }
+}

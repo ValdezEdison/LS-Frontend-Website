@@ -213,7 +213,8 @@ const TravelItineraryEdit = () => {
       hasStopsChangedRef.current = false; // Reset change flag
       previousSitesRef.current = formState.sites; // Update reference
     }
-
+   
+    const currentCityIds = formState.destinations.map(d => d.destinationId);
      // Update cities if changed
      if (hasCitiesChangedRef.current) {
       dispatch(updateCities({ 

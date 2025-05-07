@@ -81,4 +81,30 @@ export const resendVerificationMail = createAsyncThunk(
       return rejectWithValue(handleApiError(error));
     } 
   }
-)
+);
+
+export const updateProfile = createAsyncThunk(
+  'auth/updateProfile',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await authService.updateProfile(userData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const updateProfilePicture = createAsyncThunk(
+  'auth/updateProfilePicture',
+  async (file, { rejectWithValue }) => {
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+    try {
+      const response = await authService.updateProfilePicture(formData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);

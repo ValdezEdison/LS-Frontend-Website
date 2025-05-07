@@ -694,9 +694,10 @@ const PlaceDetails = () => {
             {isLoading ? (
               <Skeleton count={5} />
             ) : (
-              <p className={styles.museumDescription}>
-                {place?.description}
-              </p>
+              <p 
+              className={styles.museumDescription}
+              dangerouslySetInnerHTML={{ __html: place?.description?.replace(/\r\n/g, '<br />') }} 
+            />
             )}
 
             {isLoading ? (
