@@ -63,7 +63,7 @@ function ProfilePhotoPopup({
   return (
     // <div className={styles.modalOverlay}>
       <div className={`${styles.modalContent} ${styles.profileImageUploadWrapper}`}>
-        <h2 className={styles.modalTitle}>Update Profile Photo</h2>
+        {/* <h2 className={styles.modalTitle}>Update Profile Photo</h2> */}
        <div className={styles.profileImageUploadWrapperLeft}>
        <div className={styles.profileImageContainer}>
           <div className={styles.imagePreviewWrapper}>
