@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, Navigate, useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/ProfileSection/Sidebar";
@@ -17,6 +17,8 @@ import ProfilePhotoPopup from "../../components/popup/ProfileImage/ProfilePhotoM
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { toast } from 'react-toastify';
 import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
+import { LanguageContext } from "../../context/LanguageContext";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
   const { tab } = useParams();
@@ -24,9 +26,13 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const { language } = useContext(LanguageContext);
+  const { t } = useTranslation('Places');
+
   const { user, loading, error } = useSelector((state) => state.auth);
   const { phoneCodes } = useSelector((state) => state.countries);
   const { isOpen } = useSelector((state) => state.popup);
+  const { categories } = useSelector((state) => state.places);
 
   // State for personal details form
   const [personalDetails, setPersonalDetails] = useState({
@@ -50,7 +56,21 @@ const ProfilePage = () => {
     profileImage: false
   });
 
+  const [preferences, setPreferences] = useState({
+    language: "",
+    type: "event",
+    selectedLevel: "",
+    selectedCategory: "",
+    selectedSubcategory: "",
+  });
+
+  const [state, setState] = useState({
+    page: 1,
+    
+  });
+
   const isPreferencesTab = location.pathname === "/profile/preferences";
+  console.log(isPreferencesTab, 'isPreferencesTab', location.pathname);
   const isSecurityTab = location.pathname === "/profile/security";
   const isNotificationTab = location.pathname === "/profile/notifications";
   const isPrivacyTab = location.pathname === "/profile/privacy";
@@ -81,9 +101,11 @@ const ProfilePage = () => {
     dispatch(getProfile());
     dispatch(fetchCountriesPhonecodes());
     if(isPreferencesTab){
-      dispatch(fetchPlacesFilterCategories());
+      console.log('isPreferencesTab1');
+      dispatch(fetchPlacesFilterCategories({
+        page: state.page, type: preferences.type}));
     }
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   const handleTabChange = (newTab) => {
     navigate(`/profile/${newTab}`);
@@ -149,6 +171,53 @@ const ProfilePage = () => {
     }
   };
 
+
+
+  const filters = [
+    {
+        label: t('Filters.level'),
+        type: "select",
+        options: categories.map(category => ({ id: category.id, title: category.title })),
+        selectedId: preferences.selectedLevel,
+        onSelect: (value) => {
+            setPreferences((prevState) => ({
+                ...prevState,
+                selectedLevel: value,
+                selectedCategory: null,
+                selectedSubcategory: null,
+            }));
+        },
+    },
+    {
+        label: t('Filters.category'),
+        type: "select",
+        options: preferences.selectedLevel
+            ? categories.find(cat => cat.id === preferences.selectedLevel)?.categories || []
+            : [],
+        selectedId: preferences.selectedCategory,
+        onSelect: (value) => {
+            setPreferences((prevState) => ({
+                ...prevState,
+                selectedCategory: value,
+                selectedSubcategory: null,
+            }));
+        },
+    },
+    {
+        label: t('Filters.subcategory'),
+        type: "select",
+        options: preferences.selectedCategory
+            ? categories
+                .find(cat => cat.id === preferences.selectedLevel)
+                ?.categories.find(c => c.id === preferences.selectedCategory)?.subcategories || []
+            : [],
+        selectedId: preferences.selectedSubcategory,
+        onSelect: (value) => {
+            setPreferences((prevState) => ({ ...prevState, selectedSubcategory: value }));
+        },
+    },
+];
+
   const renderContent = () => {
     switch (tab) {
       case "personal":
@@ -163,7 +232,7 @@ const ProfilePage = () => {
           />
         );
       case "preferences":
-        return <PreferencesForm user={user} />;
+        return <PreferencesForm user={user} categories={categories} filters={filters}/>;
       case "security":
         return <SecurityContent />;
       case "privacy":
@@ -174,6 +243,8 @@ const ProfilePage = () => {
         return <Navigate to="/profile/personal" replace />;
     }
   };
+
+  
 
   return (
     <div className={styles.profilePage}>
