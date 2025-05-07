@@ -64,7 +64,7 @@ function ProfilePhotoPopup({
     // <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
    
-        
+        <h2 className={styles.modalTitle}>Update Profile Photo</h2>
         <div className={styles.profileImageContainer}>
           <div className={styles.imagePreviewWrapper}>
             <img

@@ -177,7 +177,7 @@ const ProfilePage = () => {
       <Footer />
 
       {popupState.profileImage && isOpen && (
-        <Modal title="Update Profile Photo" customClass="modalSmTypeOne" onClose={() => togglePopup("profileImage", false)}>
+        <Modal title="" customClass="modalSmTypeOne" onClose={() => togglePopup("profileImage", false)}>
           <ProfilePhotoPopup
             onSave={handleProfilePhotoUpdate}
             currentPhoto={user?.profile_picture?.original}

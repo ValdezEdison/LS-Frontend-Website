@@ -40,7 +40,7 @@ const articles = [
   },
 ];
 
-const ArticlesSection = () => {
+const ArticlesSection = ({posts}) => {
   return (
     <section className={styles.articlesSection}>
       <div className="page-center">
