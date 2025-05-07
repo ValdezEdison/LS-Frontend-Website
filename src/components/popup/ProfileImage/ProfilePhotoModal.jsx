@@ -62,10 +62,10 @@ function ProfilePhotoPopup({
 
   return (
     // <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+      <div className={`${styles.modalContent} ${styles.profileImageUploadWrapper}`}>
    
-        
-        <div className={styles.profileImageContainer}>
+       <div className={styles.profileImageUploadWrapperLeft}>
+       <div className={styles.profileImageContainer}>
           <div className={styles.imagePreviewWrapper}>
             <img
               src={previewUrl}
@@ -87,19 +87,18 @@ function ProfilePhotoPopup({
             style={{ display: 'none' }}
           />
         </div>
-        
-      
-        
-    
-        
-        <div className={styles.buttonGroup}>
-          <button 
+       <button 
             className={styles.changeButton} 
             onClick={handleChangeClick}
             disabled={loading}
           >
             {selectedFile ? "Change Photo" : "Select Photo"}
           </button>
+       </div>
+        
+        
+        <div className={styles.profileImageUploadWrapperRight}>
+          <h3>Sube una foto</h3>
           <button 
             className={styles.saveButton} 
             onClick={handleSave}
@@ -108,8 +107,6 @@ function ProfilePhotoPopup({
             {loading ? "Uploading..." : "Save Changes"}
           </button>
         </div>
-        
-       
       </div>
     // </div>
   );

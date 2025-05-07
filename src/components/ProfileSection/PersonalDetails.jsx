@@ -132,12 +132,12 @@ const PersonalDetails = ({
             Update your personal information by editing the profile
           </p>
         </div>
-        <div className={styles.profileImageWrapper} onClick={onProfilePhotoClick}>
-          {!user.profile_picture?.original && <div className={styles.galleryEditOverlay}>
-            <div className={styles.galleryEdit}>
+        <div className={styles.profileImageWrapper}>
+         <div className={styles.galleryEditOverlay}>
+            <div className={styles.galleryEdit} onClick={onProfilePhotoClick}>
             </div>
           </div>
-          }
+         
           <img
             src={user.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
             alt="Profile"
