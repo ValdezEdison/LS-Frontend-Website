@@ -2,6 +2,7 @@ import React, { useContext} from "react";
 import styles from "./TripCard.module.css";
 import { useTranslation } from "react-i18next";
 import { LanguageContext } from "../../context/LanguageContext";
+import { PlaceHolderImg2 } from "../common/Images";
 
 
 const TripCard = ({ trip, isPast, handleActions }) => {
@@ -12,7 +13,7 @@ const TripCard = ({ trip, isPast, handleActions }) => {
   const { currentLanguage } = useContext(LanguageContext);
 
   const firstCity = trip.cities?.[0];
-  const firstImage = firstCity?.images?.[0]?.thumbnail;
+  const firstImage = firstCity?.images?.[0]?.original;
   const title = trip.title || `${firstCity?.name || t('tripCard.defaultTitle')} ${t('tripCard.defaultTitle')}`;
 
     // Function to format date as "Month Day, Year"
@@ -61,11 +62,11 @@ const TripCard = ({ trip, isPast, handleActions }) => {
     <div className={styles.tripCard} onClick={(e) => handleActions(e, 'showTripDetails', trip.id)}>
       <div className={styles.tripInfo}>
         <img 
-          src={firstImage || 'default-image-url'} 
+          src={firstImage || PlaceHolderImg2} 
           alt={title} 
           className={styles.tripImage}
           onError={(e) => {
-            e.target.src = 'default-image-url';
+            e.target.src = PlaceHolderImg2;
           }}
         />
         <div className={styles.tripDetails}>

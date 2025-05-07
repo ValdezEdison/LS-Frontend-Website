@@ -120,6 +120,7 @@ const ProfilePage = () => {
       if (result.type === "auth/updateProfilePicture/fulfilled") {
         if (result.payload?.detail) {
           toast.success(result.payload.detail);
+          dispatch(getProfile());
         }
         // You might want to refresh user data here
         // dispatch(fetchUserData());

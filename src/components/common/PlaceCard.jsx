@@ -79,7 +79,7 @@ const PlaceCard = forwardRef(
                         </div>
                     )}
                     <img
-                        src={place?.images?.[0]?.midsize || place?.image?.midsize || PlaceHolderImg2}
+                        src={place?.images?.[0]?.original || place?.image?.original || PlaceHolderImg2}
                         alt={place?.display_text || place?.title || translate("placeCard.place_image")}
                         className={styles.placeImage}
                     />
@@ -102,7 +102,7 @@ const PlaceCard = forwardRef(
 
                         </div>
 
-                        {!isItineraryPage && <><p className={styles.placeLocation}>
+                        {(isPopup || !isItineraryPage) && <><p className={styles.placeLocation}>
                             {place?.city?.name}
                             {place?.city?.name && place?.city?.country?.name && ", "}
                             {place?.city?.country?.name}
@@ -119,6 +119,20 @@ const PlaceCard = forwardRef(
 
 
                     {/* Conditionally render the stops and views section */}
+                    {!isPopup && hasStopsOrTags && !hasComments && isItineraryPage && (
+                    <div className={styles.placeStopsTags}>
+                        <p className={styles.placeItenary}>{translate("placeCard.itinerary")}</p>
+                        {(() => {
+                        const { city, country } = getLocationInfo(place);
+                        return (
+                            <p className={styles.placeLocation}>
+                            {city}
+                            {country && `, ${country}`}
+                            </p>
+                        );
+                        })()}
+                    </div>
+                    )}
                     
 
                     {/* Conditionally render the rating section */}

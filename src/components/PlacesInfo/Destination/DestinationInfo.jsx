@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./DestinationInfo.module.css";
 import SubNavMenu from "../../common/SubNavMenu";
 import { useTranslation } from "react-i18next";
+import { PlaceHolderImg2 } from "../../common/Images";
 
 const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
   if (!destination) return null;
@@ -32,7 +33,7 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
             {images.map((img, index) => (
               <img
                 key={index}
-                src={img.midsize || img.original}
+                src={img.original || PlaceHolderImg2}
                 alt={`Image ${index + 1} of ${name}`}
                 className={styles.galleryImage}
               />
@@ -49,7 +50,11 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
           )}
         </div>
 
-        <p className={styles.description}>{description}</p>
+        {/* <p className={styles.description}>{description}</p> */}
+        <p 
+          className={styles.description}
+          dangerouslySetInnerHTML={{ __html: description?.replace(/\r\n/g, '<br />') }} 
+        />
 
         <div className={styles.coordinates}>
       

@@ -133,7 +133,7 @@ const PersonalDetails = ({
           </p>
         </div>
         <div className={styles.profileImageWrapper} onClick={onProfilePhotoClick}>
-          {user.profile_picture?.original && <div className={styles.galleryEditOverlay}>
+          {!user.profile_picture?.original && <div className={styles.galleryEditOverlay}>
             <div className={styles.galleryEdit}>
             </div>
           </div>
