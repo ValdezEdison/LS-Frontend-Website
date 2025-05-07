@@ -13,10 +13,10 @@ const CmsInstance = axios.create({
 
 const WordPressInstance = axios.create({
   baseURL: config.api.wordPressBaseUrl,
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
+  // headers: {
+  //   'Accept': 'application/json',
+  //   'Content-Type': 'application/json'
+  // }
 });
 
 const languageData = getLanguageData();
