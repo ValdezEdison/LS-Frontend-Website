@@ -13,7 +13,7 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // Default number of slides to show
+    slidesToShow: 4, // Default number of slides to show
     slidesToScroll: 1,
     responsive: [
       {
