@@ -24,7 +24,7 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
 
   return (
     <section className={styles.destinationInfo}>
-      <div className="page-center">
+      {/* <div className="page-center"> */}
         <h1 className={styles.title}>{name}, {country?.name}</h1>
         <SubNavMenu activeLink="destino" />
         
@@ -59,7 +59,7 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
         <div className={styles.coordinates}>
       
         </div>
-      </div>
+      {/* </div> */}
     </section>
   );
 };
