@@ -114,7 +114,7 @@ const EmailConfirmationPage = () => {
     return (
         <div className={`${styles.registrationPage} ${styles.authPage}`}>
             <Header />
-            {true &&(
+            {isOpen && emailConfirmation?.isConfirmPopupOpen && emailConfirmation?.email && (
                 <Modal 
                     onClose={handleConfirmationClose} 
                     customClass="modalMd"

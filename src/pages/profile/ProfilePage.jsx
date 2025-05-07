@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate, useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/ProfileSection/Sidebar";
 import PersonalDetails from "../../components/ProfileSection/PersonalDetails";
@@ -16,11 +16,13 @@ import Modal from "../../components/modal/Modal";
 import ProfilePhotoPopup from "../../components/popup/ProfileImage/ProfilePhotoModal";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import { toast } from 'react-toastify';
+import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 
 const ProfilePage = () => {
   const { tab } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { user, loading, error } = useSelector((state) => state.auth);
   const { phoneCodes } = useSelector((state) => state.countries);
@@ -48,6 +50,11 @@ const ProfilePage = () => {
     profileImage: false
   });
 
+  const isPreferencesTab = location.pathname === "/profile/preferences";
+  const isSecurityTab = location.pathname === "/profile/security";
+  const isNotificationTab = location.pathname === "/profile/notifications";
+  const isPrivacyTab = location.pathname === "/profile/privacy";
+
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
@@ -73,6 +80,9 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(getProfile());
     dispatch(fetchCountriesPhonecodes());
+    if(isPreferencesTab){
+      dispatch(fetchPlacesFilterCategories());
+    }
   }, [dispatch]);
 
   const handleTabChange = (newTab) => {

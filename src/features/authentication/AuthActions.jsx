@@ -18,7 +18,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 export const register = createAsyncThunk('users/create', async (userData, { rejectWithValue }) => {
   try {
     const response = await authService.register(userData);
-    setAuthTokens(response, false); // Default to session-only for new registrations
+    // setAuthTokens(response, false); // Default to session-only for new registrations
     return response;
   } catch (error) {
     return rejectWithValue(handleApiError(error));
