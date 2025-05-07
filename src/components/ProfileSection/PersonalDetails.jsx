@@ -82,23 +82,23 @@ const PersonalDetails = ({
   const details = [
     { 
       label: "Profile Type", 
-      value: user.current_trip.type || "Not provided", 
+      value: user?.current_trip?.type || "Not provided", 
       action: "Info" 
     },
     { 
       label: "Name", 
-      value: `${user.first_name} ${user.last_name}` || "Not provided", 
+      value: `${user?.first_name} ${user?.last_name}` || "Not provided", 
       action: "Edit" 
     },
     {
       label: "Email Address",
-      value: user.email || "Not provided",
+      value: user?.email || "Not provided",
       action: "none", // Changed to "none" to hide button
       verified: true,
     },
     { 
       label: "Phone Number", 
-      value: user.phone ? `+${user.phone_prefix} ${user.phone}` : "Not provided", 
+      value: user?.phone ? `+${user?.phone_prefix} ${user?.phone}` : "Not provided", 
       action: "Edit" 
     },
     // {
@@ -139,7 +139,7 @@ const PersonalDetails = ({
           </div>
          
           <img
-            src={user.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
+            src={user?.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
             alt="Profile"
             className={styles.profileImage}
             onError={(e) => {
