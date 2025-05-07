@@ -51,7 +51,7 @@ const HomePage = () => {
       dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
       dispatch(fetchOurPartners(languageId));
-      dispatch(fetchPosts({ per_page: 10 }));
+      dispatch(fetchPosts({ per_page: 20 }));
 
   }, [dispatch, language]);
 

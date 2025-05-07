@@ -33,6 +33,7 @@ const wordPressSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
+        console.log(action.payload, 'payload');
         state.loading = false;
         state.posts = action.payload.posts;
         state.pagination = {

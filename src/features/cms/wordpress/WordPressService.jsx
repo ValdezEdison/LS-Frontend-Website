@@ -7,31 +7,11 @@ const WordPressService = {
    * @returns {Promise} - Response with posts and headers
    */
   getPosts: async (params = {}) => {
-    const defaultParams = {
-      // _embed: true,       // Always embed linked resources
-      per_page: 4,       // Default to 4 posts per page (matches your API example)
-    //   page: 1,           // Default to first page
-    //   _fields: [
-    //     'id',
-    //     'title',
-    //     'excerpt',
-    //     'slug',
-    //     'date',
-    //     'modified',
-    //     'status',
-    //     'type',
-    //     'featured_media',
-    //     'categories',
-    //     'tags',
-    //     '_links',
-    //     '_embedded'
-    //   ].join(',')
-    };
+ 
   
     try {
       const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
         params: {
-          ...defaultParams,
           ...params,
           // Ensure _embed is always true unless explicitly disabled
           // _embed: params._embed === false ? false : true
@@ -39,21 +19,9 @@ const WordPressService = {
     
       });
   
-      // Transform the response data
-      const transformedData = response.data.map(post => ({
-        id: post.id,
-        title: post.title?.rendered || '',
-        excerpt: post.excerpt?.rendered || '',
-        slug: post.slug,
-        date: post.date,
-        modified: post.modified,
-        featuredMedia: post._embedded?.['wp:featuredmedia']?.[0],
-        categories: post._embedded?.['wp:term']?.[0] || [],
-        tags: post._embedded?.['wp:term']?.[1] || []
-      }));
-  
+   
       return {
-        posts: transformedData,
+        posts: response.data,
         pagination: {
           total: parseInt(response.headers['x-wp-total']) || 0,
           totalPages: parseInt(response.headers['x-wp-totalpages']) || 0,
