@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchHeroContent, fetchOurPartners } from "../../features/cms/Pages/PagesAction";
 import HeroSectionSkeleton from "../../components/skeleton/HomePage/HeroSectionSkeleton";
 import { fetchRandomSites } from "../../features/home/HomeAction";
-import { fetchPosts } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchTags } from "../../features/cms/wordpress/WordPressAction";
 
 const HomePage = () => {
   
@@ -42,7 +42,7 @@ const HomePage = () => {
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
   const { heroContent, loading: heroContentLoading, error: heroContentError, ourPartners, ourPartnersLoading, ourPartnersError } = useSelector((state) => state.cms.pages);
   const { randomPlaces, loading: randomPlacesLoading, error: randomPlacesError } = useSelector((state) => state.home);
-  const { posts, loading: postsLoading, error: postsError } = useSelector((state) => state.cms.wordpress);
+  const { posts, loading: postsLoading, error: postsError, tags } = useSelector((state) => state.cms.wordpress);
 
 
   // Fetch places on component mount
@@ -51,7 +51,8 @@ const HomePage = () => {
       dispatch(fetchEvents({ page: 1, type: "event" }));
       dispatch(fetchHeroContent(languageId));
       dispatch(fetchOurPartners(languageId));
-      dispatch(fetchPosts({ per_page: 20 }));
+      dispatch(fetchPosts({ per_page: 10 }));
+      dispatch(fetchTags({per_page: 100}));
 
   }, [dispatch, language]);
 
@@ -81,7 +82,7 @@ const handleNavActions = (e, id, action) => {
         buttonText="Saber más"
         imageSrc={LSLogo2_2}
       />
-      <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
+      <ArticlesSection title=" Inspiración para tus próximos viajes" posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
       <AppPromotion />
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />

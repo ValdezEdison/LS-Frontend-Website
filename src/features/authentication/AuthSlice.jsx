@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture } from "./AuthActions";
+import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount } from "./AuthActions";
 import { socialLogin } from "./socialLogin/SocialAuthAction";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -173,6 +173,42 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload; // Set the error from the rejected action
       state.isAuthenticated = false; // Ensure authenticated is false on error
+    })
+
+    // change password
+
+    .addCase(changePassword.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(changePassword.fulfilled, (state, action) => {
+      state.loading = false;
+      // state.user = action.payload;
+      state.isAuthenticated = true; // Set authenticated to true
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(changePassword.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+      state.isAuthenticated = false; // Ensure authenticated is false on error
+    })
+
+    // delete account
+
+    .addCase(deleteAccount.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(deleteAccount.fulfilled, (state, action) => {
+      state.loading = false;
+      // state.user = action.payload;
+      state.isAuthenticated = false; // Set authenticated to true
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(deleteAccount.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+      state.isAuthenticated = true; // Ensure authenticated is false on error
     })
       
   },

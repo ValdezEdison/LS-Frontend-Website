@@ -108,3 +108,28 @@ export const updateProfilePicture = createAsyncThunk(
     } 
   }
 );
+
+
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (passwordData, { rejectWithValue }) => {
+    try {
+      const response = await authService.changePassword(passwordData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const deleteAccount = createAsyncThunk(
+  'auth/deleteAccount',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.deleteAccount();
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
