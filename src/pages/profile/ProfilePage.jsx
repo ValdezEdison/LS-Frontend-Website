@@ -9,7 +9,7 @@ import PreferencesForm from "../../components/ProfileSection/PreferencesForm";
 import SecurityContent from "../../components/ProfileSection/SecurityContent";
 import NotificationForm from "../../components/ProfileSection/NotificationForm";
 import PrivacyContent from "../../components/ProfileSection/PrivacyContent";
-import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount } from "../../features/authentication/AuthActions";
+import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups } from "../../features/authentication/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
 import Modal from "../../components/modal/Modal";
@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useTranslation } from "react-i18next";
+import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 
 const ProfilePage = () => {
   const { tab } = useParams();
@@ -29,7 +30,8 @@ const ProfilePage = () => {
   const { language } = useContext(LanguageContext);
   const { t } = useTranslation('Places');
 
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { user,  loading: mainLoading, userLoading, error } = useSelector((state) => state.auth);
+  const loading = userLoading || mainLoading;
   const { phoneCodes } = useSelector((state) => state.countries);
   const { isOpen } = useSelector((state) => state.popup);
   const { categories } = useSelector((state) => state.places);
@@ -68,11 +70,11 @@ const ProfilePage = () => {
   });
 
   const [preferences, setPreferences] = useState({
-    language: "",
+    language: "es",
     type: "event",
-    selectedLevel: "",
-    selectedCategory: "",
-    selectedSubcategory: "",
+    levelId: null,     
+    categoryId: null,  
+    subcategoryId: null
   });
 
   const [state, setState] = useState({
@@ -114,10 +116,12 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(getProfile());
     dispatch(fetchCountriesPhonecodes());
+    dispatch(fetchUsersGroups());
     if(isPreferencesTab){
       dispatch(fetchPlacesFilterCategories({
         page: state.page, type: preferences.type}));
-    }
+      dispatch(fetchLanguages());
+    } 
   }, [dispatch, language]);
 
   const handleTabChange = (newTab) => {
@@ -253,50 +257,34 @@ const ProfilePage = () => {
     }
   };
 
-  const filters = [
-    {
-        label: t('Filters.level'),
-        type: "select",
-        options: categories.map(category => ({ id: category.id, title: category.title })),
-        selectedId: preferences.selectedLevel,
-        onSelect: (value) => {
-            setPreferences((prevState) => ({
-                ...prevState,
-                selectedLevel: value,
-                selectedCategory: null,
-                selectedSubcategory: null,
-            }));
-        },
-    },
-    {
-        label: t('Filters.category'),
-        type: "select",
-        options: preferences.selectedLevel
-            ? categories.find(cat => cat.id === preferences.selectedLevel)?.categories || []
-            : [],
-        selectedId: preferences.selectedCategory,
-        onSelect: (value) => {
-            setPreferences((prevState) => ({
-                ...prevState,
-                selectedCategory: value,
-                selectedSubcategory: null,
-            }));
-        },
-    },
-    {
-        label: t('Filters.subcategory'),
-        type: "select",
-        options: preferences.selectedCategory
-            ? categories
-                .find(cat => cat.id === preferences.selectedLevel)
-                ?.categories.find(c => c.id === preferences.selectedCategory)?.subcategories || []
-            : [],
-        selectedId: preferences.selectedSubcategory,
-        onSelect: (value) => {
-            setPreferences((prevState) => ({ ...prevState, selectedSubcategory: value }));
-        },
-    },
-  ];
+
+  const handleLevelChange = (levelId) => {
+    setPreferences(prev => ({
+      ...prev,
+      levelId,
+      categoryId: null,
+      subcategoryId: null,
+      page: 1
+    }));
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    setPreferences(prev => ({
+      ...prev,
+      categoryId,
+      subcategoryId: null,
+      page: 1
+    }));
+  };
+
+  const handleSubcategoryChange = (subcategoryId) => {
+    setPreferences(prev => ({
+      ...prev,
+      subcategoryId,
+      page: 1
+    }));
+  };
+
 
   const renderContent = () => {
     switch (tab) {
@@ -312,7 +300,7 @@ const ProfilePage = () => {
           />
         );
       case "preferences":
-        return <PreferencesForm user={user} categories={categories} filters={filters}/>;
+        return <PreferencesForm user={user} state={preferences} setState={setPreferences} categories={categories}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} />;
       case "security":
         return (
           <SecurityContent 

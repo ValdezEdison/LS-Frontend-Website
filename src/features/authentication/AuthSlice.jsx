@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount } from "./AuthActions";
+import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups } from "./AuthActions";
 import { socialLogin } from "./socialLogin/SocialAuthAction";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -10,6 +10,9 @@ const initialState = {
   loading: false,
   error: null,
   isAuthenticated: !!userToken,
+  userLoading: false,
+  groups: [],
+  groupsLoading: false
 };
 
 const authSlice = createSlice({
@@ -61,18 +64,18 @@ const authSlice = createSlice({
 
       // Get Profile
       .addCase(getProfile.pending, (state) => {
-        state.loading = true;
+        state.userLoading = true;
         state.error = null;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
-        state.loading = false;
+        state.userLoading = false;
         state.user = action.payload;
         state.isAuthenticated = true; // Set authenticated to true
         state.error = null; // Clear any previous errors
 
       })
       .addCase(getProfile.rejected, (state, action) => {
-        state.loading = false;
+        state.userLoading = false;
         state.error = action.payload; // Set the error from the rejected action
         state.isAuthenticated = false; // Ensure authenticated is false on error
       })
@@ -209,6 +212,20 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload; // Set the error from the rejected action
       state.isAuthenticated = true; // Ensure authenticated is false on error
+    })
+
+    .addCase(fetchUsersGroups.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(fetchUsersGroups.fulfilled, (state, action) => {
+      state.loading = false;
+      state.groups = action.payload;
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(fetchUsersGroups.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
     })
       
   },

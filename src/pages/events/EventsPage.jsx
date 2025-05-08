@@ -425,7 +425,7 @@ const EventsPage = () => {
           <PopularEvents />
           <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
         </main>
-        <Newsletter />
+        {isAuthenticated && <Newsletter />}
         <Footer />
       </div>
     </>

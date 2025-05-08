@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Sidebar.module.css'; // Assuming you have a CSS module for styles
 import { useTranslation } from 'react-i18next';
 
@@ -6,6 +6,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [visibleSubcategories, setVisibleSubcategories] = useState({});
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
 
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
@@ -165,6 +166,16 @@ const Filter = ({ categories, ratings, state, setState }) => {
     }));
   };
 
+  useEffect(() => {
+    const hasFilters = 
+      (state.levels && state.levels.length > 0) ||
+      (state.categories && state.categories.length > 0) ||
+      (state.subcategories && state.subcategories.length > 0) ||
+      (state.ratings && state.ratings.length > 0);
+    
+    setHasActiveFilters(hasFilters);
+  }, [state.levels, state.categories, state.subcategories, state.ratings]);
+
   const renderSubcategories = (subcategories, parentCategoryId, parentCategoryTitle, mainCategoryId) => {
     return subcategories.map((subcategory) => (
       <div key={subcategory.id} className='subCategoryList'>
@@ -190,9 +201,11 @@ const Filter = ({ categories, ratings, state, setState }) => {
   return (
     <div className={styles.filters}>
       <h2 className={styles.filterTitle}>{t("filter.filterBy")}</h2>
-      <div className={styles.clearFilters} onClick={clearFilters}>
-        {tCommon("removeFilters")}
-      </div>
+      {hasActiveFilters && (
+        <div className={styles.clearFilters} onClick={clearFilters}>
+          {tCommon("removeFilters")}
+        </div>
+      )}
       {categories.map((mainCategory) => (
         <div key={mainCategory.id} className={styles.mainCategory}>
           <div
@@ -240,7 +253,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
                   className={styles.seeMoreFilterItems}
                   onClick={() => toggleSubcategories(mainCategory.id)}
                 >
-                  {visibleSubcategories[mainCategory.id] ? 'See Less' : 'See More'}
+                  {visibleSubcategories[mainCategory.id] ? tCommon('seeLess') : tCommon('seeMore')}
                 </span>
               )}
             </div>

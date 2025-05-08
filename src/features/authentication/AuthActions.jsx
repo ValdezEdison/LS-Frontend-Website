@@ -133,3 +133,16 @@ export const deleteAccount = createAsyncThunk(
     } 
   }
 );
+
+
+export const fetchUsersGroups = createAsyncThunk(
+  'auth/fetchUsersGroups',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.usersGroups();
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);

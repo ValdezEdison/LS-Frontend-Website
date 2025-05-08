@@ -47,5 +47,7 @@
     "manageAccount": "Gestionar cuenta",
     "favorites": "Favoritos",
     "logout": "Cerrar sesión"
-  }
+  },
+  "seeMore": "Ver más",
+  "seeLess": "Ver menos"
 }
