@@ -3,11 +3,16 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./ArticlesSection.module.css";
-import { PlaceHolderImg2 } from "../common/Images";
+import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   const { t } = useTranslation("Common");
+
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
 
   // Slider settings
   const settings = {
@@ -42,7 +47,7 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   // Function to get the excerpt from yoast metadata
   const getExcerpt = (post) => {
     if (post.yoast_head_json?.description) {
-      return post.yoast_head_json.description;
+      return post.yoast_head_json.description.replace(/<[^>]*>?/gm, '').trim();
     }
     if (post.excerpt?.rendered) {
       return post.excerpt.rendered.replace(/<[^>]*>?/gm, '').trim();
@@ -59,10 +64,10 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   };
 
   return (
-    <section className={styles.articlesSection}>
+    <section className={`${styles.articlesSection} ${isHomePage ? styles.homeArticlesSection : ''}`}>
       <div className="page-center">
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
+          <h2 className={`${styles.sectionTitle} ${isHomePage ? styles.homeTitle : ''}`}>
             Inspiración para tus próximos viajes
           </h2>
           {seeMore && (

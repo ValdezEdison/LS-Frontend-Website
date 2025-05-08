@@ -3,7 +3,7 @@ import Header from "../../components/layouts/Header";
 import HeroSection from "../../components/layouts/HeroSection";
 import PlacesSection from "../../components/HomePage/PlacesSection";
 import EventsSection from "../../components/HomePage/EventsSection";
-import ArticlesSection from "../../components/HomePage/ArticlesSection";
+import ArticlesSection from "../../components/common/ArticlesSection";
 import PartnersSection from "../../components/common/PartnersSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
@@ -59,6 +59,14 @@ const handleNavigateToLogin = () => {
   navigate('/login', { state: { from: '/' } });
 }
 
+const handleNavActions = (e, id, action) => {
+  if(action === "viewDetail") {
+    navigate('/places/details', { state: { id } });
+  }else if(action === "viewList") {
+    navigate('/blog');
+  }
+}
+
   return (
     <div className={styles.homePage}>
       <Header />
@@ -73,7 +81,7 @@ const handleNavigateToLogin = () => {
         buttonText="Saber más"
         imageSrc={LSLogo2_2}
       />
-      <ArticlesSection posts={posts}/>
+      <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
       <AppPromotion />
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />
