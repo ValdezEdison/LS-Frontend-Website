@@ -182,6 +182,16 @@
   outline: none;
 }
 
+.filterSection label{
+  margin-bottom: 6px;
+  display: inline-block;
+  color: var(--Negro-blue, #151820);
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
 .editInput{
   max-width: 358px;
   width: 100%;

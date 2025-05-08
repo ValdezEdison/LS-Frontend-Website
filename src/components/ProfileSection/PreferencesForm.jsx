@@ -281,7 +281,7 @@ const PreferencesForm = ({
 
             {/* Level Selection */}
             <div className={styles.filterSection}>
-              <h3 className={styles.title}>Nivel</h3>
+              <label>Nivel</label>
               <div className={styles.dropdown} ref={levelDropdownRef}>
                 <div
                   className={styles.filterBlock}
