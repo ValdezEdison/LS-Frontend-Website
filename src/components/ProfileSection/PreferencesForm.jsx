@@ -48,7 +48,7 @@ const PreferencesForm = ({ user, categories, filters }) => {
             <h2>Idioma</h2>
             {editingField === 'language' ? (
               <div className={styles.radioGroup}>
-                <label className={styles.radioLabel}>
+                {/* <label className={styles.radioLabel}>
                   <input
                     type="radio"
                     name="language"
@@ -62,8 +62,24 @@ const PreferencesForm = ({ user, categories, filters }) => {
                     className={styles.flagSmall} 
                   />
                   <span>Español</span>
+                </label> */}
+                <label className={styles.languageRadioContainer + " radioContainer"}>
+                  <input
+                    type="radio"
+                    name="language"
+                    value="es"
+                    checked={formData.language === "es"}
+                    onChange={handleInputChange}
+                  />
+                  <span className="checkmark"></span>
+                  <img 
+                    src="https://flagcdn.com/w20/es.png" 
+                    alt="Español" 
+                    className={styles.flagSmall} 
+                  />
+                  <span>Español</span>
                 </label>
-                <label className={styles.radioLabel}>
+                {/* <label className={styles.radioLabel}>
                   <input
                     type="radio"
                     name="language"
@@ -71,6 +87,22 @@ const PreferencesForm = ({ user, categories, filters }) => {
                     checked={formData.language === "en"}
                     onChange={handleInputChange}
                   />
+                  <img 
+                    src="https://flagcdn.com/w20/gb.png" 
+                    alt="English" 
+                    className={styles.flagSmall} 
+                  />
+                  <span>English</span>
+                </label> */}
+                 <label className={styles.languageRadioContainer + " radioContainer"}>
+                  <input
+                    type="radio"
+                    name="language"
+                    value="en"
+                    checked={formData.language === "en"}
+                    onChange={handleInputChange}
+                  />
+                  <span className="checkmark"></span>
                   <img 
                     src="https://flagcdn.com/w20/gb.png" 
                     alt="English" 
@@ -97,9 +129,9 @@ const PreferencesForm = ({ user, categories, filters }) => {
               <a href="#" className={styles.editLink} onClick={handleCancel}>
                 Cancelar
               </a>
-              <a href="#" className={styles.editLink} onClick={handleSave}>
+              {/* <a href="#" className={styles.editLink} onClick={handleSave}>
                 Guardar
-              </a>
+              </a> */}
             </div>
           ) : (
             <a href="#" className={styles.editLink} onClick={() => handleEditClick('language')}>
@@ -107,13 +139,21 @@ const PreferencesForm = ({ user, categories, filters }) => {
             </a>
           )}
         </div>
+        <div className={styles.saveButtonWrapper}>
+                      <button 
+                        className={styles.saveButton}
+                        onClick={handleSave}
+                      >
+                        Guardar
+                      </button>
+                    </div>
       </section>
 
       <section className={styles.suggestionsSection}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionHeaderLeft}>
             <h2>Sugerencias</h2>
-            <span>Escribe una sugerencia</span>
+            <span className={styles.suggestionsText}>Escribe una sugerencia</span>
           </div>
           {editingField === 'suggestion' ? (
             <div className={styles.editActions}>
@@ -146,7 +186,7 @@ const PreferencesForm = ({ user, categories, filters }) => {
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className={styles.input}
+                className={styles.editInput}
                 placeholder="Escribe un título"
                 required
               />
@@ -161,7 +201,7 @@ const PreferencesForm = ({ user, categories, filters }) => {
             <label className={styles.label}>Tipo de actividad</label>
             {editingField === 'suggestion' ? (
               <div className={styles.radioGroup}>
-                <label className={styles.radioLabel}>
+                {/* <label className={styles.radioLabel}>
                   <input
                     type="radio"
                     name="activity"
@@ -170,8 +210,19 @@ const PreferencesForm = ({ user, categories, filters }) => {
                     onChange={handleInputChange}
                   />
                   <span>Evento</span>
+                </label> */}
+                 <label className={styles.languageRadioContainer + " radioContainer"}>
+                  <input
+                    type="radio"
+                    name="activity"
+                    value="event"
+                    checked={formData.activity === "event"}
+                    onChange={handleInputChange}
+                  />
+                  <span className="checkmark"></span>
+                  <span>Evento</span>
                 </label>
-                <label className={styles.radioLabel}>
+                {/* <label className={styles.radioLabel}>
                   <input
                     type="radio"
                     name="activity"
@@ -179,6 +230,17 @@ const PreferencesForm = ({ user, categories, filters }) => {
                     checked={formData.activity === "place"}
                     onChange={handleInputChange}
                   />
+                  <span>Lugar</span>
+                </label> */}
+                <label className={styles.languageRadioContainer + " radioContainer"}>
+                  <input
+                    type="radio"
+                    name="activity"
+                    value="place"
+                    checked={formData.activity === "place"}
+                    onChange={handleInputChange}
+                  />
+                  <span className="checkmark"></span>
                   <span>Lugar</span>
                 </label>
               </div>
@@ -190,7 +252,8 @@ const PreferencesForm = ({ user, categories, filters }) => {
           </div>
           
           {editingField === 'suggestion' && <FilterBar filters={filters} />}
-          <button type="submit" className={styles.submitButton}>
+
+          <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
             Enviar
           </button>
         </form>
