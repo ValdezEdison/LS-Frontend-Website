@@ -5,6 +5,12 @@
 .mainWrapper {
   width: 100%;
 }
+
+.viewMore{
+  color: #000;
+  cursor: pointer;
+  text-decoration: underline;
+}
 @media (width<=991px) {
   .mainWrapper {
     max-width: 100%;
