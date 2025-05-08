@@ -12,6 +12,7 @@ function BlogTags({ tags }) {
           {tag.name}
         </button>
       ))}
+      <span className={styles.viewMore}>More</span>
     </div>
   );
 }
