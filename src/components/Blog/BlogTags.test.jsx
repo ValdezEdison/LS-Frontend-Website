@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import BlogCategories from "./BlogCategories";
+import BlogTags from "./BlogTags";
 
-describe("BlogCategories Component", () => {
+describe("BlogTags Component", () => {
   test("renders all category buttons", () => {
-    render(<BlogCategories />);
+    render(<BlogTags />);
 
     // Check if all category buttons are rendered
     expect(screen.getByText("Todos (120 post)")).toBeInTheDocument();
@@ -16,7 +16,7 @@ describe("BlogCategories Component", () => {
   });
 
   test("buttons are clickable", () => {
-    render(<BlogCategories />);
+    render(<BlogTags />);
 
     // Get all buttons
     const allButtons = [

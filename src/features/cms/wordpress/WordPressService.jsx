@@ -56,12 +56,9 @@ const WordPressService = {
    * Get all categories
    * @returns {Promise} - Array of categories
    */
-  getCategories: async () => {
-    const response = await WordPressInstance.get('/categories', {
-      params: {
-        per_page: 100,
-        _fields: 'id,name,slug,count'
-      }
+  getCategories: async (params) => {
+    const response = await WordPressInstance.get('/wp-json/wp/v2/categories', {
+      params
     });
     return response.data;
   },
@@ -73,6 +70,33 @@ const WordPressService = {
    */
   getMedia: async (id) => {
     const response = await WordPressInstance.get(`/media/${id}`);
+    return response.data;
+  },
+  getPostsByCategory: async (params) => {
+    const { categoryId, page = 1, perPage = 10 } = params;
+    const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
+      params: {
+        categories: categoryId,
+        page,
+        per_page: perPage,
+        // _embed: true
+      }
+    });
+    
+    return {
+      categoryId,
+      posts: response.data,
+      pagination: {
+        total: parseInt(response.headers['x-wp-total'], 10) || 0,
+        totalPages: parseInt(response.headers['x-wp-totalpages'], 10) || 0,
+        currentPage: page
+      }
+    };
+  },
+  getTags: async (params) => {
+    const response = await WordPressInstance.get('/wp-json/wp/v2/tags', {
+      params
+    });
     return response.data;
   }
 };

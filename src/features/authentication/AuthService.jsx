@@ -37,6 +37,13 @@ const authService = {
   updateProfilePicture: async (userData) => {
     return apiService.post('/users/update_pfp', userData);
   },
+
+  changePassword: async (userData) => {
+    return apiService.post('/users/update_password', userData);
+  },
+  deleteAccount: async () => {
+    return apiService.post('/users/delete');
+  }
 };
 
 export default authService; 

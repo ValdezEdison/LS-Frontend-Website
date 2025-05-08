@@ -2,25 +2,39 @@
 import React, { useEffect } from "react";
 import styles from "./BlogPage.module.css";
 import Header from "../../components/layouts/Header";
-import BlogCategories from "../../components/Blog/BlogCategories";
 import BlogPostCard from "../../components/Blog/BlogPostCard";
 import BlogSection from "../../components/Blog/BlogSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
 import ArticlesSection from "../../components/common/ArticlesSection";
-import { fetchPosts } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags } from "../../features/cms/wordpress/WordPressAction";
 import { useDispatch, useSelector } from "react-redux";
+import BlogTags from "../../components/Blog/BlogTags";
 
 function BlogPage() {
 
   const dispatch = useDispatch();
 
-   const { posts, loading: postsLoading, error: postsError } = useSelector((state) => state.cms.wordpress);
+   const { posts, loading: postsLoading, error: postsError, categories, postsByCategory, tags } = useSelector((state) => state.cms.wordpress);
  
 
   useEffect(() => {
     dispatch(fetchPosts({ per_page: 20 }));
+    dispatch(fetchTags({per_page: 100}));
+    dispatch(fetchCategories({per_page: 100})).then((action) => {
+      if (action.payload) {
+        // Fetch posts for each category
+        action.payload.forEach(category => {
+          dispatch(fetchPostsByCategory({ 
+            categoryId: category.id,
+           
+          }));
+        });
+      }
+    });
   }, [dispatch]);
+
+
 
   const handleNavActions = (e, id, action) => {
     if(action === "viewDetail") {
@@ -41,17 +55,29 @@ function BlogPage() {
               <div className="page-center">
                 <div className={styles.blogHeaderWrapper}>
                   <h1 className={styles.blogTitle}>Blog de Local Secrets</h1>
-                  <BlogCategories />
+                  <BlogTags tags={tags} />
                 </div>
                 {/* <h2 className={styles.sectionTitle}>Últimos artículos</h2> */}
               </div>
 
              
             </div>
-            <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
-            <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
-            <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
-            <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
+            {categories.map((category) => {
+              const categoryPosts = postsByCategory[category.id] || [];
+              if (categoryPosts.length > 0) {
+                return (
+                  <ArticlesSection 
+                    key={category.id} 
+                    title={category.name} 
+                    posts={categoryPosts} 
+                    seeMore={true} 
+                    handleNavActions={handleNavActions}
+                    tags={tags}
+                  />
+                );
+              }
+            })}
+
           
 
         </main>

@@ -18,7 +18,7 @@ const PlacesSection = ({ places = [] }) => {
         alt={place.display_text}
         className={styles.placeImage}  onClick={() => handleNavigate(place)}
       />
-      <p className={styles.placeName}  onClick={() => handleNavigate(place)}>{place.display_text}</p>
+      <p className={styles.placeName}  onClick={() => handleNavigate(place)}>{place.display_text || place?.title}</p>
     </div>
   );
 

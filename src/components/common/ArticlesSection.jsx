@@ -7,7 +7,7 @@ import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
+const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags }) => {
   const { t } = useTranslation("Common");
 
   const location = useLocation();
@@ -18,19 +18,23 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4, // Default number of slides to show
+    slidesToShow: Math.min(4, posts.length),
     slidesToScroll: 1,
+    arrows: posts.length > 4,
+
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, posts.length),
+          arrows: posts.length > 2,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: Math.min(1, posts.length),
+          arrows: posts.length > 1,
         },
       },
     ],
@@ -56,35 +60,40 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   };
 
   // Function to get the primary category/tag
-  const getPrimaryTag = (post) => {
-    if (post.yoast_head_json?.author) {
-      return post.yoast_head_json.author;
-    }
-    return post.categories?.length ? 'Destino' : 'Local secret';
+  const getPrimaryTag = (postTag) => {
+
+
+    return postTag
+      .map(tagId => tags.find(tag => tag.id === tagId)) // Find matching tag objects
+      .filter(Boolean) // Remove undefined (if a tag wasn't found)
+      .map(tag => tag.name);
+
   };
+
+  console.log(tags, 'tagssssssssssssssssssssssssssss');
 
   return (
     <section className={`${styles.articlesSection} ${isBlogPage ? styles.blogArticlesSection : ''}`}>
       <div className="page-center">
         <div className={styles.sectionHeader}>
           <h2 className={`${styles.sectionTitle} ${isBlogPage ? styles.blogTitle : ''}`}>
-            Inspiración para tus próximos viajes
+            {title}
           </h2>
-          {seeMore && (
-            <div 
-              className={styles.seeMoreLink} 
+          {seeMore && posts.length > 4 && (
+            <div
+              className={styles.seeMoreLink}
               onClick={(e) => handleNavActions(e, null, "viewList")}
             >
               {t('seeMore')}
             </div>
           )}
         </div>
-        
+
         {posts.length > 0 ? (
           <Slider {...settings} className={styles.articlesSlider}>
             {posts.map((post) => (
-              <div 
-                key={post.id} 
+              <div
+                key={post.id}
                 className={styles.articleCard}
                 onClick={(e) => handleNavActions(e, post.id, "viewDetail")}
               >
@@ -96,9 +105,20 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
                     e.target.src = PlaceHolderImg2;
                   }}
                 />
-                <div className={styles.articleTag}>
-                  {getPrimaryTag(post)}
-                </div>
+                {post.tags?.length > 0 && (
+                  <div className={styles.tagsContainer}>
+                    {post.tags.map(tagId => {
+                      const tag = tags.find(t => t.id === tagId);
+                      console.log(tag, 'tag');
+                      return tag ? (
+                        <span key={tagId} className={styles.articleTag}>
+                          {tag.name}
+                        </span>
+                      ) : null;
+                    })}
+                  </div>
+                )}
+
                 <h3 className={styles.articleTitle}>{post.yoast_head_json?.title || post.title.rendered}</h3>
                 <p className={styles.articleExcerpt}>{getExcerpt(post)}</p>
               </div>
