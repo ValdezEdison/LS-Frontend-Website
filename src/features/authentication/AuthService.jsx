@@ -43,7 +43,10 @@ const authService = {
   },
   deleteAccount: async () => {
     return apiService.post('/users/delete');
-  }
+  },
+  usersGroups: async () => {
+    return apiService.get('/users/groups');
+  },
 };
 
 export default authService; 
