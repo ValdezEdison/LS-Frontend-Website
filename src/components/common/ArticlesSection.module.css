@@ -92,6 +92,12 @@
   line-height: 16px;
   font-weight: 400;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 @media (max-width: 991px) {
