@@ -86,10 +86,37 @@ const SecurityContent = ({
               <h2 className={styles.sectionTitle}>{section.title}</h2>
               <p className={styles.sectionDescription}>{section.description}</p>
               
-              {editingField === section.id && section.fields.length > 0 && (
+             
+            </div>
+
+            
+            
+            {section.action === "none" ? null : editingField === section.id ? (
+              <div className={styles.editActions}>
+                <button 
+                  className={`${styles.actionButton} ${styles.cancelButton}`}
+                  onClick={onCancel}
+                >
+                  Cancel
+                </button>
+               
+              </div>
+            ) : (
+              <button 
+                className={styles.actionButton}
+                onClick={() => onEdit(section.id)}
+                disabled={section.action !== "edit"}
+              >
+                {section.buttonText}
+              </button>
+            )}
+          </section>
+          <div className="editFormWrapper">
+            {editingField === section.id && section.fields.length > 0 && (
+              <>
                 <div className={styles.editFields}>
                   {section.fields.map(field => (
-                    <div key={field.name} className={styles.fieldGroup}>
+                    <div key={field.name} className={styles.valueRowFormGroup}>
                       {field.type === "checkbox" ? (
                         <label className={styles.checkboxLabel}>
                           <input
@@ -110,42 +137,24 @@ const SecurityContent = ({
                             value={securityData[field.name] || ""}
                             onChange={(e) => onChange(field.name, e.target.value)}
                             placeholder={field.placeholder}
-                            className={styles.fieldInput}
+                            className={styles.editInput}
                           />
                         </>
                       )}
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-            
-            {section.action === "none" ? null : editingField === section.id ? (
-              <div className={styles.editActions}>
-                <button 
-                  className={`${styles.actionButton} ${styles.cancelButton}`}
-                  onClick={onCancel}
-                >
-                  Cancel
-                </button>
-                <button 
-                  className={`${styles.actionButton} ${styles.saveButton}`}
+                <div className={styles.saveButtonWrapper}>
+                    <button 
+                  className={styles.saveButton}
                   onClick={() => onSave(section.id)}
                 >
                   Save
                 </button>
-              </div>
-            ) : (
-              <button 
-                className={styles.actionButton}
-                onClick={() => onEdit(section.id)}
-                disabled={section.action !== "edit"}
-              >
-                {section.buttonText}
-              </button>
-            )}
-          </section>
-          
+                  </div>
+              </>
+              )}
+            </div>
           {index < sections.length - 1 && <hr className={styles.divider} />}
         </React.Fragment>
       ))}
