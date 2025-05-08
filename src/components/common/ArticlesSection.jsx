@@ -12,7 +12,7 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
 
   const location = useLocation();
 
-  const isHomePage = location.pathname === "/";
+  const isBlogPage = location.pathname === "/blog";
 
   // Slider settings
   const settings = {
@@ -64,10 +64,10 @@ const ArticlesSection = ({ posts, seeMore = true, handleNavActions }) => {
   };
 
   return (
-    <section className={`${styles.articlesSection} ${isHomePage ? styles.homeArticlesSection : ''}`}>
+    <section className={`${styles.articlesSection} ${isBlogPage ? styles.blogArticlesSection : ''}`}>
       <div className="page-center">
         <div className={styles.sectionHeader}>
-          <h2 className={`${styles.sectionTitle} ${isHomePage ? styles.homeTitle : ''}`}>
+          <h2 className={`${styles.sectionTitle} ${isBlogPage ? styles.blogTitle : ''}`}>
             Inspiración para tus próximos viajes
           </h2>
           {seeMore && (

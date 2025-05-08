@@ -145,6 +145,11 @@
   color: rgba(21, 24, 32, 1);
 }
 
+.secondaryNav .navItemActive{
+  background-color: transparent;
+  color: #212d94;
+}
+
 .navButton:hover{
   color: #212d94;
 }

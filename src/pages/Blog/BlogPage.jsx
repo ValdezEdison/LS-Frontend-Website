@@ -35,24 +35,24 @@ function BlogPage() {
       <div className={styles.mainWrapper}>
         <Header />
 
-        <main className='page-center'>
-          <div className={styles.contentLeft}>
+        <main>
+          
             <div className={styles.mainWrapper}>
-              <div className={styles.mainWrapper}>
-                <div className={styles.mainWrapper}>
+              <div className="page-center">
+                <div className={styles.blogHeaderWrapper}>
                   <h1 className={styles.blogTitle}>Blog de Local Secrets</h1>
                   <BlogCategories />
                 </div>
-                <h2 className={styles.sectionTitle}>Últimos artículos</h2>
+                {/* <h2 className={styles.sectionTitle}>Últimos artículos</h2> */}
               </div>
 
-              <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
+             
             </div>
-
             <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
             <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
             <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
-          </div>
+            <ArticlesSection posts={posts} seeMore={true} handleNavActions={handleNavActions}/>
+          
 
         </main>
       </div>
