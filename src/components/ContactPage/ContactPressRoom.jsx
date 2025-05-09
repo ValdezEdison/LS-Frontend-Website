@@ -14,9 +14,9 @@ function ContactPressRoom() {
           <div className={styles.pressEmailLabel}>Correo electrónico:</div>
           <div className={styles.pressEmailAddress}>ejemplo@gmail.com</div>
         </div>
-        <div className={styles.pressResponsibleRow}>
-          <div className={styles.pressResponsibleLabel}>Responsable:</div>
-          <div className={styles.pressResponsibleName}>Pablo García</div>
+        <div className={styles.pressEmailRow}>
+          <div className={styles.pressEmailLabel}>Responsable:</div>
+          <div className={styles.pressEmailAddress}>Pablo García</div>
         </div>
       </div>
     </article>

@@ -218,6 +218,7 @@
   color: #000;
   font-size: 25px;
   font-weight: 600;
+  margin: 40px 0 20px;
 }
 @media (width<=991px) {
   .pageTitle {
@@ -226,7 +227,7 @@
 }
 .contactSections {
   width: 100%;
-  margin-top: 20px;
+  margin: 20px 0 70px;
 }
 @media (width<=991px) {
   .contactSections {
@@ -252,10 +253,7 @@
 }
 .officeInfo {
   flex: 1;
-  align-self: stretch;
-  min-width: 240px;
-  margin-top: auto;
-  margin-bottom: auto;
+  /* align-self: stretch; */
 }
 @media (width<=991px) {
   .officeInfo {
@@ -266,6 +264,7 @@
   color: #000;
   font-size: 20px;
   font-weight: 600;
+  margin: 0;
 }
 @media (width<=991px) {
   .officeTitle {
@@ -348,7 +347,7 @@
   border-radius: 6px;
   align-self: stretch;
   width: 411px;
-  min-width: 240px;
+  height: 235px;
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -467,9 +466,7 @@
 .pressPhoneRow {
   justify-content: space-between;
   align-items: center;
-  width: 241px;
-  max-width: 100%;
-  min-height: 19px;
+ /* width: 100%; */
   display: flex;
 }
 .pressPhoneLabel {
@@ -479,6 +476,7 @@
   margin-top: auto;
   margin-bottom: auto;
   font-weight: 600;
+  width: 200px;
 }
 .pressPhoneNumber {
   color: #000;
@@ -492,7 +490,7 @@
   justify-content: start;
   align-self: stretch;
   align-items: center;
-  gap: 17px;
+  /* gap: 17px; */
   width: 100%;
   min-height: 19px;
   margin-top: 19px;
@@ -504,6 +502,7 @@
   margin-top: auto;
   margin-bottom: auto;
   font-weight: 600;
+  width: 200px;
 }
 .pressEmailAddress {
   color: #000;
