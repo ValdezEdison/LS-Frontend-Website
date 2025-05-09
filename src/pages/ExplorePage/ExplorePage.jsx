@@ -145,10 +145,13 @@ const ExplorePage = () => {
           </div>
         }
       </main>
-       {postsLoading ? <WidgetSkeleton/> :
-        <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
-       }
-      {!isAuthenticated && <Newsletter />}
+      <div className={styles.articleSliderWrapper}>
+        {postsLoading ? <WidgetSkeleton/> :
+          <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
+        }
+      </div>
+      
+      {isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );
