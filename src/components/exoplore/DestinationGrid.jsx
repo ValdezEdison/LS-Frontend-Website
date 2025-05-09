@@ -7,6 +7,7 @@ import DestinationCardSkeleton from "../skeleton/common/DestinationCardSkeleton"
 
 const DestinationGrid = ({ destinations, loading, handleActions }) => {
   return (
+    <>
     <div className={styles.destinationGrid}>
       {loading ? (
         // Show skeleton cards while loading
@@ -26,7 +27,10 @@ const DestinationGrid = ({ destinations, loading, handleActions }) => {
           />
         ))
       )}
+     
     </div>
+     <button class={styles.showMoreButton}>Ver más</button>
+     </>
   );
 };
 
