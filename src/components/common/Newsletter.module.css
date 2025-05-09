@@ -55,6 +55,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all ease .3s;
+  text-transform: uppercase;
 }
 
 .subscribeButton:hover {

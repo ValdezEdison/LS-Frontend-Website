@@ -105,6 +105,10 @@
   gap: 5px;
 }
 
+:global(.slick-track){
+  margin: 0 !important;
+}
+
 @media (max-width: 991px) {
   .articlesSection {
     /* padding: 28px 20px; */

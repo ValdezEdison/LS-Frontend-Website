@@ -131,14 +131,18 @@ const SecurityContent = ({
                       ) : (
                         <>
                           <label className={styles.fieldLabel}>{field.label}</label>
-                          <input
-                            type={field.type}
-                            name={field.name}
-                            value={securityData[field.name] || ""}
-                            onChange={(e) => onChange(field.name, e.target.value)}
-                            placeholder={field.placeholder}
-                            className={styles.editInput}
-                          />
+                          <div className={styles.passwordInput}>
+                            <div className={styles.showPassword }></div>
+                            <input
+                              type={field.type}
+                              name={field.name}
+                              value={securityData[field.name] || ""}
+                              onChange={(e) => onChange(field.name, e.target.value)}
+                              placeholder={field.placeholder}
+                              className={styles.editInput}
+                            />
+                          </div>
+                         
                         </>
                       )}
                     </div>
