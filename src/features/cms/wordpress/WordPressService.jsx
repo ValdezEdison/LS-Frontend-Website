@@ -98,6 +98,10 @@ const WordPressService = {
       params
     });
     return response.data;
+  },
+  getPostDetails: async (postId) => {
+    const response = await WordPressInstance.get(`/wp-json/wp/v2/posts/${postId}`);
+    return response.data;
   }
 };
 

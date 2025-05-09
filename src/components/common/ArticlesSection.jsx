@@ -74,7 +74,6 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
 
   };
 
-  console.log(tags, 'tagssssssssssssssssssssssssssss');
 
   return (
     <section className={`${styles.articlesSection} ${isBlogPage ? styles.blogArticlesSection : ''}`}>

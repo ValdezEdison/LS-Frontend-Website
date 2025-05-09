@@ -13,10 +13,12 @@ import BlogTags from "../../components/Blog/BlogTags";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import { useNavigate } from "react-router-dom";
 
 function BlogPage() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
    const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags } = useSelector((state) => state.cms.wordpress);
 
@@ -45,8 +47,9 @@ function BlogPage() {
 
 
   const handleNavActions = (e, id, action) => {
+    console.log(action, 'action');
     if(action === "viewDetail") {
-      navigate('/places/details', { state: { id } });
+      navigate('/blog/details', { state: { id } });
     }else if(action === "viewList") {
       navigate('/blog');
     }

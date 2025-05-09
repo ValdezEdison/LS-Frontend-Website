@@ -63,3 +63,15 @@ export const fetchTags = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchPostDetails = createAsyncThunk(
+  'wordpress/fetchPostDetails',
+  async (postId, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getPostDetails(postId);
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);

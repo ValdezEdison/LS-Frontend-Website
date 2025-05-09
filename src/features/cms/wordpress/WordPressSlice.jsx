@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags } from './WordPressAction';
+import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags, fetchPostDetails } from './WordPressAction';
 
 const initialState = {
   posts: [],
@@ -115,6 +115,20 @@ const wordPressSlice = createSlice({
       })
       .addCase(fetchTags.rejected, (state, action) => {
         state.LoadingTags = false;
+        state.error = action.payload;
+      })
+
+      // Fetch Post Details
+      .addCase(fetchPostDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPostDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentPost = action.payload;
+      })
+      .addCase(fetchPostDetails.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       })
       ;
