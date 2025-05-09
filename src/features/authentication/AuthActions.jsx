@@ -146,3 +146,27 @@ export const fetchUsersGroups = createAsyncThunk(
     } 
   }
 );
+
+export const updateUserLanguage = createAsyncThunk(
+  'auth/updateUserLanguage',
+  async (language, { rejectWithValue }) => {
+    try {
+      const response = await authService.updateUserLanguage(language);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const saveSuggestions = createAsyncThunk(
+  'auth/saveSuggestions',
+  async (suggestions, { rejectWithValue }) => {
+    try {
+      const response = await authService.saveSuggestions(suggestions);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);

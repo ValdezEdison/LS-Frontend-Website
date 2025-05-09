@@ -39,13 +39,21 @@ const authService = {
   },
 
   changePassword: async (userData) => {
-    return apiService.post('/users/update_password', userData);
+    return apiService.post('/users/reset_password', userData);
   },
   deleteAccount: async () => {
-    return apiService.post('/users/delete');
+    return apiService.delete('/users/me');
   },
   usersGroups: async () => {
     return apiService.get('/users/groups');
+  },
+
+  updateUserLanguage : async (language) => {
+    return apiService.post('/users/language', { lang_id: language });
+  },
+
+  saveSuggestions : async (suggestions) => {
+    return apiService.post('/users/suggestions', { suggestions });
   },
 };
 

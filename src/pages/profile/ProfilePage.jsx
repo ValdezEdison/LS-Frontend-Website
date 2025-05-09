@@ -9,7 +9,7 @@ import PreferencesForm from "../../components/ProfileSection/PreferencesForm";
 import SecurityContent from "../../components/ProfileSection/SecurityContent";
 import NotificationForm from "../../components/ProfileSection/NotificationForm";
 import PrivacyContent from "../../components/ProfileSection/PrivacyContent";
-import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups } from "../../features/authentication/AuthActions";
+import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions, logout } from "../../features/authentication/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
 import Modal from "../../components/modal/Modal";
@@ -30,7 +30,7 @@ const ProfilePage = () => {
   const { language } = useContext(LanguageContext);
   const { t } = useTranslation('Places');
 
-  const { user,  loading: mainLoading, userLoading, error } = useSelector((state) => state.auth);
+  const { user,  loading: mainLoading, userLoading, error, isAuthenticated, groups, groupsLoading } = useSelector((state) => state.auth);
   const loading = userLoading || mainLoading;
   const { phoneCodes } = useSelector((state) => state.countries);
   const { isOpen } = useSelector((state) => state.popup);
@@ -70,7 +70,8 @@ const ProfilePage = () => {
   });
 
   const [preferences, setPreferences] = useState({
-    language: "es",
+    language: user && user.language ? user.language.id : "",
+    languageCode: user && user.language ? user.language.code : "",
     type: "event",
     levelId: null,     
     categoryId: null,  
@@ -114,14 +115,17 @@ const ProfilePage = () => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(getProfile());
-    dispatch(fetchCountriesPhonecodes());
-    dispatch(fetchUsersGroups());
-    if(isPreferencesTab){
-      dispatch(fetchPlacesFilterCategories({
-        page: state.page, type: preferences.type}));
-      dispatch(fetchLanguages());
-    } 
+    if(isAuthenticated){
+      dispatch(getProfile());
+      dispatch(fetchCountriesPhonecodes());
+      dispatch(fetchUsersGroups());
+      if(isPreferencesTab){
+        dispatch(fetchPlacesFilterCategories({
+          page: state.page, type: preferences.type}));
+        dispatch(fetchLanguages());
+      } 
+    }
+   
   }, [dispatch, language]);
 
   const handleTabChange = (newTab) => {
@@ -172,10 +176,19 @@ const ProfilePage = () => {
             toast.error("New passwords don't match");
             return;
           }
-          await dispatch(changePassword({
-            current_password: securityData.currentPassword,
+           dispatch(changePassword({
+            old_password: securityData.currentPassword,
             new_password: securityData.newPassword
-          }));
+          })).then((result) => {
+            if (result.type === "auth/changePassword/fulfilled") {
+              if (result.payload?.detail) {
+                toast.success(result.payload.detail);
+              }
+            } else if (result.type === "auth/changePassword/rejected") {
+              const errorMessage = result.payload?.detail || result.error?.message || "Failed to update profile picture";
+              toast.error(errorMessage);
+            }
+          });
           toast.success("Password changed successfully");
           break;
         
@@ -194,9 +207,19 @@ const ProfilePage = () => {
             toast.error("Please confirm account deletion");
             return;
           }
-          await dispatch(deleteAccount());
+          await dispatch(deleteAccount()).then((result) => {
+            if (result.type === "auth/deleteAccount/fulfilled") {
+              if (result.payload?.detail) {
+                toast.success(result.payload.detail);
+                dispatch(logout());
+              }
+            } else if (result.type === "auth/deleteAccount/rejected") {
+              const errorMessage = result.payload?.detail || result.error?.message || "Failed to update profile picture";
+              toast.error(errorMessage);
+            }
+          });
           toast.success("Account deletion initiated");
-          navigate('/');
+          // navigate('/');
           break;
         
         default:
@@ -286,6 +309,50 @@ const ProfilePage = () => {
   };
 
 
+
+  const handleSaveLanguage = async () => {
+    console.log(preferences.language, 'clicked');
+    try {
+       dispatch(updateUserLanguage(  preferences.language ));
+      // toast.success(t('Language preference updated successfully'));
+      // setEditingField(null);
+    } catch (error) {
+      toast.error(t('Failed to update language preference'));
+      console.error("Failed to update language:", error);
+    }
+  };
+  
+  const handleSaveSuggestion = async () => {
+    try {
+      await dispatch(saveSuggestions({
+        title: preferences.suggestion.title,
+        type: preferences.suggestion.type,
+        levelId: preferences.suggestion.levelId,
+        categoryId: preferences.suggestion.categoryId,
+        subcategoryId: preferences.suggestion.subcategoryId
+      }));
+      
+      toast.success(t('Suggestion submitted successfully'));
+      // setEditingField(null);
+      // Reset suggestion form
+      setPreferences(prev => ({
+        ...prev,
+        suggestion: {
+          title: "",
+          type: "event",
+          levelId: null,
+          categoryId: null,
+          subcategoryId: null
+        }
+      }));
+    } catch (error) {
+      toast.error(t('Failed to submit suggestion'));
+      console.error("Failed to submit suggestion:", error);
+    }
+  };
+  
+
+
   const renderContent = () => {
     switch (tab) {
       case "personal":
@@ -297,10 +364,11 @@ const ProfilePage = () => {
             onPersonalDetailsChange={handlePersonalDetailsChange}
             onSave={handleSaveProfile}
             onProfilePhotoClick={handleProfilePhotoClick}
+            groups={groups}
           />
         );
       case "preferences":
-        return <PreferencesForm user={user} state={preferences} setState={setPreferences} categories={categories}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} />;
+        return <PreferencesForm user={user} state={preferences} setState={setPreferences} categories={categories}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} onSaveLanguage={handleSaveLanguage} onSaveSuggestion={handleSaveSuggestion}/>;
       case "security":
         return (
           <SecurityContent 
@@ -314,9 +382,9 @@ const ProfilePage = () => {
           />
         );
       case "privacy":
-        return <PrivacyContent />;
+        return <PrivacyContent user={user} />;
       case "notifications":
-        return <NotificationForm />;
+        return <NotificationForm  user={user}/>;
       default:
         return <Navigate to="/profile/personal" replace />;
     }

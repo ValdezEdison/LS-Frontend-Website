@@ -21,7 +21,7 @@ function BlogPage() {
   useEffect(() => {
     dispatch(fetchPosts({ per_page: 20 }));
     dispatch(fetchTags({per_page: 100}));
-    dispatch(fetchCategories({per_page: 100})).then((action) => {
+    dispatch(fetchCategories({per_page: 10})).then((action) => {
       if (action.payload) {
         // Fetch posts for each category
         action.payload.forEach(category => {
