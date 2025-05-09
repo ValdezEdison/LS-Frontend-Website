@@ -133,7 +133,7 @@ const Header = () => {
 
 
   useEffect(() => {
-    if(user){
+    if(user && user.language !== null){
       setLanguage(user.language.id, user.language.code, flagImages[user.language.code] , user.language.name);
     }
     

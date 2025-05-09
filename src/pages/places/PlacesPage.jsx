@@ -815,7 +815,7 @@ const PlacesPage = () => {
         </>
         {/* )} */}
 
-        {isAuthenticated && <Newsletter />}
+        {!isAuthenticated && <Newsletter />}
         <Footer />
       </div>
     </>
