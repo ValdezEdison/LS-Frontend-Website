@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import LanguageSelector from "../common/LanguageSelector";
 import { getLanguageData, setLanguage, setSecretKey } from "../../utils/Helper";
 import { useTranslation } from "react-i18next";
-import { LSLogo2_1, Favorite, ProfilePlaceholder } from "../common/Images";
+import { LSLogo2_1, Favorite, ProfilePlaceholder, Spain, UK, US } from "../common/Images";
 import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
@@ -109,7 +109,7 @@ const Header = () => {
 
   const languageData = getLanguageData();
 
-  const filteredLanguages = languages.filter((lang) => lang.code === "es");
+  // const filteredLanguages = languages.filter((lang) => lang.code === "es");
 
   useEffect(() => {
     const languageData = getLanguageData();
@@ -118,6 +118,26 @@ const Header = () => {
       setLanguage(selectedLang.id, "es", "/images/spain.png", "Español");
     }
   }, [setLanguage]);
+
+    // Filter out 'fr' and 'pt' languages
+    const filteredLanguages = languages.filter(
+      (lang) => lang.code !== "fr" && lang.code !== "pt"
+    );
+  
+    // Map language codes to their corresponding flag images
+    const flagImages = {
+      "es": Spain,
+      "en": US,
+      "en-GB": UK,
+    };
+
+
+  useEffect(() => {
+    if(user){
+      setLanguage(user.language.id, user.language.code, flagImages[user.language.code] , user.language.name);
+    }
+    
+  }, [user])
 
 
 

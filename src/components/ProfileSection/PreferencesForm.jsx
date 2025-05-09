@@ -65,6 +65,13 @@ const PreferencesForm = ({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value, 'ddddd');
+    console.log(filteredLanguages, 'filteredLanguages');
+    const selectedLanguage = filteredLanguages.find(lang => lang.id === Number(value));
+    if(name === 'language') {
+      setState(prev => ({
+        languageCode: selectedLanguage.code
+      }))
+    }
     setState(prev => ({
       ...prev,
       [name]: value
@@ -144,6 +151,7 @@ const PreferencesForm = ({
     };
   }, []);
 
+
   return (
     <div className={styles.preferencesForm}>
       <h1 className={styles.title}>{t('preferences.title')}</h1>
@@ -163,7 +171,7 @@ const PreferencesForm = ({
                       type="radio"
                       name="language"
                       value={lang.id}
-                      checked={state.language === lang.id}
+                      checked={Number(state.language) === lang.id}
                       onChange={handleInputChange}
                     />
                     <span className="checkmark"></span>

@@ -70,7 +70,7 @@ const ProfilePage = () => {
   });
 
   const [preferences, setPreferences] = useState({
-    language: user && user.language ? user.language.id : "",
+    language: user && user.language ? user.language.id : null,
     languageCode: user && user.language ? user.language.code : "",
     type: "event",
     levelId: null,     
@@ -313,7 +313,17 @@ const ProfilePage = () => {
   const handleSaveLanguage = async () => {
     console.log(preferences.language, 'clicked');
     try {
-       dispatch(updateUserLanguage(  preferences.language ));
+       dispatch(updateUserLanguage(  preferences.language )).then((result) => {
+        if (result.type === "auth/updateUserLanguage/fulfilled") {
+          if (result.payload?.detail) {
+            toast.success(result.payload.detail);
+            dispatch(getProfile());
+          }
+        } else if (result.type === "auth/updateUserLanguage/rejected") {
+          const errorMessage = result.payload?.detail || result.error?.message || "Failed to update profile picture";
+          toast.error(errorMessage);
+        }
+       });
       // toast.success(t('Language preference updated successfully'));
       // setEditingField(null);
     } catch (error) {
