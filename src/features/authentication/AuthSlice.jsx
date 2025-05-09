@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups } from "./AuthActions";
+import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions } from "./AuthActions";
 import { socialLogin } from "./socialLogin/SocialAuthAction";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -51,9 +51,9 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isAuthenticated = true; // Set authenticated to true
+        // state.user = action.payload.user;
+        // state.token = action.payload.token;
+        // state.isAuthenticated = true; // Set authenticated to true
         state.error = null; // Clear any previous errors
       })
       .addCase(register.rejected, (state, action) => {
@@ -224,6 +224,32 @@ const authSlice = createSlice({
       state.error = null; // Clear any previous errors
     })
     .addCase(fetchUsersGroups.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+    })
+
+    .addCase(updateUserLanguage.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(updateUserLanguage.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(updateUserLanguage.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+    })
+
+    .addCase(saveSuggestions.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(saveSuggestions.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(saveSuggestions.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload; // Set the error from the rejected action
     })

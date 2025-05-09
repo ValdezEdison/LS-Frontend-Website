@@ -3,6 +3,7 @@ import styles from "./PreferencesForm.module.css";
 import { useSelector } from "react-redux";
 import { Spain, UK, US } from "../common/Images";
 import { set } from "lodash";
+import { useTranslation } from "react-i18next";
 
 const PreferencesForm = ({
   user,
@@ -11,11 +12,15 @@ const PreferencesForm = ({
   categories,
   handleLevelChange,
   handleCategoryChange,
-  handleSubcategoryChange
+  handleSubcategoryChange,
+  onSaveLanguage,
+  onSaveSuggestion,
 }) => {
   const [editingField, setEditingField] = useState(null);
 
   const { languages } = useSelector((state) => state.languages);
+
+  const { t } = useTranslation('ProfileSection');
 
   // Filter out 'fr' and 'pt' languages
   const filteredLanguages = languages.filter(
@@ -59,6 +64,7 @@ const PreferencesForm = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value, 'ddddd');
     setState(prev => ({
       ...prev,
       [name]: value
@@ -70,8 +76,6 @@ const PreferencesForm = ({
   };
 
   const handleSave = (e) => {
-    if (e) e.preventDefault();
-    console.log("Form data saved:", state);
     setEditingField(null);
   };
 
@@ -79,7 +83,7 @@ const PreferencesForm = ({
     setEditingField(null);
     setState(prev => ({
       ...prev,
-      language: '',
+    
       levelId: null,
       categoryId: null,
       subcategoryId: null
@@ -142,15 +146,15 @@ const PreferencesForm = ({
 
   return (
     <div className={styles.preferencesForm}>
-      <h1 className={styles.title}>Preferencias</h1>
+      <h1 className={styles.title}>{t('preferences.title')}</h1>
       <p className={styles.description}>
-        Cambia tu idioma y haz sugerencias sobre lugares y eventos
+      {t('preferences.description')}
       </p>
 
       <section className={styles.languageSection}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionHeaderLeft}>
-            <h2>Idioma</h2>
+            <h2>{t('preferences.language.title')}</h2>
             {editingField === 'language' ? (
               <div className={styles.radioGroup}>
                 {filteredLanguages.map((lang) => (
@@ -158,8 +162,8 @@ const PreferencesForm = ({
                     <input
                       type="radio"
                       name="language"
-                      value={lang.code}
-                      checked={state.language === lang.code}
+                      value={lang.id}
+                      checked={state.language === lang.id}
                       onChange={handleInputChange}
                     />
                     <span className="checkmark"></span>
@@ -175,25 +179,25 @@ const PreferencesForm = ({
             ) : (
               <div className={styles.languageDisplay}>
                 <img
-                  src={flagImages[state.language]}
+                  src={flagImages[state.languageCode]}
                   alt="Flag"
                   className={styles.flagSmall}
                 />
                 <span>
-                  {filteredLanguages.find(lang => lang.code === state.language)?.name || 'English'}
+                  {filteredLanguages.find(lang => lang.id === state.language)?.name || 'English'}
                 </span>
               </div>
             )}
           </div>
           {editingField === 'language' ? (
             <div className={styles.editActions}>
-              <a href="#" className={styles.editLink} onClick={handleCancel}>
-                Cancelar
+              <a className={styles.editLink} onClick={handleCancel}>
+              {t('preferences.language.cancel')}
               </a>
             </div>
           ) : (
-            <a href="#" className={styles.editLink} onClick={() => handleEditClick('language')}>
-              Editar
+            <a className={styles.editLink} onClick={() => handleEditClick('language')}>
+              {t('preferences.language.edit')}
             </a>
           )}
         </div>
@@ -201,9 +205,9 @@ const PreferencesForm = ({
           <div className={styles.saveButtonWrapper}>
             <button
               className={styles.saveButton}
-              onClick={handleSave}
+              onClick={onSaveLanguage}
             >
-              Guardar
+             {t('preferences.language.save')}
             </button>
           </div>
         )}
@@ -212,32 +216,34 @@ const PreferencesForm = ({
       <section className={styles.suggestionsSection}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionHeaderLeft}>
-            <h2>Sugerencias</h2>
-            <span className={styles.suggestionsText}>Escribe una sugerencia</span>
+            <h2>{t('preferences.suggestions.title')}</h2>
+            <span className={styles.suggestionsText}> {t('preferences.suggestions.description')}</span>
           </div>
           {editingField === 'suggestion' ? (
             <div className={styles.editActions}>
-              <a href="#" className={styles.editLink} onClick={handleCancel}>
-                Cancelar
+              <a  className={styles.editLink} onClick={handleCancel}>
+              {t('preferences.language.cancel')}
               </a>
             </div>
           ) : (
-            <a href="#" className={styles.editLink} onClick={() => handleEditClick('suggestion')}>
-              Editar
+            <a  className={styles.editLink} onClick={() => handleEditClick('suggestion')}>
+              {t('preferences.language.edit')}
             </a>
           )}
         </div>
 
         <p className={styles.disclaimer}>
-          Una vez tu sugerencia sea enviada, no se podrá editar ni eliminar.
-          Responderemos por email lo más rápido posible.
+        {t('preferences.suggestions.disclaimer')}
         </p>
 
         {editingField === 'suggestion' && (
-          <form className={styles.suggestionForm} onSubmit={handleSave}>
+          <form className={styles.suggestionForm} onSubmit={(e) => {
+            e.preventDefault();
+            onSaveSuggestion();
+          }}>
             <div className={styles.formGroup}>
               <label htmlFor="title" className={styles.label}>
-                Título
+              {t('preferences.suggestions.form.title')}
               </label>
               <input
                 type="text"
@@ -246,13 +252,13 @@ const PreferencesForm = ({
                 value={state.title}
                 onChange={handleInputChange}
                 className={styles.editInput}
-                placeholder="Escribe un título"
+                placeholder={t('preferences.suggestions.form.titlePlaceholder')}
                 required
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Tipo de actividad</label>
+              <label className={styles.label}> {t('preferences.suggestions.form.activityType')}</label>
               <div className={styles.radioGroup}>
                 <label className={`${styles.languageRadioContainer} radioContainer`}>
                   <input
@@ -263,7 +269,7 @@ const PreferencesForm = ({
                     onChange={handleInputChange}
                   />
                   <span className="checkmark"></span>
-                  <span>Evento</span>
+                  <span>{t('preferences.suggestions.form.event')}</span>
                 </label>
                 <label className={`${styles.languageRadioContainer} radioContainer`}>
                   <input
@@ -274,14 +280,14 @@ const PreferencesForm = ({
                     onChange={handleInputChange}
                   />
                   <span className="checkmark"></span>
-                  <span>Lugar</span>
+                  <span>{t('preferences.suggestions.form.place')}</span>
                 </label>
               </div>
             </div>
 
             {/* Level Selection */}
             <div className={styles.filterSection}>
-              <label>Nivel</label>
+              <label>{t('preferences.suggestions.form.level')}</label>
               <div className={styles.dropdown} ref={levelDropdownRef}>
                 <div
                   className={styles.filterBlock}
@@ -291,8 +297,8 @@ const PreferencesForm = ({
                     <div className={styles.filterHeaderContent}>
                       <div className={styles.filterTitle}>
                         {state.levelId ?
-                          levels.find(l => l.id === state.levelId)?.title || 'Seleccionado'
-                          : 'Selecciona un nivel'}
+                          levels.find(l => l.id === state.levelId)?.title || t('preferences.suggestions.form.selectLevel')
+                          : t('preferences.suggestions.form.selectLevel')}
                       </div>
                     </div>
                     <img
@@ -324,7 +330,7 @@ const PreferencesForm = ({
             {/* Category Selection */}
             {state.levelId && (
               <div className={styles.filterSection}>
-                <h3 className={styles.title}>Categoría</h3>
+                <h3 className={styles.title}> {t('preferences.suggestions.form.category')}</h3>
                 <div className={`${styles.dropdown} ${state.levelId ? '' : styles.disabled}`}
                   ref={categoryDropdownRef}>
                   <div
@@ -335,8 +341,8 @@ const PreferencesForm = ({
                       <div className={styles.filterHeaderContent}>
                         <div className={styles.filterTitle}>
                           {state.categoryId ?
-                            filteredCategories.find(c => c.id === state.categoryId)?.title || 'Seleccionado'
-                            : 'Selecciona una categoría'}
+                            filteredCategories.find(c => c.id === state.categoryId)?.title || t('preferences.suggestions.form.selectCategory')
+                            : t('preferences.suggestions.form.selectCategory')}
                         </div>
                       </div>
                       <img
@@ -369,7 +375,7 @@ const PreferencesForm = ({
             {/* Subcategory Selection */}
             {state.categoryId && filteredSubcategories.length > 0 && (
               <div className={styles.filterSection}>
-                <h3 className={styles.title}>Subcategoría</h3>
+                <h3 className={styles.title}> {t('preferences.suggestions.form.subcategory')}</h3>
                 <div className={styles.dropdown} ref={subcategoryDropdownRef}>
                   <div
                     className={styles.filterBlock}
@@ -379,8 +385,8 @@ const PreferencesForm = ({
                       <div className={styles.filterHeaderContent}>
                         <div className={styles.filterTitle}>
                           {state.subcategoryId ?
-                            filteredSubcategories.find(s => s.id === state.subcategoryId)?.title || 'Seleccionado'
-                            : 'Selecciona una subcategoría'}
+                            filteredSubcategories.find(s => s.id === state.subcategoryId)?.title || t('preferences.suggestions.form.selectSubcategory')
+                            : t('preferences.suggestions.form.selectSubcategory')}
                         </div>
                       </div>
                       <img
@@ -410,8 +416,8 @@ const PreferencesForm = ({
               </div>
             )}
 
-            <button type="submit" className={`${styles.submitButton} ${styles.active}`}>
-              Enviar
+            <button type="submit" className={`${styles.submitButton} ${styles.active}`} >
+            {t('preferences.suggestions.form.submit')}
             </button>
           </form>
         )}
@@ -419,10 +425,12 @@ const PreferencesForm = ({
 
       {editingField === 'suggestion' && (
         <section className={styles.contactSection}>
-          <h3 className={styles.contactTitle}>¿Tienes alguna duda?</h3>
+          <h3 className={styles.contactTitle}> {t('preferences.suggestions.contact.title')}</h3>
           <p className={styles.contactInfo}>
-            Puedes ponerte en contacto con nosotros enviando un email a
-            nombre@gmail.com o llamando a +34 123 456 789
+          {t('preferences.suggestions.contact.text', {
+              email: t('preferences.suggestions.contact.email'),
+              phone: t('preferences.suggestions.contact.phone')
+            })}
           </p>
         </section>
       )}

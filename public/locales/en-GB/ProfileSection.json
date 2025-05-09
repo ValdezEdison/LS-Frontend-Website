@@ -1,0 +1,138 @@
+{
+    "personalDetails": {
+        "title": "Personal Details",
+        "subtitle": "Update your personal details by editing the profile",
+        "fields": {
+            "profileType": "Profile Type",
+            "name": "Name",
+            "email": "Email Address",
+            "phone": "Telephone Number",
+            "birthDate": "Date of Birth",
+            "nationality": "Nationality",
+            "address": "Address",
+            "preferences": "Preferences"
+        },
+        "labels": {
+            "firstName": "First Name",
+            "lastName": "Last Name"
+        },
+        "placeholders": {
+            "firstName": "Enter your first name",
+            "lastName": "Enter your last name",
+            "birthDate": "Enter your date of birth",
+            "nationality": "Select country/region of birth",
+            "address": "Enter your address",
+            "phoneCode": "Code",
+            "phoneNumber": "Enter your phone number",
+            "countrySearch": "Search country code"
+        },
+        "preferences": {
+            "security": "Security",
+            "privacy": "Privacy",
+            "notifications": "Notifications"
+        },
+        "actions": {
+            "info": "Information",
+            "edit": "Edit",
+            "verified": "Verified",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "emailNote": "This email address is what you used to log in and where all current profiles are sent to."
+    },
+    "preferences": {
+        "title": "Preferences",
+        "description": "Change your language and make suggestions about places and events",
+        "language": {
+            "title": "Language",
+            "edit": "Edit",
+            "cancel": "Cancel",
+            "save": "Save"
+        },
+        "suggestions": {
+            "title": "Suggestions",
+            "description": "Write a suggestion",
+            "disclaimer": "Once your suggestion is submitted, it cannot be edited or deleted. We will respond by email as soon as possible.",
+            "form": {
+                "title": "Title",
+                "titlePlaceholder": "Write a title",
+                "activityType": "Activity type",
+                "event": "Event",
+                "place": "Place",
+                "level": "Level",
+                "selectLevel": "Select a level",
+                "category": "Category",
+                "selectCategory": "Select a category",
+                "subcategory": "Subcategory",
+                "selectSubcategory": "Select a subcategory",
+                "submit": "Submit"
+            },
+            "contact": {
+                "title": "Any questions?",
+                "text": "You can contact us by sending an email to {email} or calling {phone}",
+                "email": "name@gmail.com",
+                "phone": "+34 123 456 789"
+            }
+        }
+    },
+    "security": {
+        "title": "Security",
+        "description": "Change your security settings or delete your account",
+        "sections": {
+            "password": {
+                "title": "Password",
+                "description": "Update your password to keep your account secure",
+                "buttonText": "Edit",
+                "fields": {
+                    "currentPassword": {
+                        "label": "Current Password",
+                        "placeholder": "Enter current password"
+                    },
+                    "newPassword": {
+                        "label": "New Password",
+                        "placeholder": "Enter new password"
+                    },
+                    "confirmPassword": {
+                        "label": "Confirm New Password",
+                        "placeholder": "Confirm new password"
+                    }
+                }
+            },
+            "twoFactor": {
+                "title": "Two-Factor Authentication",
+                "description": "This feature is currently unavailable",
+                "buttonText": "Unavailable"
+            },
+            "sessions": {
+                "title": "Active Sessions",
+                "description": "This feature is currently unavailable",
+                "buttonText": "Unavailable"
+            },
+            "delete": {
+                "title": "Delete Account",
+                "description": "Permanently delete your account",
+                "buttonText": "Delete Account",
+                "fields": {
+                    "accountDeletionConfirmed": {
+                        "label": "I understand this action is irreversible"
+                    }
+                }
+            }
+        },
+        "actions": {
+            "save": "Save",
+            "cancel": "Cancel"
+        }
+    },
+    "privacy": {
+        "title": "Privacy",
+        "description": "Manage your privacy settings and data used by third parties",
+        "settings": {
+            "title": "Privacy Settings",
+            "description": "Select 'Manage' to change privacy settings and data used by third parties"
+        },
+        "actions": {
+            "manage": "Manage"
+        }
+    }
+}

@@ -3,6 +3,7 @@ import styles from "./PersonalDetails.module.css";
 import { CalendarIcon, ProfilePlaceholder } from "../common/Images";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 const PersonalDetails = ({ 
   user, 
@@ -10,22 +11,30 @@ const PersonalDetails = ({
   personalDetails, 
   onPersonalDetailsChange, 
   onSave,
-  onProfilePhotoClick
+  onProfilePhotoClick,
+  groups
 }) => {
   const [editingField, setEditingField] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
+  const [showGroupsInfo, setShowGroupsInfo] = useState(false);
+
+  const { t } = useTranslation('ProfileSection');
+
+  const toggleGroupsInfo = () => {
+    setShowGroupsInfo(!showGroupsInfo);
+  };
   
   const genderOptions = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-    { value: "other", label: "Other" },
-    { value: "prefer_not_to_say", label: "Prefer not to say" }
+    { value: "male", label: t('personalDetails.genderOptions.male') },
+    { value: "female", label: t('personalDetails.genderOptions.female') },
+    { value: "other", label: t('personalDetails.genderOptions.other') },
+    { value: "prefer_not_to_say", label: t('personalDetails.genderOptions.preferNotToSay') }
   ];
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Not provided";
+    if (!dateString) return t('personalDetails.status.notProvided');
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
@@ -80,26 +89,32 @@ const PersonalDetails = ({
   };
 
   const details = [
+    // { 
+    //   label: "Profile Type", 
+    //   value: user?.current_trip?.type || "Not provided", 
+    //   action: "Info" 
+    // },
     { 
-      label: "Profile Type", 
-      value: user?.current_trip?.type || "Not provided", 
-      action: "Info" 
+      label: t('personalDetails.fields.profileType'), 
+      value: user?.current_trip?.type || groups.find(g => g.name === user?.group)?.name || "", 
+      action: t('personalDetails.actions.info'),
+      onClick: toggleGroupsInfo
     },
     { 
-      label: "Name", 
-      value: `${user?.first_name} ${user?.last_name}` || "Not provided", 
-      action: "Edit" 
+      label: t('personalDetails.fields.name'), 
+      value: `${user?.first_name} ${user?.last_name}` || "", 
+      action: t('personalDetails.actions.edit')
     },
     {
-      label: "Email Address",
-      value: user?.email || "Not provided",
-      action: "none", // Changed to "none" to hide button
+      label: t('personalDetails.fields.email'),
+      value: user?.email || "",
+      action: "none",
       verified: true,
     },
     { 
-      label: "Phone Number", 
-      value: user?.phone ? `+${user?.phone_prefix} ${user?.phone}` : "Not provided", 
-      action: "Edit" 
+      label: t('personalDetails.fields.phone'), 
+      value: user?.phone ? `+${user?.phone_prefix} ${user?.phone}` : "", 
+      action: t('personalDetails.actions.edit')
     },
     // {
     //   label: "Birth Date",
@@ -127,9 +142,9 @@ const PersonalDetails = ({
     <div className={styles.personalDetails}>
       <div className={styles.header}>
         <div>
-          <h2 className={styles.title}>Personal Details</h2>
+          <h2 className={styles.title}>{t('personalDetails.title')}</h2>
           <p className={styles.subtitle}>
-            Update your personal information by editing the profile
+          {t('personalDetails.subtitle')}
           </p>
         </div>
         <div className={styles.profileImageWrapper}>
@@ -156,10 +171,10 @@ const PersonalDetails = ({
               <div className={styles.valueRow}>
                 <div className={styles.valueRowTop}>
                   {editingField === detail.label ? (
-                    detail.label === "Name" ? (
+                    detail.label === t('personalDetails.fields.name') ? (
                       <div className={styles.formNameGroup}>
                         <div className={styles.valueRowFormGroup}>
-                          <label>First Name*</label>
+                          <label>{t('personalDetails.labels.firstName')}*</label>
                           <input
                             type="text"
                             value={personalDetails.firstName}
@@ -168,7 +183,7 @@ const PersonalDetails = ({
                           />
                         </div>
                         <div className={styles.valueRowFormGroup}>
-                          <label>Last Name*</label>
+                          <label>{t('personalDetails.labels.lastName')}*</label>
                           <input
                             type="text"
                             value={personalDetails.lastName}
@@ -177,7 +192,7 @@ const PersonalDetails = ({
                           />
                         </div>
                       </div>
-                    ) : detail.label === "Phone Number" ? (
+                    ) : detail.label === t('personalDetails.fields.phone') ? (
                       <div className={styles.phoneInputGroup}>
                         <div className={`${styles.phoneInput} ${isDropdownOpen ? styles.open : ""}`}>
                           <div 
@@ -187,7 +202,7 @@ const PersonalDetails = ({
                             {personalDetails.phonePrefix ? (
                               <span className={styles.placeholderText}>+{personalDetails.phonePrefix}</span>
                             ) : (
-                              <span className={styles.placeholderText}>Code</span>
+                              <span className={styles.placeholderText}>{t('personalDetails.placeholders.phoneCode')}</span>
                             )}
                             <span className={isDropdownOpen ? styles.arrowUp : styles.arrowDown}></span>
                           </div>
@@ -199,7 +214,7 @@ const PersonalDetails = ({
                               <div className={styles.phoneCodeinputWrapper}>
                                 <input
                                   type="text"
-                                  placeholder="Search country"
+                                  placeholder={t('personalDetails.placeholders.countrySearch')}
                                   className={styles.selectedItem}
                                   value={searchTerm}
                                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -222,14 +237,14 @@ const PersonalDetails = ({
                                     </li>
                                   ))
                                 ) : (
-                                  <li className={styles.selectedItem}>No countries found</li>
+                                  <li className={styles.selectedItem}>{t('personalDetails.status.noCountriesFound')}</li>
                                 )}
                               </ul>
                             </div>
                           )}
                           <input
                             type="tel"
-                            placeholder="Phone number"
+                            placeholder={t('personalDetails.placeholders.phoneNumber')}
                             className={styles.editInput}
                             value={personalDetails.phone}
                             onChange={(e) => onPersonalDetailsChange('phone', e.target.value)}
@@ -281,13 +296,13 @@ const PersonalDetails = ({
                     <span className={styles.value}>{detail.value}</span>
                   )}
                   {detail.verified && !editingField && (
-                    <span className={styles.verifiedBadge}>Verified</span>
+                    <span className={styles.verifiedBadge}>{t('personalDetails.actions.verified')}</span>
                   )}
                 </div>
                 <div className={styles.valueRowBottom}>
-                  {detail.verified && !editingField && detail.label === "Email Address" && (
+                  {detail.verified && !editingField && detail.label === t('personalDetails.fields.email') && (
                     <p className={styles.emailNote}>
-                      This email address is used for login and receiving all notifications
+                      {t('personalDetails.emailNote')}
                     </p>
                   )}
                 </div>
@@ -299,7 +314,7 @@ const PersonalDetails = ({
                   className={`${styles.actionButton} ${styles.cancelButton}`}
                   onClick={handleCancel}
                 >
-                  Cancel
+                   {t('personalDetails.actions.cancel')}
                 </button>
               </div>
             ) : (
@@ -318,7 +333,7 @@ const PersonalDetails = ({
                 className={`${styles.actionButton} ${styles.saveButton}`}
                 onClick={handleSave}
               >
-                Save
+                 {t('personalDetails.actions.save')}
               </button>
             </div>
           )}
