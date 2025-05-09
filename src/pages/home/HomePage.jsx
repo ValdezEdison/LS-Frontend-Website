@@ -24,10 +24,12 @@ import { fetchHeroContent, fetchOurPartners } from "../../features/cms/Pages/Pag
 import HeroSectionSkeleton from "../../components/skeleton/HomePage/HeroSectionSkeleton";
 import { fetchRandomSites } from "../../features/home/HomeAction";
 import { fetchPosts, fetchTags } from "../../features/cms/wordpress/WordPressAction";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton"; 
 
 const HomePage = () => {
   
   const { t } = useTranslation("History");
+  const { t: tCommon } = useTranslation("Common");
 
   const { language, languageId } = useContext(LanguageContext);
 
@@ -82,7 +84,9 @@ const handleNavActions = (e, id, action) => {
         buttonText="Saber más"
         imageSrc={LSLogo2_2}
       />
-      <ArticlesSection title=" Inspiración para tus próximos viajes" posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
+      {postsLoading ? <WidgetSkeleton/> :
+      <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
+      }
       <AppPromotion />
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />
