@@ -1,0 +1,11 @@
+{
+    "title": "Blog de Local Secrets",
+    "sections": {
+      "latestArticles": "Últimos artículos",
+      "seeMore": "Ver más"
+    },
+    "actions": {
+      "viewDetail": "Ver detalles",
+      "viewList": "Ver todas las publicaciones"
+    }
+  }

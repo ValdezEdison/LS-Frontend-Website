@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./SecurityContent.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -12,6 +12,20 @@ const SecurityContent = ({
   onChange 
 }) => {
   const { t } = useTranslation('ProfileSection');
+
+
+  const [showPasswords, setShowPasswords] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false
+  });
+
+  const togglePasswordVisibility = (fieldName) => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [fieldName]: !prev[fieldName]
+    }));
+  };
 
   const sections = [
     {
@@ -130,9 +144,9 @@ const SecurityContent = ({
                         <>
                           <label className={styles.fieldLabel}>{field.label}</label>
                           <div className={styles.passwordInput}>
-                            <div className={styles.showPassword }></div>
+                            <div className={`${styles.showPassword} ${showPasswords[field.name] ? styles.clicked : ''}`}  onClick={() => togglePasswordVisibility(field.name)}></div>
                             <input
-                              type={field.type}
+                              type={showPasswords[field.name] ? "text" : "password"}
                               name={field.name}
                               value={securityData[field.name] || ""}
                               onChange={(e) => onChange(field.name, e.target.value)}

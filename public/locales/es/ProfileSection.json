@@ -134,5 +134,36 @@
         "actions": {
             "manage": "Gestionar"
         }
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "description": "Decide tus notificaciones y date de baja en lo que no desees",
+        "emailPreferences": "Preferencias de email",
+        "toggleOptions": {
+            "promotions": {
+                "label": "Promociones y novedades",
+                "action": "Darme de baja"
+            },
+            "referFriend": {
+                "label": "Recomendar a un amigo",
+                "action": "Suscribirme"
+            },
+            "weeklyDiscovery": {
+                "label": "Descubrimiento semanal",
+                "action": "Suscribirme"
+            }
+        },
+        "actions": {
+            "save": "Guardar"
+        }
+    },
+    "sidebar": {
+        "tabs": {
+            "personal": "Detalles personales",
+            "preferences": "Preferencias",
+            "security": "Seguridad",
+            "privacy": "Privacidad",
+            "notifications": "Notificaciones"
+        }
     }
 }

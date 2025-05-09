@@ -134,5 +134,36 @@
         "actions": {
             "manage": "Manage"
         }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "description": "Choose your notifications and unsubscribe from what you don't want",
+        "emailPreferences": "Email Preferences",
+        "toggleOptions": {
+            "promotions": {
+                "label": "Promotions and news",
+                "action": "Unsubscribe"
+            },
+            "referFriend": {
+                "label": "Refer a friend",
+                "action": "Subscribe"
+            },
+            "weeklyDiscovery": {
+                "label": "Weekly discovery",
+                "action": "Subscribe"
+            }
+        },
+        "actions": {
+            "save": "Save"
+        }
+    },
+    "sidebar": {
+        "tabs": {
+            "personal": "Personal details",
+            "preferences": "Preferences",
+            "security": "Security",
+            "privacy": "Privacy",
+            "notifications": "Notifications"
+        }
     }
 }

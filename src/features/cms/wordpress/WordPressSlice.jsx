@@ -5,6 +5,7 @@ const initialState = {
   posts: [],
   currentPost: null,
   categories: [],
+  categoriesLoading: false,
   loading: false,
   error: null,
   pagination: {
@@ -13,6 +14,7 @@ const initialState = {
     currentPage: 1
   },
   postsByCategory: [],
+  postsByCategoryLoading: false,
   tags: [],
   LoadingTags: false
 };
@@ -67,25 +69,25 @@ const wordPressSlice = createSlice({
 
       // Fetch Categories
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
+        state.categoriesLoading = true;
         state.error = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.categoriesLoading = false;
         state.categories = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
+        state.categoriesLoading = false;
         state.error = action.payload;
       })
 
       // Fetch Posts By Category
       .addCase(fetchPostsByCategory.pending, (state) => {
-        state.loading = true;
+        state.postsByCategoryLoading = true;
         state.error = null;
       })
       .addCase(fetchPostsByCategory.fulfilled, (state, action) => {
-        state.loading = false;
+        state.postsByCategoryLoading = false;
         state.postsByCategory = {
           ...state.postsByCategory,
           [action.payload.categoryId]: action.payload.posts
@@ -98,7 +100,7 @@ const wordPressSlice = createSlice({
         };
       })
       .addCase(fetchPostsByCategory.rejected, (state, action) => {
-        state.loading = false;
+        state.postsByCategoryLoading = false;
         state.error = action.payload;
       })
 

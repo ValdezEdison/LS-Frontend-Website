@@ -26,6 +26,7 @@ import TravelItineraryEdit from "./pages/MyTrips/TravelItineraryEdit";
 import WhoWeAre from "./pages/whoWrAre/WhoWeAre";
 import WorkWithUs from "./pages/joinOurTeam/WorkWithUs";
 import BlogPage from "./pages/Blog/BlogPage";
+import Contacto from "./pages/contact/Contacto";
 const Router = () => {
     return (
         <>
@@ -70,6 +71,8 @@ const Router = () => {
 
 
                 <Route path="/blog" element={<BlogPage />} />
+
+                <Route path="/contact" element={<Contacto />} />
             </Routes>
         </>
     );

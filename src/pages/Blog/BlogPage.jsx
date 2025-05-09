@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import styles from "./BlogPage.module.css";
 import Header from "../../components/layouts/Header";
 import BlogPostCard from "../../components/Blog/BlogPostCard";
@@ -10,12 +10,20 @@ import ArticlesSection from "../../components/common/ArticlesSection";
 import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags } from "../../features/cms/wordpress/WordPressAction";
 import { useDispatch, useSelector } from "react-redux";
 import BlogTags from "../../components/Blog/BlogTags";
+import { LanguageContext } from "../../context/LanguageContext";
+import { useTranslation } from "react-i18next";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 function BlogPage() {
 
   const dispatch = useDispatch();
 
-   const { posts, loading: postsLoading, error: postsError, categories, postsByCategory, tags } = useSelector((state) => state.cms.wordpress);
+   const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags } = useSelector((state) => state.cms.wordpress);
+
+     const { language, languageId } = useContext(LanguageContext);
+
+
+  const { t } = useTranslation("BlogSection");
  
 
   useEffect(() => {
@@ -32,7 +40,7 @@ function BlogPage() {
         });
       }
     });
-  }, [dispatch]);
+  }, [dispatch, language]);
 
 
 
@@ -54,14 +62,19 @@ function BlogPage() {
             <div className={styles.mainWrapper}>
               <div className="page-center">
                 <div className={styles.blogHeaderWrapper}>
-                  <h1 className={styles.blogTitle}>Blog de Local Secrets</h1>
-                  <BlogTags tags={tags} />
+                  <h1 className={styles.blogTitle}>{t('title')}</h1>
+                  <BlogTags tags={tags} loading={LoadingTags}/>
                 </div>
                 {/* <h2 className={styles.sectionTitle}>Últimos artículos</h2> */}
               </div>
 
              
             </div>
+            {postsByCategoryLoading || categoriesLoading  && (
+              [...Array(4)].map((_, i) => (
+              <WidgetSkeleton />
+            ))
+            )}
             {categories.map((category) => {
               const categoryPosts = postsByCategory[category.id] || [];
               if (categoryPosts.length > 0) {
