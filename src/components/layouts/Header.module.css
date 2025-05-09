@@ -131,7 +131,8 @@
 .userIcon {
   width: 34px;
   height: 34px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -143,6 +144,11 @@
 .navItemActive  {
   background-color: rgba(232, 234, 244, 1);
   color: rgba(21, 24, 32, 1);
+}
+
+.secondaryNav .navItemActive{
+  background-color: transparent;
+  color: #212d94;
 }
 
 .navButton:hover{

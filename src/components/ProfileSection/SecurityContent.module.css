@@ -67,6 +67,88 @@
   text-decoration: none;
 }
 
+.editInput{
+  max-width: 260px;
+  width: 100%;
+  border: solid 1px #828282;
+  border-radius: 6px;
+  height: 35px;
+  padding: 8px 36px 8px 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.valueRowFormGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.editFields{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.saveButtonWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.saveButtonWrapper .saveButton:hover {
+  background-color: #e5b22e;
+}
+
+.saveButtonWrapper .saveButton {
+  height: 40px;
+  background: #F4C031;
+  padding: 10px 44px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #000;
+  transition: all ease .3s;
+  border: none;
+  outline: none;
+}
+
+.passwordInput{
+  position: relative;
+  display: flex;
+  max-width: 260px;
+  width: 100%;
+}
+
+.showPassword {
+  position: absolute;
+  background: url(../../../public/images/eye.svg) no-repeat 0 0;
+  width: 22px;
+  height: 16px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.showPassword.clicked::after {
+  position: absolute;
+  content: '';
+  top: -3px;
+  left: 0;
+  width: 2px;
+  height: 23px;
+  background: #151820;
+  transform: rotate(45deg) translateX(-50%);
+  left: 50%;
+}
+
+
 @media (max-width: 991px) {
   .securityContent {
     padding-left: 0;

@@ -1,0 +1,811 @@
+.contactPage {
+  background-color: #fff;
+  overflow: hidden;
+}
+.pageContainer {
+  width: 100%;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+@media (width<=991px) {
+  .pageContainer {
+    max-width: 100%;
+  }
+}
+.pageHeader {
+  color: #151820;
+  text-align: center;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 16px 70px;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .pageHeader {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.headerContainer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  max-width: 1192px;
+  display: flex;
+}
+@media (width<=991px) {
+  .headerContainer {
+    max-width: 100%;
+  }
+}
+.mainNavigation {
+  white-space: nowrap;
+  align-items: center;
+  gap: 31px;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+}
+@media (width<=991px) {
+  .mainNavigation {
+    max-width: 100%;
+    white-space: initial;
+  }
+}
+.logoImage {
+  aspect-ratio: 1.2;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 60px;
+}
+.navLinkLugares {
+  color: #151820;
+  background-color: #fff;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 7px 12px 7px 13px;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .navLinkLugares {
+    white-space: initial;
+  }
+}
+.navLinkEventos {
+  color: #151820;
+  background-color: #fff;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 7px 12px;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .navLinkEventos {
+    white-space: initial;
+  }
+}
+.navLinkItinerarios {
+  color: #151820;
+  background-color: #fff;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 7px 5px 7px 6px;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .navLinkItinerarios {
+    white-space: initial;
+  }
+}
+.navLinkExplorar {
+  color: #151820;
+  background-color: #fff;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 7px 11px;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .navLinkExplorar {
+    white-space: initial;
+  }
+}
+.userNavigation {
+  align-items: stretch;
+  gap: 29px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+}
+.userNavLinks {
+  white-space: nowrap;
+  align-items: stretch;
+  gap: 13px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+@media (width<=991px) {
+  .userNavLinks {
+    white-space: initial;
+  }
+}
+.userIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  width: 20px;
+}
+.blogIcon {
+  aspect-ratio: 1.11;
+  object-fit: contain;
+  object-position: center;
+  fill: #151820;
+  flex-shrink: 0;
+  align-self: start;
+  width: 20px;
+}
+.blogLink {
+  color: #151820;
+}
+.navDivider {
+  background-color: #151820;
+  border: 1px solid #151820;
+  flex-shrink: 0;
+  width: 1px;
+  height: 20px;
+}
+.contactLink {
+  color: #151820;
+}
+.loginButton {
+  color: #151820;
+  background-color: #f4c031;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 38px;
+  padding: 9px 16px;
+  overflow: hidden;
+}
+.mainContent {
+  width: 100%;
+  margin-top: 40px;
+  padding-left: 120px;
+  padding-right: 120px;
+}
+@media (width<=991px) {
+  .mainContent {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.pageTitle {
+  color: #000;
+  font-size: 25px;
+  font-weight: 600;
+  margin: 40px 0 20px;
+}
+@media (width<=991px) {
+  .pageTitle {
+    max-width: 100%;
+  }
+}
+.contactSections {
+  width: 100%;
+  margin: 20px 0 70px;
+}
+@media (width<=991px) {
+  .contactSections {
+    max-width: 100%;
+  }
+}
+.officeSection {
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 30px;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .officeSection {
+    max-width: 100%;
+    padding-left: 20px;
+  }
+}
+.officeInfo {
+  flex: 1;
+  /* align-self: stretch; */
+}
+@media (width<=991px) {
+  .officeInfo {
+    max-width: 100%;
+  }
+}
+.officeTitle {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+@media (width<=991px) {
+  .officeTitle {
+    max-width: 100%;
+  }
+}
+.contactInfoContainer {
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  min-height: 130px;
+  margin-top: 20px;
+  font-size: 14px;
+  display: flex;
+}
+@media (width<=991px) {
+  .contactInfoContainer {
+    max-width: 100%;
+  }
+}
+.contactLabels {
+  color: #000;
+  align-self: stretch;
+  width: 115px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 600;
+}
+.emailLabel,
+.addressLabel {
+  margin-top: 20px;
+}
+.contactDetails {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  min-width: 240px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 400;
+}
+@media (width<=991px) {
+  .contactDetails {
+    max-width: 100%;
+  }
+}
+.contactTextContainer {
+  width: 100%;
+}
+@media (width<=991px) {
+  .contactTextContainer,
+  .phoneNumber {
+    max-width: 100%;
+  }
+}
+.emailAddress {
+  text-align: justify;
+  margin-top: 18px;
+}
+@media (width<=991px) {
+  .emailAddress {
+    max-width: 100%;
+  }
+}
+.physicalAddress {
+  text-align: justify;
+  margin-top: 21px;
+}
+@media (width<=991px) {
+  .physicalAddress {
+    max-width: 100%;
+  }
+}
+.officeImage {
+  aspect-ratio: 1.75;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 6px;
+  align-self: stretch;
+  width: 411px;
+  height: 235px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.spainOfficeSection {
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
+  padding-left: 30px;
+  font-size: 14px;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .spainOfficeSection {
+    max-width: 100%;
+    padding-left: 20px;
+  }
+}
+.spainOfficeInfo {
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: center;
+  gap: 9px;
+  min-width: 240px;
+  min-height: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+@media (width<=991px) {
+  .spainOfficeInfo {
+    max-width: 100%;
+  }
+}
+.spainContactLabels {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  min-width: 240px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 600;
+}
+.spainOfficeTitle {
+  font-size: 20px;
+}
+.phoneLabel {
+  margin-top: 20px;
+}
+.spainContactDetails {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  min-width: 240px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 400;
+}
+.spainContactTextContainer {
+  width: 100%;
+}
+.spainEmailAddress {
+  text-align: justify;
+  margin-top: 18px;
+}
+.spainPhysicalAddress {
+  text-align: justify;
+  margin-top: 21px;
+}
+.spainOfficeImage {
+  aspect-ratio: 1.75;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 6px;
+  align-self: stretch;
+  width: 411px;
+  min-width: 240px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.pressRoomSection {
+  background-color: #fafaff;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 40px;
+  padding: 30px 916px 31px 30px;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .pressRoomSection {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.pressRoomTitle {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600;
+}
+.pressRoomInfo {
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  margin-top: 23px;
+  font-size: 14px;
+  display: flex;
+}
+.pressPhoneRow {
+  justify-content: space-between;
+  align-items: center;
+ /* width: 100%; */
+  display: flex;
+}
+.pressPhoneLabel {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 600;
+  width: 200px;
+}
+.pressPhoneNumber {
+  color: #000;
+  text-align: justify;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 400;
+}
+.pressEmailRow {
+  justify-content: start;
+  align-self: stretch;
+  align-items: center;
+  /* gap: 17px; */
+  width: 100%;
+  min-height: 19px;
+  margin-top: 19px;
+  display: flex;
+}
+.pressEmailLabel {
+  color: #000;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 600;
+  width: 200px;
+}
+.pressEmailAddress {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 400;
+}
+.pressResponsibleRow {
+  justify-content: space-between;
+  align-items: center;
+  width: 206px;
+  max-width: 100%;
+  margin-top: 19px;
+  display: flex;
+}
+.pressResponsibleLabel {
+  color: #000;
+  flex: 1;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 600;
+}
+.pressResponsibleName {
+  color: #000;
+  text-align: justify;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 400;
+}
+.pageFooter {
+  border-top: 1px solid var(--Gray-5, #e0e0e0);
+  background-color: #fff;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 70px;
+  padding-top: 21px;
+  padding-bottom: 21px;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .pageFooter {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}
+.footerContainer {
+  width: 100%;
+  max-width: 1035px;
+  margin-left: 35px;
+}
+@media (width<=991px) {
+  .footerContainer {
+    max-width: 100%;
+  }
+}
+.footerColumns {
+  gap: 20px;
+  display: flex;
+}
+@media (width<=991px) {
+  .footerColumns {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+}
+.footerColumn {
+  flex-direction: column;
+  align-items: stretch;
+  width: 25%;
+  margin-left: 0;
+  line-height: normal;
+  display: flex;
+}
+@media (width<=991px) {
+  .footerColumn {
+    width: 100%;
+  }
+}
+.appDownloadSection {
+  color: #151820;
+  text-align: center;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+}
+@media (width<=991px) {
+  .appDownloadSection {
+    margin-top: 40px;
+  }
+}
+.appLogo {
+  aspect-ratio: 1.19;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 80px;
+}
+.appDownloadButton {
+  color: #151820;
+  background-color: #f4c031;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 38px;
+  margin-top: 21px;
+  padding: 10px 11px 10px 12px;
+  overflow: hidden;
+}
+.footerColumn2 {
+  flex-direction: column;
+  align-items: stretch;
+  width: 25%;
+  margin-left: 20px;
+  line-height: normal;
+  display: flex;
+}
+@media (width<=991px) {
+  .footerColumn2 {
+    width: 100%;
+  }
+}
+.aboutUsSection {
+  color: #151820;
+  flex-direction: column;
+  align-items: stretch;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  display: flex;
+}
+@media (width<=991px) {
+  .aboutUsSection {
+    margin-top: 40px;
+  }
+}
+.aboutUsTitle {
+  color: #151820;
+  text-align: center;
+  align-self: start;
+  font-size: 20px;
+  font-weight: 600;
+}
+.aboutUsLinks {
+  color: #151820;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 25px;
+}
+.footerColumn3 {
+  flex-direction: column;
+  align-items: stretch;
+  width: 25%;
+  margin-left: 20px;
+  line-height: normal;
+  display: flex;
+}
+@media (width<=991px) {
+  .footerColumn3 {
+    width: 100%;
+  }
+}
+.collaboratorsSection {
+  color: #151820;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+@media (width<=991px) {
+  .collaboratorsSection {
+    margin-top: 40px;
+  }
+}
+.collaboratorsTitle {
+  color: #151820;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+@media (width<=991px) {
+  .collaboratorsTitle {
+    margin-right: 4px;
+  }
+}
+.collaboratorsLinks {
+  color: #151820;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 25px;
+}
+.footerColumn4 {
+  flex-direction: column;
+  align-items: stretch;
+  width: 25%;
+  margin-left: 20px;
+  line-height: normal;
+  display: flex;
+}
+@media (width<=991px) {
+  .footerColumn4 {
+    width: 100%;
+  }
+}
+.resourcesSection {
+  color: #151820;
+  flex-direction: column;
+  align-items: stretch;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  display: flex;
+}
+@media (width<=991px) {
+  .resourcesSection {
+    margin-top: 40px;
+  }
+}
+.resourcesTitle {
+  color: #151820;
+  text-align: center;
+  align-self: start;
+  font-size: 20px;
+  font-weight: 600;
+}
+.resourcesLinks {
+  color: #151820;
+  text-decoration-skip-ink: none;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 25px;
+}
+.footerDivider {
+  background-color: #151820;
+  border: 1px solid #151820;
+  align-self: stretch;
+  width: 100%;
+  min-height: 0;
+  margin-top: 30px;
+}
+@media (width<=991px) {
+  .footerDivider {
+    max-width: 100%;
+  }
+}
+.copyrightSection {
+  color: #151820;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  width: 971px;
+  max-width: 100%;
+  margin-top: 10px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+}
+.copyrightText {
+  color: #151820;
+}
+@media (width<=991px) {
+  .copyrightText {
+    max-width: 100%;
+  }
+}
+.socialMediaIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  width: 20px;
+}

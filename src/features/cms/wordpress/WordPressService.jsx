@@ -7,31 +7,11 @@ const WordPressService = {
    * @returns {Promise} - Response with posts and headers
    */
   getPosts: async (params = {}) => {
-    const defaultParams = {
-      // _embed: true,       // Always embed linked resources
-      per_page: 4,       // Default to 4 posts per page (matches your API example)
-    //   page: 1,           // Default to first page
-    //   _fields: [
-    //     'id',
-    //     'title',
-    //     'excerpt',
-    //     'slug',
-    //     'date',
-    //     'modified',
-    //     'status',
-    //     'type',
-    //     'featured_media',
-    //     'categories',
-    //     'tags',
-    //     '_links',
-    //     '_embedded'
-    //   ].join(',')
-    };
+ 
   
     try {
       const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
         params: {
-          ...defaultParams,
           ...params,
           // Ensure _embed is always true unless explicitly disabled
           // _embed: params._embed === false ? false : true
@@ -39,21 +19,9 @@ const WordPressService = {
     
       });
   
-      // Transform the response data
-      const transformedData = response.data.map(post => ({
-        id: post.id,
-        title: post.title?.rendered || '',
-        excerpt: post.excerpt?.rendered || '',
-        slug: post.slug,
-        date: post.date,
-        modified: post.modified,
-        featuredMedia: post._embedded?.['wp:featuredmedia']?.[0],
-        categories: post._embedded?.['wp:term']?.[0] || [],
-        tags: post._embedded?.['wp:term']?.[1] || []
-      }));
-  
+   
       return {
-        posts: transformedData,
+        posts: response.data,
         pagination: {
           total: parseInt(response.headers['x-wp-total']) || 0,
           totalPages: parseInt(response.headers['x-wp-totalpages']) || 0,
@@ -88,12 +56,9 @@ const WordPressService = {
    * Get all categories
    * @returns {Promise} - Array of categories
    */
-  getCategories: async () => {
-    const response = await WordPressInstance.get('/categories', {
-      params: {
-        per_page: 100,
-        _fields: 'id,name,slug,count'
-      }
+  getCategories: async (params) => {
+    const response = await WordPressInstance.get('/wp-json/wp/v2/categories', {
+      params
     });
     return response.data;
   },
@@ -105,6 +70,33 @@ const WordPressService = {
    */
   getMedia: async (id) => {
     const response = await WordPressInstance.get(`/media/${id}`);
+    return response.data;
+  },
+  getPostsByCategory: async (params) => {
+    const { categoryId, page = 1, perPage = 10 } = params;
+    const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
+      params: {
+        categories: categoryId,
+        page,
+        per_page: perPage,
+        // _embed: true
+      }
+    });
+    
+    return {
+      categoryId,
+      posts: response.data,
+      pagination: {
+        total: parseInt(response.headers['x-wp-total'], 10) || 0,
+        totalPages: parseInt(response.headers['x-wp-totalpages'], 10) || 0,
+        currentPage: page
+      }
+    };
+  },
+  getTags: async (params) => {
+    const response = await WordPressInstance.get('/wp-json/wp/v2/tags', {
+      params
+    });
     return response.data;
   }
 };

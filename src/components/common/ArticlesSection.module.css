@@ -5,18 +5,34 @@
   color: #000000;
 }
 
+
+.articlesSection.blogArticlesSection:first-child{
+  padding: 24px 0 0;
+}
+
+.articlesSection.blogArticlesSection{
+  padding: 20px 0 20px;
+  background: transparent;
+}
+
+.articlesSection.blogArticlesSection:last-child{
+  padding: 20px 0 70px;
+}
+
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  padding-bottom: 24px;
 }
+
 
 .sectionTitle {
   font-size: 24px;
   font-weight: 600;
   margin: 0;
-  padding-bottom: 8px;
+  color: #151820;
 }
 
 .seeMoreLink {
@@ -37,11 +53,18 @@
 .articleCard {
   width: calc(25% - 20.25px);
   /* min-width: 240px; */
+  padding: 0 14px !important;
+}
+
+.articlesSlider :global(.slick-next),
+.articlesSlider :global(.slick-prev) {
+  top: 75px !important;
 }
 
 .articleImage {
   width: 100%;
-  aspect-ratio: 1.86;
+  height: 150px;
+  /* aspect-ratio: 1.86; */
   object-fit: cover;
   border-radius: 12px;
 }
@@ -49,23 +72,41 @@
 .articleTag {
   display: inline-block;
   margin-top: 8px;
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: 8px;
   border: 1px solid var(--Color-principal-naranja, #f4c031);
   font-size: 12px;
-  line-height: 2;
+  line-height: 1;
   cursor: pointer;
 }
 
 .articleTitle {
   font-size: 14px;
+  line-height: 16px;
   font-weight: 600;
-  margin: 8px 0;
+  margin: 8px 0 4px;
 }
 
 .articleExcerpt {
   font-size: 12px;
+  line-height: 16px;
   font-weight: 400;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.tagsContainer{
+  display: flex;
+  gap: 5px;
+}
+
+:global(.slick-track){
+  margin: 0 !important;
 }
 
 @media (max-width: 991px) {
@@ -80,6 +121,31 @@
   .articleCard {
     width: calc(50% - 13.5px);
   }
+
+  
+  .articlesSlider :global(.slick-next),
+  .articlesSlider :global(.slick-prev) {
+    top: 122px !important;
+  }
+
+  .articleImage {
+    height: 240px;
+  }
+
+  
+
+}
+
+@media (max-width: 768px) {
+  .articleImage{
+    height: 180px;
+  }
+
+  
+.articlesSlider :global(.slick-next),
+.articlesSlider :global(.slick-prev) {
+  top: 90px !important;
+}
 }
 
 @media (max-width: 480px) {

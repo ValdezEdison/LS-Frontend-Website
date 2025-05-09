@@ -47,5 +47,7 @@
     "manageAccount": "Manage account",
     "favorites": "Favourites",
     "logout": "Log out"
-  }
+  },
+  "seeMore": "See More",
+  "seeLess": "See Less"
 }

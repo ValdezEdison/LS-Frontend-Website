@@ -108,3 +108,65 @@ export const updateProfilePicture = createAsyncThunk(
     } 
   }
 );
+
+
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (passwordData, { rejectWithValue }) => {
+    try {
+      const response = await authService.changePassword(passwordData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const deleteAccount = createAsyncThunk(
+  'auth/deleteAccount',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.deleteAccount();
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+
+export const fetchUsersGroups = createAsyncThunk(
+  'auth/fetchUsersGroups',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.usersGroups();
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const updateUserLanguage = createAsyncThunk(
+  'auth/updateUserLanguage',
+  async (language, { rejectWithValue }) => {
+    try {
+      const response = await authService.updateUserLanguage(language);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const saveSuggestions = createAsyncThunk(
+  'auth/saveSuggestions',
+  async (suggestions, { rejectWithValue }) => {
+    try {
+      const response = await authService.saveSuggestions(suggestions);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);

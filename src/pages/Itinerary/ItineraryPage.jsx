@@ -297,7 +297,7 @@ const ItineraryPage = () => {
 
           <RecommendedEvents />
         </main>
-        <Newsletter />
+        {isAuthenticated && <Newsletter />}
         <Footer />
       </div>
     </>

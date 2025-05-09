@@ -1,17 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPosts, fetchPostBySlug, fetchCategories } from './WordPressAction';
+import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags } from './WordPressAction';
 
 const initialState = {
   posts: [],
   currentPost: null,
   categories: [],
+  categoriesLoading: false,
   loading: false,
   error: null,
   pagination: {
     total: 0,
     totalPages: 0,
     currentPage: 1
-  }
+  },
+  postsByCategory: [],
+  postsByCategoryLoading: false,
+  tags: [],
+  LoadingTags: false
 };
 
 const wordPressSlice = createSlice({
@@ -33,6 +38,7 @@ const wordPressSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
+        console.log(action.payload, 'payload');
         state.loading = false;
         state.posts = action.payload.posts;
         state.pagination = {
@@ -63,17 +69,55 @@ const wordPressSlice = createSlice({
 
       // Fetch Categories
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
+        state.categoriesLoading = true;
         state.error = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.categoriesLoading = false;
         state.categories = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
+        state.categoriesLoading = false;
         state.error = action.payload;
-      });
+      })
+
+      // Fetch Posts By Category
+      .addCase(fetchPostsByCategory.pending, (state) => {
+        state.postsByCategoryLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchPostsByCategory.fulfilled, (state, action) => {
+        state.postsByCategoryLoading = false;
+        state.postsByCategory = {
+          ...state.postsByCategory,
+          [action.payload.categoryId]: action.payload.posts
+        };
+        state.pagination = {
+          ...state.pagination,
+          total: action.payload.pagination.total,
+          totalPages: action.payload.pagination.totalPages,
+          currentPage: action.payload.pagination.currentPage
+        };
+      })
+      .addCase(fetchPostsByCategory.rejected, (state, action) => {
+        state.postsByCategoryLoading = false;
+        state.error = action.payload;
+      })
+
+      // Fetch Tags
+      .addCase(fetchTags.pending, (state) => {
+        state.LoadingTags = true;
+        state.error = null;
+      })
+      .addCase(fetchTags.fulfilled, (state, action) => {
+        state.LoadingTags = false;
+        state.tags = action.payload;
+      })
+      .addCase(fetchTags.rejected, (state, action) => {
+        state.LoadingTags = false;
+        state.error = action.payload;
+      })
+      ;
   }
 });
 

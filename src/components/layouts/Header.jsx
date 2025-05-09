@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import LanguageSelector from "../common/LanguageSelector";
 import { getLanguageData, setLanguage, setSecretKey } from "../../utils/Helper";
 import { useTranslation } from "react-i18next";
-import { LSLogo2_1, Favorite } from "../common/Images";
+import { LSLogo2_1, Favorite, ProfilePlaceholder, Spain, UK, US } from "../common/Images";
 import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom"
@@ -11,7 +11,7 @@ import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchFooterBlocks } from "../../features/cms/Blocks/BlocksAction";
 import UserMenu from "../UserMenu/UserMenu";
-import { logout } from "../../features/authentication/AuthActions";
+import { logout, getProfile } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 
@@ -26,7 +26,7 @@ const Header = () => {
   const mobNavRef = useRef(null);
   const userMenuRef = useRef(null);
 
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
   const { languages } = useSelector((state) => state.languages);
 
   const location = useLocation();
@@ -49,6 +49,8 @@ const Header = () => {
     dispatch(fetchFooterBlocks(languageId));
     if(!isAuthenticated){
       dispatch(fetchNewsLetterBlocks(languageId));  
+    }else{
+      dispatch(getProfile());
     }
   }, [dispatch, language]); // Re-fetch data when language changes
 
@@ -107,7 +109,7 @@ const Header = () => {
 
   const languageData = getLanguageData();
 
-  const filteredLanguages = languages.filter((lang) => lang.code === "es");
+  // const filteredLanguages = languages.filter((lang) => lang.code === "es");
 
   useEffect(() => {
     const languageData = getLanguageData();
@@ -116,6 +118,26 @@ const Header = () => {
       setLanguage(selectedLang.id, "es", "/images/spain.png", "Español");
     }
   }, [setLanguage]);
+
+    // Filter out 'fr' and 'pt' languages
+    const filteredLanguages = languages.filter(
+      (lang) => lang.code !== "fr" && lang.code !== "pt"
+    );
+  
+    // Map language codes to their corresponding flag images
+    const flagImages = {
+      "es": Spain,
+      "en": US,
+      "en-GB": UK,
+    };
+
+
+  useEffect(() => {
+    if(user){
+      setLanguage(user.language.id, user.language.code, flagImages[user.language.code] , user.language.name);
+    }
+    
+  }, [user])
 
 
 
@@ -269,7 +291,7 @@ const Header = () => {
               <div className={styles.userMenuContainer} ref={userMenuRef}>
                 <div className={styles.profileIconWrapper}>
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e55a5f6259eb4c04889d83edcb17bc65673cf93782c1c2c40272b91d103518?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
+                    src={user?.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
                     alt="User Profile"
                     className={styles.userIcon}
                     onClick={handleUserIconClick}

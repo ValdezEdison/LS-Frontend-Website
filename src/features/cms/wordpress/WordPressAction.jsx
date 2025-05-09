@@ -7,14 +7,8 @@ export const fetchPosts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await WordPressService.getPosts(params);
-      return {
-        posts: response.data,
-        pagination: {
-          total: parseInt(response.headers['x-wp-total']) || 0,
-          totalPages: parseInt(response.headers['x-wp-totalpages']) || 0,
-          currentPage: params.page || 1
-        }
-      };
+      console.log(response, 'response');
+      return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
     }
@@ -38,9 +32,32 @@ export const fetchPostBySlug = createAsyncThunk(
 
 export const fetchCategories = createAsyncThunk(
   'wordpress/fetchCategories',
-  async (_, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      return await WordPressService.getCategories();
+      return await WordPressService.getCategories(params);
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+export const fetchPostsByCategory = createAsyncThunk(
+  'wordpress/fetchPostsByCategory',
+  async (params, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getPostsByCategory(params);
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+
+export const fetchTags = createAsyncThunk(
+  'wordpress/fetchTags',
+  async (params, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getTags(params);
     } catch (error) {
       return rejectWithValue(handleApiError(error));
     }

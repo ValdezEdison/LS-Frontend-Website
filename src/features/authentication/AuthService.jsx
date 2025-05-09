@@ -37,6 +37,24 @@ const authService = {
   updateProfilePicture: async (userData) => {
     return apiService.post('/users/update_pfp', userData);
   },
+
+  changePassword: async (userData) => {
+    return apiService.post('/users/reset_password', userData);
+  },
+  deleteAccount: async () => {
+    return apiService.delete('/users/me');
+  },
+  usersGroups: async () => {
+    return apiService.get('/users/groups');
+  },
+
+  updateUserLanguage : async (language) => {
+    return apiService.post('/users/language', { lang_id: language });
+  },
+
+  saveSuggestions : async (suggestions) => {
+    return apiService.post('/users/suggestions', { suggestions });
+  },
 };
 
 export default authService; 

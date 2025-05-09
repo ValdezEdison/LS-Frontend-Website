@@ -131,7 +131,7 @@ const ExplorePage = () => {
         }
       </main>
       <BlogSection />
-      <Newsletter />
+      {isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );

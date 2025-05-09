@@ -3,7 +3,7 @@ import Header from "../../components/layouts/Header";
 import HeroSection from "../../components/layouts/HeroSection";
 import PlacesSection from "../../components/HomePage/PlacesSection";
 import EventsSection from "../../components/HomePage/EventsSection";
-import ArticlesSection from "../../components/HomePage/ArticlesSection";
+import ArticlesSection from "../../components/common/ArticlesSection";
 import PartnersSection from "../../components/common/PartnersSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchHeroContent, fetchOurPartners } from "../../features/cms/Pages/PagesAction";
 import HeroSectionSkeleton from "../../components/skeleton/HomePage/HeroSectionSkeleton";
 import { fetchRandomSites } from "../../features/home/HomeAction";
-import { fetchPosts } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchTags } from "../../features/cms/wordpress/WordPressAction";
 
 const HomePage = () => {
   
@@ -42,7 +42,7 @@ const HomePage = () => {
   const { images, loading: imagesLoading, error: imagesError } = useSelector((state) => state.images);
   const { heroContent, loading: heroContentLoading, error: heroContentError, ourPartners, ourPartnersLoading, ourPartnersError } = useSelector((state) => state.cms.pages);
   const { randomPlaces, loading: randomPlacesLoading, error: randomPlacesError } = useSelector((state) => state.home);
-  const { posts, loading: postsLoading, error: postsError } = useSelector((state) => state.cms.wordpress);
+  const { posts, loading: postsLoading, error: postsError, tags } = useSelector((state) => state.cms.wordpress);
 
 
   // Fetch places on component mount
@@ -52,11 +52,20 @@ const HomePage = () => {
       dispatch(fetchHeroContent(languageId));
       dispatch(fetchOurPartners(languageId));
       dispatch(fetchPosts({ per_page: 10 }));
+      dispatch(fetchTags({per_page: 100}));
 
   }, [dispatch, language]);
 
 const handleNavigateToLogin = () => {
   navigate('/login', { state: { from: '/' } });
+}
+
+const handleNavActions = (e, id, action) => {
+  if(action === "viewDetail") {
+    navigate('/places/details', { state: { id } });
+  }else if(action === "viewList") {
+    navigate('/blog');
+  }
 }
 
   return (
@@ -73,7 +82,7 @@ const handleNavigateToLogin = () => {
         buttonText="Saber más"
         imageSrc={LSLogo2_2}
       />
-      <ArticlesSection posts={posts}/>
+      <ArticlesSection title=" Inspiración para tus próximos viajes" posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
       <AppPromotion />
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>
       <Newsletter />

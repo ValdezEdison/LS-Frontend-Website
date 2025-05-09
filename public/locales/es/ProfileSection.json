@@ -1,0 +1,169 @@
+{
+    "personalDetails": {
+        "title": "Detalles personales",
+        "subtitle": "Actualiza tu información personal editando el perfil",
+        "fields": {
+            "profileType": "Tipo de perfil",
+            "name": "Nombre",
+            "email": "Dirección de email",
+            "phone": "Número de teléfono",
+            "birthDate": "Fecha de nacimiento",
+            "nationality": "Nacionalidad",
+            "address": "Dirección",
+            "preferences": "Preferencias"
+        },
+        "labels": {
+            "firstName": "Nombre",
+            "lastName": "Apellido"
+        },
+        "placeholders": {
+            "firstName": "Ingresa tu nombre",
+            "lastName": "Ingresa tu apellido",
+            "birthDate": "Ingresa tu fecha de nacimiento",
+            "nationality": "Selecciona el país/región de nacimiento",
+            "address": "Ingresa tu dirección",
+            "phoneCode": "Código",
+            "phoneNumber": "Ingresa tu número de teléfono",
+            "countrySearch": "Buscar código del país"
+        },
+        "preferences": {
+            "security": "Seguridad",
+            "privacy": "Privacidad",
+            "notifications": "Notificaciones"
+        },
+        "actions": {
+            "info": "Información",
+            "edit": "Editar",
+            "verified": "Verificación",
+            "save": "Guardar",
+            "cancel": "Cancelar"
+        },
+        "emailNote": "Esta dirección de email es la que has utilizado para iniciar sesión y a la que se envía todos los perfiles actuales."
+    },
+    "preferences": {
+        "title": "Preferencias",
+        "description": "Cambia tu idioma y haz sugerencias sobre lugares y eventos",
+        "language": {
+            "title": "Idioma",
+            "edit": "Editar",
+            "cancel": "Cancelar",
+            "save": "Guardar"
+        },
+        "suggestions": {
+            "title": "Sugerencias",
+            "description": "Escribe una sugerencia",
+            "disclaimer": "Una vez tu sugerencia sea enviada, no se podrá editar ni eliminar. Responderemos por email lo más rápido posible.",
+            "form": {
+                "title": "Título",
+                "titlePlaceholder": "Escribe un título",
+                "activityType": "Tipo de actividad",
+                "event": "Evento",
+                "place": "Lugar",
+                "level": "Nivel",
+                "selectLevel": "Selecciona un nivel",
+                "category": "Categoría",
+                "selectCategory": "Selecciona una categoría",
+                "subcategory": "Subcategoría",
+                "selectSubcategory": "Selecciona una subcategoría",
+                "submit": "Enviar"
+            },
+            "contact": {
+                "title": "¿Tienes alguna duda?",
+                "text": "Puedes ponerte en contacto con nosotros enviando un email a {email} o llamando a {phone}",
+                "email": "nombre@gmail.com",
+                "phone": "+34 123 456 789"
+            }
+        }
+    },
+    "security": {
+        "title": "Seguridad",
+        "description": "Cambia tu configuración de seguridad o elimina tu cuenta",
+        "sections": {
+            "password": {
+                "title": "Contraseña",
+                "description": "Actualiza tu contraseña para mantener tu cuenta segura",
+                "buttonText": "Editar",
+                "fields": {
+                    "currentPassword": {
+                        "label": "Contraseña actual",
+                        "placeholder": "Ingresa tu contraseña actual"
+                    },
+                    "newPassword": {
+                        "label": "Nueva contraseña",
+                        "placeholder": "Ingresa nueva contraseña"
+                    },
+                    "confirmPassword": {
+                        "label": "Confirmar nueva contraseña",
+                        "placeholder": "Confirma tu nueva contraseña"
+                    }
+                }
+            },
+            "twoFactor": {
+                "title": "Autenticación de dos factores",
+                "description": "Esta función no está disponible actualmente",
+                "buttonText": "No disponible"
+            },
+            "sessions": {
+                "title": "Sesiones activas",
+                "description": "Esta función no está disponible actualmente",
+                "buttonText": "No disponible"
+            },
+            "delete": {
+                "title": "Eliminar cuenta",
+                "description": "Eliminar permanentemente tu cuenta",
+                "buttonText": "Eliminar cuenta",
+                "fields": {
+                    "accountDeletionConfirmed": {
+                        "label": "Entiendo que esta acción es irreversible"
+                    }
+                }
+            }
+        },
+        "actions": {
+            "save": "Guardar",
+            "cancel": "Cancelar"
+        }
+    },
+    "privacy": {
+        "title": "Privacidad",
+        "description": "Gestiona tu configuración de privacidad y datos utilizados por terceros",
+        "settings": {
+            "title": "Ajustes de privacidad",
+            "description": "Selecciona 'Gestionar' para cambiar los ajustes de privacidad y datos utilizados por terceros"
+        },
+        "actions": {
+            "manage": "Gestionar"
+        }
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "description": "Decide tus notificaciones y date de baja en lo que no desees",
+        "emailPreferences": "Preferencias de email",
+        "toggleOptions": {
+            "promotions": {
+                "label": "Promociones y novedades",
+                "action": "Darme de baja"
+            },
+            "referFriend": {
+                "label": "Recomendar a un amigo",
+                "action": "Suscribirme"
+            },
+            "weeklyDiscovery": {
+                "label": "Descubrimiento semanal",
+                "action": "Suscribirme"
+            }
+        },
+        "actions": {
+            "save": "Guardar"
+        }
+    },
+    "sidebar": {
+        "tabs": {
+            "personal": "Detalles personales",
+            "preferences": "Preferencias",
+            "security": "Seguridad",
+            "privacy": "Privacidad",
+            "notifications": "Notificaciones"
+        }
+    }
+}

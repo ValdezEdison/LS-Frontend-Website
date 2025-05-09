@@ -21,7 +21,7 @@ const LanguageSelector = ({ languagesRef, handleLanguageChange }) => {
 
   // Map language codes to their corresponding flag images
   const flagImages = {
-    es: Spain,
+    "es": Spain,
     "en": US,
     "en-GB": UK,
   };
