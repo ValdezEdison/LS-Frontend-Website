@@ -148,7 +148,7 @@ const ExplorePage = () => {
        {postsLoading ? <WidgetSkeleton/> :
         <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
        }
-      {isAuthenticated && <Newsletter />}
+      {!isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );
