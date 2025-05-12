@@ -629,6 +629,15 @@ button,input,select,textarea{
   padding: 0 5px 0 0;
 }
 
+.elementor-share-btn{
+  display: none !important;
+}
+
+.elementor-share-buttons--shape-square{
+  width: 30px;
+  height: 30px;
+}
+
 @media screen and (max-width: 1260px) {
   .page-center{
     max-width: 100%;

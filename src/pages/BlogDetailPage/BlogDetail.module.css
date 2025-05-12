@@ -23,6 +23,26 @@
   display: flex;
   overflow: hidden;
 }
+
+.articleContent{
+  max-width: 788px;
+  width: 100%;
+}
+
+.articleContent img{
+    max-width: 100% !important;
+    width: 100%;
+    border-radius: 8px;
+    height: auto;
+    margin: 30px 0;
+    object-fit: cover;
+}
+
+.articleContent h3{
+  margin: 0;
+}
+
+
 @media (width<=991px) {
   .header {
     max-width: 100%;
@@ -201,9 +221,9 @@
   flex-direction: column;
   align-self: center;
   align-items: stretch;
-  width: 792px;
+  width: 788px;
   max-width: 100%;
-  margin-top: 40px;
+  margin: 40px auto 0;
   font-family:
     Source Sans Pro,
     -apple-system,
@@ -225,6 +245,7 @@
     sans-serif;
   font-size: 32px;
   font-weight: 700;
+  margin: 0;
 }
 @media (width<=991px) {
   .articleTitle {
@@ -271,10 +292,11 @@
 .authorName {
   color: #151820;
   align-self: start;
+  margin: 0;
 }
 .publicationInfo {
   color: #151820;
-  margin-top: 5px;
+  margin: 5px 0 0;
 }
 .shareIcon {
   aspect-ratio: 0.84;
@@ -292,7 +314,10 @@
   flex-shrink: 0;
   height: 1px;
   margin-top: 17px;
+  width: 100%;
 }
+
+
 @media (width<=991px) {
   .articleDivider {
     max-width: 100%;
@@ -300,11 +325,12 @@
 }
 .featuredImage {
   aspect-ratio: 1.46;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   border-radius: 8px;
   align-self: center;
   width: 636px;
+  height: auto;
   max-width: 100%;
   margin-top: 30px;
 }
@@ -410,7 +436,7 @@
   gap: 20px;
   width: 222px;
   max-width: 100%;
-  margin-top: 40px;
+  margin: 0px 0 30px;
   font-size: 14px;
   display: flex;
 }
@@ -421,15 +447,15 @@
 }
 .tagCuriosidades {
   color: #212d94;
-  leading-trim: both;
-  text-edge: cap;
   border: 1px solid var(--Color-principal-azul, #212d94);
   background-color: #fff;
   border-radius: 22px;
   align-self: stretch;
   gap: 10px;
   min-height: 40px;
-  padding: 16px 20px;
+  padding: 3px 20px;
+  display: inline-flex;
+  align-items: center;
 }
 @media (width<=991px) {
   .tagCuriosidades {
