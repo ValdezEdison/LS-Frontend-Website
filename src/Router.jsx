@@ -71,7 +71,7 @@ const Router = () => {
                 <Route path="/join-our-team" element={<WorkWithUs />} />
 
 
-                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog-list" element={<BlogPage />} />
                 <Route path="/blog-detail" element={<BlogDetail />} />
 
                 <Route path="/contact" element={<Contacto />} />

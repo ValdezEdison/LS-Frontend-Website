@@ -271,8 +271,8 @@ const Header = () => {
               />
               <nav className={styles.secondaryNav}>
                 <a
-                  onClick={() => handleNavigation("/blog")}
-                  className={`${styles.navLink} ${isActive("/blog") ? styles.navItemActive : ""
+                  onClick={() => handleNavigation("/blog-list")}
+                  className={`${styles.navLink} ${isActive("/blog-list") ? styles.navItemActive : ""
                     }`}
                 >
                   {t("nav.blog")}
@@ -352,9 +352,9 @@ const Header = () => {
                   </li>
                 }
                 <li
-                  className={`${styles.navButton} ${isActive("/blog") ? styles.navItemActive : ""
+                  className={`${styles.navButton} ${isActive("/blog-list") ? styles.navItemActive : ""
                     }`}
-                  onClick={() => handleNavigation("/blog")}
+                  onClick={() => handleNavigation("/blog-list")}
                 >
                   {t("nav.blog")}
                 </li>

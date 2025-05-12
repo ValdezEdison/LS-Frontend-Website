@@ -311,7 +311,7 @@ const ProfilePage = () => {
 
 
   const handleSaveLanguage = async () => {
-    console.log(preferences.language, 'clicked');
+    
     try {
        dispatch(updateUserLanguage(  preferences.language )).then((result) => {
         if (result.type === "auth/updateUserLanguage/fulfilled") {

@@ -9,7 +9,7 @@ function ArticleContent({ currentPost, tags, loading }) {
 
 
   const getFeaturedImage = (currentPost) => {
-    console.log(currentPost, 'currentPost');
+    
     if (currentPost?._embedded?.['wp:featuredmedia']?.[0]?.source_url) {
       return currentPost._embedded['wp:featuredmedia'][0].source_url;
     }

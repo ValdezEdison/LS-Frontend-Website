@@ -184,6 +184,16 @@ const WordPressService = {
         'Failed to fetch categories with posts'
       );
     }
+  },
+  getPostsByTag: async (tagId, params = {}) => {
+    const response = await WordPressInstance.get(`/wp-json/wp/v2/posts?tags=${tagId}`, {
+      params: {
+        _embed: true,
+        fields: '_embedded',
+        ...params
+      }
+    });
+    return response.data;
   }
 };
 

@@ -66,7 +66,7 @@ const handleNavActions = (e, id, action) => {
   if(action === "viewDetail") {
     navigate('/blog-detail', { state: { id } });
   }else if(action === "viewList") {
-    navigate('/blog');
+    navigate('/blog-list');
   }
 }
 

@@ -253,13 +253,13 @@ const TravelItineraryEdit = () => {
     };
   }, [isTripTypeDropdownOpen]);
 
-  console.log(formState, 'formState');
+  
 
   useEffect(() => {
     if (formState.cityIds) {
-      console.log(formState.cityIds, 'formState.cityIds');
+      
       const cityIdsString = formState.cityIds.join(',');
-      console.log(cityIdsString, 'cityIdsString');
+      
       dispatch(fetchStops({
         cityId: cityIdsString,
         type: formState.type,

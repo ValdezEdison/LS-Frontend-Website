@@ -7,7 +7,7 @@ export const fetchPosts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await WordPressService.getPosts(params);
-      console.log(response, 'response');
+      
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
@@ -106,6 +106,18 @@ export const fetchCategoriesWithPosts = createAsyncThunk(
   async ({ categoryIds, ...params }, { rejectWithValue }) => {
     try {
       return await WordPressService.getCategoriesWithPosts(categoryIds, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+export const fetchPostsByTag = createAsyncThunk(
+  'wordpress/fetchPostsByTag',
+  async ({ tagId, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getPostsByTag(tagId, params);
     } catch (error) {
       return rejectWithValue(error.message);
     }

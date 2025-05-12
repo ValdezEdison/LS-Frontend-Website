@@ -42,7 +42,7 @@ const Header = () => {
               alt=""
             />
           </button>
-          <a href="/blog" className={styles.blogLink}>
+          <a href="/blog-list" className={styles.blogLink}>
             Blog
           </a>
           <div className={styles.divider} />

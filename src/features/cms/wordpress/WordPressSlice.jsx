@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags, fetchPostDetails, fetchMedia, fetchCategoriesWithPosts, fetchCategoryWithPosts } from './WordPressAction';
+import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags, fetchPostDetails, fetchMedia, fetchCategoriesWithPosts, fetchCategoryWithPosts, fetchPostsByTag } from './WordPressAction';
 
 const initialState = {
   posts: [],
@@ -19,7 +19,9 @@ const initialState = {
   LoadingTags: false,
   mediaByPostsLoading: false,
   categoriesWithPosts: {},
-  categoriesWithPostsLoading: false
+  categoriesWithPostsLoading: false,
+  postsByTag: [],
+  postsByTagLoading: false
 };
 
 const wordPressSlice = createSlice({
@@ -31,6 +33,9 @@ const wordPressSlice = createSlice({
     },
     setCurrentPage: (state, action) => {
       state.pagination.currentPage = action.payload;
+    },
+    resetPostsByTag: (state) => {
+      state.postsByTag = [];
     }
   },
   extraReducers: (builder) => {
@@ -41,7 +46,7 @@ const wordPressSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        console.log(action.payload, 'payload');
+        
         state.loading = false;
         state.posts = action.payload.posts;
         state.pagination = {
@@ -163,6 +168,20 @@ const wordPressSlice = createSlice({
         state.error = action.payload;
       })
 
+
+      .addCase(fetchPostsByTag.pending, (state) => {
+        state.postsByTagLoading = true;
+      })
+      .addCase(fetchPostsByTag.fulfilled, (state, action) => {
+        state.postsByTagLoading = false;
+        state.postsByTag = action.payload;
+      
+      })
+      .addCase(fetchPostsByTag.rejected, (state, action) => {
+        state.postsByTagLoading = false;
+        state.error = action.payload;
+      })
+
       // Fetch Media By Posts
       // .addCase(fetchMedia.pending, (state) => {
       //   state.mediaByPostsLoading = true;
@@ -202,5 +221,5 @@ const wordPressSlice = createSlice({
   }
 });
 
-export const { resetCurrentPost, setCurrentPage } = wordPressSlice.actions;
+export const { resetCurrentPost, setCurrentPage, resetPostsByTag } = wordPressSlice.actions;
 export default wordPressSlice.reducer;
