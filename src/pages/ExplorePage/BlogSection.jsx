@@ -44,7 +44,7 @@ const BlogSection = () => {
         <h2 className={styles.blogTitle}>
           Inspiración para tus próximos viajes
         </h2>
-        <a href="/blog" className={styles.viewMoreLink}>
+        <a href="/blog-list" className={styles.viewMoreLink}>
           Ver más
         </a>
       </div>

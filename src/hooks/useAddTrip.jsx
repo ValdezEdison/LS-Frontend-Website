@@ -59,7 +59,7 @@ export const useAddTrip = () => {
   });
 
 
-  console.log(formState, "formState");
+  
   const resetAllStates = () => {
     // Reset trip state
     setTripState({

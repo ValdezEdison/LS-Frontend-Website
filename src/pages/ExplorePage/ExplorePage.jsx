@@ -80,7 +80,7 @@ const ExplorePage = () => {
     if(action === "viewDetail") {
       navigate('/places/details', { state: { id } });
     }else if(action === "viewList") {
-      navigate('/blog');
+      navigate('/blog-list');
     }
   }
 

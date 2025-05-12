@@ -7,7 +7,7 @@ export const fetchPosts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await WordPressService.getPosts(params);
-      console.log(response, 'response');
+      
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
@@ -72,6 +72,54 @@ export const fetchPostDetails = createAsyncThunk(
       return await WordPressService.getPostDetails(postId);
     } catch (error) {
       return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+
+export const fetchMedia = createAsyncThunk(
+  'wordpress/fetchMedia',
+  async (params, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getMedia(params);
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+
+
+export const fetchCategoryWithPosts = createAsyncThunk(
+  'wordpress/fetchCategoryWithPosts',
+  async ({ categoryId, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getCategoryWithPosts(categoryId, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCategoriesWithPosts = createAsyncThunk(
+  'wordpress/fetchCategoriesWithPosts',
+  async ({ categoryIds, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getCategoriesWithPosts(categoryIds, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+export const fetchPostsByTag = createAsyncThunk(
+  'wordpress/fetchPostsByTag',
+  async ({ tagId, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getPostsByTag(tagId, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );

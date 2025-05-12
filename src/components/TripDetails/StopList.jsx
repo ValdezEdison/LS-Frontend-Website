@@ -56,8 +56,8 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
       setFormState(prev => ({ ...prev, sites: newOrderIds }));
     }
   };
-console.log(items, "items");
-console.log(tripDetails, "tripDetails");
+
+
 
   const handleActions = (e, action, id) => {
 

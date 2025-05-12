@@ -7,37 +7,31 @@ import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags }) => {
+const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags, layout = 'carousel' }) => {
   const { t } = useTranslation("Common");
-
   const location = useLocation();
+  const isBlogPage = location.pathname === "/blog-list";
 
-  const isBlogPage = location.pathname === "/blog";
-
-  // Slider settings
+  // Slider settings for carousel layout
   const settings = {
     infinite: true,
     speed: 500,
-    // slidesToShow: Math.min(4, posts.length),
-    slidesToShow: 4,
-    centerMode:false,
+    slidesToShow: Math.min(4, posts.length),
+    centerMode: false,
     slidesToScroll: 1,
     arrows: posts.length > 4,
-
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          // slidesToShow: Math.min(2, posts.length),
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, posts.length),
           arrows: posts.length > 2,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          // slidesToShow: Math.min(1, posts.length),
-          slidesToShow:1,
+          slidesToShow: 1,
           arrows: posts.length > 1,
         },
       },
@@ -46,17 +40,14 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
 
   // Function to get the featured image from yoast metadata
   const getFeaturedImage = (post) => {
-    if (post.yoast_head_json?.og_image?.[0]?.url) {
-      return post.yoast_head_json.og_image[0].url;
+    if (post._embedded?.['wp:featuredmedia']?.[0]?.source_url) {
+      return post._embedded['wp:featuredmedia'][0].source_url;
     }
     return '';
   };
 
   // Function to get the excerpt from yoast metadata
   const getExcerpt = (post) => {
-    if (post.yoast_head_json?.description) {
-      return post.yoast_head_json.description.replace(/<[^>]*>?/gm, '').trim();
-    }
     if (post.excerpt?.rendered) {
       return post.excerpt.rendered.replace(/<[^>]*>?/gm, '').trim();
     }
@@ -65,15 +56,45 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
 
   // Function to get the primary category/tag
   const getPrimaryTag = (postTag) => {
-
-
     return postTag
-      .map(tagId => tags.find(tag => tag.id === tagId)) // Find matching tag objects
-      .filter(Boolean) // Remove undefined (if a tag wasn't found)
+      .map(tagId => tags.find(tag => tag.id === tagId))
+      .filter(Boolean)
       .map(tag => tag.name);
-
   };
 
+  // Render individual post card
+  const renderPostCard = (post) => {
+    return (
+      <div
+        key={post.id}
+        className={styles.articleCard}
+        onClick={(e) => handleNavActions(e, post.id, "viewDetail")}
+      >
+        <img
+          src={getFeaturedImage(post) || PlaceHolderImg2}
+          alt={post.title.rendered}
+          className={styles.articleImage}
+          onError={(e) => {
+            e.target.src = PlaceHolderImg2;
+          }}
+        />
+        {post.tags?.length > 0 && (
+          <div className={styles.tagsContainer}>
+            {post.tags.map(tagId => {
+              const tag = tags.find(t => t.id === tagId);
+              return tag ? (
+                <span key={tagId} className={styles.articleTag}>
+                  {tag.name}
+                </span>
+              ) : null;
+            })}
+          </div>
+        )}
+        <h3 className={styles.articleTitle}>{post.title.rendered}</h3>
+        <p className={styles.articleExcerpt}>{getExcerpt(post)}</p>
+      </div>
+    );
+  };
 
   return (
     <section className={`${styles.articlesSection} ${isBlogPage ? styles.blogArticlesSection : ''}`}>
@@ -82,7 +103,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
           <h2 className={`${styles.sectionTitle} ${isBlogPage ? styles.blogTitle : ''}`}>
             {title}
           </h2>
-          {seeMore && posts.length > 4 && (
+          {seeMore && posts.length > (layout === 'grid' ? 8 : 4) && (
             <div
               className={styles.seeMoreLink}
               onClick={(e) => handleNavActions(e, null, "viewList")}
@@ -93,40 +114,17 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
         </div>
 
         {posts.length > 0 ? (
-          <Slider {...settings} className={styles.articlesSlider}>
-            {posts.map((post) => (
-              <div
-                key={post.id}
-                className={styles.articleCard}
-                onClick={(e) => handleNavActions(e, post.id, "viewDetail")}
-              >
-                <img
-                  src={getFeaturedImage(post) || PlaceHolderImg2}
-                  alt={post.title.rendered}
-                  className={styles.articleImage}
-                  onError={(e) => {
-                    e.target.src = PlaceHolderImg2;
-                  }}
-                />
-                {post.tags?.length > 0 && (
-                  <div className={styles.tagsContainer}>
-                    {post.tags.map(tagId => {
-                      const tag = tags.find(t => t.id === tagId);
-                      console.log(tag, 'tag');
-                      return tag ? (
-                        <span key={tagId} className={styles.articleTag}>
-                          {tag.name}
-                        </span>
-                      ) : null;
-                    })}
-                  </div>
-                )}
-
-                <h3 className={styles.articleTitle}>{post.yoast_head_json?.title || post.title.rendered}</h3>
-                <p className={styles.articleExcerpt}>{getExcerpt(post)}</p>
-              </div>
-            ))}
-          </Slider>
+          layout === 'grid' ? (
+            // Grid layout - 4 items per row
+            <div className={styles.articlesGrid}>
+              {posts.map(renderPostCard)}
+            </div>
+          ) : (
+            // Carousel layout
+            <Slider {...settings} className={styles.articlesSlider}>
+              {posts.map(renderPostCard)}
+            </Slider>
+          )
         ) : (
           <p>{t('noResults')}</p>
         )}
