@@ -16,6 +16,7 @@ const CalendarIcon = "/images/calendar.svg"
 const CellularConnection = "/images/cellular-connection.svg";
 const Close = "/images/close.png";
 const Down = "/images/down.svg";
+const Download = "/images/download.svg"
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
 const Filter = "/images/filter.svg";
@@ -97,6 +98,7 @@ export {
     CellularConnection,
     Delete,
     Down,
+    Download,
     FacebookWhite,
     QR,
     Favorite,

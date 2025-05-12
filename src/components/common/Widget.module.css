@@ -1,5 +1,5 @@
 .nearbyPlaces {
-  margin: 26px auto;
+  margin: 40px auto 0;
   /* padding: 0 20px; */
   /* border-top: solid 1px #BDBDBD; */
 }
@@ -7,7 +7,7 @@
 .sectionTitle {
   font-size: 20px;
   color: #000;
-  margin-bottom: 20px;
+  margin: 40px 0 20px;
 }
 
 .placesList {

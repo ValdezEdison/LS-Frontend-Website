@@ -10,8 +10,8 @@ const StarRating = ({ rating, onRatingChange }) => {
           key={star}
           style={{
             cursor: "pointer",
-            color: star <= rating ? "#F4C031" : "#e4e5e9",
-            fontSize: "24px"
+            color: star <= rating ? "#F4C031" : "#d5d5d6",
+            fontSize: "30px"
           }}
           onClick={() => onRatingChange(star)}
         >
