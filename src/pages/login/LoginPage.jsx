@@ -207,7 +207,7 @@ const LoginPage = () => {
         }
       })
       .catch((err) => {
-        toast.error(err.message || t('messages.error'));
+        // toast.error(err.message || t('messages.error'));
         
       });
   };

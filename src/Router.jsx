@@ -72,7 +72,7 @@ const Router = () => {
 
 
                 <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/details" element={<BlogDetail />} />
+                <Route path="/blog-detail" element={<BlogDetail />} />
 
                 <Route path="/contact" element={<Contacto />} />
             </Routes>

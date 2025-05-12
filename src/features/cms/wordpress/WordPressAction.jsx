@@ -75,3 +75,39 @@ export const fetchPostDetails = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchMedia = createAsyncThunk(
+  'wordpress/fetchMedia',
+  async (params, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getMedia(params);
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+
+
+export const fetchCategoryWithPosts = createAsyncThunk(
+  'wordpress/fetchCategoryWithPosts',
+  async ({ categoryId, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getCategoryWithPosts(categoryId, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCategoriesWithPosts = createAsyncThunk(
+  'wordpress/fetchCategoriesWithPosts',
+  async ({ categoryIds, ...params }, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getCategoriesWithPosts(categoryIds, params);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

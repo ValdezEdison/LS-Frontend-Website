@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags, fetchPostDetails } from './WordPressAction';
+import { fetchPosts, fetchPostBySlug, fetchCategories, fetchPostsByCategory, fetchTags, fetchPostDetails, fetchMedia, fetchCategoriesWithPosts, fetchCategoryWithPosts } from './WordPressAction';
 
 const initialState = {
   posts: [],
@@ -16,7 +16,10 @@ const initialState = {
   postsByCategory: [],
   postsByCategoryLoading: false,
   tags: [],
-  LoadingTags: false
+  LoadingTags: false,
+  mediaByPostsLoading: false,
+  categoriesWithPosts: {},
+  categoriesWithPostsLoading: false
 };
 
 const wordPressSlice = createSlice({
@@ -131,6 +134,70 @@ const wordPressSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+
+      .addCase(fetchCategoryWithPosts.pending, (state) => {
+        state.categoriesWithPostsLoading = true;
+      })
+      .addCase(fetchCategoryWithPosts.fulfilled, (state, action) => {
+        state.categoriesWithPostsLoading = false;
+        state.categoriesWithPosts[action.payload.id] = action.payload;
+      })
+      .addCase(fetchCategoryWithPosts.rejected, (state, action) => {
+        state.categoriesWithPostsLoading = false;
+        state.error = action.payload;
+      })
+      
+      // Multiple categories with posts
+      .addCase(fetchCategoriesWithPosts.pending, (state) => {
+        state.categoriesWithPostsLoading = true;
+      })
+      .addCase(fetchCategoriesWithPosts.fulfilled, (state, action) => {
+        state.categoriesWithPostsLoading = false;
+        action.payload.forEach(category => {
+          state.categoriesWithPosts[category.id] = category;
+        });
+      })
+      .addCase(fetchCategoriesWithPosts.rejected, (state, action) => {
+        state.categoriesWithPostsLoading = false;
+        state.error = action.payload;
+      })
+
+      // Fetch Media By Posts
+      // .addCase(fetchMedia.pending, (state) => {
+      //   state.mediaByPostsLoading = true;
+      //   state.error = null;
+      // })
+      // .addCase(fetchMedia.fulfilled, (state, action) => {
+      //   state.mediaByPostsLoading = false;
+      //   // Update posts in postsByCategory
+      //   Object.keys(state.postsByCategory).forEach(categoryId => {
+      //     state.postsByCategory[categoryId] = state.postsByCategory[categoryId].map(post => {
+      //       if (post.featured_media === action.meta.arg) {
+      //         return {
+      //           ...post,
+      //           image: action.payload?.guid?.rendered // Add the image data to the post
+      //         };
+      //       }
+      //       return post;
+      //     });
+      //   });
+        
+      //   // Also update regular posts array if needed
+      //   state.posts = state.posts.map(post => {
+      //     if (post.featured_media === action.meta.arg) {
+      //       return {
+      //         ...post,
+      //         image: action.payload?.guid?.rendered
+      //       };
+      //     }
+      //     return post;
+      //   });
+      // })
+      // .addCase(fetchMedia.rejected, (state, action) => {
+      //   state.mediaByPostsLoading = false;
+      //   state.error = action.payload;
+      // })
       ;
   }
 });

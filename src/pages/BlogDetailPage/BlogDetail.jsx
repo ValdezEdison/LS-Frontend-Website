@@ -30,9 +30,9 @@ function BlogDetail() {
     <div className={styles.blogContainer}>
       <Header />
       <main className="page-center">
-        {currentPost &&
-          <ArticleContent currentPost={currentPost} tags={tags}/>
-        }
+      
+          <ArticleContent currentPost={currentPost} tags={tags} loading={loading}/>
+        
       </main>
       <Newsletter />
       <Footer />

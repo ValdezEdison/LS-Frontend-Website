@@ -7,7 +7,7 @@ import BlogSection from "../../components/Blog/BlogSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
 import ArticlesSection from "../../components/common/ArticlesSection";
-import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags, fetchMedia } from "../../features/cms/wordpress/WordPressAction";
 import { useDispatch, useSelector } from "react-redux";
 import BlogTags from "../../components/Blog/BlogTags";
 import { LanguageContext } from "../../context/LanguageContext";
@@ -49,7 +49,7 @@ function BlogPage() {
   const handleNavActions = (e, id, action) => {
     console.log(action, 'action');
     if(action === "viewDetail") {
-      navigate('/blog/details', { state: { id } });
+      navigate('/blog-detail', { state: { id } });
     }else if(action === "viewList") {
       navigate('/blog');
     }

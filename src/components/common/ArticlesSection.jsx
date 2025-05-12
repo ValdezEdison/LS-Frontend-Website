@@ -46,17 +46,15 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
 
   // Function to get the featured image from yoast metadata
   const getFeaturedImage = (post) => {
-    if (post.yoast_head_json?.og_image?.[0]?.url) {
-      return post.yoast_head_json.og_image[0].url;
+    if (post._embedded?.['wp:featuredmedia']?.[0]?.source_url) {
+      return post._embedded['wp:featuredmedia'][0].source_url;
     }
     return '';
   };
 
   // Function to get the excerpt from yoast metadata
   const getExcerpt = (post) => {
-    if (post.yoast_head_json?.description) {
-      return post.yoast_head_json.description.replace(/<[^>]*>?/gm, '').trim();
-    }
+   
     if (post.excerpt?.rendered) {
       return post.excerpt.rendered.replace(/<[^>]*>?/gm, '').trim();
     }
@@ -122,7 +120,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags 
                   </div>
                 )}
 
-                <h3 className={styles.articleTitle}>{post.yoast_head_json?.title || post.title.rendered}</h3>
+                <h3 className={styles.articleTitle}>{ post.title.rendered }</h3>
                 <p className={styles.articleExcerpt}>{getExcerpt(post)}</p>
               </div>
             ))}
