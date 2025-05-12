@@ -429,10 +429,25 @@ const PlacesPage = () => {
   // Effects
   useEffect(() => {
     // Initial data fetch
-    dispatch(fetchPlaces());
+    // dispatch(fetchPlaces());
     dispatch(fetchCountries());
     dispatch(fetchCities({}));
+
+    const hasFilters = 
+    state.selectedCountryId !== null ||
+    state.selectedDestinationId !== null ||
+    state.selectedDestinations !== "" ||
+    state.selectedOrder !== "" ||
+    state.levels !== "" ||
+    state.categories !== "" ||
+    state.ratings !== "" ||
+    state.subcategories !== "" ||
+    state.points !== "";
+
+  if (!hasFilters) {
+    dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));
     dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
+  }
     dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
     dispatch(fetchBannerBlocks(languageId));
     if (isAuthenticated) {
@@ -511,7 +526,7 @@ const PlacesPage = () => {
       type: "place",
       country: state.selectedCountryName,
       page: state.page,
-      preview: 1,
+      // preview: 1,
       avg_rating: state.ratings,
       categories: state.categories,
       levels: state.levels,
@@ -530,6 +545,7 @@ const PlacesPage = () => {
     state.points,
     state.page,
     state.subcategories,
+    language,
     dispatch
   ]);
 

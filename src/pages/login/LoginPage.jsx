@@ -171,7 +171,7 @@ const LoginPage = () => {
       client_secret: clientSecret,
       email: formData.email,
       grant_type: "password",
-      password: formData.password,
+      password: formData.password.trim(),
       rememberMe: rememberMe
     };
   

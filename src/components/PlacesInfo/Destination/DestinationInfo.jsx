@@ -51,9 +51,16 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
         </div>
 
         {/* <p className={styles.description}>{description}</p> */}
-        <p 
+        {/* <p 
           className={styles.description}
           dangerouslySetInnerHTML={{ __html: description?.replace(/\r\n/g, '<br />') }} 
+        /> */}
+        <p 
+          className={styles.description}
+          dangerouslySetInnerHTML={{ 
+            __html: description
+              ?.replace(/_x000D_\\n|[\r\n]+/g, '<br />')  // Replace all variations with single line breaks
+          }} 
         />
 
         <div className={styles.coordinates}>

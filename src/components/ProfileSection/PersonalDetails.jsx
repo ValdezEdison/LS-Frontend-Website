@@ -113,7 +113,7 @@ const PersonalDetails = ({
     },
     { 
       label: t('personalDetails.fields.phone'), 
-      value: user?.phone ? `+${user?.phone_prefix} ${user?.phone}` : "", 
+      value: user?.phone ? `${user?.phone_prefix} ${user?.phone}` : "", 
       action: t('personalDetails.actions.edit')
     },
     // {

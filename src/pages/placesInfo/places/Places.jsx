@@ -94,6 +94,7 @@ const Places = () => {
         latAndLng: "",
         points: "",
         type: "place",
+        preview: true
     });
 
     const [popupState, setPopupState] = useState({
@@ -123,7 +124,7 @@ const Places = () => {
 
     useEffect(() => {
         if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place' }));
+            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', preview: state.preview }));
             dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
             dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
             if (isAuthenticated) {
@@ -149,6 +150,7 @@ const Places = () => {
                 levels: state.selectedLevel,
                 categories: state.selectedCategory,
                 subcategories: state.selectedSubcategory,
+                preview: state.preview
             }));
 
         }
@@ -333,7 +335,7 @@ const Places = () => {
 
     useEffect(() => {
         if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', points: state.points }));
+            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', points: state.points, preview: state.preview }));
 
         }
     }, [dispatch, id, state.points]);
