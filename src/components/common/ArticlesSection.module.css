@@ -51,7 +51,8 @@
 }
 
 .articleCard {
-  width: calc(25% - 20.25px);
+  /* width: calc(25% - 20.25px); */
+  width: 100%;
   /* min-width: 240px; */
   padding: 0 14px !important;
 }
@@ -137,9 +138,9 @@
     justify-content: center;
   }
 
-  .articleCard {
+  /* .articleCard {
     width: calc(50% - 13.5px);
-  }
+  } */
 
   
   .articlesSlider :global(.slick-next),
