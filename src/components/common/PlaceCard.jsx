@@ -113,7 +113,7 @@ const PlaceCard = forwardRef(
                         </>
                         }
                         {place?.num_of_stops !== undefined && (
-                            <p className={styles.placeStops}>{translate("placeCard.stops")} {place.num_of_stops}</p>
+                            <p className={styles.placeStops}> {place.num_of_stops} {translate("placeCard.stops")} </p>
                         )}
                     </div>
 

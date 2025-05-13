@@ -165,5 +165,18 @@
             "privacy": "Privacy",
             "notifications": "Notifications"
         }
+    },
+    "profilePhoto": {
+        "uploadTitle": "Upload a photo",
+        "buttons": {
+            "select": "Select Photo",
+            "change": "Change Photo",
+            "save": "Save Changes",
+            "uploading": "Uploading..."
+        },
+        "validation": {
+            "fileType": "Please select an image file",
+            "fileSize": "File size should be less than 5MB"
+        }
     }
 }

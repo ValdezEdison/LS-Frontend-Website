@@ -64,8 +64,8 @@ const PreferencesForm = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value, 'ddddd');
-    console.log(filteredLanguages, 'filteredLanguages');
+    
+    
     const selectedLanguage = filteredLanguages.find(lang => lang.id === Number(value));
     if(name === 'language') {
       setState(prev => ({

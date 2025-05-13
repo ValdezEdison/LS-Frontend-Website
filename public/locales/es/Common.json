@@ -1,12 +1,12 @@
 {
-  "seeMore": "Mostrar más",
+  
   "noResults": "No se encontraron resultados",
   "seeMap": "Ver mapa",
   "filters": "Filtros",
   "removeFilters": "Eliminar filtros",
   "nearbyPlaces": "Otros lugares cercanos",
   "logInButton": "Iniciar sesión",
-  "showMore": "Ver más",
+  "showMore": "Mostrar más",
   "visitWebsite": "Visitar sitio web",
   "banner": {
     "title": "Aplica nuestros filtros para conseguir mejores resultados",
@@ -50,5 +50,6 @@
   },
   "seeMore": "Ver más",
   "seeLess": "Ver menos",
-  "travelInspiration": "Inspiración para tus próximos viajes"
+  "travelInspiration": "Inspiración para tus próximos viajes",
+  "noResult": "No se encontraron resultados"
 }

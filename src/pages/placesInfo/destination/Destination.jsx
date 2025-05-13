@@ -16,6 +16,7 @@ import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkelet
 import { LanguageContext } from "../../../context/LanguageContext";
 import PartnersSection from "../../../components/common/PartnersSection";
 import { fetchOurPartners } from "../../../features/cms/Pages/PagesAction";
+import { useTranslation } from "react-i18next";
 
 
 const Destination = () => {
@@ -23,6 +24,8 @@ const Destination = () => {
   const dispatch = useDispatch();
 
    const { language, languageId } = useContext(LanguageContext);
+
+   const { t: tCommon } = useTranslation('Common');
 
   const location = useLocation();
   const { id } = location.state || {};
@@ -63,7 +66,7 @@ const Destination = () => {
       <Header />
       <div className="page-center">
         {loading ? <DestinationInfoSkeleton /> : <DestinationInfo destination={destination} handleClickViewMoreDetails={handleClickViewMoreDetails} />}  
-        {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title="Otros lugares cercanos" count={4} />}
+        {NearbyPlacesLoading ? <WidgetSkeleton /> : <Widget data={NearbyPlaces} title={tCommon("nearbyPlaces")} count={4} seeMore={NearbyPlaces.length > 4 ? true : false}/>}
       </div>
     
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading}/>

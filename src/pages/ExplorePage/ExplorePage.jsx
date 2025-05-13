@@ -18,7 +18,7 @@ import Loader from "../../components/common/Loader";
 import { listUpdater } from "../../features/explore/ExploreSlice";
 import { LanguageContext } from "../../context/LanguageContext";
 import ArticlesSection from "../../components/common/ArticlesSection";
-import { fetchPosts, fetchTags } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchTags, fetchPostsByTag } from "../../features/cms/wordpress/WordPressAction";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 const ExplorePage = () => {
@@ -35,7 +35,13 @@ const ExplorePage = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { posts, loading: postsLoading, error: postsError, tags } = useSelector((state) => state.cms.wordpress);
   
-  
+  const { id } = location.state || {};
+
+  const [state, setState] = useState({
+    tag: null,
+    tagName: "",
+  });
+
   // Set default continent to the first one when loaded
   const [activeContinent, setActiveContinent] = useState(null);
    const { language } = useContext(LanguageContext);
@@ -48,16 +54,17 @@ const ExplorePage = () => {
 
   // Set initial active continent when continents load
   useEffect(() => {
-    if (continents?.length > 0 && !activeContinent) {
+
+    if (continents?.length > 0 && !activeContinent && !id) {
       const europe = continents.find(c => c.name === "Europa") || continents[0];
-      setActiveContinent(europe);
+      setActiveContinent(europe.id);
     }
-  }, [continents, activeContinent]);
+  }, [continents, activeContinent, id]);
 
   // Fetch cities when active continent changes
   useEffect(() => {
-    if (activeContinent?.id) {
-      dispatch(fetchCitiesInContinent( {continentId: activeContinent.id, page: 1} ));
+    if (activeContinent) {
+      dispatch(fetchCitiesInContinent( {continentId: activeContinent, page: 1} ));
     }
   }, [dispatch, activeContinent, language]);
 
@@ -80,9 +87,25 @@ const ExplorePage = () => {
     if(action === "viewDetail") {
       navigate('/places/details', { state: { id } });
     }else if(action === "viewList") {
-      navigate('/blog');
+      navigate('/blog-list');
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      setActiveContinent(id);
+    }
+    
+  },[])
+
+
+    useEffect(() => {
+      if (state.tag) {
+  
+        dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+      }
+  
+    }, [state.tag, dispatch]);
 
 
   if (continentsLoading) {
@@ -113,11 +136,11 @@ const ExplorePage = () => {
                 <button
                   key={continent.id}
                   className={
-                    activeContinent?.id === continent.id 
+                    activeContinent === continent.id 
                       ? styles.activeContinent 
                       : ""
                   }
-                  onClick={() => handleContinentClick(continent)}
+                  onClick={() => handleContinentClick(continent.id)}
                 >
                   {continent.name}
                 </button>
@@ -145,10 +168,14 @@ const ExplorePage = () => {
           </div>
         }
       </main>
-       {postsLoading ? <WidgetSkeleton/> :
-        <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}/>
-       }
-      {!isAuthenticated && <Newsletter />}
+      <div className={styles.articleSliderWrapper}>
+        {postsLoading ? <WidgetSkeleton/> :
+          <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags}    layout="carousel"  // Default carousel layout
+          setState={setState}/>
+        }
+      </div>
+      
+      {isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );

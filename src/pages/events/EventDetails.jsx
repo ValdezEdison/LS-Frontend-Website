@@ -201,7 +201,7 @@ const EventDetails = () => {
     if (place?.url) {
       window.open(place.url, "_blank"); // Open the external URL in a new tab
     } else {
-      
+
     }
   };
 
@@ -313,7 +313,7 @@ const EventDetails = () => {
         setCommentToDelete(null);
       })
       .catch((error) => {
-        
+
       });
   };
 
@@ -435,12 +435,12 @@ const EventDetails = () => {
               rating: false
             }
           });
-          setSuccessTitle(tDetail(isEditing 
-            ? 'reviews.success.updatedTitle' 
+          setSuccessTitle(tDetail(isEditing
+            ? 'reviews.success.updatedTitle'
             : 'reviews.success.addedTitle'));
-          
-          setSuccessMessage(tDetail(isEditing 
-            ? 'reviews.success.updatedMessage' 
+
+          setSuccessMessage(tDetail(isEditing
+            ? 'reviews.success.updatedMessage'
             : 'reviews.success.addedMessage'));
           togglePopup("comment", false);
           togglePopup("success", true);
@@ -449,7 +449,7 @@ const EventDetails = () => {
           dispatch(fetchPlaceComments(id));
         })
         .catch((error) => {
-          
+
           togglePopup("comment", false);
           setCommentForm({
             text: "",
@@ -524,8 +524,8 @@ const EventDetails = () => {
     if (shareableLink) {
       setShowShareOptions(true);
     }
-    
-  },[shareableLink])
+
+  }, [shareableLink])
 
 
   return (
@@ -568,14 +568,14 @@ const EventDetails = () => {
           customClass="modalSmTypeOne"
         >
           <AlertPopup handleNavigateToLogin={handleNavigateToLogin} itle={tDetail("authAlert.title")}
-  description={tDetail("authAlert.message")}
-  buttonText={tDetail("authAlert.button")}/>
+            description={tDetail("authAlert.message")}
+            buttonText={tDetail("authAlert.button")} />
         </Modal>
       )}
 
       {isOpen && popupState.comment && (
         <Modal
-        title={isEditing ? tDetail('commentPopup.editComment') : tDetail('commentPopup.addComment') }
+          title={isEditing ? tDetail('commentPopup.editComment') : tDetail('commentPopup.addComment')}
           onClose={() => {
             togglePopup("comment", false);
             setCommentForm({
@@ -617,8 +617,8 @@ const EventDetails = () => {
           hideCloseButton={true}
         >
           <ConfirmationPopup
-              title={tDetail('confirmationPopup.deleteComment.title')}
-              description={tDetail('confirmationPopup.deleteComment.description')}
+            title={tDetail('confirmationPopup.deleteComment.title')}
+            description={tDetail('confirmationPopup.deleteComment.description')}
             onCancel={() => togglePopup("deleteConfirm", false)}
             onConfirm={handleConfirmDelete}
           />
@@ -657,9 +657,9 @@ const EventDetails = () => {
                   <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
                     isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
                     toggleShareOptions={toggleShareOptions}
-                   />
+                  />
                 )}
-                
+
                 {isLoading ? (
                   <ImageGallerySkeleton />
                 ) : (
@@ -675,9 +675,16 @@ const EventDetails = () => {
             {isLoading ? (
               <Skeleton count={5} />
             ) : (
+              // <p 
+              //   className={styles.museumDescription}
+              //   dangerouslySetInnerHTML={{ __html: place?.description?.replace(/\r\n/g, '<br />') }} 
+              // />
               <p 
                 className={styles.museumDescription}
-                dangerouslySetInnerHTML={{ __html: place?.description?.replace(/\r\n/g, '<br />') }} 
+                dangerouslySetInnerHTML={{ 
+                  __html: place?.description
+                    ?.replace(/_x000D_\\n|[\r\n]+/g, '<br />')  // Replace all variations with single line breaks
+                }} 
               />
             )}
 

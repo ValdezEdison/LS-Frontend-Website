@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./ProfilePhotoModal.module.css";
+import { useTranslation } from "react-i18next";
 
 function ProfilePhotoPopup({ 
   onClose, 
@@ -16,16 +17,18 @@ function ProfilePhotoPopup({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
+  const { t } = useTranslation('ProfileSection');
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.match('image.*')) {
-        alert('Please select an image file');
+        alert(t('profilePhoto.validation.fileType'));
         return;
       }
       
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size should be less than 5MB');
+        alert(t('profilePhoto.validation.fileSize'));
         return;
       }
 
@@ -92,19 +95,19 @@ function ProfilePhotoPopup({
             onClick={handleChangeClick}
             disabled={loading}
           >
-            {selectedFile ? "Change Photo" : "Select Photo"}
+           {selectedFile ? t('profilePhoto.buttons.change') : t('profilePhoto.buttons.select')}
           </button>
        </div>
         
         
         <div className={styles.profileImageUploadWrapperRight}>
-          <h3>Sube una foto</h3>
+        <h3>{t('profilePhoto.uploadTitle')}</h3>
           <button 
             className={styles.saveButton} 
             onClick={handleSave}
             disabled={!selectedFile || loading}
           >
-            {loading ? "Uploading..." : "Save Changes"}
+            {loading ? t('profilePhoto.buttons.uploading') : t('profilePhoto.buttons.save')}
           </button>
         </div>
       </div>

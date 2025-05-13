@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CardSkeleton from "../skeleton/common/CardSkeleton";
 import { useTranslation } from "react-i18next";
+import { Download } from "../common/Images";
 
 const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
 
@@ -55,8 +56,8 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
       setFormState(prev => ({ ...prev, sites: newOrderIds }));
     }
   };
-console.log(items, "items");
-console.log(tripDetails, "tripDetails");
+
+
 
   const handleActions = (e, action, id) => {
 
@@ -74,9 +75,9 @@ console.log(tripDetails, "tripDetails");
   return (
     <>
       <div className={styles.tripType}>
-        {/* <div className={styles.tripTypeTag}>{tripDetails?.type}</div> */}
+        <div className={styles.tripTypeTag}>{tripDetails?.type}</div>
         <div className={styles.icon}>
-          {/* Your SVG Icon */}
+         <img src={Download}/>
         </div>
       </div>
 

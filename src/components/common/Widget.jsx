@@ -37,7 +37,7 @@ const Widget = ({ data = [], title, count, handleNavActions, seeMore = true}) =>
     <section className={styles.nearbyPlaces}>
       <div className={styles.nearbyPlaceTitle}>
         <h2 className={styles.sectionTitle}>{title}</h2>
-        {seeMore &&
+        { data.length > 4 && seeMore &&
         <div className="seeMoreLink" onClick={(e) => handleNavActions(e, null, "viewList")}>{t('seeMore')}</div>
         }
       </div>

@@ -104,7 +104,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 14px;
+  margin: 24px 0 14px;
 }
 
 .tripInfo {

@@ -114,7 +114,7 @@ const MyTrips = () => {
         break;
       case 'deleteTrip':
         const trip = futureTrips.find(trip => trip.id === id) || pastTrips.find(trip => trip.id === id);
-        console.log(trip, 'trip');
+        
         setState(prev => ({
           ...prev,
           tripName: trip?.title || ''
