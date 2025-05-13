@@ -13,13 +13,15 @@ import BlogTags from "../../components/Blog/BlogTags";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { resetPostsByTag } from "../../features/cms/wordpress/WordPressSlice";
 
 function BlogPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id, name } = location.state || {};
 
   const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags, postsByTagLoading, postsByTag } = useSelector((state) => state.cms.wordpress);
 
@@ -77,12 +79,13 @@ function BlogPage() {
   }
 
   useEffect(() => {
-    if (state.tag) {
-
-      dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+   
+    if(id && name){
+      dispatch(fetchPostsByTag({ tagId: id, per_page: 20 }));
+      setState({ tag: id, tagName: name });
     }
 
-  }, [state.tag, dispatch]);
+  }, []);
 
   return (
     <div className={styles.blogContainer}>
