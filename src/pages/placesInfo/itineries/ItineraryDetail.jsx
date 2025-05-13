@@ -129,13 +129,13 @@ const ItineraryDetail = () => {
     }
     return () => {
       dispatch(resetTripType());
+      dispatch(resetShareableLink());
     };
 
   }, [dispatch, id, language]);
 
-  const handleViewMoreDetails = (id) => {
+  const handleViewMoreDetails = (e, id) => {
 
-    
     if(isAuthenticated){
 
       navigate('/places/details', { state: { id } });

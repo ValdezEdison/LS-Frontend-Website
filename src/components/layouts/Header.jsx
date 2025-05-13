@@ -14,6 +14,7 @@ import UserMenu from "../UserMenu/UserMenu";
 import { logout, getProfile } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
+import { toast } from "react-toastify";
 
 const Header = () => {
 
@@ -32,6 +33,9 @@ const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isProfilePage = location.pathname.startsWith("/profile");
+  const isFavoritesPage = location.pathname.startsWith("/favorites");
 
   const handleNavigation = (path) => {
     if (path === "/login") {
@@ -162,7 +166,16 @@ const Header = () => {
   }, [showUserMenu]);
 
   const handleLogout = () => {
-        dispatch(logout());
+        dispatch(logout()).then((result) => {
+          console.log(result, "result");
+          if (result.type === "auth/logout/fulfilled") {
+            toast.success(result.payload?.detail);
+
+            if(isProfilePage || isFavoritesPage){
+              navigate("/");
+            }
+          }
+        });
   }
 
   const handleActions = (e, action) => {
@@ -268,6 +281,7 @@ const Header = () => {
                 src={Favorite}
                 alt="Notifications"
                 className={`${styles.icon} ${styles.favouriteicon}`}
+                onClick={() => handleNavigation("/favorites")}
               />
               <nav className={styles.secondaryNav}>
                 <a

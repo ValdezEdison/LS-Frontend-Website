@@ -15,9 +15,9 @@ export const setToken = (token) => {
   localStorage.removeItem('access_token');
   localStorage.removeItem('refreshToken');
   localStorage.removeItem('tokenExpiresAt');
-  sessionStorage.removeItem('access_token');
-  sessionStorage.removeItem('refreshToken');
-  sessionStorage.removeItem('tokenExpiresAt');
+  // sessionStorage.removeItem('access_token');
+  // sessionStorage.removeItem('refreshToken');
+  // sessionStorage.removeItem('tokenExpiresAt');
   localStorage.removeItem('rememberMe');
   localStorage.removeItem('authUser');
 };
@@ -34,17 +34,12 @@ export const setToken = (token) => {
 export const setAuthTokens = (response, rememberMe = false) => {
   const { access_token, refresh_token, expires_in } = response;
   
-  if (rememberMe) {
+  
     // Store in localStorage for persistent sessions
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('refreshToken', refresh_token);
     localStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
-  } else {
-    // Store in sessionStorage for session-only
-    sessionStorage.setItem('access_token', access_token);
-    sessionStorage.setItem('refreshToken', refresh_token);
-    sessionStorage.setItem('tokenExpiresAt', new Date().getTime() + (expires_in * 1000));
-  }
+  
 };
 
 export const setAuthUser = (user) => {
