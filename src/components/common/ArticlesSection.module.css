@@ -52,7 +52,7 @@
 
 .articleCard {
   /* width: calc(25% - 20.25px); */
-  width: 100%;
+  width: 100% ;
   /* min-width: 240px; */
   padding: 0 14px !important;
 }
