@@ -166,6 +166,9 @@ const PlaceDetails = () => {
       dispatch(fetchPlaceComments(id));
       dispatch(fetchNearbyPlaces(id));
     }
+    return () => {
+      dispatch(resetShareableLink());
+    }
   }, [id, dispatch, language]);
 
   const handleClickViewMoreDetails = () => {

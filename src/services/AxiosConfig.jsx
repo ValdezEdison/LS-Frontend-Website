@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { getLanguageData, setToken, getToken, removeToken } from "../utils/Helper";
 import config from "../config";
+import { login } from '../features/authentication/AuthActions';
+import { getClientId, getClientSecret } from "../utils/decryptSecrets";
+import { store } from '../app/store';
 
 const ApiInstance = axios.create({
   baseURL: config.api.baseUrl,
@@ -19,6 +22,9 @@ const WordPressInstance = axios.create({
   // }
 });
 
+  const clientId = getClientId();
+  const clientSecret = getClientSecret();
+
 const languageData = getLanguageData();
 let currentLanguage = languageData?.code || 'es';
 
@@ -30,12 +36,16 @@ export const setCurrentLanguage = (language) => {
 let refreshTokenRequest = null;
 
 const getAccessToken = () => {
-  return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+  return localStorage.getItem('access_token');
 };
 
 const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken');
+  return localStorage.getItem('refreshToken');
 };
+
+const getRememberMe = () => {
+  return localStorage.getItem('rememberMe');
+}
 
 const setTokens = (accessToken, refreshToken) => {
   setToken(accessToken);
@@ -46,7 +56,7 @@ const setTokens = (accessToken, refreshToken) => {
 };
 
 const isTokenExpired = () => {
-  const expiresAt = localStorage.getItem('tokenExpiresAt') || sessionStorage.getItem('tokenExpiresAt');
+  const expiresAt = localStorage.getItem('tokenExpiresAt');
   if (!expiresAt) return true;
   return new Date().getTime() > parseInt(expiresAt);
 };
@@ -54,21 +64,34 @@ const isTokenExpired = () => {
 const refreshAuthToken = async () => {
   try {
     const refreshToken = getRefreshToken();
+    const rememberMe = getRememberMe();
+    
     if (!refreshToken) {
       throw new Error('No refresh token available');
     }
 
-    const refreshInstance = axios.create({
-      baseURL: config.api.baseUrl,
-    });
+    // Only proceed if rememberMe is true
+    if (rememberMe !== 'true') {
+      removeToken();
+      window.location.href = '/login';
+      throw new Error('Remember me is not enabled');
+    }
 
-    const response = await refreshInstance.post('/auth/refresh', {
-      refresh_token: refreshToken
-    });
+    const payload = {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      rememberMe: rememberMe
+    };
 
-    const { access_token, refresh_token, expires_in } = response.data;
+    // Dispatch the login action with the refresh token payload
+    const response = await store.dispatch(login(payload));
     
-    // Determine which storage to use based on where the original token was
+    // Assuming the login action returns the token data in response.payload
+    const { access_token, refresh_token, expires_in } = response.payload;
+
+    // Update tokens in storage
     const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
     storage.setItem('access_token', access_token);
     storage.setItem('refreshToken', refresh_token);
@@ -189,4 +212,10 @@ configureInstance(ApiInstance);
 configureInstance(CmsInstance, true);
 configureWordPressInstance(WordPressInstance);
 
-export { ApiInstance, CmsInstance, WordPressInstance };
+const initializeAxiosInterceptors = (dispatch) => {
+  configureInstance(ApiInstance, dispatch);
+  configureInstance(CmsInstance, dispatch, true);
+  configureWordPressInstance(WordPressInstance);
+};
+
+export { ApiInstance, CmsInstance, WordPressInstance, initializeAxiosInterceptors };

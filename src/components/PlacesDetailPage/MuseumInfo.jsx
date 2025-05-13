@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./MuseumInfo.module.css";
 import ShareOptions from "../common/ShareOptions";
 import { useSelector } from "react-redux";
@@ -10,6 +10,29 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
   const { shareableLink } = useSelector((state) => state.places);
 
   const { t } = useTranslation("DetailsPage");
+
+  const shareOptionsRef = useRef(null);
+
+  // Handle clicks outside the ShareOptions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (shareOptionsRef.current && !shareOptionsRef.current.contains(event.target)) {
+        // Check if the click is not on the share icon
+        const shareIcon = document.querySelector(`.${styles.webIcon}`);
+        if (shareIcon && !shareIcon.contains(event.target)) {
+          toggleShareOptions(false);
+        }
+      }
+    };
+
+    if (showShareOptions) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showShareOptions, toggleShareOptions]);
 
   return (
     <div className={styles.museumInfo}>
@@ -35,21 +58,21 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
 
         <div className={styles.contactInfo}>
           <div className={`${styles.favIcon} ${place?.is_fav ? styles.active : ''}`} onClick={(e) => handleActions(e, place?.id)}></div>
-          <div className={styles.shareIconWrapper}>
+          <div className={styles.shareIconWrapper} ref={shareOptionsRef}>
             <img
               src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/3ef4f075a0deb02b772bf1fe5266b0e789697ca3a6ba3ea75c950a14406974bf?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
               alt="Web icon"
               className={styles.webIcon}
               onClick={() => handleGenerateLink()}
             />
-            {/* {showShareOptions && (
+            {showShareOptions && shareableLink && (
               <ShareOptions
                 url={shareableLink}
                 title={place?.title}
                 description={place?.description}
                 onClose={toggleShareOptions}
               />
-            )} */}
+            )}
           </div>
 
           <button className={styles.websiteButton}   onClick={() => place?.url && handleNavigateToWebsite(place)}

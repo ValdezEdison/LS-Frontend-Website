@@ -31,8 +31,11 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
   // Calculate visible thumbnails
   const getVisibleThumbnails = () => {
     const thumbnails = [];
-    const totalImages = images.length;
+    const totalImages = images && images.length ? images.length : 0;
 
+    if (totalImages === 0) {
+      return thumbnails;
+    }
     // Always include the current image
     thumbnails.push(images[currentIndex]);
 
@@ -50,7 +53,7 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
   
   return (
     <div className={`${styles.gallerySection} ${isWide ? styles.destinationImageContainer : ""}`}>
-      {images.length > 1 ? (
+      {images && images.length > 1 ? (
         <>
           <div className={styles.mainImageContainer}>
             <button
@@ -101,7 +104,7 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
       ) : (
         <div className={styles.mainImageContainer}>
           <img
-            src={images[0] ? images[0]?.original : PlaceHolderImg1}
+            src={images && images[0] ? images[0]?.original : PlaceHolderImg1}
             alt="Main exhibit"
             className={styles.mainImage}
           />

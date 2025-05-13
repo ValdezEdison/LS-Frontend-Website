@@ -71,9 +71,7 @@ const HomePage = () => {
     dispatch(fetchTags({ per_page: 100 }));
     dispatch(fetchContinents());
 
-    return () => {
-      setState({ continent: null });
-    }
+  
 
   }, [dispatch, language]);
 

@@ -243,6 +243,11 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
         };
     }, [geoDataToMap, apiKey, isDetailsRoute, state?.latitude, state?.longitude]);
 
+    const handleViewMoreDetails = (e, id) => {
+        handleActions(e, 'viewMore', id);
+        // navigate('/places/details', { state: { id } });
+      };
+
     return (
         <div className={styles2.popupOverlay}>
             <div className={styles2.popupContent}>
@@ -284,6 +289,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                                             translate={t}
                                             isAuthenticated={isAuthenticated}
                                             isPopup={true}
+                                            handleViewMoreDetails={handleViewMoreDetails}
                                             handleActions={handleActions}
                                             isFavoriteToggling={isFavoriteToggling && favTogglingId === item.id}
                                             ref={(el) => {

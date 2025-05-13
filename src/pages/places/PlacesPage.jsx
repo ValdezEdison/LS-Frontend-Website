@@ -525,7 +525,7 @@ const PlacesPage = () => {
         : state.selectedDestinations,
       type: "place",
       country: state.selectedCountryName,
-      page: state.page,
+      // page: state.page,
       // preview: 1,
       avg_rating: state.ratings,
       categories: state.categories,

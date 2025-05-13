@@ -61,7 +61,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
 
   const filters = [
     {
-      label: `${t("filter.select")} ${t("filter.country")}`,
+      label: state.selectedCountryName !== "" ? state.selectedCountryName : `${t("filter.select")} ${t("filter.country")}`,
       options: countries,
       selectedId: state.selectedCountryId,
       onSelect: (value) => updateState("selectedCountryId", value),
