@@ -15,7 +15,7 @@ const WordPressService = {
           ...params,
           // Ensure _embed is always true unless explicitly disabled
            _embed: true,
-          _fields: 'id,title,excerpt,featured_media,date,_links,_embedded'
+          // _fields: 'id,title,excerpt,featured_media,date,_links,_embedded'
         },
     
       });

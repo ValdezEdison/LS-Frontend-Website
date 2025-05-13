@@ -35,7 +35,7 @@ const ExplorePageSkeleton = () => {
                     />
                 ))}
             </nav>
-            <hr className={styles.sectionDivider} />
+            {/* <hr className={styles.sectionDivider} /> */}
             <div className={destinationGridStyles.destinationGrid}>
                 {/* Destination Grid Skeleton */}
                 {Array.from({ length: 12 }).map((_, index) => (
