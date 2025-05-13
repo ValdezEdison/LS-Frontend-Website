@@ -102,7 +102,8 @@ const ExplorePage = () => {
     useEffect(() => {
       if (state.tag) {
   
-        dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+        // dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+        navigate("/blog-list", { state: { id: state.tag, name: state.tagName } });
       }
   
     }, [state.tag, dispatch]);
