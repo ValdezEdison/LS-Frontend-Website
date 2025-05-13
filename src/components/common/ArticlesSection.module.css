@@ -72,7 +72,6 @@
 
 .articleTag {
   display: inline-block;
-  margin-top: 8px;
   padding: 5px 12px;
   border-radius: 8px;
   border: 1px solid var(--Color-principal-naranja, #f4c031);
@@ -105,6 +104,7 @@
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
+   margin-top: 8px;
 }
 
 :global(.slick-track){
