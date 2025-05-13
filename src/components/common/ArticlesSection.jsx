@@ -6,8 +6,9 @@ import styles from "./ArticlesSection.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import { update } from "lodash";
 
-const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags, layout = 'carousel' }) => {
+const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags, layout = 'carousel', setState }) => {
   const { t } = useTranslation("Common");
   const location = useLocation();
   const isBlogPage = location.pathname === "/blog-list";
@@ -62,6 +63,12 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
       .map(tag => tag.name);
   };
 
+ const  updateState = (e, key, value) => {
+    e.stopPropagation();
+    setState((prev) => ({ ...prev, [key]: value }));
+ 
+  };
+
   // Render individual post card
   const renderPostCard = (post) => {
     return (
@@ -83,7 +90,9 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
             {post.tags.map(tagId => {
               const tag = tags.find(t => t.id === tagId);
               return tag ? (
-                <span key={tagId} className={styles.articleTag}>
+                <span key={tagId} className={styles.articleTag} onClick={(e) => {updateState(e,"tag", tagId)
+                  updateState(e, "tagName", tag.name)
+                }}>
                   {tag.name}
                 </span>
               ) : null;

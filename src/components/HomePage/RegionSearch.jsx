@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./SearchComponent.module.css";
 
-function RegionSearch({ name, image }) {
+function RegionSearch({ name, image, id, updateState}) {
   return (
-    <div className={styles.regionItem}>
-      {image.startsWith("http") ? (
+    <div className={styles.regionItem} onClick={() => updateState("continent", id)}>
+      {image !== null && image.startsWith("http") ? (
         <img
           src={image}
           alt={`${name} region`}

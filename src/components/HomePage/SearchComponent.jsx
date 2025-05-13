@@ -4,6 +4,7 @@ import SearchInput from "../common/SearchInput";
 import styles from "./SearchComponent.module.css";
 import { America } from "../common/Images";
 import { useTranslation } from "react-i18next";
+import Loader from "../common/Loader";
 
 const regions = [
   { name: "Búsqueda flexible", image: "mapas-buscador-default" },
@@ -24,89 +25,126 @@ const regions = [
 
 
 
-function SearchComponent() {
+function SearchComponent({ continents, loading, state, setState, cities }) {
 
   const { t } = useTranslation("SearchComponent");
+  const { t: tCommon } = useTranslation("Common");
   const dropdownRef = useRef(null); // Ref for the dropdown container
   const suggestionRef = useRef(null); // Ref for the SearchInput container
   const [showRegionDropDown, setShowRegionDropDown] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
 
   const handleSearchClick = () => {
-    if(!showSuggestionDropDown && searchValue.length === 0){
+    if(!showSuggestionDropDown && state.destinationSearchQuery.length === 0){
       setShowRegionDropDown(!showRegionDropDown); // Toggle the dropdown visibility
-    }else if(searchValue.length > 0){
+    }else if(state.destinationSearchQuery.length > 0){
       setShowSuggestionDropDown(!showSuggestionDropDown);
     }
     
   };
 
-  const handleSearch = (e) => {
-    if(searchValue.length > 0){
+  const handleSearch = (value) => {
+    if(value.length > 0){
       setShowSuggestionDropDown(true);
     }else{
       setShowSuggestionDropDown(!showSuggestionDropDown);
     }
     setShowRegionDropDown(false); // Close the dropdown when a region is selected
-    setSearchValue(e);
+    // setSearchValue(e);
+    updateState("destinationSearchQuery", value);
   };
 
 
-  const handleClickOutside = (event) => {
-    
-    // Check if the click is outside both the SearchInput and the dropdown
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target) ||
-      suggestionRef.current &&
-      !suggestionRef.current.contains(event.target)
-    ) {
-      setShowRegionDropDown(false); // Close the dropdown
-      setShowSuggestionDropDown(false); // Close the dropdown
-    }
-  };
+
 
   const handleSearchClose = () => {
     setShowRegionDropDown(false); // Close the dropdown
     setShowSuggestionDropDown(false); // Close the dropdown
-    setSearchValue("");
+    updateState("destinationSearchQuery", "");
+    updateState("selectedDestinationId", null);
   };
 
 
   useEffect(() => {
-    // Add event listener when the dropdown is shown
+    // Add event listener when either dropdown is shown
     if (showRegionDropDown || showSuggestionDropDown) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
-
+  
     // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showRegionDropDown, showSuggestionDropDown]); // Re-run effect when showRegionDropDown changes
-
-  useEffect(() => {
-    // open the dropdown when the search value changes
-    if(searchValue.length === 0){
+  }, [showRegionDropDown, showSuggestionDropDown]);
+  
+  const handleClickOutside = (event) => {
+    const isOutsideRegionDropdown = 
+      showRegionDropDown && 
+      dropdownRef.current && 
+      !dropdownRef.current.contains(event.target);
+      
+    const isOutsideSuggestionDropdown = 
+      showSuggestionDropDown && 
+      suggestionRef.current && 
+      !suggestionRef.current.contains(event.target);
+  
+    // If both dropdowns are shown, we need to check both refs
+    if (showRegionDropDown && showSuggestionDropDown) {
+      if (isOutsideRegionDropdown && isOutsideSuggestionDropdown) {
+        setShowRegionDropDown(false);
+        setShowSuggestionDropDown(false);
+      }
+    } 
+    // If only region dropdown is shown
+    else if (showRegionDropDown && isOutsideRegionDropdown) {
+      setShowRegionDropDown(false);
+    }
+    // If only suggestion dropdown is shown
+    else if (showSuggestionDropDown && isOutsideSuggestionDropdown) {
       setShowSuggestionDropDown(false);
     }
-  }, [searchValue]);
+  };
+  useEffect(() => {
+    // open the dropdown when the search value changes
+    if(state.destinationSearchQuery.length === 0){
+      setShowSuggestionDropDown(false);
+    }
+  }, [state.destinationSearchQuery]);
+
+  const updateState = (key, value) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+ 
+  };
 
   return (
     <div className="page-center ">
       <div className={styles.searchWrapperMain}>
         <div className={styles.searchContainer}>
           <div >
-            <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} suggestionRef={suggestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/>
+            {/* <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} suggestionRef={suggestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/> */}
+            <SearchInput
+            handleSearchClick={() => handleSearchClick()}
+            showRegionDropDown={showRegionDropDown}
+            suggestionRef={suggestionRef}
+            handleSearch={handleSearch}
+            showSuggestionDropDown={showSuggestionDropDown}
+            handleSearchClose={handleSearchClose}
+            searchValue={state.destinationSearchQuery}
+            suggestionsList={cities}
+            placeholder={tCommon("search.placeholder")}
+            onSelect={(value) => updateState("selectedDestinationId", value)}
+            // customClassName="placesSearchInputContainer"
+            selectedValue={state.selectedDestinationId}
+          />
           </div>
-          <div className={`${styles.regionSearchContainer} ${showRegionDropDown ? styles.active : ""}`} ref={dropdownRef}>
+          <div className={`${styles.regionSearchContainer} ${showRegionDropDown ? styles.active : ""}`} ref={dropdownRef} >
             <h2 className={styles.regionSearchTitle}>{t("regionSearchTitle")}</h2>
             <div className={styles.regionsGrid}>
-              {regions.map((region, index) => (
-                <RegionSearch key={index} name={region.name} image={region.image} />
+              {continents.map((region, index) => (
+                <RegionSearch key={index} name={region.name} image={region.image} id={region.id} updateState={updateState}/>
               ))}
             </div>
           </div>

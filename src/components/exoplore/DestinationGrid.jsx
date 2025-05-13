@@ -29,7 +29,7 @@ const DestinationGrid = ({ destinations, loading, handleActions }) => {
       )}
      
     </div>
-     <button class={styles.showMoreButton}>Ver más</button>
+     {/* <button className={styles.showMoreButton}>Ver más</button> */}
      </>
   );
 };
