@@ -5,7 +5,7 @@ import { PlaceHolderImg2 } from "../common/Images";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-function ArticleContent({ currentPost, tags, loading }) {
+function ArticleContent({ currentPost, tags, loading, setState }) {
 
 
   const getFeaturedImage = (currentPost) => {
@@ -14,6 +14,12 @@ function ArticleContent({ currentPost, tags, loading }) {
       return currentPost._embedded['wp:featuredmedia'][0].source_url;
     }
     return '';
+  };
+
+
+  const  updateState = (key, value) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+ 
   };
 
   if (loading) {
@@ -100,7 +106,9 @@ function ArticleContent({ currentPost, tags, loading }) {
           {currentPost?.tags?.length > 0 && currentPost.tags.map((tag) => {
             const matchingTag = tags.find((t) => t.id === tag);
             return matchingTag ? (
-              <a key={tag} className={styles.tagCuriosidades}>
+              <a key={tag} className={styles.tagCuriosidades} onClick={(e) => {updateState( "tag", matchingTag.id)
+                updateState( "tagName", matchingTag.name)
+              }}>
                 {matchingTag.name}
               </a>
             ) : null;

@@ -87,6 +87,15 @@ function BlogPage() {
 
   }, []);
 
+  useEffect(() => {
+    if (state.tag) {
+
+      dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+   
+    }
+
+  }, [state.tag, dispatch]);
+
   return (
     <div className={styles.blogContainer}>
       <div className={styles.mainWrapper}>
