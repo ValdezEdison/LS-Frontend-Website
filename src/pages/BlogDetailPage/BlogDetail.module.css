@@ -456,6 +456,7 @@
   padding: 3px 20px;
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 @media (width<=991px) {
   .tagCuriosidades {
