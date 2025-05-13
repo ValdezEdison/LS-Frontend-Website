@@ -107,7 +107,7 @@ function BlogPage() {
               <WidgetSkeleton />
             ))
           )}
-          {postsByTag.length > 0 ? (
+          { state.tag ? (
             <ArticlesSection
               title={state.tagName}
               posts={postsByTag} 
@@ -115,6 +115,7 @@ function BlogPage() {
               handleNavActions={handleNavActions}
               tags={tags}
               layout="grid"  // Add this prop to indicate grid layout
+              setState={setState}
             />
           ) : (
             categories.map((category) => {
@@ -129,6 +130,7 @@ function BlogPage() {
                     handleNavActions={handleNavActions}
                     tags={tags}
                     layout="carousel"  // Default carousel layout
+                    setState={setState}
                   />
                 );
               }
