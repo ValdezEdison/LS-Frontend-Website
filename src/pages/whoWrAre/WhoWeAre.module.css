@@ -180,10 +180,24 @@
   color: #151820;
   text-decoration: none;
   transition: all ease .3s;
+  padding: 7px 70px 7px 7px;
+  width: 100%;
+  transition: all ease .3s;
+  cursor: pointer;
 }
 
-.sidebarLinks a:hover,.sidebarLinks a.active{
+.sidebarLinks a:hover{
  color: #f4c031;
+}
+
+.sidebarLinks a.active{
+  background: #E8EAF4;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px ;
+}
+
+.sidebarLinks a.active:hover{
+  color: #000;
 }
 
 @media (width<=991px) {
@@ -194,19 +208,21 @@
 .sidebarLinks {
   flex-direction: column;
   align-items: start;
-  margin-top: 7px;
+  /* margin-top: 7px; */
   padding-left: 7px;
-  padding-right: 21px;
+  /* padding-right: 21px; */
   display: flex;
+  text-align: left;
+  border-right: solid 1px #E0E0E0;
 }
 @media (width<=991px) {
   .sidebarLinks {
-    padding-right: 20px;
+    /* padding-right: 20px; */
   }
 }
-.lifeAtCompanyLink {
+/* .lifeAtCompanyLink {
   margin-top: 14px;
-}
+} */
 .sidebarDivider {
   background-color: #e0e0e0;
   border: 1px solid #e0e0e0;
@@ -326,12 +342,13 @@
 .valuesContainer {
   text-align: center;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-self: center;
   align-items: stretch;
-  gap: 20px;
-  width: 521px;
-  max-width: 100%;
+  gap: 50px;
+  /* width: 521px; */
+  width: 100%;
+  max-width: 70%;
   margin: 20px 0 0;
   font-size: 16px;
   font-weight: 400;
@@ -342,10 +359,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: calc(25% - 40px);
+  width: 100%;
 }
 @media (width<=991px) {
   .valueItem {
     margin-top: 0px;
+     max-width: calc(50% - 40px);
   }
 }
 .valueIcon {
@@ -354,6 +374,16 @@
   width: 40px;
   height: 40px;
   display: flex;
+}
+
+.valueIcon img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.valueIcon.placeholder{
+  background: #D9D9D9;
 }
 
 .grey{
@@ -746,6 +776,10 @@
 @media (max-width:480px) {
   .statNumber,.teamStatNumber {
     font-size: 28px;
+  }
+
+  .valueItem {
+    max-width: 100%;
   }
 }
 

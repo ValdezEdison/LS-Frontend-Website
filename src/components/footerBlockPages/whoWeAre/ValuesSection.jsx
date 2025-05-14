@@ -15,7 +15,7 @@ const handleImage = (url) => {
       <div className={styles.valuesContainer}>
         {values.map((value, index) => (
           <div className={styles.valueItem} key={index}>
-            <div className={styles.valueIcon}>
+            <div className={`${styles.valueIcon} ${styles.placeholder}`}>
               <img src={handleImage(value.icon.url)} />
             </div>
             <div className={styles.valueText}>{value.title}</div>

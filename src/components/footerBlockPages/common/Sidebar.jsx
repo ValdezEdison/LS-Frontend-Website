@@ -37,14 +37,13 @@ const Sidebar = () => {
                 activePath === item.path ? styles.active : ''
               }`}
               onClick={() => handleNavigation(item.path)}
-              style={{ cursor: "pointer" }}
             >
               {item.name}
             </a>
           ))}
         </div>
       </div>
-      <div className={styles.sidebarDivider} />
+      {/* <div className={styles.sidebarDivider} /> */}
     </nav>
   );
 };
