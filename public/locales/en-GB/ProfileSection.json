@@ -75,6 +75,17 @@
             }
         }
     },
+    "location": {
+        "title": "Location Settings",
+        "description": "Manage your location settings and data used by third parties",
+        "settings": {
+            "title": "Location Settings",
+            "description": "Select 'Manage' to change location settings and data used by third parties"
+        },
+        "actions": {
+            "manage": "Manage"
+        }
+    },
     "security": {
         "title": "Security",
         "description": "Change your security settings or delete your account",
@@ -161,6 +172,7 @@
         "tabs": {
             "personal": "Personal details",
             "preferences": "Preferences",
+            "location": "Location Settings",
             "security": "Security",
             "privacy": "Privacy",
             "notifications": "Notifications"

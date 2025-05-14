@@ -84,6 +84,7 @@ const ProfilePage = () => {
 
   const isPreferencesTab = location.pathname === "/profile/preferences";
   const isSecurityTab = location.pathname === "/profile/security";
+  const isLocationTab = location.pathname === "/profile/location";
   const isNotificationTab = location.pathname === "/profile/notifications";
   const isPrivacyTab = location.pathname === "/profile/privacy";
 
@@ -145,6 +146,7 @@ const ProfilePage = () => {
       [field]: value
     }));
   };
+
 
   const handleSaveProfile = async () => {
     const updatedData = {

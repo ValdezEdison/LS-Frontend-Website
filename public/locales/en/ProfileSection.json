@@ -1,12 +1,12 @@
 {
     "personalDetails": {
         "title": "Personal Details",
-        "subtitle": "Update your personal information by editing the profile",
+        "subtitle": "Update your personal details by editing the profile",
         "fields": {
             "profileType": "Profile Type",
             "name": "Name",
             "email": "Email Address",
-            "phone": "Phone Number",
+            "phone": "Telephone Number",
             "birthDate": "Date of Birth",
             "nationality": "Nationality",
             "address": "Address",
@@ -32,13 +32,13 @@
             "notifications": "Notifications"
         },
         "actions": {
-            "info": "Info",
+            "info": "Information",
             "edit": "Edit",
             "verified": "Verified",
             "save": "Save",
             "cancel": "Cancel"
         },
-        "emailNote": "This email address is what you used to log in and where all current profiles are sent."
+        "emailNote": "This email address is what you used to log in and where all current profiles are sent to."
     },
     "preferences": {
         "title": "Preferences",
@@ -73,6 +73,17 @@
                 "email": "name@gmail.com",
                 "phone": "+34 123 456 789"
             }
+        }
+    },
+    "location": {
+        "title": "Location Settings",
+        "description": "Manage your location settings and data used by third parties",
+        "settings": {
+            "title": "Location Settings",
+            "description": "Select 'Manage' to change location settings and data used by third parties"
+        },
+        "actions": {
+            "manage": "Manage"
         }
     },
     "security": {
@@ -145,7 +156,7 @@
                 "action": "Unsubscribe"
             },
             "referFriend": {
-                "label": "Refer a friend",
+                "label": "Recommend to a friend",
                 "action": "Subscribe"
             },
             "weeklyDiscovery": {
@@ -161,6 +172,7 @@
         "tabs": {
             "personal": "Personal details",
             "preferences": "Preferences",
+            "location": "Location Settings",
             "security": "Security",
             "privacy": "Privacy",
             "notifications": "Notifications"
