@@ -28,6 +28,9 @@ const MyTripsService = {
     updateCities: async (tripId, cities) => {
         return ApiService.patch('/travels/' + tripId + '/update_cities', { cities: cities });
     },
+    downloadTrip: async (tripId) => {
+        return ApiService.get('/travels/' + tripId + '/pdf');
+    }
 
 };
 

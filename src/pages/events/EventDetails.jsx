@@ -530,6 +530,19 @@ const EventDetails = () => {
 
   }, [shareableLink])
 
+  const handleNavActions = (e, id, action) => {
+    
+    if (isAuthenticated && action === "viewDetail") {
+      navigate('/events/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
 
   return (
     <>
@@ -686,7 +699,7 @@ const EventDetails = () => {
                 className={styles.museumDescription}
                 dangerouslySetInnerHTML={{ 
                   __html: place?.description
-                    ?.replace(/_x000D_\\n|[\r\n]+/g, '<br />')  // Replace all variations with single line breaks
+                    ?.replace(/\n/g, '<br />')   // Replace all variations with single line breaks
                 }} 
               />
             )}
@@ -699,7 +712,7 @@ const EventDetails = () => {
             {isLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} />
+              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4}  handleNavActions={handleNavActions}/>
             )}
           </div>
         </main>

@@ -14,7 +14,7 @@ import CardSkeleton from "../skeleton/common/CardSkeleton";
 import { useTranslation } from "react-i18next";
 import { Download } from "../common/Images";
 
-const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
+const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleClickDownloadTrip = () => {} }) => {
 
 
   const [items, setItems] = useState(tripDetails?.stops || []);
@@ -72,46 +72,60 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState }) => {
     }
 
   }
-  return (
+
+  const renderStopList = () => {
+    if (tripDetailsLoading) {
+      return Array.from({ length: 5 }).map((_, index) => (
+        <CardSkeleton key={index} />
+      ));
+    }
+
+    return items.map((stop, index) => (
+      <ItineraryCard
+        key={stop.id}
+        id={stop.id}
+        place={stop}
+        index={index + 1}
+        handleViewMoreDetails={handleViewMoreDetails}
+        handleActions={handleActions}
+      />
+    ));
+  };
+
+    return (
     <>
+    {!isTripEditPage &&
       <div className={styles.tripType}>
         <div className={styles.tripTypeTag}>{tripDetails?.type}</div>
-        <div className={styles.icon}>
-         <img src={Download}/>
+        <div className={styles.icon} onClick={handleClickDownloadTrip}>
+          <img src={Download} alt="Download" />
         </div>
       </div>
-
+      }
       <h2 className={styles.tripSummary}>
-        {items.length > 0 ?  t('tripDetails.stopsCount', { count: items.length }) 
+        {items.length > 0 ? t('tripDetails.stopsCount', { count: items.length }) 
           : t('tripDetails.noStops')}
       </h2>
 
-      <DndContext
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      // modifiers={[restrictToVerticalAxis]}
-      >
-        <SortableContext items={items.map((stop) => stop.id)} strategy={verticalListSortingStrategy}>
-          <div className={styles.stopList}>
-            {tripDetailsLoading ? (
-              Array.from({ length: 5 }).map((_, index) => (
-                <CardSkeleton key={index} />
-              ))
-            ) : (
-              items.map((stop, index) => (
-                <ItineraryCard
-                  key={stop.id}
-                  id={stop.id}
-                  place={stop}
-                  index={index + 1}
-                  handleViewMoreDetails={handleViewMoreDetails}
-                  handleActions={handleActions}
-                />
-              ))
-            )}
-          </div>
-        </SortableContext>
-      </DndContext>
+      {isTripEditPage ? (
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext 
+            items={items.map((stop) => stop.id)} 
+            strategy={verticalListSortingStrategy}
+          >
+            <div className={styles.stopList}>
+              {renderStopList()}
+            </div>
+          </SortableContext>
+        </DndContext>
+      ) : (
+        <div className={styles.stopList}>
+          {renderStopList()}
+        </div>
+      )}
     </>
   );
 };

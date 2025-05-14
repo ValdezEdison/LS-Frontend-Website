@@ -11,6 +11,8 @@ import PlaceCard from '../../common/PlaceCard';
 // import { getTripsTypes } from '../../../constants/TripTypeList';
 import { listUpdater, resetStops } from '../../../features/places/placesInfo/itinerary/ItinerarySlice';
 import useSeeMore from '../../../hooks/useSeeMore';
+import Loader from '../../common/Loader';
+import TripCardSkeleton from '../../skeleton/common/TripCardSkeleton';
 
 const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErrors, setFormErrors, activeDestinationIndex,
   setActiveDestinationIndex,
@@ -354,7 +356,13 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
                 </div>
 
                 <div className={styles.suggestionList}>
-                  {visibleStops.filter(item => !state.stops?.includes(item.id)).length > 0 ? (
+
+                  {stopsLoading ? (
+                      Array(2).fill(0).map((_, index) => (
+                        <TripCardSkeleton key={`skeleton-${index}`} />
+                      ))
+                  ):
+                  ( visibleStops.filter(item => !state.stops?.includes(item.id)).length > 0 ? (
                     visibleStops
                       .filter(item => !state.stops?.includes(item.id))
                       .map((item, index) => (
@@ -375,13 +383,18 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
                       ))
                   ) : (
                     <p>{tAddTrip('AddTrip.popups.addToTrip.noSuggestions')}</p>
-                  )}
+                  ))
+                }
                 </div>
               </div>
             </>
           )}
+        {addTripLoading ? (
+          <Loader />
+        ) :
+        <button className={styles.confirmButton} onClick={onSubmit}>{tAddTrip('AddTrip.popups.addToTrip.confirmButton')}</button>
 
-          <button className={styles.confirmButton} onClick={onSubmit}>{tAddTrip('AddTrip.popups.addToTrip.confirmButton')}</button>
+        }
         </div>
       </div>
     </div>

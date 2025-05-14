@@ -6,6 +6,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useTranslation } from "react-i18next";
 
+
 const ItineraryForm = ({
   tripDetails,
   setFormState,
@@ -16,6 +17,7 @@ const ItineraryForm = ({
   debouncedSearch, // Add this prop if you need to fetch cities
   handleSubmit,
   loading,
+  handleCancel
 }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -264,7 +266,7 @@ const ItineraryForm = ({
         </div>
 
         <div className={styles.formActions}>
-          <button type="button" className={styles.cancelButton}>
+          <button type="button" className={styles.cancelButton} onClick={handleCancel}>
           {t('travelItineraryEdit.buttons.cancel')}
           </button>
           <button type="submit" className={styles.saveButton} onClick={handleSubmit}>

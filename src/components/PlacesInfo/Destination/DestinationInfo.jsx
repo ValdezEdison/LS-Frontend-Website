@@ -59,7 +59,7 @@ const DestinationInfo = ({ destination, handleClickViewMoreDetails }) => {
           className={styles.description}
           dangerouslySetInnerHTML={{ 
             __html: description
-              ?.replace(/_x000D_\\n|[\r\n]+/g, '<br />')  // Replace all variations with single line breaks
+              ?.replace(/\n/g, '<br />')   // Replace all variations with single line breaks
           }} 
         />
 

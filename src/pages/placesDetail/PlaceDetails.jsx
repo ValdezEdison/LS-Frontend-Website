@@ -701,7 +701,7 @@ const PlaceDetails = () => {
               className={styles.museumDescription}
               dangerouslySetInnerHTML={{ 
                 __html: place?.description
-                  ?.replace(/_x000D_\\n|[\r\n]+/g, '<br />')  // Replace all variations with single line breaks
+                  ?.replace(/\n/g, '<br />')   // Replace all variations with single line breaks
               }} 
             />
             )}
