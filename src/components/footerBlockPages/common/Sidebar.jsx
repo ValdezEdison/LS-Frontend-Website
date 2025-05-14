@@ -1,16 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../../../pages/whoWrAre/WhoWeAre.module.css";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [activePath, setActivePath] = useState(location.pathname);
+
+  // Update active path when location changes
+  useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location]);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const menuItems = [
+    { name: "Quiénes somos", path: "/who-we-are" },
+    { name: "Trabaja con nosotros", path: "/join-our-team" },
+    { 
+      name: "La vida en Local Secrets", 
+      path: "/life-at-company",
+      className: styles.lifeAtCompanyLink 
+    },
+  ];
+
   return (
     <nav className={styles.sidebarNav}>
       <div className={styles.sidebarContent}>
-        <h3 className={styles.sidebarTitle}>Quiénes somos</h3>
         <div className={styles.sidebarLinks}>
-          <a href="#">Trabaja con nosotros</a>
-          <a href="#" className={styles.lifeAtCompanyLink}>
-            La vida en Local Secrets
-          </a>
+          {menuItems.map((item) => (
+            <a
+              key={item.path} // Using path as key since it's unique
+              className={`${item.className || ''} ${
+                activePath === item.path ? styles.active : ''
+              }`}
+              onClick={() => handleNavigation(item.path)}
+              style={{ cursor: "pointer" }}
+            >
+              {item.name}
+            </a>
+          ))}
         </div>
       </div>
       <div className={styles.sidebarDivider} />

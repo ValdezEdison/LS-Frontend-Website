@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import styles from "./WhoWeAre.module.css";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/footerBlockPages/common/Sidebar";
@@ -11,37 +11,82 @@ import CompanyStats from "../../components/footerBlockPages/whoWeAre/CompanyStat
 import TeamStats from "../../components/footerBlockPages/whoWeAre/TeamStats";
 import NewsLetterBanner from "../../components/footerBlockPages/common/NewsLetterBanner";
 import Footer from "../../components/layouts/Footer";
+import { fetchWhoWeAre } from "../../features/cms/Pages/PagesAction";
+import { useDispatch, useSelector } from "react-redux";
+import { LanguageContext } from "../../context/LanguageContext";
+import AboutContentSkeleton from "../../components/skeleton/WhoWeArePage/AboutContentSkeleton";
+import MissionSectionSkeleton from "../../components/skeleton/WhoWeArePage/MissionSectionSkeleton";
+import ValuesSectionSkeleton from "../../components/skeleton/WhoWeArePage/ValuesSectionSkeleton";
+import VisionSectionSkeleton from "../../components/skeleton/WhoWeArePage/VisionSectionSkeleton";
+import CompanyStatsSkeleton from "../../components/skeleton/WhoWeArePage/CompanyStatsSkeleton";
+import TeamStatsSkeleton from "../../components/skeleton/WhoWeArePage/TeamStatsSkeleton";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { PlaceHolderImg1 } from "../../components/common/Images";
+import config from "../../config";
 
 function WhoWeAre() {
+  const { language, languageId } = useContext(LanguageContext);
+  const { whoWeAre, whoWeAreLoading } = useSelector((state) => state.cms.pages);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchWhoWeAre(languageId));
+  }, [dispatch, language, languageId]);
+
+  const isLoading = whoWeAreLoading || !whoWeAre?.[0];
+  const data = whoWeAre?.[0];
+
+  const backgroundImage = whoWeAre?.[0]?.hero_image?.url
+  ? `${config.api.cmsBaseUrl}${whoWeAre[0].hero_image.url}`
+  :  PlaceHolderImg1;
+
+
   return (
     <main className={styles.pageContainer}>
       <Header />
       <div className="page-center">
         <section className={styles.contentWrapper}>
           <Sidebar />
-          <AboutContent />
+          {isLoading ? (
+            <AboutContentSkeleton />
+          ) : (
+            <AboutContent 
+              title={data.title} 
+              description={data.description} 
+            />
+          )}
         </section>
       </div>
       
-      <img
-        src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/8576e220dbf77a89b0b6ab392ef453118d077c2e?placeholderIfAbsent=true"
-        alt="Company image"
-        className={styles.companyImage}
-      />
+      {isLoading ? (
+        <Skeleton height={400} className={styles.companyImage} />
+      ) : (
+        <img
+          src={backgroundImage}
+          alt={data.hero_image.alt || "Company image"}
+          className={styles.companyImage}
+        />
+      )}
+      
       <div className="page-center">
         <section className={styles.infoSectionsContainer}>
-          <MissionSection />
+          {isLoading ? <MissionSectionSkeleton /> : <MissionSection mission={data.mission} />}
           <hr className={styles.sectionDivider} />
-          <ValuesSection />
+          {isLoading ? <ValuesSectionSkeleton /> : <ValuesSection values={data.values} />}
           <hr className={styles.sectionDivider} />
-          <VisionSection />
+          {isLoading ? <VisionSectionSkeleton /> : <VisionSection vision={data.vision} />}
           <hr className={styles.sectionDivider} />
-          <CompanyStats />
+          {isLoading ? <CompanyStatsSkeleton /> : <CompanyStats stats={data.company_stats} />}
           <hr className={styles.sectionDivider} />
-          <TeamStats />
+          {isLoading ? <TeamStatsSkeleton /> : <TeamStats stats={data.team_stats} />}
         </section>
       </div>
-      <NewsLetterBanner title="¿Quieres conocer más sobre la vida en Local Secrets?" buttonText="Descubrir más"/>
+      
+      <NewsLetterBanner 
+        title="¿Quieres conocer más sobre la vida en Local Secrets?" 
+        buttonText="Descubrir más"
+      />
       <Footer />
     </main>
   );
