@@ -246,7 +246,7 @@ export const useAddTrip = () => {
     const storedTripType = localStorage.getItem('tripType');
     if (!storedTripType) {
       dispatch(setTripType({ id: tripState.selectedPlaceId, type: formState.tripType }));
-      return;
+      // return;
     }
 
     if (!validateForm()) return;
