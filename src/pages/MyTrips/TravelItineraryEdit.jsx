@@ -312,6 +312,10 @@ const TravelItineraryEdit = () => {
     }
   };
 
+  const handleCancel = () => {
+    navigate(-1);
+  }
+
   return (
     <div className={styles.travelItineraryContainer}>
       <Header />
@@ -327,6 +331,7 @@ const TravelItineraryEdit = () => {
             debouncedSearch={debouncedSearch}
             handleSubmit={handleSubmit}
             loading={tripDetailsLoading}
+            handleCancel={handleCancel}
           />
         <ItineraryMap
           places={tripDetails?.stops}

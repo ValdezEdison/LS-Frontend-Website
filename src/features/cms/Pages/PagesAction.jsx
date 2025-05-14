@@ -25,3 +25,15 @@ export const fetchOurPartners = createAsyncThunk(
         }
     }
 );
+
+export const fetchWhoWeAre = createAsyncThunk(
+    "pages/fetchWhoWeAre",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getWhoWeAre(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

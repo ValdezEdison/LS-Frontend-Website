@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarStops, fetchTravelTime, updateTrip, updateStops, deleteTrip, updateCities } from "./MyTripsAction";
+import { fetchMyFutureTrips, fetchMyPastTrips, fetchTripDetails, fetchSimilarStops, fetchTravelTime, updateTrip, updateStops, deleteTrip, updateCities, downloadTrip } from "./MyTripsAction";
 
 const initialState = {
     futureTrips: [],
@@ -14,6 +14,8 @@ const initialState = {
     travelTime: null,
     travelTimeLoading: false,
     updateCitiesLoading: false,
+    downloadTripLoading: false,
+    downloadedTrip: null,
 };
 
 const myTripsSlice = createSlice({
@@ -26,7 +28,10 @@ const myTripsSlice = createSlice({
         },
         resetTripDetails: (state) => {
             state.tripDetails = null;
-        }
+        },
+        resetDownloadedTrip: (state) => {
+            state.downloadedTrip = null
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -152,7 +157,20 @@ const myTripsSlice = createSlice({
                 state.error = action.payload;               
             })
 
+            .addCase(downloadTrip.pending, (state) => {
+                state.downloadTripLoading = true;
+                state.error = null;
+            })
+            .addCase(downloadTrip.fulfilled, (state, action) => {
+                state.downloadTripLoading = false;
+                state.downloadedTrip = action.payload;
+            })
+            .addCase(downloadTrip.rejected, (state, action) => {
+                state.downloadTripLoading = false;  
+                state.error = action.payload;               
+            })
+
     },
 });
-export const { listUpdater, resetTripDetails } = myTripsSlice.actions;
+export const { listUpdater, resetTripDetails, resetDownloadedTrip } = myTripsSlice.actions;
 export default myTripsSlice.reducer;

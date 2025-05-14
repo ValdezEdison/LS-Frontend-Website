@@ -7,11 +7,11 @@ import SimilarPlaces from "../../components/TripDetails/SimilarPlaces";
 import ItineraryMap from "../../components/PlacesInfo/Itineries/ItineraryMap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fetchTripDetails, fetchSimilarStops, fetchTravelTime } from "../../features/myTrips/MyTripsAction";
+import { fetchTripDetails, fetchSimilarStops, fetchTravelTime, downloadTrip } from "../../features/myTrips/MyTripsAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
-import { resetTripDetails } from "../../features/myTrips/MyTripsSlice";
+import { resetTripDetails, resetDownloadedTrip } from "../../features/myTrips/MyTripsSlice";
 import { useTranslation } from "react-i18next";
 
 const TripDetails = () => {
@@ -33,7 +33,7 @@ const TripDetails = () => {
   const { t } = useTranslation('MyTrips');
 
   const { language } = useContext(LanguageContext);
-  const { tripDetails, similarStops, loading, similarStopsLoading } = useSelector((state) => state.myTrips);
+  const { tripDetails, similarStops, loading, similarStopsLoading, downloadedTrip } = useSelector((state) => state.myTrips);
 
   
 
@@ -67,6 +67,34 @@ const TripDetails = () => {
       }
     }, [formState.mode, dispatch, id]);
 
+     const handleClickDownloadTrip = () => {
+        if (id) {
+          dispatch(resetDownloadedTrip());
+          dispatch(downloadTrip(id));
+        }
+      }
+
+       useEffect(() => {
+          if (downloadedTrip) {
+            // Create a blob from the PDF data
+            const blob = new Blob([downloadedTrip], { type: 'application/pdf' });
+      
+            // Create a URL for the blob
+            const url = window.URL.createObjectURL(blob);
+      
+            // Create a temporary anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${tripDetails?.title || 'trip'}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+      
+            // Clean up
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          }
+        }, [downloadedTrip, tripDetails?.title]);
+
 
   return (
     <>
@@ -75,7 +103,7 @@ const TripDetails = () => {
         <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails} loading={loading}/>
         <ItineraryMap places={tripDetails?.stops} formState={formState} setFormState={setFormState} />
         {/* {tripDetails?.stops?.length > 0 && ( */}
-        <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState}/>
+        <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} handleClickDownloadTrip={handleClickDownloadTrip}/>
         {/* )} */}
         {similarStopsLoading ? (
               <WidgetSkeleton />

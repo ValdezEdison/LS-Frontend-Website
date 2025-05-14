@@ -9,7 +9,7 @@ const PlaceCardSkeleton = () => {
   return (
     <div className={styles2.placeCard}>
       <div className={styles2.placeImageContainer}>
-        <img src={PlaceHolderImg2} alt="" />
+        <Skeleton className={styles.tripImage} height={120} width={140} />
       </div>
       <div className={styles2.placeInfo}>
         <Skeleton height={20} width={`80%`} />

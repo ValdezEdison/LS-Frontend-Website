@@ -11,7 +11,7 @@ import { fetchImages } from "../../features/common/defaultImages/ImageAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchFooterBlocks } from "../../features/cms/Blocks/BlocksAction";
 import UserMenu from "../UserMenu/UserMenu";
-import { logout, getProfile } from "../../features/authentication/AuthActions";
+import { logout, getProfile, updateUserLanguage } from "../../features/authentication/AuthActions";
 import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
@@ -36,6 +36,7 @@ const Header = () => {
 
   const isProfilePage = location.pathname.startsWith("/profile");
   const isFavoritesPage = location.pathname.startsWith("/favorites");
+  const isHomepage = location.pathname === "/";
 
   const handleNavigation = (path) => {
     if (path === "/login") {
@@ -57,6 +58,14 @@ const Header = () => {
       dispatch(getProfile());
     }
   }, [dispatch, language]); // Re-fetch data when language changes
+
+  useEffect(() => {
+
+    if(isHomepage){
+      dispatch(fetchNewsLetterBlocks(languageId)); 
+    }
+ 
+  }, [isHomepage, dispatch, language]);
 
   const handleClickHamburger = () => {
     setShownavBar(!showNavBar);
@@ -109,6 +118,7 @@ const Header = () => {
     i18n.changeLanguage(code); // Update i18n
     setLanguage(selectedLang.id, code, flag, name); // Update context and localStorage
     setShowLanguageOption(false); // Close the language selector
+    dispatch(updateUserLanguage(id));
   };
 
   const languageData = getLanguageData();

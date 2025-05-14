@@ -110,3 +110,16 @@ export const updateCities = createAsyncThunk(
         }
     }
 );
+
+
+export const downloadTrip = createAsyncThunk(
+    "myTrips/downloadTrip",
+    async (tripId, { rejectWithValue }) => {
+        try {
+            const response = await MyTripsService.downloadTrip(tripId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

@@ -239,6 +239,13 @@ export const useAddTrip = () => {
     }
   };
 
+  function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
   // Handle creating new trip
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -246,7 +253,7 @@ export const useAddTrip = () => {
     const storedTripType = localStorage.getItem('tripType');
     if (!storedTripType) {
       dispatch(setTripType({ id: tripState.selectedPlaceId, type: formState.tripType }));
-      return;
+      // return;
     }
 
     if (!validateForm()) return;
@@ -258,8 +265,8 @@ export const useAddTrip = () => {
         title: formState.tripName,
         type: formState.tripType,
         cities: formState.destinations.map(d => d.destinationId),
-        initial_date: formState.startDate.toISOString().split('T')[0],
-        end_date: formState.endDate.toISOString().split('T')[0],
+        initial_date: formatLocalDate(formState.startDate),
+        end_date: formatLocalDate(formState.endDate),
         stops: formState.stops,
       };
 
@@ -357,6 +364,9 @@ export const useAddTrip = () => {
     }
     return () => clearTimeout(timer);
   }, [successData.show]);
+
+
+  console.log(formState, "formState");
 
   return {
     // State
