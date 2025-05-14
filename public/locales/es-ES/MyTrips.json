@@ -1,0 +1,92 @@
+{
+  "pageTitle": "Mis viajes",
+  "addTripButton": "Añadir viaje",
+  "futureTrips": "Viajes futuros",
+  "pastTrips": "Viajes pasados",
+  "tripActions": {
+    "showDetails": "Ver detalles"
+  },
+  "tripCard": {
+    "defaultTitle": "Viaje",
+    "sitesAdded": "{{count}} sitios añadidos",
+    "editButton": "Editar",
+    "deleteButton": "Eliminar",
+    "dateFormat": "d MMM yyyy",
+    "dateFormatNoYear": "d MMM",
+    "dateRangeFormatSameYear": "{{startDate}} al {{endDate}}",
+    "dateRangeFormatDifferentYear": "{{startDate}} al {{endDate}}"
+  },
+  "tripInfo": {
+    "dateFormat": {
+      "day": "numeric",
+      "month": "short",
+      "year": "numeric"
+    },
+    "dateRange": "Desde {{startDate}} hasta el {{endDate}}",
+    "noDates": "No hay fechas especificadas",
+    "ariaLabels": {
+      "editTrip": "Editar viaje",
+      "shareTrip": "Compartir viaje",
+      "moreOptions": "Más opciones"
+    }
+  },
+  "confirmationPopup": {
+    "deleteTrip": {
+      "title": "¿Estás seguro de eliminar '{{tripName}}'?",
+      "description": "Estás a punto de eliminar '{{tripName}}' de tu lista definitivamente."
+    }
+  },
+  "tripDetails": {
+    "similarPlaces": "Lugares similares",
+    "noStops": "No hay paradas añadidas",
+    "stopsCount": "{{count}} paradas",
+    "tripType": {
+      "roadTrip": "Viaje por carretera",
+      "cityBreak": "Escapada urbana",
+      "beachHoliday": "Vacaciones en la playa",
+      "adventure": "Aventura",
+      "cultural": "Cultural"
+    }
+  },
+  "travelItineraryEdit": {
+    "pageTitle": "Editar viaje",
+    "addMoreStops": "Añade más paradas a tu itinerario",
+    "tripType": {
+      "label": "Tipo de viaje",
+      "familiar": "Familiar",
+      "couple": "En pareja",
+      "friends": "Con amigos",
+      "solo": "Solo",
+      "business": "De negocios"
+    },
+    "buttons": {
+      "viewMore": "Ver más",
+      "addToTrip": "Añadir a viaje",
+      "saveChanges": "Guardar cambios",
+      "remove": "Eliminar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "addDestination": "Añadir destino"
+    },
+    "eventCard": {
+      "dateNotAvailable": "Fecha no disponible",
+      "categoryNotAvailable": "Categoría no disponible",
+      "locationNotAvailable": "Ubicación no disponible",
+      "addToFavorites": "Añadir a favoritos"
+    },
+    "similarPlaces": "Lugares similares",
+    "form": {
+      "tripNameLabel": "Nombre del viaje",
+      "tripNamePlaceholder": "Ingresa el nombre del viaje",
+      "datesLabel": "Fechas",
+      "datesPlaceholder": "Selecciona fechas",
+      "destinationLabel": "Destino",
+      "destinationPlaceholder": "Buscar destino"
+    }
+  },
+  "toast": {
+    "tripDeleted": "Se ha eliminado un viaje.",
+    "undo": "Deshacer",
+    "close": "Cerrar"
+  }
+}

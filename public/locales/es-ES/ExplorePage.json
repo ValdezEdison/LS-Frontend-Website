@@ -1,0 +1,20 @@
+{
+    "pageTitle": "{{count}} opciones a explorar",
+    "sectionTitle": "Explora más destinos",
+    "sectionSubtitle": "Déjate sorprender",
+    
+    "continentNav": {
+        "all": "Todos",
+        "europe": "Europa",
+        "asia": "Asia",
+        "africa": "África",
+        "northAmerica": "América del Norte",
+        "southAmerica": "América del Sur",
+        "oceania": "Oceanía",
+        "antarctica": "Antártida"
+    },
+    "buttons": {
+        "seeMore": "Ver más",
+        "showSites": "Ver sitios"
+    }
+}

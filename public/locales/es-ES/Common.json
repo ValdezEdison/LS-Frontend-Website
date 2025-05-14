@@ -1,0 +1,55 @@
+{
+  
+  "noResults": "No se encontraron resultados",
+  "seeMap": "Ver mapa",
+  "filters": "Filtros",
+  "removeFilters": "Eliminar filtros",
+  "nearbyPlaces": "Otros lugares cercanos",
+  "logInButton": "Iniciar sesión",
+  "showMore": "Mostrar más",
+  "visitWebsite": "Visitar sitio web",
+  "banner": {
+    "title": "Aplica nuestros filtros para conseguir mejores resultados",
+    "description": "El 67% de nuestros clientes lo están haciendo",
+    "button": "Ir a filtros"
+  },
+  "subNav": {
+    "destination": "Destino",
+    "events": "Eventos",
+    "places": "Lugares",
+    "itineraries": "Itinerarios"
+  },
+  "authAlert": {
+    "favorites": {
+      "title": "Inicia sesión y ahorra tiempo",
+      "description": "Inicia sesión para guardar tus favoritos y crear nuevos itinerarios en Local Secrets.",
+      "button": "Inicia sesión o crea una cuenta"
+    },
+    "viewDetails": {
+      "title": "Inicia sesión para ver más",
+      "description": "Inicia sesión para ver todas nuestras opciones y guardar tus secretos locales favoritos."
+    },
+    "tripCreation": {
+      "title": "¿Quieres añadir un viaje a tu lista?",
+      "description": "Regístrate o inicia sesión para añadir un viaje y crear itinerarios a tu gusto."
+    }
+  },
+  "events": {
+    "searchTitle": "Encuentra tu evento",
+    "searchPlaceholder": "Busca por palabras clave"
+  },
+  "search": {
+    "label": "Buscar destinos",
+    "placeholder": "Ciudad, país, eventos...",
+    "buttonAriaLabel": "Buscar"
+  },
+  "userMenu": {
+    "manageAccount": "Gestionar cuenta",
+    "favorites": "Favoritos",
+    "logout": "Cerrar sesión"
+  },
+  "seeMore": "Ver más",
+  "seeLess": "Ver menos",
+  "travelInspiration": "Inspiración para tus próximos viajes",
+  "noResult": "No se encontraron resultados"
+}

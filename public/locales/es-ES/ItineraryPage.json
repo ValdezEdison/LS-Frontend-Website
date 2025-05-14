@@ -1,0 +1,14 @@
+{
+    "itinerary": {
+      "title": "{{count}} itinerarios disponibles",
+      "searchLabel": "Mirando itinerarios en",
+      "searchPlaceholder": "Busca un destino",
+      "recommended": "Eventos recomendados",
+      "loginPrompt": "Inicia sesión para guardar tus itinerarios favoritos y crear viajes",
+      "loginButton": "Iniciar sesión",
+      "loading": "Cargando itinerarios...",
+      "loadMore": "Cargar más",
+      "noMore": "No hay más itinerarios para cargar",
+      "popularItineraries": "Itinerarios más vistos por los viajeros"
+    }
+  }
