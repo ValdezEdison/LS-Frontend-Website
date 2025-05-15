@@ -129,6 +129,10 @@ const PlaceService = {
   generateLink: async (placeId) => {  
     return apiService.get(`/sites/${placeId}/generate_link`);
   },
+
+  getNearMePlaces: async (page = 1, latitude, longitude) => {
+    return apiService.get(`/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}`);
+  },
 };
 
 export default PlaceService;

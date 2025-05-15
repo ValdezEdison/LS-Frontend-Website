@@ -15,6 +15,7 @@ import { logout, getProfile, updateUserLanguage } from "../../features/authentic
 import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
+import { clearLocation } from "../../features/location/LocationSlice";
 
 const Header = () => {
 
@@ -180,7 +181,7 @@ const Header = () => {
           console.log(result, "result");
           if (result.type === "auth/logout/fulfilled") {
             toast.success(result.payload?.detail);
-
+            dispatch(clearLocation())
             if(isProfilePage || isFavoritesPage){
               navigate("/");
             }

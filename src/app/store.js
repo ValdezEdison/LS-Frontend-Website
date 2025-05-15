@@ -29,7 +29,7 @@ import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
 import wordPressReducer from "../features/cms/wordpress/WordPressSlice";
 
 
-import locationReducer from "../features/location/LocationSlice.jsx"; 
+import locationReducer from "../features/location/LocationSlice.jsx"
  
 const initialState = {
   auth: {
@@ -104,7 +104,8 @@ const store = configureStore({
     continents: continentReducer,
     explore: exploreReducer,
     favorites: favoriteReducer,
-    myTrips: myTripsReducer
+    myTrips: myTripsReducer,
+    locationSettings: persistedLocationReducer
   },
  
   middleware: (getDefaultMiddleware) =>

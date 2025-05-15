@@ -176,40 +176,46 @@ const LoginPage = () => {
     };
   
     dispatch(login(payload))
-      .then((action) => {
-        if (login.fulfilled.match(action)) {
-          toast.success(t('messages.success'));
-          
-          // Dispatch getProfile after successful login
-          return dispatch(getProfile())
-            .then((profileAction) => {
-              if (getProfile.fulfilled.match(profileAction)) {
-                // Profile fetched successfully
-                const fromLocation = location.state?.from;
-                const fromPath = fromLocation?.pathname || "/";
-                
-                // Preserve all original navigation properties
-                const navigationOptions = {
-                  replace: true,
-                  ...(fromLocation?.state && { state: fromLocation.state }),
-                  ...(fromLocation?.search && { search: fromLocation.search }),
-                  ...(fromLocation?.hash && { hash: fromLocation.hash })
-                };
-              
-                navigate(fromPath, navigationOptions);
-              } else {
-                throw new Error("Failed to fetch profile");
-              }
-            });
-        } else if (login.rejected.match(action)) {
-          toast.error(action.payload?.error_description || t('messages.error'));
-          throw new Error("Login failed");
-        }
-      })
-      .catch((err) => {
-        // toast.error(err.message || t('messages.error'));
-        
-      });
+  .then((action) => {
+    if (login.fulfilled.match(action)) {
+      toast.success(t('messages.success'));
+      
+      // Dispatch getProfile after successful login
+      return dispatch(getProfile())
+        .then((profileAction) => {
+          if (getProfile.fulfilled.match(profileAction)) {
+            // Profile fetched successfully
+            
+            // Show browser location permission popup
+            if ("geolocation" in navigator) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  // Location access granted
+                  console.log("Location access granted", position);
+                  proceedWithNavigation();
+                },
+                (error) => {
+                  // Location access denied or error
+                  console.warn("Location access denied or error", error);
+                  // Still proceed with navigation even if location is denied
+                  proceedWithNavigation();
+                },
+                { enableHighAccuracy: true }
+              );
+            } else {
+              // Geolocation not supported
+              console.warn("Geolocation not supported by browser");
+              proceedWithNavigation();
+            }
+          } else {
+            throw new Error("Failed to fetch profile");
+          }
+        });
+    }
+  })
+  .catch((error) => {
+    // toast.error(error.message);
+  });
   };
 
   const handleNavigate = (path) => {
@@ -268,6 +274,21 @@ const LoginPage = () => {
       
     }
   };
+
+  function proceedWithNavigation() {
+    const fromLocation = location.state?.from;
+    const fromPath = fromLocation?.pathname || "/";
+    
+    // Preserve all original navigation properties
+    const navigationOptions = {
+      replace: true,
+      ...(fromLocation?.state && { state: fromLocation.state }),
+      ...(fromLocation?.search && { search: fromLocation.search }),
+      ...(fromLocation?.hash && { hash: fromLocation.hash })
+    };
+  
+    navigate(fromPath, navigationOptions);
+  }
 
   return (
     <>
