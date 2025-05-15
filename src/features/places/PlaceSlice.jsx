@@ -15,7 +15,8 @@ import {
     addComment,
     editComment,
     deleteComment,
-    generateLink
+    generateLink,
+    fetchNearMePlaces
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
 import { toggleFavorite } from '../favorites/FavoritesAction';
@@ -296,6 +297,19 @@ const placeSlice = createSlice({
             })
             .addCase(generateLink.rejected, (state, action) => {
                 state.generateLinkLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(fetchNearMePlaces.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchNearMePlaces.fulfilled, (state, action) => {
+                state.loading = false;
+                state.next = action.payload?.results?.next;
+                state.places = action.payload?.results?.results || [];
+            })
+            .addCase(fetchNearMePlaces.rejected, (state, action) => {
+                state.loading = false;
                 state.error = action.payload;
             })
             ;

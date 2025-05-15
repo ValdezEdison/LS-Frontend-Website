@@ -1,0 +1,56 @@
+{
+    "AddTrip": {
+        "types": {
+            "solo": "Individual",
+            "familiar": "Familiar",
+            "business": "Negocios",
+            "romantic": "Romántico",
+            "group": "Grupo"
+        },
+        "popups": {
+            "addTrip": {
+                "title": "Añadir a mis viajes",
+                "description": "Añade '{{placeName}}' a cualquiera de tus viajes planeados",
+                "newTrip": "Nuevo viaje",
+                "confirmButton": "Confirmar"
+            },
+            "addToTrip": {
+                "title": "Añadir a mis viajes",
+                "description": "Añade '{{placeName}}' a cualquiera de tus viajes planeados",
+                "formDescription": "Usa nuestro planificador de viajes para crear nuevos itinerarios, planificar tus paradas y compartir diferentes viajes.",
+                "tripNameLabel": "Nombre del viaje",
+                "tripNamePlaceholder": "Entrada de texto",
+                "destinationLabel": "Destino",
+                "addDestination": "Añade otro destino",
+                "datesLabel": "Fechas",
+                "datePlaceholder": "Fecha inicio - fecha fin",
+                "suggestionsTitle": "Sugerencias para empezar",
+                "noSuggestions": "No hay sugerencias disponibles",
+                "confirmButton": "Confirmar"
+            },
+            "validation": {
+                "tripNameRequired": "El nombre del viaje es obligatorio",
+                "startDateRequired": "La fecha de inicio es obligatoria",
+                "endDateRequired": "La fecha de fin es obligatoria",
+                "endDateBeforeStart": "La fecha de fin no puede ser anterior a la de inicio",
+                "destinationRequired": "Se requiere al menos un destino",
+                "specificDestinationRequired": "Se requiere un destino"
+            },
+            "success": {
+                "placeAdded": {
+                    "title": "¡Lugar añadido!",
+                    "message": "Se ha añadido un nuevo lugar a tu \"{tripName}\". Sigue añadiendo destinos y eventos."
+                },
+                "tripAdded": {
+                    "title": "¡Viaje añadido!",
+                    "message": "Se ha añadido un nuevo viaje a tu cuenta. Continúa añadiendo destinos y eventos."
+                }
+            },
+            "errors": {
+                "addPlaceFailed": "Error al añadir lugar",
+                "createTripFailed": "Error al crear viaje",
+                "unexpectedError": "Ocurrió un error inesperado"
+            }
+        }
+    }
+}

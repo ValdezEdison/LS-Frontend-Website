@@ -28,6 +28,7 @@ import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton"
 import { fetchContinents } from "../../features/common/continents/ContinentAction";
 import { debounce } from "lodash";
 import { fetchCities } from "../../features/common/cities/CityAction";
+import { fetchNearMePlaces } from "../../features/places/PlaceAction";
 
 const HomePage = () => {
 
@@ -35,6 +36,8 @@ const HomePage = () => {
   const { t: tCommon } = useTranslation("Common");
 
   const { language, languageId } = useContext(LanguageContext);
+
+  const { currentLocation } = useSelector((state) => state.locationSettings);
 
 
   const dispatch = useDispatch();

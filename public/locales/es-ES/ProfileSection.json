@@ -178,51 +178,5 @@
             "fileType": "Por favor selecciona un archivo de imagen",
             "fileSize": "El tamaño del archivo debe ser menor a 5MB"
         }
-    },
-    "locationSettings": {
-    "title": "Configuración de ubicación",
-    "sections": {
-      "preference": {
-        "title": "Preferencia de ubicación",
-        "options": {
-          "geolocation": {
-            "label": "Usar mi ubicación actual",
-            "coordinates": "Latitud: {lat}, Longitud: {lng}",
-            "getLocation": "Obtener ubicación actual"
-          },
-          "manual": {
-            "label": "Establecer una ubicación específica"
-          }
-        }
-      },
-      "radius": {
-        "title": "Radio de búsqueda",
-        "defaultLabel": "Radio de búsqueda predeterminado",
-        "rangeMarkers": {
-          "min": "1 km",
-          "current": "{{value}} km",
-          "max": "50 km"
-        }
-      }
-    },
-    "buttons": {
-      "saveLocation": "Guardar ubicación",
-      "saveAll": "Guardar todo",
-      "saving": "Guardando..."
-    },
-    "errors": {
-      "geolocationUnsupported": "Geolocalización no soportada por tu navegador",
-      "permissionDenied": "El usuario denegó el permiso de geolocalización.",
-      "positionUnavailable": "La información de ubicación no está disponible.",
-      "timeout": "La solicitud de ubicación ha caducado.",
-      "unknownError": "Ocurrió un error desconocido.",
-      "missingGeolocation": "Faltan datos de geolocalización. Por favor permite el acceso a la ubicación o inténtalo de nuevo.",
-      "selectLocation": "Por favor selecciona una ubicación.",
-      "selectPreference": "Por favor selecciona una preferencia de ubicación."
-    },
-    "success": {
-      "locationUpdated": "Ubicación actualizada correctamente",
-      "settingsUpdated": "Configuración de ubicación actualizada correctamente"
     }
-  }
 }

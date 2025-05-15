@@ -1,12 +1,12 @@
 {
     "personalDetails": {
         "title": "Personal Details",
-        "subtitle": "Update your personal information by editing the profile",
+        "subtitle": "Update your personal details by editing the profile",
         "fields": {
             "profileType": "Profile Type",
             "name": "Name",
             "email": "Email Address",
-            "phone": "Phone Number",
+            "phone": "Telephone Number",
             "birthDate": "Date of Birth",
             "nationality": "Nationality",
             "address": "Address",
@@ -32,13 +32,13 @@
             "notifications": "Notifications"
         },
         "actions": {
-            "info": "Info",
+            "info": "Information",
             "edit": "Edit",
             "verified": "Verified",
             "save": "Save",
             "cancel": "Cancel"
         },
-        "emailNote": "This email address is what you used to log in and where all current profiles are sent."
+        "emailNote": "This email address is what you used to log in and where all current profiles are sent to."
     },
     "preferences": {
         "title": "Preferences",
@@ -73,6 +73,17 @@
                 "email": "name@gmail.com",
                 "phone": "+34 123 456 789"
             }
+        }
+    },
+    "location": {
+        "title": "Location Settings",
+        "description": "Manage your location settings and data used by third parties",
+        "settings": {
+            "title": "Location Settings",
+            "description": "Select 'Manage' to change location settings and data used by third parties"
+        },
+        "actions": {
+            "manage": "Manage"
         }
     },
     "security": {
@@ -145,7 +156,7 @@
                 "action": "Unsubscribe"
             },
             "referFriend": {
-                "label": "Refer a friend",
+                "label": "Recommend to a friend",
                 "action": "Subscribe"
             },
             "weeklyDiscovery": {
@@ -161,6 +172,7 @@
         "tabs": {
             "personal": "Personal details",
             "preferences": "Preferences",
+            "location": "Location Settings",
             "security": "Security",
             "privacy": "Privacy",
             "notifications": "Notifications"
@@ -178,5 +190,52 @@
             "fileType": "Please select an image file",
             "fileSize": "File size should be less than 5MB"
         }
+    },
+
+    "locationSettings": {
+    "title": "Location Settings",
+    "sections": {
+      "preference": {
+        "title": "Location Preference",
+        "options": {
+          "geolocation": {
+            "label": "Use my current location",
+            "coordinates": "Latitude: {lat}, Longitude: {lng}",
+            "getLocation": "Get Current Location"
+          },
+          "manual": {
+            "label": "Set a specific location"
+          }
+        }
+      },
+      "radius": {
+        "title": "Search Radius",
+        "defaultLabel": "Default search radius",
+        "rangeMarkers": {
+          "min": "1 km",
+          "current": "{{value}} km",
+          "max": "50 km"
+        }
+      }
+    },
+    "buttons": {
+      "saveLocation": "Save Location",
+      "saveAll": "Save All",
+      "saving": "Saving..."
+    },
+    "errors": {
+      "geolocationUnsupported": "Geolocation is not supported by your browser",
+      "permissionDenied": "User denied the request for Geolocation.",
+      "positionUnavailable": "Location information is unavailable.",
+      "timeout": "The request to get user location timed out.",
+      "unknownError": "An unknown error occurred.",
+      "missingGeolocation": "Geolocation data is missing. Please allow location access or try again.",
+      "selectLocation": "Please select a location.",
+      "selectPreference": "Please select a location preference."
+    },
+    "success": {
+      "locationUpdated": "Location updated successfully",
+      "settingsUpdated": "Location settings updated successfully"
     }
+  }
 }

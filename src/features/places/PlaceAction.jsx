@@ -190,3 +190,16 @@ export const generateLink = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchNearMePlaces = createAsyncThunk(
+  'places/fetchNearMePlaces',
+  async ({ page, latitude, longitude }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getNearMePlaces(page, latitude, longitude);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);

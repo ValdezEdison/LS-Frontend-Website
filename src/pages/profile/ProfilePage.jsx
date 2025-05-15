@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useParams, useNavigate, Navigate, useLocation } from "react-router-dom";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/ProfileSection/Sidebar";
@@ -20,6 +20,9 @@ import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { fetchLanguages } from "../../features/common/languages/LanguageAction";
+import LocationSettings from "../../components/ProfileSection/LocationSettings";
+import { debounce } from "lodash";
+import { fetchCities } from "../../features/common/cities/CityAction";
 
 const ProfilePage = () => {
   const { tab } = useParams();
@@ -82,8 +85,20 @@ const ProfilePage = () => {
     page: 1,
   });
 
+  const [locationState, setLocationState] = useState({
+    geolocation_enabled: false,
+    last_known_latitude: null,
+    last_known_longitude: null,
+    default_latitude: null,
+    default_longitude: null,
+    default_radius: 5000,
+    destinationSearchQuery: "",
+    selectedDestinationId: null,
+  })
+
   const isPreferencesTab = location.pathname === "/profile/preferences";
   const isSecurityTab = location.pathname === "/profile/security";
+  const isLocationTab = location.pathname === "/profile/location";
   const isNotificationTab = location.pathname === "/profile/notifications";
   const isPrivacyTab = location.pathname === "/profile/privacy";
 
@@ -145,6 +160,7 @@ const ProfilePage = () => {
       [field]: value
     }));
   };
+
 
   const handleSaveProfile = async () => {
     const updatedData = {
@@ -360,6 +376,24 @@ const ProfilePage = () => {
       console.error("Failed to submit suggestion:", error);
     }
   };
+
+
+    const debouncedFetchCities = useCallback(
+      debounce((countryId, query) => {
+        dispatch(fetchCities({ countryId, searchQuery: query }));
+      }, 500),
+      [dispatch]
+    );
+  
+    useEffect(() => {
+      // City search
+      if (locationState.destinationSearchQuery.trim() !== "") {
+        debouncedFetchCities(null, locationState.destinationSearchQuery);
+      } else {
+        dispatch(fetchCities({}));
+      }
+      return () => debouncedFetchCities.cancel();
+    }, [locationState.destinationSearchQuery, debouncedFetchCities, dispatch]);
   
 
 
@@ -379,6 +413,8 @@ const ProfilePage = () => {
         );
       case "preferences":
         return <PreferencesForm user={user} state={preferences} setState={setPreferences} categories={categories}  handleLevelChange={handleLevelChange} handleCategoryChange={handleCategoryChange} handleSubcategoryChange={handleSubcategoryChange} onSaveLanguage={handleSaveLanguage} onSaveSuggestion={handleSaveSuggestion}/>;
+      case "location":
+        return <LocationSettings state={locationState} setState={setLocationState} />;
       case "security":
         return (
           <SecurityContent 

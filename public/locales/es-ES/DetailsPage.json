@@ -1,0 +1,69 @@
+{
+    "header": {
+        "openingHours": "Horario de apertura",
+        "websiteButton": "Ir a la web",
+        "phone": "Teléfono",
+        "share": "Compartir",
+        "addToFavorites": "Añadir a favoritos"
+    },
+    "reviews": {
+        "title": "Comentarios de los viajeros",
+        "addReview": "Añadir un comentario",
+        "seeAll": "Ver todos los comentarios",
+        "rating": "Puntuación",
+        "reviewsCount": "{{count}} reseñas",
+        "yourReview": "Tu comentario",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "comment": "Comentario",
+        "characterCount": "{{current}}/400 caracteres",
+        "submit": "Enviar",
+        "update": "Actualizar",
+        "deleteConfirm": {
+            "title": "Eliminar comentario",
+            "message": "¿Estás seguro de que quieres eliminar este comentario? Esta acción no se puede deshacer."
+        },
+        "success": {
+           "addedTitle": "¡Comentario enviado con éxito!",
+            "addedMessage": "Recuerda que una vez validado, podrás editar o eliminar tu comentario.",
+            "updatedTitle": "¡Comentario actualizado correctamente!",
+            "updatedMessage": "Recuerda que una vez validado, podrás editar o eliminar tu comentario.",
+            "deletedTitle": "Comentario eliminado",
+            "deletedMessage": "El comentario ha sido eliminado correctamente."
+        }
+    },
+    "nearby": {
+        "title": "Otros lugares cercanos",
+        "count": "4"
+    },
+    "map": {
+        "viewMap": "Ver en mapa"
+    },
+    "commentPopup": {
+        "title": "Deja tu reseña",
+        "ratingLabel": "Puntuación:",
+        "commentLabel": "Comentario:",
+        "placeholder": "Escribe tu comentario aquí",
+        "addComment": "Añadir comentario",
+        "editComment": "Editar comentario"
+    },
+    "authAlert": {
+        "title": "¿Quieres darnos tu opinión?",
+        "message": "Regístrate o inicia sesión para dejar una reseña sobre los secretos locales o el evento al que asististe.",
+        "button": "Inicia sesión o crea una cuenta"
+    },
+    "errors": {
+        "commentRequired": "El comentario es requerido",
+        "ratingRequired": "Por favor selecciona una puntuación",
+        "alreadyReviewed": "Ya has publicado una reseña",
+        "genericError": "Error al enviar el comentario"
+    },
+    "confirmationPopup": {
+        "deleteComment": {
+          "title": "Estas segura",
+          "description": "¿Estás seguro de que quieres eliminar este comentario? Esta acción no se puede deshacer.",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "title": "Inicia sesión o crea una cuenta",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "emailInfo": "Por favor ingresa un correo electrónico válido",
+    "emailError": {
+        "required": "El correo electrónico es requerido",
+        "invalid": "Por favor ingresa un correo electrónico válido"
+    },
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "passwordInfo": "Por favor ingresa una contraseña",
+    "passwordError": {
+        "required": "La contraseña es requerida"
+    },
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "submitButton": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "register": "Regístrate",
+    "socialLogin": {
+        "or": "O inicia sesión con",
+        "google": "Iniciar sesión con Google",
+        "facebook": "Iniciar sesión con Facebook"
+    },
+    "messages": {
+        "success": "¡Inicio de sesión exitoso!",
+        "error": "Error al iniciar sesión"
+    },
+    "footer": {
+        "terms": "Términos y condiciones",
+        "privacy": "Política de privacidad",
+        "rights": "Todos los derechos reservados",
+        "copyright": "Copyright (2024) - Local Secrets",
+        "agreement": "Al iniciar sesión o al crear una cuenta, aceptas nuestros"
+    },
+    "socialLogin": {
+        "dividerText": "o usar una de estas opciones",
+        "google": "Iniciar sesión con Google",
+        "facebook": "Iniciar sesión con Facebook",
+        "apple": "Iniciar sesión con Apple"
+    }
+}

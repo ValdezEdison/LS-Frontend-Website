@@ -1,3 +1,4 @@
+// src/app/store.js
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -27,27 +28,62 @@ import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
 import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
 import wordPressReducer from "../features/cms/wordpress/WordPressSlice";
 
+
+import locationReducer from "../features/location/LocationSlice.jsx"
+ 
+const initialState = {
+  auth: {
+    isAuthenticated: false,
+    loading: false,
+    error: null
+  },
+  cms: {
+    pages: {
+      heroContent: null,
+      loading: false,
+      error: null,
+      ourPartners: [],
+      ourPartnersLoading: false,
+      ourPartnersError: null
+    }
+  },
+  languages: {
+    languages: [],
+    loading: false,
+    error: null
+  }
+};
+ 
 // Configuration for redux-persist
 const persistConfig = {
   key: "destination", // Key for the persisted state
   storage, // Storage engine (localStorage by default)
-  whitelist: ["destination"], // Only persist the destinationReducer
+  whitelist: ["destination", "location"], // Only persist the destinationReducer
 };
 
 // Wrap the destinationReducer with persistReducer
 const persistedDestinationReducer = persistReducer(persistConfig, destinationReducer);
+
+const persistedLocationReducer = persistReducer(
+  {
+    key: "location",
+    storage,
+    whitelist: ["settings", "currentLocation", "trackingEnabled"]
+  }, 
+  locationReducer
+);
 
 const cmsReducer = combineReducers({
   blocks: blockReducer,
   pages: pagesReducer,
   wordpress: wordPressReducer
 });
-
+ 
 const store = configureStore({
   reducer: {
-
     // cms reducers
-    cms: cmsReducer,
+    cms: cmsReducer, 
+    location: persistedLocationReducer,
     
     // main api reducers
     auth: authReducer,
@@ -68,20 +104,21 @@ const store = configureStore({
     continents: continentReducer,
     explore: exploreReducer,
     favorites: favoriteReducer,
-    myTrips: myTripsReducer
-    
+    myTrips: myTripsReducer,
+    locationSettings: persistedLocationReducer
   },
+ 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these action types from redux-persist
         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER"],
       },
     }),
 });
 
+
 // Create a persisted version of the store
 const persistor = persistStore(store);
 
 // Export the store and persistor
-export { store, persistor };
+export { store, persistor }; 

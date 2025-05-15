@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./Sidebar.module.css";
-import { userAdd, Notification, Setting, Card, Lock } from "../common/Images";
+import { userAdd, Notification, Setting, Card, Lock, MapIcon } from "../common/Images";
 import { useTranslation } from "react-i18next";
 
 const tabConfig = {
   personal: { image: userAdd },
   preferences: { image: Setting },
+  location: { image: MapIcon },
   security: { image: Lock },
   privacy: { image: Card },
   notifications: { image: Notification },

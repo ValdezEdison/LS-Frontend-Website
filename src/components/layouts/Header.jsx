@@ -15,6 +15,7 @@ import { logout, getProfile, updateUserLanguage } from "../../features/authentic
 import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
+import { clearLocation } from "../../features/location/LocationSlice";
 
 const Header = () => {
 
@@ -180,7 +181,8 @@ const Header = () => {
           console.log(result, "result");
           if (result.type === "auth/logout/fulfilled") {
             toast.success(result.payload?.detail);
-
+            dispatch(clearLocation())
+            resetLocationAccess();
             if(isProfilePage || isFavoritesPage){
               navigate("/");
             }
@@ -203,6 +205,37 @@ const Header = () => {
     setSecretKey("4430b8862287189181367e93fb572ad32994004325e69cbd11c5845aa69b234b")
     
   },[])
+
+  // Helper function to reset location access
+const resetLocationAccess = () => {
+  try {
+    // 1. Clear any stored coordinates in your app state
+    // (handled by your clearLocation() action)
+    
+    // 2. Try to revoke geolocation permission if browser supports it
+    if (navigator.permissions?.revoke) {
+      navigator.permissions.query({ name: 'geolocation' })
+        .then(permissionStatus => {
+          if (permissionStatus.state === 'granted') {
+            return navigator.permissions.revoke({ name: 'geolocation' });
+          }
+        })
+        .then(() => console.log('Geolocation permission revoked'))
+        .catch(err => console.warn('Error revoking location:', err));
+    }
+    
+    // 3. Clear any cached position
+    if (navigator.geolocation?.clearWatch) {
+      // If you have any active watchers, you'd need to store their IDs
+      // and call clearWatch() for each
+    }
+    
+    console.log('Location access has been reset');
+  } catch (error) {
+    console.warn('Error resetting location access:', error);
+  }
+};
+
   return (
     <>
    {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && <div className="fullPageOverlay">
