@@ -200,7 +200,7 @@
         "options": {
           "geolocation": {
             "label": "Use my current location",
-            "coordinates": "Latitude: {lat}, Longitude: {lng}",
+            "coordinates": "Latitude: {{lat}}, Longitude: {{lng}}",
             "getLocation": "Get Current Location"
           },
           "manual": {
