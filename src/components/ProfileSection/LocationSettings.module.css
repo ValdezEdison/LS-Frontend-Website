@@ -357,6 +357,10 @@ input:checked + .slider:before {
   display: block;
 }
 
+.searchContainer{
+  position: relative;
+}
+
 @media (max-width: 991px) {
   .container {
     width: 100%;

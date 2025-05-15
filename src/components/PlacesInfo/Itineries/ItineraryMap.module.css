@@ -55,7 +55,7 @@
 
   .itenaryMapOptionsSelectedListWrapper{
     position: absolute;
-    top: -52px;
+    top: -50px;
     right: 0;
     display: flex;
     flex-direction: column;

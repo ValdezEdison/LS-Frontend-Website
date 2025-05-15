@@ -292,11 +292,11 @@ const LocationSettings = ({ state, setState}) => {
 
   return (
     <>
-    {settingsLoading && <Loader />}
+    
     <div className={styles.container}>
       <div className={styles.headers}>
         <h1 className={styles.title}>Location Settings</h1>
-  
+  {settingsLoading && <Loader />}
         {error && <div className={styles.errorMessage}>{error}</div>}
         {settingsError && <div className={styles.errorMessage}>{settingsError}</div>}
      
@@ -375,19 +375,22 @@ const LocationSettings = ({ state, setState}) => {
   
                   {locationPreferences === "manual" && (
                     <div className={styles.locationDetails}>
-                      <SearchInput
-                        handleSearchClick={() => handleSearchClick()}
-                        suggestionRef={suggestionRef}
-                        handleSearch={handleSearch}
-                        showSuggestionDropDown={showSuggestionDropDown}
-                        handleSearchClose={handleSearchClose}
-                        searchValue={state.destinationSearchQuery}
-                        suggestionsList={cities}
-                        placeholder={tCommon("search.placeholder")}
-                        onSelect={(value) => updateState("selectedDestinationId", value)}
-                        // customClassName="placesSearchInputContainer"
-                        selectedValue={state.selectedDestinationId}
-                      />
+                      <div className={styles.searchContainer}>
+                          <SearchInput
+                          handleSearchClick={() => handleSearchClick()}
+                          suggestionRef={suggestionRef}
+                          handleSearch={handleSearch}
+                          showSuggestionDropDown={showSuggestionDropDown}
+                          handleSearchClose={handleSearchClose}
+                          searchValue={state.destinationSearchQuery}
+                          suggestionsList={cities}
+                          placeholder={tCommon("search.placeholder")}
+                          onSelect={(value) => updateState("selectedDestinationId", value)}
+                          // customClassName="placesSearchInputContainer"
+                          selectedValue={state.selectedDestinationId}
+                        />
+                      </div>
+                      
                     </div>
                   )}
                 </div>
