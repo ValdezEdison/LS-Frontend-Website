@@ -30,6 +30,7 @@ const LocationSettings = ({ state, setState}) => {
 
   const dispatch = useDispatch();
 
+  const { t } = useTranslation('ProfileSection');
   const { t: tCommon } = useTranslation('Common');
 
   const { 
@@ -180,7 +181,7 @@ const LocationSettings = ({ state, setState}) => {
   // Get current user location
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
-      setGeoLocationError('Geolocation is not supported by your browser');
+      setGeoLocationError(t('locationSettings.errors.geolocationUnsupported'));
       return;
     }
     
@@ -199,16 +200,16 @@ const LocationSettings = ({ state, setState}) => {
         let errorMessage;
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 'User denied the request for Geolocation.';
+            errorMessage = t('locationSettings.errors.permissionDenied');
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Location information is unavailable.';
+            errorMessage = t('locationSettings.errors.positionUnavailable');
             break;
           case error.TIMEOUT:
-            errorMessage = 'The request to get user location timed out.';
+            errorMessage = t('locationSettings.errors.timeout');
             break;
           default:
-            errorMessage = 'An unknown error occurred.';
+            errorMessage = t('locationSettings.errors.unknownError');
             break;
         }
         setGeoLocationError(errorMessage);
@@ -295,7 +296,7 @@ const LocationSettings = ({ state, setState}) => {
     
     <div className={styles.container}>
       <div className={styles.headers}>
-        <h1 className={styles.title}>Location Settings</h1>
+        <h1 className={styles.title}>{t('locationSettings.title')}</h1>
   {settingsLoading && <Loader />}
         {error && <div className={styles.errorMessage}>{error}</div>}
         {settingsError && <div className={styles.errorMessage}>{settingsError}</div>}
@@ -309,7 +310,7 @@ const LocationSettings = ({ state, setState}) => {
           <div className={styles.spaceY}>
             {/* Location Preference Section */}
             <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>Location Preference</h2>
+              <h2 className={styles.sectionTitle}>{t('locationSettings.sections.preference.title')}</h2>
   
               {/* Radio Buttons for Preferences */}
               <div className={styles.spaceY}>
@@ -326,7 +327,7 @@ const LocationSettings = ({ state, setState}) => {
                       disabled={settingsLoading}
                     />
                     <span className={styles.radioLabel}>
-                      Use my current location
+                    {t('locationSettings.sections.preference.options.geolocation.label')}
                     </span>
                   </label>
   
@@ -339,9 +340,10 @@ const LocationSettings = ({ state, setState}) => {
                       ) : settings.last_known_latitude &&
                         settings.last_known_longitude ? (
                         <div className={styles.coordinateText}>
-                          Latitude:{" "}
-                          {settings.last_known_latitude.toFixed(6)}, Longitude:{" "}
-                          {settings.last_known_longitude.toFixed(6)}
+                          {t('locationSettings.sections.preference.options.geolocation.coordinates', {
+                            lat: settings.last_known_latitude.toFixed(6),
+                            lng: settings.last_known_longitude.toFixed(6)
+                          })}
                         </div>
                       ) : (
                         <button
@@ -349,7 +351,7 @@ const LocationSettings = ({ state, setState}) => {
                           className={styles.primaryButton}
                           disabled={settingsLoading}
                         >
-                          Get Current Location
+                          {t('locationSettings.sections.preference.options.geolocation.getLocation')}
                         </button>
                       )}
                     </div>
@@ -369,7 +371,7 @@ const LocationSettings = ({ state, setState}) => {
                       disabled={settingsLoading}
                     />
                     <span className={styles.radioLabel}>
-                      Set a specific location
+                    {t('locationSettings.sections.preference.options.manual.label')}
                     </span>
                   </label>
   
@@ -404,18 +406,18 @@ const LocationSettings = ({ state, setState}) => {
                     settingsLoading || !locationPreferences ? styles.disabled : null
                   }`}
                 >
-                  {settingsLoading ? "Saving..." : "Save Location"}
+                   {settingsLoading ? t('locationSettings.buttons.saving') : t('locationSettings.buttons.saveLocation')}
                 </button>
               </div>
             </div>
   
             {/* Search Radius Section */}
             <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>Search Radius</h2>
+              <h2 className={styles.sectionTitle}>{t('locationSettings.sections.radius.title')}</h2>
   
               <div className={styles.spaceY}>
                 <div>
-                  <label className={styles.smallText}>Default search radius</label>
+                  <label className={styles.smallText}> {t('locationSettings.sections.radius.defaultLabel')}</label>
                   <input
                     type="range"
                     min="1000"
@@ -429,9 +431,11 @@ const LocationSettings = ({ state, setState}) => {
                     disabled={settingsLoading}
                   />
                   <div className={styles.rangeMarkers}>
-                    <span>1 km</span>
-                    <span>{(settings.default_radius / 1000).toFixed(0)} km</span>
-                    <span>50 km</span>
+                    <span>{t('locationSettings.sections.radius.rangeMarkers.min')}</span>
+                    <span>{t('locationSettings.sections.radius.rangeMarkers.current', {
+                      value: (settings.default_radius / 1000).toFixed(0)
+                    })}</span>
+                    <span>{t('locationSettings.sections.radius.rangeMarkers.max')}</span>
                   </div>
                 </div>
   
@@ -462,7 +466,7 @@ const LocationSettings = ({ state, setState}) => {
                     settingsLoading ? styles.disabled : null
                   }`}
                 >
-                  {settingsLoading ? "Saving..." : "Save All"}
+                  {settingsLoading ? t('locationSettings.buttons.saving') : t('locationSettings.buttons.saveAll')}
                 </button>
               </div>
             </div>

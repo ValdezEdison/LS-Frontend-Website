@@ -221,7 +221,7 @@ const PreferencesForm = ({
         )}
       </section>
 
-      <section className={styles.suggestionsSection}>
+      {/* <section className={styles.suggestionsSection}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionHeaderLeft}>
             <h2>{t('preferences.suggestions.title')}</h2>
@@ -293,7 +293,7 @@ const PreferencesForm = ({
               </div>
             </div>
 
-            {/* Level Selection */}
+          
             <div className={styles.filterSection}>
               <label>{t('preferences.suggestions.form.level')}</label>
               <div className={styles.dropdown} ref={levelDropdownRef}>
@@ -335,7 +335,7 @@ const PreferencesForm = ({
               </div>
             </div>
 
-            {/* Category Selection */}
+           
             {state.levelId && (
               <div className={styles.filterSection}>
                 <h3 className={styles.title}> {t('preferences.suggestions.form.category')}</h3>
@@ -380,7 +380,7 @@ const PreferencesForm = ({
               </div>
             )}
 
-            {/* Subcategory Selection */}
+           
             {state.categoryId && filteredSubcategories.length > 0 && (
               <div className={styles.filterSection}>
                 <h3 className={styles.title}> {t('preferences.suggestions.form.subcategory')}</h3>
@@ -429,7 +429,7 @@ const PreferencesForm = ({
             </button>
           </form>
         )}
-      </section>
+      </section> */}
 
       {editingField === 'suggestion' && (
         <section className={styles.contactSection}>

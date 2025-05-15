@@ -185,28 +185,36 @@ const LoginPage = () => {
         .then((profileAction) => {
           if (getProfile.fulfilled.match(profileAction)) {
             // Profile fetched successfully
-            
+            requestLocationAccess();
+            const fromLocation = location.state?.from;
+            const fromPath = fromLocation?.pathname || "/";
+            navigate(fromPath, {
+              replace: true,
+              ...(fromLocation?.state && { state: fromLocation.state }),
+              ...(fromLocation?.search && { search: fromLocation.search }),
+              ...(fromLocation?.hash && { hash: fromLocation.hash })
+            });
             // Show browser location permission popup
-            if ("geolocation" in navigator) {
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  // Location access granted
-                  console.log("Location access granted", position);
-                  proceedWithNavigation();
-                },
-                (error) => {
-                  // Location access denied or error
-                  console.warn("Location access denied or error", error);
-                  // Still proceed with navigation even if location is denied
-                  proceedWithNavigation();
-                },
-                { enableHighAccuracy: true }
-              );
-            } else {
-              // Geolocation not supported
-              console.warn("Geolocation not supported by browser");
-              proceedWithNavigation();
-            }
+            // if ("geolocation" in navigator) {
+            //   navigator.geolocation.getCurrentPosition(
+            //     (position) => {
+            //       // Location access granted
+            //       console.log("Location access granted", position);
+            //       proceedWithNavigation();
+            //     },
+            //     (error) => {
+            //       // Location access denied or error
+            //       console.warn("Location access denied or error", error);
+            //       // Still proceed with navigation even if location is denied
+            //       proceedWithNavigation();
+            //     },
+            //     { enableHighAccuracy: true }
+            //   );
+            // } else {
+            //   // Geolocation not supported
+            //   console.warn("Geolocation not supported by browser");
+            //   proceedWithNavigation();
+            // }
           } else {
             throw new Error("Failed to fetch profile");
           }
@@ -289,6 +297,30 @@ const LoginPage = () => {
   
     navigate(fromPath, navigationOptions);
   }
+
+  const requestLocationAccess = () => {
+    if ("geolocation" in navigator) {
+      // Using getCurrentPosition with maximum expiration to force fresh request
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Location access granted", position);
+          // You can store the permission state if needed
+          dispatch(setLocationPermission(true));
+        },
+        (error) => {
+          console.warn("Location access denied or error", error);
+          dispatch(setLocationPermission(false));
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,  // Force fresh position
+          timeout: 5000
+        }
+      );
+    } else {
+      console.warn("Geolocation not supported by browser");
+    }
+  };
 
   return (
     <>

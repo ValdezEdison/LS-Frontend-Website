@@ -190,5 +190,51 @@
             "fileType": "Please select an image file",
             "fileSize": "File size should be less than 5MB"
         }
+    },
+    "locationSettings": {
+    "title": "Location Settings",
+    "sections": {
+      "preference": {
+        "title": "Location Preference",
+        "options": {
+          "geolocation": {
+            "label": "Use my current location",
+            "coordinates": "Latitude: {lat}, Longitude: {lng}",
+            "getLocation": "Get Current Location"
+          },
+          "manual": {
+            "label": "Set a specific location"
+          }
+        }
+      },
+      "radius": {
+        "title": "Search Radius",
+        "defaultLabel": "Default search radius",
+        "rangeMarkers": {
+          "min": "1 km",
+          "current": "{{value}} km",
+          "max": "50 km"
+        }
+      }
+    },
+    "buttons": {
+      "saveLocation": "Save Location",
+      "saveAll": "Save All",
+      "saving": "Saving..."
+    },
+    "errors": {
+      "geolocationUnsupported": "Geolocation is not supported by your browser",
+      "permissionDenied": "User denied the request for Geolocation.",
+      "positionUnavailable": "Location information is unavailable.",
+      "timeout": "The request to get user location timed out.",
+      "unknownError": "An unknown error occurred.",
+      "missingGeolocation": "Geolocation data is missing. Please allow location access or try again.",
+      "selectLocation": "Please select a location.",
+      "selectPreference": "Please select a location preference."
+    },
+    "success": {
+      "locationUpdated": "Location updated successfully",
+      "settingsUpdated": "Location settings updated successfully"
     }
+  }
 }
