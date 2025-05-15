@@ -76,7 +76,7 @@ const HomePage = () => {
 
   
 
-  }, [dispatch, language]);
+  }, [dispatch, language, currentLocation]);
 
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: '/' } });

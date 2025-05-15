@@ -32,6 +32,7 @@ import {
   fetchPlacesByCityId,
   fetchGeoLocations,
   fetchPlacesFilterCategories,
+  fetchNearMePlaces
 } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
@@ -108,6 +109,9 @@ const PlacesPage = () => {
   const {
     bannerBlocks, bannerLoading
   } = useSelector((state) => state.cms.blocks);
+
+
+  const { currentLocation } = useSelector((state) => state.locationSettings);
 
   // Constants
   const RATINGS = [

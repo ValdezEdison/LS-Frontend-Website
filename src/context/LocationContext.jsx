@@ -30,7 +30,7 @@ export const LocationProvider = ({ children }) => {
           await dispatch(fetchLocationSettings()).unwrap();
           
      
-          locationTrackingId = LocationService.startLocationTracking(2);
+          locationTrackingId = LocationService.startLocationTracking(15);
           dispatch(setTrackingId(locationTrackingId));
         } catch (error) {
           console.error('Failed to start location tracking:', error);
