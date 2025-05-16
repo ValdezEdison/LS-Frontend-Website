@@ -9,14 +9,14 @@ import { useTranslation } from "react-i18next";
 const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCarousel }) => {
     
     const { t } = useTranslation("Common");
-
+console.log(items);
     const carouselSettings = {
         dots: false,
-        infinite: true,
+        infinite: items.length > 4,
         speed: 500,
         slidesToShow: 4, // Default for desktop
         slidesToScroll: 1,
-        arrows: true,
+        arrows: items.length > 4,
         responsive: [
             {
                 breakpoint: 1024, // Tablets
@@ -35,9 +35,11 @@ const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCaro
                 <h2 className={styles.sectionTitle}>{title}</h2>
                 <div className={styles.sectionHeader}>
                     <p className={styles.sectionSubtitle}>{subtitle}</p>
+                    {items.length > 4 &&
                     <a onClick={() => seeMoreLink()} className={styles.seeMoreLink}>
                         {t("seeMore")}
                     </a>
+                    }
                 </div>
                 <hr className={styles.divider} />
 

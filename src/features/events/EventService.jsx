@@ -40,6 +40,10 @@ const eventService = {
     deleteEvent: async (eventId) => {
         return apiService.delete(`/events/${eventId}`);
     },
+
+    getNearMeEvents: async (page = 1, lat, lng, type = "event") => {
+        return apiService.get(`/sites/near-me?latitude=${lat}&longitude=${lng}&page=${page}&type=${type}`);
+    },
 };
 
 export default eventService;

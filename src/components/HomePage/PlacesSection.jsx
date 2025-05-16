@@ -14,7 +14,8 @@ const PlacesSection = ({ places = [] }) => {
   const renderPlace = (place) => (
     <div key={place.id} className={styles.placeCard}>
       <img
-        src={place.images ? place.images?.original : PlaceHolderImg2}
+        // src={place.images ? place.images?.original : PlaceHolderImg2}
+         src={place?.images?.[0]?.original || place?.image?.original || place?.images?.original || PlaceHolderImg2}
         alt={place.display_text}
         className={styles.placeImage}  onClick={() => handleNavigate(place)}
       />

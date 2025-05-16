@@ -24,13 +24,13 @@ export const LocationProvider = ({ children }) => {
 
     const startTracking = async () => {
       if (isAuthenticated && user && trackingEnabled) {
-        console.log('startTracking called');
+       
         try {
           // First get location settings
-          await dispatch(fetchLocationSettings()).unwrap();
+          // await dispatch(fetchLocationSettings()).unwrap();
           
      
-          locationTrackingId = LocationService.startLocationTracking(15);
+          locationTrackingId = LocationService.startLocationTracking(2);
           dispatch(setTrackingId(locationTrackingId));
         } catch (error) {
           console.error('Failed to start location tracking:', error);

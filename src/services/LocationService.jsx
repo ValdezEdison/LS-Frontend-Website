@@ -1,6 +1,6 @@
 // src/services/LocationService.js
 import { store } from '../app/store';
-import { updateLocationSettings } from '../features/location/LocationAction.jsx';
+import {  updateLocation } from '../features/location/LocationAction.jsx';
 import { setTrackingId, clearLocation } from '../features/location/LocationSlice.jsx';
 const LocationService = {
   startLocationTracking: (intervalMinutes = 15) => {
@@ -18,10 +18,11 @@ const LocationService = {
           });
         });
 
-        store.dispatch(updateLocationSettings({
+        store.dispatch(updateLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          geolocation_enabled: true
+          geolocation_enabled: true,
+          city_id: null
         }));
       } catch (error) {
         console.error('Location tracking error:', error);

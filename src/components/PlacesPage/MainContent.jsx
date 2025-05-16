@@ -335,7 +335,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
 
 
       <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
-      <RecommendedPlaces />
+      {/* <RecommendedPlaces /> */}
     </main>
   );
 };

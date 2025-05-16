@@ -16,6 +16,7 @@ import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
 import { clearLocation } from "../../features/location/LocationSlice";
+import { updateLocation, fetchLocationSettings } from "../../features/location/LocationAction";
 
 const Header = () => {
 
@@ -27,6 +28,7 @@ const Header = () => {
   const languagesRef = useRef(null);
   const mobNavRef = useRef(null);
   const userMenuRef = useRef(null);
+  const locationUpdatedRef = useRef(false);
 
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
   const { languages } = useSelector((state) => state.languages);
@@ -57,6 +59,7 @@ const Header = () => {
       dispatch(fetchNewsLetterBlocks(languageId));  
     }else{
       dispatch(getProfile());
+      dispatch(fetchLocationSettings());
     }
   }, [dispatch, language]); // Re-fetch data when language changes
 
@@ -183,6 +186,7 @@ const Header = () => {
             toast.success(result.payload?.detail);
             dispatch(clearLocation())
             resetLocationAccess();
+            localStorage.removeItem('locationUpdated');
             if(isProfilePage || isFavoritesPage){
               navigate("/");
             }
@@ -236,9 +240,71 @@ const resetLocationAccess = () => {
   }
 };
 
+
+useEffect(() => {
+  const LOCATION_UPDATE_KEY = 'locationUpdated';
+  
+  const updateUserLocation = async () => {
+    console.log("updateUserLocation called", localStorage.getItem(LOCATION_UPDATE_KEY));
+    // Skip if not authenticated or already updated
+    if (!isAuthenticated || localStorage.getItem(LOCATION_UPDATE_KEY) === 'true') {
+      return;
+    }
+
+    try {
+      // Check geolocation support
+      if (!('geolocation' in navigator)) {
+        console.log("Geolocation not supported");
+        localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+        return;
+      }
+
+      // Check permission state
+      let permissionGranted = true;
+      if (navigator.permissions?.query) {
+        const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+        permissionGranted = permissionStatus.state === 'granted';
+        
+        if (permissionStatus.state === 'denied') {
+          localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+          return;
+        }
+      }
+
+      // Only proceed if permission is granted
+      if (permissionGranted) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const payload = {
+              geolocation_enabled: true,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              city_id: null
+            };
+            await dispatch(updateLocation(payload));
+            localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+            }
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      }
+    } catch (error) {
+      console.error("Location check error:", error);
+    }
+  };
+
+  updateUserLocation();
+
+
+}, [isAuthenticated, dispatch]);
+
   return (
     <>
-   {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && <div className="fullPageOverlay">
+   {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && !location.pathname.includes("/profile") && <div className="fullPageOverlay">
       <div className="loaderBtnWrapper">
           <Loader /> 
           </div>

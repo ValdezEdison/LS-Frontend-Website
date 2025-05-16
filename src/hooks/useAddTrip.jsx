@@ -366,7 +366,7 @@ export const useAddTrip = () => {
   }, [successData.show]);
 
 
-  console.log(formState, "formState");
+ 
 
   return {
     // State

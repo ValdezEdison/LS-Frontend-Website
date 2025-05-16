@@ -49,19 +49,19 @@ const LocationSettings = ({ state, setState}) => {
       
       if (fetchLocationSettings.fulfilled.match(resultAction)) {
         const data = resultAction.payload;
-        
         setSettings({
-          geolocation_enabled: data.geolocation_enabled || false,
-          last_known_latitude: data.last_known_latitude || null,
-          last_known_longitude: data.last_known_longitude || null,
-          default_latitude: data.default_latitude || null,
-          default_longitude: data.default_longitude || null,
-          default_radius: data.default_radius || 5000
+          geolocation_enabled: data.preferences?.geolocation_enabled || false,
+          last_known_latitude: data.preferences?.last_known_latitude || null,
+          last_known_longitude: data.preferences?.last_known_longitude || null,
+          default_latitude: data.preferences?.last_known_latitude || null,
+          default_longitude: data.preferences?.last_known_longitude || null,
+          default_radius: data.preferences?.default_radius || 5000
         });
         
         // Set location preference
-        if (data.geolocation_enabled) {
+        if (data.preferences?.geolocation_enabled) {
           setLocationPreferences('geolocation');
+
         } else if (data.default_latitude && data.default_longitude) {
           setLocationPreferences('manual');
         } else {
@@ -84,15 +84,15 @@ const LocationSettings = ({ state, setState}) => {
       let payload;
       
       if (locationPreferences === 'geolocation') {
-        if (!settings.last_known_latitude || !settings.last_known_longitude) {
+        if (!settings.default_latitude || !settings.default_longitude) {
           setError('Geolocation data is missing. Please allow location access or try again.');
           return;
         }
         
         payload = {
           geolocation_enabled: true,
-          latitude: settings.last_known_latitude,
-          longitude: settings.last_known_longitude,
+          latitude: settings.default_latitude,
+          longitude: settings.default_longitude,
           city_id: null
         };
       } else if (locationPreferences === 'manual') {
@@ -191,8 +191,8 @@ const LocationSettings = ({ state, setState}) => {
       (position) => {
         setSettings(prev => ({
           ...prev,
-          last_known_latitude: position.coords.latitude,
-          last_known_longitude: position.coords.longitude
+          default_latitude: position.coords.latitude,
+          default_longitude: position.coords.longitude
         }));
       },
       (error) => {
@@ -212,6 +212,11 @@ const LocationSettings = ({ state, setState}) => {
             errorMessage = t('locationSettings.errors.unknownError');
             break;
         }
+        setSettings(prev => ({
+          ...prev,
+          default_latitude: null,
+          default_longitude: null
+        }))
         setGeoLocationError(errorMessage);
       }
     );
@@ -282,6 +287,11 @@ const LocationSettings = ({ state, setState}) => {
         [key]: value
         
       }));
+      setSettings((prev) => ({
+        ...prev,
+        "default_latitude": city.latitude,
+        "default_longitude": city.longitude
+      }))
      }
      setShowSuggestionDropDown(false);
     }else{
@@ -291,21 +301,39 @@ const LocationSettings = ({ state, setState}) => {
  
   };
 
+  if (settingsLoading) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
+
   return (
     <>
     
     <div className={styles.container}>
       <div className={styles.headers}>
         <h1 className={styles.title}>{t('locationSettings.title')}</h1>
+
+        <h2 className={styles.sectionTitle}>{t('locationSettings.currentLocation')}</h2>
+
+        {settings.default_latitude && settings.default_longitude &&
+        <p className={styles.selectedLocation}> {t('locationSettings.sections.preference.options.geolocation.coordinates', {
+          lat: settings.default_latitude.toFixed(6),
+          lng: settings.default_longitude.toFixed(6)
+        })}</p>
+      }
   {settingsLoading && <Loader />}
         {error && <div className={styles.errorMessage}>{error}</div>}
         {settingsError && <div className={styles.errorMessage}>{settingsError}</div>}
      
   
         {settingsLoading && !error ? (
-          <div className={styles.loadingMessage}>
-            <div className={styles.loadingSpinner}></div>
-          </div>
+          <></>
+          // <div className={styles.loadingMessage}>
+          //   <div className={styles.loadingSpinner}></div>
+          // </div>
         ) : (
           <div className={styles.spaceY}>
             {/* Location Preference Section */}
@@ -315,21 +343,26 @@ const LocationSettings = ({ state, setState}) => {
               {/* Radio Buttons for Preferences */}
               <div className={styles.spaceY}>
                 <div>
-                  <label className={styles.radioContainer}>
-                    <input
-                      type="radio"
-                      name="locationPreference"
-                      checked={locationPreferences === "geolocation"}
-                      onChange={() =>
-                        handleLocationPreferenceChange("geolocation")
-                      }
-                      className={styles.radioInput}
-                      disabled={settingsLoading}
-                    />
+                  <div className={styles.radioWrapper}>
+                    <label className="radioContainer">
+                      <input
+                        type="radio"
+                        name="locationPreference"
+                        checked={locationPreferences === "geolocation"}
+                        onChange={() =>
+                          handleLocationPreferenceChange("geolocation")
+                        }
+                        className={styles.radioInput}
+                        disabled={settingsLoading}
+                      />
+                      <span className='checkmark'></span>
+                   
+                    </label>
                     <span className={styles.radioLabel}>
-                    {t('locationSettings.sections.preference.options.geolocation.label')}
+                      {t('locationSettings.sections.preference.options.geolocation.label')}
                     </span>
-                  </label>
+                  </div>
+                 
   
                   {locationPreferences === "geolocation" && (
                     <div className={styles.locationDetails}>
@@ -337,29 +370,31 @@ const LocationSettings = ({ state, setState}) => {
                         <div className={styles.errorText}>
                           {geoLocationError}
                         </div>
-                      ) : settings.last_known_latitude &&
-                        settings.last_known_longitude ? (
+                      ) : settings.default_latitude &&
+                        settings.default_longitude ? (
                         <div className={styles.coordinateText}>
                           {t('locationSettings.sections.preference.options.geolocation.coordinates', {
-                            lat: settings.last_known_latitude.toFixed(6),
-                            lng: settings.last_known_longitude.toFixed(6)
+                            lat: settings.default_latitude.toFixed(6),
+                            lng: settings.default_longitude.toFixed(6)
                           })}
                         </div>
                       ) : (
                         <button
-                          onClick={getCurrentLocation}
-                          className={styles.primaryButton}
-                          disabled={settingsLoading}
-                        >
-                          {t('locationSettings.sections.preference.options.geolocation.getLocation')}
-                        </button>
+                        onClick={getCurrentLocation}
+                        className={styles.primaryButton}
+                        disabled={settingsLoading}
+                      >
+                        {t('locationSettings.sections.preference.options.geolocation.getLocation')}
+                      </button>
                       )}
+                            
                     </div>
                   )}
                 </div>
   
                 <div>
-                  <label className={styles.radioContainer}>
+                   <div className={styles.radioWrapper}>
+                  <label className="radioContainer">
                     <input
                       type="radio"
                       name="locationPreference"
@@ -370,10 +405,14 @@ const LocationSettings = ({ state, setState}) => {
                       className={styles.radioInput}
                       disabled={settingsLoading}
                     />
-                    <span className={styles.radioLabel}>
+                     <span className='checkmark'></span>
+                   
+                  </label>
+                  <span className={styles.radioLabel}>
                     {t('locationSettings.sections.preference.options.manual.label')}
                     </span>
-                  </label>
+                  </div>
+                   
   
                   {locationPreferences === "manual" && (
                     <div className={styles.locationDetails}>
@@ -386,9 +425,9 @@ const LocationSettings = ({ state, setState}) => {
                           handleSearchClose={handleSearchClose}
                           searchValue={state.destinationSearchQuery}
                           suggestionsList={cities}
-                          placeholder={tCommon("search.placeholder")}
+                          placeholder={t("locationSettings.placeholder.search")}
                           onSelect={(value) => updateState("selectedDestinationId", value)}
-                          // customClassName="placesSearchInputContainer"
+                          customClassName="placesSearchInputContainer"
                           selectedValue={state.selectedDestinationId}
                         />
                       </div>

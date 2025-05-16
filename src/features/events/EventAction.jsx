@@ -89,3 +89,16 @@ export const deleteEvent = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchNearMeEvents = createAsyncThunk(
+  'events/fetchNearMeEvents',
+  async ({ page, latitude, longitude, type }, { rejectWithValue }) => {
+    try {
+      const response = await eventService.getNearMeEvents(page, latitude, longitude, type);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
