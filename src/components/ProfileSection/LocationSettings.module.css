@@ -250,7 +250,8 @@
 }
 
 .saveButton {
-  width: 146px;
+  /* width: 146px; */
+  padding: 10px 34px;
   height: 40px;
   border-radius: 12px;
   color: #151820;
@@ -260,6 +261,7 @@
   background-color: #f4c031;
   border: none;
   transition: all ease 0.3s;
+  
 }
 
 .saveButton:hover {
