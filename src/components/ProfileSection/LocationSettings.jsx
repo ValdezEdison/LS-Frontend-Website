@@ -338,21 +338,26 @@ const LocationSettings = ({ state, setState}) => {
               {/* Radio Buttons for Preferences */}
               <div className={styles.spaceY}>
                 <div>
-                  <label className={styles.radioContainer}>
-                    <input
-                      type="radio"
-                      name="locationPreference"
-                      checked={locationPreferences === "geolocation"}
-                      onChange={() =>
-                        handleLocationPreferenceChange("geolocation")
-                      }
-                      className={styles.radioInput}
-                      disabled={settingsLoading}
-                    />
+                  <div className={styles.radioWrapper}>
+                    <label className="radioContainer">
+                      <input
+                        type="radio"
+                        name="locationPreference"
+                        checked={locationPreferences === "geolocation"}
+                        onChange={() =>
+                          handleLocationPreferenceChange("geolocation")
+                        }
+                        className={styles.radioInput}
+                        disabled={settingsLoading}
+                      />
+                      <span className='checkmark'></span>
+                   
+                    </label>
                     <span className={styles.radioLabel}>
-                    {t('locationSettings.sections.preference.options.geolocation.label')}
+                      {t('locationSettings.sections.preference.options.geolocation.label')}
                     </span>
-                  </label>
+                  </div>
+                 
   
                   {locationPreferences === "geolocation" && (
                     <div className={styles.locationDetails}>
@@ -383,7 +388,8 @@ const LocationSettings = ({ state, setState}) => {
                 </div>
   
                 <div>
-                  <label className={styles.radioContainer}>
+                   <div className={styles.radioWrapper}>
+                  <label className="radioContainer">
                     <input
                       type="radio"
                       name="locationPreference"
@@ -394,10 +400,14 @@ const LocationSettings = ({ state, setState}) => {
                       className={styles.radioInput}
                       disabled={settingsLoading}
                     />
-                    <span className={styles.radioLabel}>
+                     <span className='checkmark'></span>
+                   
+                  </label>
+                  <span className={styles.radioLabel}>
                     {t('locationSettings.sections.preference.options.manual.label')}
                     </span>
-                  </label>
+                  </div>
+                   
   
                   {locationPreferences === "manual" && (
                     <div className={styles.locationDetails}>

@@ -470,6 +470,8 @@ button,input,select,textarea{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position: relative;
+  top: 2px;
 }
 
 /* Hide the browser's default radio button */

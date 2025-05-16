@@ -25,17 +25,22 @@
 }
 
 .section {
-  margin: 20px 0;
+  margin: 0px 0;
   padding: 5px;
  
   border-radius: 8px;
 }
 
+.radioWrapper{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .sectionTitle {
   font-size: 18px;
   font-weight: 600;
   color: #151820;
-  margin: 0 0 15px 0;
+  margin: 20px 0 5px 0;
 }
 
 .spaceY {
@@ -359,6 +364,10 @@ input:checked + .slider:before {
 
 .searchContainer{
   position: relative;
+}
+
+.selectedLocation{
+  margin: 0;
 }
 
 @media (max-width: 991px) {
