@@ -122,7 +122,7 @@ const Header = () => {
     i18n.changeLanguage(code); // Update i18n
     setLanguage(selectedLang.id, code, flag, name); // Update context and localStorage
     setShowLanguageOption(false); // Close the language selector
-    dispatch(updateUserLanguage(id));
+    // dispatch(updateUserLanguage(id));
   };
 
   const languageData = getLanguageData();
@@ -149,10 +149,13 @@ const Header = () => {
       "en-GB": UK,
     };
 
-
+  const hasSetPreferredLanguage = localStorage.getItem('hasSetPreferredLanguage');
   useEffect(() => {
-    if(user && user.language !== null){
-      setLanguage(user.language.id, user.language.code, flagImages[user.language.code] , user.language.name);
+  
+    if(user && user.language !== null && hasSetPreferredLanguage !== 'true'){
+      const selectedLang = languagesList.find(lang => lang.code === user.language.code);
+      setLanguage(selectedLang.id, user.language.code, flagImages[user.language.code] , user.language.name);
+      localStorage.setItem('hasSetPreferredLanguage', true);
     }
     
   }, [user])
