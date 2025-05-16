@@ -19,7 +19,6 @@ const locationSlice = createSlice({
             state.trackingId = action.payload;
         },
         clearLocation: (state) => {
-            console.log("clearLocation called");
             state.currentLocation = null;
             state.trackingEnabled = false;
             state.trackingId = null;

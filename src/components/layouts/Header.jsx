@@ -16,7 +16,7 @@ import Loader from "../../components/common/Loader";
 import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
 import { clearLocation } from "../../features/location/LocationSlice";
-import { updateLocation } from "../../features/location/LocationAction";
+import { updateLocation, fetchLocationSettings } from "../../features/location/LocationAction";
 
 const Header = () => {
 
@@ -59,6 +59,7 @@ const Header = () => {
       dispatch(fetchNewsLetterBlocks(languageId));  
     }else{
       dispatch(getProfile());
+      dispatch(fetchLocationSettings());
     }
   }, [dispatch, language]); // Re-fetch data when language changes
 

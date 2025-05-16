@@ -51,6 +51,8 @@ const PlaceDetails = () => {
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId, shareableLink } = useSelector((state) => state.places);
 
+  const { currentLocation } = useSelector((state) => state.locationSettings);
+
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { languages, loading: languagesLoading } = useSelector((state) => state.languages);
@@ -164,12 +166,17 @@ const PlaceDetails = () => {
     if (id) {
       dispatch(fetchPlaceById(id));
       dispatch(fetchPlaceComments(id));
-      dispatch(fetchNearbyPlaces(id));
+      if(currentLocation) {
+        dispatch(fetchNearbyPlaces({page: 1, placeId: id, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude}));
+      }else{
+        dispatch(fetchNearbyPlaces(id));
+      }
+     
     }
     return () => {
       dispatch(resetShareableLink());
     }
-  }, [id, dispatch, language]);
+  }, [id, dispatch, language, currentLocation]);
 
   const handleClickViewMoreDetails = () => {
     togglePopup("gallery", true);

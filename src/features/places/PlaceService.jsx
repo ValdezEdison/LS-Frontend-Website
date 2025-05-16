@@ -89,10 +89,17 @@ const PlaceService = {
     return apiService.get(`/sites/${placeId}/comments`);
   },
 
-  getNearbyPlaces: async (placeId, page = 1) => {
-    return apiService.get(`/sites/${placeId}/nearby?page=${page}`);
+  getNearbyPlaces: async (placeId, page = 1, latitude, longitude) => {
+    let url = `/sites/${placeId}/nearby?page=${page}`;
+    
+    // Add location parameters if they exist
+    if (latitude && longitude) {
+      url += `&latitude=${latitude}&longitude=${longitude}`;
+    }
+    
+    return apiService.get(url);
   },
-
+  
   getPlacesFilterCategories: async (page = 1, type = "place", cityId) => {
     const params = {};
     if (cityId !== undefined && cityId !== null && cityId !== "") params.city_id = cityId;

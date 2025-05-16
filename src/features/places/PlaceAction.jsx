@@ -69,9 +69,9 @@ export const fetchPlaceComments = createAsyncThunk(
 
 export const fetchNearbyPlaces = createAsyncThunk(
   'places/fetchNearbyPlaces',
-  async (placeId, { rejectWithValue }) => {
+  async ({ placeId, page, latitude, longitude }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getNearbyPlaces(placeId);
+      const response = await placeService.getNearbyPlaces(placeId, page, latitude, longitude);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

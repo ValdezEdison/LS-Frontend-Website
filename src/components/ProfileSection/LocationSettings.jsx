@@ -212,6 +212,11 @@ const LocationSettings = ({ state, setState}) => {
             errorMessage = t('locationSettings.errors.unknownError');
             break;
         }
+        setSettings(prev => ({
+          ...prev,
+          default_latitude: null,
+          default_longitude: null
+        }))
         setGeoLocationError(errorMessage);
       }
     );
@@ -422,7 +427,7 @@ const LocationSettings = ({ state, setState}) => {
                           suggestionsList={cities}
                           placeholder={t("locationSettings.placeholder.search")}
                           onSelect={(value) => updateState("selectedDestinationId", value)}
-                          // customClassName="placesSearchInputContainer"
+                          customClassName="placesSearchInputContainer"
                           selectedValue={state.selectedDestinationId}
                         />
                       </div>

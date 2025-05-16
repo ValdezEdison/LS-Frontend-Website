@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
 import Header from "../../components/layouts/Header";
 import EventSearch from "../../components/common/SearchBar";
 import LoginBanner from "../../components/common/LoginBanner";
@@ -45,6 +45,7 @@ const EventsPage = () => {
   const { t } = useTranslation('places');
   const { t: tEventsPage } = useTranslation('EventsPage');
   const { t: tCommon } = useTranslation('Common');
+  const isInitialMount = useRef(true);
 
   // Selectors
   const { loading: eventLoading, error, next, count, events } = useSelector((state) => state.events);
@@ -299,6 +300,12 @@ const EventsPage = () => {
 
 
   useEffect(() => {
+
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
     const debounceTimer = setTimeout(() => {
       const params = {
         type: state.type,
