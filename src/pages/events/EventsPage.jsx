@@ -11,7 +11,7 @@ import styles from "./EventsPage.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles1 from "../../components/PlacesPage/MainContent.module.css";
 import PromotionalBanner from "../../components/common/PromotionalBanner";
-import { fetchEvents } from "../../features/events/EventAction";
+import { fetchEvents, fetchNearMeEvents } from "../../features/events/EventAction";
 import { useDispatch, useSelector } from "react-redux";
 import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
@@ -56,6 +56,8 @@ const EventsPage = () => {
   const {
     bannerBlocks, bannerLoading
   } = useSelector((state) => state.cms.blocks);
+
+  const { currentLocation } = useSelector((state) => state.locationSettings);
 
   // Add trip functionality
   const {
@@ -117,7 +119,13 @@ const EventsPage = () => {
 
   // Fetch events and locations
   useEffect(() => {
-    dispatch(fetchEvents({ type: state.type, page: state.page }));
+    if(currentLocation) {
+      dispatch(fetchNearMeEvents({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
+      
+    }else{
+      dispatch(fetchEvents({ type: state.type, page: state.page }));
+    }
+    
     dispatch(fetchGeoLocations({ type: state.type }));
     dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
     if (isAuthenticated) {
@@ -142,7 +150,7 @@ const EventsPage = () => {
       //   endDate: null
       // });
     }
-  }, [dispatch, language]);
+  }, [dispatch, language, currentLocation]);
 
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
@@ -319,6 +327,11 @@ const EventsPage = () => {
     dispatch,
   ]);
 
+  /**
+   * Handle search input changes. Updates the state with the new search term,
+   * which will trigger a debounced search when the user has finished typing.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event
+   */
   const handleSearch = (e) => {
     const value = e.target.value;
     setState((prev) => ({ ...prev, keyword: value }));

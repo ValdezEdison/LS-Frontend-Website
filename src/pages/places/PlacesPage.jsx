@@ -32,7 +32,8 @@ import {
   fetchPlacesByCityId,
   fetchGeoLocations,
   fetchPlacesFilterCategories,
-  fetchNearMePlaces
+  fetchNearMePlaces,
+  fetchRandomPlaces
 } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
@@ -449,8 +450,14 @@ const PlacesPage = () => {
     state.points !== "";
 
   if (!hasFilters) {
-    dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));
+    // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));
     dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
+    if(currentLocation && isAuthenticated){
+      dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
+    }else{
+      // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));\
+      dispatch(fetchRandomPlaces({ page: 1 }));
+    }
   }
     dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
     dispatch(fetchBannerBlocks(languageId));
@@ -463,7 +470,7 @@ const PlacesPage = () => {
       dispatch(closeAddToTripPopup());
       dispatch(closePopup());
     };
-  }, [dispatch, language]);
+  }, [dispatch, language, currentLocation]);
 
   useEffect(() => {
     // Clean up state

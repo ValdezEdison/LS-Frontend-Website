@@ -193,6 +193,7 @@
     },
     "locationSettings": {
     "title": "Location Settings",
+    "currentLocation": "Current Location",
     "sections": {
       "preference": {
         "title": "Location Preference",
@@ -235,6 +236,9 @@
     "success": {
       "locationUpdated": "Location updated successfully",
       "settingsUpdated": "Location settings updated successfully"
+    },
+    "placeholder": {
+      "search": "search city..."
     }
   }
 }

@@ -133,6 +133,9 @@ const PlaceService = {
   getNearMePlaces: async (page = 1, latitude, longitude) => {
     return apiService.get(`/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}`);
   },
+  getRandomPlaces: async (page = 1) => {
+    return apiService.get(`/sites/random?page=${page}`);
+  },
 };
 
 export default PlaceService;

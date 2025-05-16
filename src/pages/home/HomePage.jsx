@@ -12,7 +12,7 @@ import AppPromotion from "../../components/HomePage/AppPromotion";
 import SearchComponent from "../../components/HomePage/SearchComponent"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlaces } from "../../features/places/PlaceAction";
-import { fetchEvents } from "../../features/events/EventAction";
+import { fetchEvents, fetchNearMeEvents } from "../../features/events/EventAction";
 import { useContext, useEffect } from "react";
 import History from "../../components/HomePage/History";
 import { useTranslation } from "react-i18next";
@@ -63,11 +63,18 @@ const HomePage = () => {
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
   const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
 
-
+  const placesList = currentLocation ? places : randomPlaces;
   // Fetch places on component mount
   useEffect(() => {
-    dispatch(fetchRandomSites());
-    dispatch(fetchEvents({ page: 1, type: "event" }));
+    if(currentLocation){
+      dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
+      dispatch(fetchNearMeEvents({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "event" }));
+
+    }else{
+      dispatch(fetchRandomSites());
+      dispatch(fetchEvents({ page: 1, type: "event" }));
+    }
+    
     dispatch(fetchHeroContent(languageId));
     dispatch(fetchOurPartners(languageId));
     dispatch(fetchPosts({ per_page: 10 }));
@@ -142,7 +149,7 @@ const HomePage = () => {
       {heroContentLoading ? <HeroSectionSkeleton /> : <HeroSection handleNavigateToLogin={handleNavigateToLogin} heroContent={heroContent} />}
 
       <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} cities={cities} />
-      {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={randomPlaces} />}
+      {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={placesList} />}
       {eventsLoading ? <CommonWidgetSkeleton /> : <EventsSection events={events} />}
       <History
         title="¡Conóce nuestra historia!"

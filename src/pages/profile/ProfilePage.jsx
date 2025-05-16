@@ -138,10 +138,12 @@ const ProfilePage = () => {
         dispatch(fetchPlacesFilterCategories({
           page: state.page, type: preferences.type}));
         dispatch(fetchLanguages());
-      } 
+      } else if(isLocationTab){
+        dispatch(fetchCities({}));
+      }
     }
    
-  }, [dispatch, language]);
+  }, [dispatch, language, isAuthenticated, isLocationTab, isPreferencesTab]);
 
   const handleTabChange = (newTab) => {
     navigate(`/profile/${newTab}`);

@@ -181,6 +181,7 @@
     },
     "locationSettings": {
     "title": "Configuración de ubicación",
+    "currentLocation": "Ubicación actual",
     "sections": {
       "preference": {
         "title": "Preferencia de ubicación",
@@ -223,6 +224,9 @@
     "success": {
       "locationUpdated": "Ubicación actualizada correctamente",
       "settingsUpdated": "Configuración de ubicación actualizada correctamente"
+    },
+    "placeholder": {
+      "search": "buscar ciudad..."
     }
   }
 }

@@ -79,7 +79,7 @@ const PlaceCard = forwardRef(
                         </div>
                     )}
                     <img
-                        src={place?.images?.[0]?.original || place?.image?.original || PlaceHolderImg2}
+                        src={place?.images?.[0]?.original || place?.image?.original || place?.images?.original || PlaceHolderImg2}
                         alt={place?.display_text || place?.title || translate("placeCard.place_image")}
                         className={styles.placeImage}
                     />

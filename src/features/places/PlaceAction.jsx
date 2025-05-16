@@ -203,3 +203,15 @@ export const fetchNearMePlaces = createAsyncThunk(
     }
   }
 );
+
+export const fetchRandomPlaces = createAsyncThunk(
+  'places/fetchRandomPlaces',
+  async ({ page }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getRandomPlaces(page);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
