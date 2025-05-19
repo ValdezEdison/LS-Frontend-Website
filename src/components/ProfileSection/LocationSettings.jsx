@@ -319,12 +319,28 @@ const LocationSettings = ({ state, setState}) => {
         <h2 className={styles.sectionTitle}>{t('locationSettings.currentLocation')}</h2>
 
         {settings.default_latitude && settings.default_longitude &&
+        
         <p className={styles.selectedLocation}> {t('locationSettings.sections.preference.options.geolocation.coordinates', {
           lat: settings.default_latitude.toFixed(6),
           lng: settings.default_longitude.toFixed(6)
         })}</p>
+        
       }
-  {settingsLoading && <Loader />}
+    <div className={styles.locationSwitchMainWrapper}>
+      <div className={styles.locationEnableWrapper}>
+        <p>Enable Location</p>
+        <div className={styles.locationSwitch}>
+          <label className={styles.switch}>
+            <input type="checkbox" />
+            <span className={styles.slider}></span>
+          </label>
+          <span className={`${styles.toggleAction} ${styles.checkedd}`}>
+           Active
+          </span>
+      </div>
+      </div>
+      <div className={`${styles.locationBottomWrapper} ${styles.active}`}>
+{settingsLoading && <Loader />}
         {error && <div className={styles.errorMessage}>{error}</div>}
         {settingsError && <div className={styles.errorMessage}>{settingsError}</div>}
      
@@ -496,7 +512,7 @@ const LocationSettings = ({ state, setState}) => {
                 </div>
               </div>
   
-              <div className={styles.divider} />
+              {/* <div className={styles.divider} /> */}
               <div className={styles.btnWrapper}>
                 <button
                   onClick={saveSettings}
@@ -511,6 +527,10 @@ const LocationSettings = ({ state, setState}) => {
             </div>
           </div>
         )}
+      </div>
+      
+      </div>
+      
       </div>
     </div>
     </>

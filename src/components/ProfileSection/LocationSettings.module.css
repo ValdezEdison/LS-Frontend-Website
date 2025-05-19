@@ -37,10 +37,10 @@
   align-items: center;
 }
 .sectionTitle {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   color: #151820;
-  margin: 20px 0 5px 0;
+  margin: 10px 0 5px 0;
 }
 
 .spaceY {
@@ -246,7 +246,7 @@
 .btnWrapper {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .saveButton {
@@ -370,6 +370,48 @@ input:checked + .slider:before {
 
 .selectedLocation{
   margin: 0;
+}
+
+.locationSwitchMainWrapper{
+  margin: 20px 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom:1px solid #e0e0e0 ;
+  padding: 20px 0;
+}
+
+.locationSwitch{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.locationSwitch .toggleAction{
+  font-size: 16px;
+}
+
+.locationEnableWrapper p{
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.locationEnableWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.locationBottomWrapper{
+  padding: 0px;
+}
+
+.locationBottomWrapper{
+  display: none;
+}
+
+.locationBottomWrapper.active{
+  display: block;
 }
 
 @media (max-width: 991px) {
