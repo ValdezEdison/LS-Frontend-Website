@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const Newsletter = () => {
 
-  const { t } = useTranslation("Newsletter");
+  // const { t } = useTranslation("Newsletter");
 
   const { newsLetterBlocks, newsLetterLoading, newsLetterError } = useSelector((state) => state.cms.blocks);
 
