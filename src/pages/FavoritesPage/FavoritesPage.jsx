@@ -28,6 +28,9 @@ import useSeeMore from "../../hooks/useSeeMore";
 import Loader from "../../components/common/Loader";
 import { listUpdater, removeFavorite } from "../../features/favorites/FavoritesSlice";
 import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
+import Widget from "../../components/common/Widget";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import { fetchSuggestedPlaces } from "../../features/suggestions/SuggestionAction";
 
 
 
@@ -74,6 +77,9 @@ const FavoritesPage = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { isOpen } = useSelector((state) => state.popup)
   const { cities } = useSelector((state) => state.cities)
+  const { currentLocation } = useSelector((state) => state.locationSettings);
+  
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
   const { t: tCommon } = useTranslation('Common');
   const { t: tFavoritesPage } = useTranslation('FavoritesPage');
@@ -143,12 +149,17 @@ const FavoritesPage = () => {
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
-
+     if(currentLocation) {
+        dispatch(fetchSuggestedPlaces({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: 'place' }));
+        
+      }else{
+        dispatch(fetchSuggestedPlaces({ page: state.page, type: 'place' }));
+      }
     return () => {
       dispatch(closePopup());
       closeAddToTrip()
     }
-  }, [dispatch, language]);
+  }, [dispatch, language, currentLocation]);
 
   const handleActions = (e, action, id, name) => {
     e.stopPropagation();
@@ -218,24 +229,26 @@ const FavoritesPage = () => {
 
   const debouncedSearchFavorites = useMemo(
     () => debounce((query) => {
-      if (query.trim() !== "") {
-        dispatch(fetchFavorites(query)); // Pass query directly, not as object
+      const trimmedQuery = query?.trim();
+      if (trimmedQuery) {
+        dispatch(fetchFavorites({page: state.page, keyword: trimmedQuery }));
       } else {
-        // Clear results when query is empty
-        dispatch(fetchFavorites()); // Fetch all favorites when empty
+        dispatch(fetchFavorites()); // Fetch all when empty
       }
     }, 500),
     [dispatch]
   );
-
+  
   useEffect(() => {
+    // Trigger search when keyword changes (skip initial render if needed)
     debouncedSearchFavorites(state.keyword);
-
+    
     // Cleanup function to cancel debounce on unmount
     return () => {
       debouncedSearchFavorites.cancel();
     };
   }, [state.keyword, debouncedSearchFavorites]);
+  
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -360,6 +373,19 @@ const FavoritesPage = () => {
     dispatch(fetchFavorites({ page: 1 }));
   };
 
+  const handleNavActions = (e, id, action) => {
+    
+    if (isAuthenticated && action === "viewDetail") {
+      navigate('/places/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
 
   return (
     <>
@@ -427,7 +453,7 @@ const FavoritesPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.pageTitle}>{tFavoritesPage('pageTitle')}</h1>
-          <SearchBar togglePopup={togglePopup} handleSearch={handleSearch} state={state} />
+          <SearchBar togglePopup={togglePopup} handleSearch={handleSearch} state={state} setState={setState}/>
           <div className={styles.favoritesList}>
             {/* {favoriteItems.map((item) => (
             <FavoriteItem key={item.id} {...item} />
@@ -467,7 +493,7 @@ const FavoritesPage = () => {
               <button className={styles.loginButton} onClick={handleNavigateToLogin}>{tCommon('logInButton')}</button>
             </div>
           }
-          <section className={styles.recommendedSection}>
+          {/* <section className={styles.recommendedSection}>
             <h2 className={styles.recommendedTitle}>
               {tFavoritesPage('recommendedTitle')}
             </h2>
@@ -475,8 +501,14 @@ const FavoritesPage = () => {
               {recommendedItems.map((item) => (
                 <RecommendedItem key={item.id} {...item} />
               ))}
+          
             </div>
-          </section>
+          </section> */}
+          {suggestedPlacesLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+            )}
         </main>
         <Footer />
       </div>

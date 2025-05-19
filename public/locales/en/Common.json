@@ -54,5 +54,6 @@
     "noResult": "No results found",
     "noStops": "No stops added yet",
     "stopsCount": "{{count}} stops",
-    "and": "and"
+    "and": "and",
+    "peopleAlsoSeen": "Other people have also seen"
 }

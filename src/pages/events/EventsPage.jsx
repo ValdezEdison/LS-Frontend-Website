@@ -36,6 +36,9 @@ import { fetchCities } from "../../features/common/cities/CityAction";
 import { debounce, sortBy } from "lodash";
 import { fetchBannerBlocks } from "../../features/cms/Blocks/BlocksAction";
 import { listUpdater } from "../../features/events/EventSlice";
+import { fetchSuggestedPlaces } from "../../features/suggestions/SuggestionAction";
+import Widget from "../../components/common/Widget";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -59,6 +62,8 @@ const EventsPage = () => {
   } = useSelector((state) => state.cms.blocks);
 
   const { currentLocation } = useSelector((state) => state.locationSettings);
+
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
   // Add trip functionality
   const {
@@ -122,9 +127,11 @@ const EventsPage = () => {
   useEffect(() => {
     if(currentLocation) {
       dispatch(fetchNearMeEvents({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
+      dispatch(fetchSuggestedPlaces({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
       
     }else{
       dispatch(fetchEvents({ type: state.type, page: state.page }));
+      dispatch(fetchSuggestedPlaces({ page: state.page, type: state.type }));
     }
     
     dispatch(fetchGeoLocations({ type: state.type }));
@@ -344,6 +351,21 @@ const EventsPage = () => {
     setState((prev) => ({ ...prev, keyword: value }));
     // Don't call debouncedSearchEvents here - it will be triggered by the useEffect
   };
+
+
+  const handleNavActions = (e, id, action) => {
+    
+    if (isAuthenticated && action === "viewDetail") {
+      navigate('/events/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
   return (
     <>
       {/* Popups and Modals */}
@@ -442,7 +464,12 @@ const EventsPage = () => {
             }
           </div>
           <hr className={styles.divider} />
-          <PopularEvents />
+          {/* <PopularEvents /> */}
+          {suggestedPlacesLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+            )}
           <PromotionalBanner bannerBlocks={bannerBlocks} bannerLoading={bannerLoading} />
         </main>
         {!isAuthenticated && <Newsletter />}
