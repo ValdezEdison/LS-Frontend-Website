@@ -5,6 +5,7 @@ import { LSLogo2, FacebookWhite, InstagramWhite, LinkedinWhite } from "../common
 import { useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import config from "../../config";
 
 const Footer = () => {
   const { t } = useTranslation("Footer");
@@ -91,7 +92,7 @@ const Footer = () => {
           <div className={styles.footerLogo}>
             {footerData.logo_url && (
               <img
-                src={footerData.logo_url}
+                src={config.api.cmsBaseUrl + footerData.logo_url}
                 alt={footerData.logo_alt_text || "Local Secrets Logo"}
                 className={styles.logo}
               />

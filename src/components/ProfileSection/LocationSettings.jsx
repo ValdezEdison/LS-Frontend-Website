@@ -27,6 +27,7 @@ const LocationSettings = ({ state, setState}) => {
   const [citySearchTerm, setCitySearchTerm] = useState('');
   const suggestionRef = useRef(null);
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
+  const [isLocationEnabled, setIsLocationEnabled] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -316,15 +317,36 @@ const LocationSettings = ({ state, setState}) => {
       <div className={styles.headers}>
         <h1 className={styles.title}>{t('locationSettings.title')}</h1>
 
-        <h2 className={styles.sectionTitle}>{t('locationSettings.currentLocation')}</h2>
-
-        {settings.default_latitude && settings.default_longitude &&
-        <p className={styles.selectedLocation}> {t('locationSettings.sections.preference.options.geolocation.coordinates', {
-          lat: settings.default_latitude.toFixed(6),
-          lng: settings.default_longitude.toFixed(6)
-        })}</p>
-      }
-  {settingsLoading && <Loader />}
+        {isLocationEnabled && (
+         <>
+            <h2 className={styles.sectionTitle}>{t('locationSettings.currentLocation')}</h2>
+            {settings.default_latitude && settings.default_longitude && (
+              <p className={styles.selectedLocation}>
+                {t('locationSettings.sections.preference.options.geolocation.coordinates', {
+                  lat: settings.default_latitude.toFixed(6),
+                  lng: settings.default_longitude.toFixed(6)
+                })}
+              </p>
+            )}
+          </>
+        )}  
+    <div className={styles.locationSwitchMainWrapper}>
+      <div className={styles.locationEnableWrapper}>
+        <p>Enable Location</p>
+        <div className={styles.locationSwitch}>
+          <label className={styles.switch}>
+            <input type="checkbox"   checked={isLocationEnabled}
+            onChange={() => setIsLocationEnabled(!isLocationEnabled)}/>
+            <span className={styles.slider}></span>
+          </label>
+          <span className={`${styles.toggleAction} ${isLocationEnabled ? styles.checkedd : ''}`}>
+      {isLocationEnabled ? 'Active' : 'Inactive'}
+    </span>
+      </div>
+      </div>
+      {isLocationEnabled && (
+      <div className={`${styles.locationBottomWrapper} ${styles.active}`}>
+{settingsLoading && <Loader />}
         {error && <div className={styles.errorMessage}>{error}</div>}
         {settingsError && <div className={styles.errorMessage}>{settingsError}</div>}
      
@@ -496,7 +518,7 @@ const LocationSettings = ({ state, setState}) => {
                 </div>
               </div>
   
-              <div className={styles.divider} />
+              {/* <div className={styles.divider} /> */}
               <div className={styles.btnWrapper}>
                 <button
                   onClick={saveSettings}
@@ -511,6 +533,11 @@ const LocationSettings = ({ state, setState}) => {
             </div>
           </div>
         )}
+      </div>
+      
+    )}
+      </div>
+      
       </div>
     </div>
     </>

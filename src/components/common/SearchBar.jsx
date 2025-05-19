@@ -24,12 +24,13 @@ const EventSearch = ({togglePopup, handleSearch, state, setState}) => {
                 alt=""
                 className={styles.searchIcon}
               />
-            <input
+           <CustomInput
               type="text"
-              id="searchInput"
+              placeholder={t("events.searchPlaceholder")}
               className={styles.searchInput}
-              placeholder={t('search.placeholder')}
-              aria-label={t('search.label')}
+              aria-label={t("events.searchPlaceholder")}
+              value={state.keyword}
+              onChange={(e) => handleSearch(e)}
             />
             {/* <button type="submit" className={styles.searchButton} aria-label={t('search.buttonAriaLabel')}>
             </button> */}
