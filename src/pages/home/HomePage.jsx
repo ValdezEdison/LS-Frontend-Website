@@ -62,16 +62,17 @@ const HomePage = () => {
   const { posts, loading: postsLoading, error: postsError, tags } = useSelector((state) => state.cms.wordpress);
   const { continents, loading: continentsLoading } = useSelector((state) => state.continents);
   const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const placesList = currentLocation ? places : randomPlaces;
+  const placesList = currentLocation && isAuthenticated ? places : randomPlaces;
   // Fetch places on component mount
   useEffect(() => {
-    if(currentLocation){
+    if(currentLocation && isAuthenticated){
       dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
       dispatch(fetchNearMeEvents({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "event" }));
 
     }else{
-      dispatch(fetchRandomSites());
+      dispatch(fetchRandomSites({page: 1, type: "place"}));
       dispatch(fetchEvents({ page: 1, type: "event" }));
     }
     
