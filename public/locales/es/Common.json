@@ -51,5 +51,8 @@
   "seeMore": "Ver más",
   "seeLess": "Ver menos",
   "travelInspiration": "Inspiración para tus próximos viajes",
-  "noResult": "No se encontraron resultados"
+  "noResult": "No se encontraron resultados",
+  "noStops": "No hay paradas añadidas",
+  "stopsCount": "{{count}} paradas",
+  "and": "y"
 }

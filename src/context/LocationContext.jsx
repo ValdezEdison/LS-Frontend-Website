@@ -12,7 +12,7 @@ export const LocationProvider = ({ children }) => {
   const { isAuthenticated, user } = useSelector(state => state.auth);
   const { trackingId, currentLocation } = useSelector(state => state.locationSettings);
   const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
-  console.log('trackingEnabled', trackingEnabled);
+  
   const trackingIdRef = useRef(trackingId);
 
   useEffect(() => {

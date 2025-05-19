@@ -13,14 +13,17 @@ import { useSelector } from "react-redux";
 import CardSkeleton from "../skeleton/common/CardSkeleton";
 import { useTranslation } from "react-i18next";
 import { Download } from "../common/Images";
+import { useTripSummary } from "../../hooks/useTripSummary";
 
 const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleClickDownloadTrip = () => {} }) => {
 
 
   const [items, setItems] = useState(tripDetails?.stops || []);
-  const { loading: tripDetailsLoading } = useSelector((state) => state.myTrips);
+  const { loading: tripDetailsLoading, travelTime } = useSelector((state) => state.myTrips);
 
   const { t } = useTranslation('MyTrips');
+
+  const tripSummary = useTripSummary(items, travelTime);
 
 
 
@@ -103,8 +106,7 @@ const StopList = ({ tripDetails, handleViewMoreDetails, setFormState, handleClic
       </div>
       }
       <h2 className={styles.tripSummary}>
-        {items.length > 0 ? t('tripDetails.stopsCount', { count: items.length }) 
-          : t('tripDetails.noStops')}
+      {tripSummary}
       </h2>
 
       {isTripEditPage ? (

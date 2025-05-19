@@ -29,6 +29,7 @@ import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/
 import { useTranslation } from "react-i18next";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
+import { useTripSummary } from "../../../hooks/useTripSummary";
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const ItineraryDetail = () => {
 
   const { language } = useContext(LanguageContext);
 
-  const { loading, itineraryDetails, generatedLink, downloadedTrip, stops, stopsLoading } = useSelector((formState) => formState.itineriesInCity);
+  const { loading, itineraryDetails, generatedLink, downloadedTrip, stops, stopsLoading, travelTime } = useSelector((formState) => formState.itineriesInCity);
   const { isAuthenticated } = useSelector((formState) => formState.auth);
 
   const { isOpen } = useSelector((formState) => formState.popup);
@@ -48,6 +49,8 @@ const ItineraryDetail = () => {
   const { t } = useTranslation("Places");
   const { t: tCommon } = useTranslation("Common");
   const { t: tAddTrip } = useTranslation("AddTrip");
+
+   const tripSummary = useTripSummary(itineraryDetails?.stops || [], travelTime);
 
   const [popupState, setPopupState] = useState({
 
@@ -579,7 +582,8 @@ const ItineraryDetail = () => {
                 </div>
               ))}
             </div>
-            <p className={styles.itineraryMeta}>{t('Itinerary.stopCount', { count: itineraryDetails?.num_of_stops })}</p>
+            {/* <p className={styles.itineraryMeta}>{t('Itinerary.stopCount', { count: itineraryDetails?.num_of_stops })}</p> */}
+            <p className={styles.itineraryMeta}>{tripSummary}</p>
           </section>
           <section className={styles.itineraryPlaces}>
             {itineraryDetails?.stops && itineraryDetails.stops.length > 0 ? (

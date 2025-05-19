@@ -123,7 +123,7 @@ const LocationSettings = ({ state, setState}) => {
       updateState('destinationSearchQuery', '');
       updateState('selectedDestinationId', null);
       if (updateLocation.fulfilled.match(resultAction)) {
-        console.log('Location updated successfully', resultAction);
+       
         if(resultAction.type === 'locations/updateLocation/fulfilled') {
 
           toast.success('Location updated successfully');

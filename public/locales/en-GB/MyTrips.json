@@ -88,5 +88,12 @@
         "tripDeleted": "A trip has been deleted.",
         "undo": "Undo",
         "close": "Close"
-      }
+      },
+      "success": {
+            "tripDeleted": "The trip has been deleted successfully.",
+            "tripUpdated": {
+            "title": "Trip updated",
+            "message": "The trip has been updated successfully."
+            }
+        }
 }

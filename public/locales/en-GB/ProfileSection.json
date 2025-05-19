@@ -120,8 +120,8 @@
                 "buttonText": "Unavailable"
             },
             "delete": {
-                "title": "Delete Account",
-                "description": "Permanently delete your account",
+                "title": "Are you sure you want to delete your account?",
+                "description": "If you delete your account, it will not be possible to return to your profile and all saved information will be lost.",
                 "buttonText": "Delete Account",
                 "fields": {
                     "accountDeletionConfirmed": {
