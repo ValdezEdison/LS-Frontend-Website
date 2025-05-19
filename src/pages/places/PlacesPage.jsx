@@ -75,6 +75,7 @@ const PlacesPage = () => {
   const navigate = useNavigate();
   const { language, languageId } = useContext(LanguageContext);
   const initialRender = useRef(true);
+  const prevDepsRef = useRef([]);
 
   // Selectors
   const {
@@ -456,7 +457,7 @@ const PlacesPage = () => {
       dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
     }else{
       // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));\
-      dispatch(fetchRandomPlaces({ page: 1 }));
+      dispatch(fetchRandomPlaces({ page: 1, type: "place" }));
     }
   }
     dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
@@ -512,38 +513,74 @@ const PlacesPage = () => {
     // Fetch places when filters change
     if (initialRender.current) {
       initialRender.current = false;
+
+      prevDepsRef.current = [
+        state.selectedCountryName,
+        state.selectedDestinationId,
+        state.selectedDestinations,
+        state.selectedOrder,
+        state.selectedCountryId,
+        state.ratings,
+        state.categories,
+        state.levels,
+        state.points,
+        state.page,
+        state.subcategories,
+      ];
+
       return;
     }
 
-    dispatch(fetchPlacesByCityId({
-      cityId: state.selectedDestinationId !== null
-        ? state.selectedDestinationId
-        : state.selectedDestinations,
-      country: state.selectedCountryName,
-      page: state.page,
-      preview: 1,
-      avg_rating: state.ratings,
-      categories: state.categories,
-      levels: state.levels,
-      subcategories: state.subcategories,
-      points: state.points,
-      sort_by: state.selectedOrder
-    }));
+    const currentDeps = [
+      state.selectedCountryName,
+      state.selectedDestinationId,
+      state.selectedDestinations,
+      state.selectedOrder,
+      state.selectedCountryId,
+      state.ratings,
+      state.categories,
+      state.levels,
+      state.points,
+      state.page,
+      state.subcategories,
+    ];
 
-    dispatch(fetchGeoLocations({
-      cityId: state.selectedDestinationId !== null
-        ? state.selectedDestinationId
-        : state.selectedDestinations,
-      type: "place",
-      country: state.selectedCountryName,
-      // page: state.page,
-      // preview: 1,
-      avg_rating: state.ratings,
-      categories: state.categories,
-      levels: state.levels,
-      subcategories: state.subcategories,
-      points: state.points
-    }));
+    const hasChanged = currentDeps.some((dep, i) => dep !== prevDepsRef.current[i]);
+
+    if (hasChanged) {
+
+      dispatch(fetchPlacesByCityId({
+        cityId: state.selectedDestinationId !== null
+          ? state.selectedDestinationId
+          : state.selectedDestinations,
+        country: state.selectedCountryName,
+        page: state.page,
+        preview: 1,
+        avg_rating: state.ratings,
+        categories: state.categories,
+        levels: state.levels,
+        subcategories: state.subcategories,
+        points: state.points,
+        sort_by: state.selectedOrder
+      }));
+
+      dispatch(fetchGeoLocations({
+        cityId: state.selectedDestinationId !== null
+          ? state.selectedDestinationId
+          : state.selectedDestinations,
+        type: "place",
+        country: state.selectedCountryName,
+        // page: state.page,
+        // preview: 1,
+        avg_rating: state.ratings,
+        categories: state.categories,
+        levels: state.levels,
+        subcategories: state.subcategories,
+        points: state.points
+      }));
+
+      prevDepsRef.current = currentDeps;
+    }
   }, [
     state.selectedCountryName,
     state.selectedDestinationId,

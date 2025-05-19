@@ -51,5 +51,8 @@
     "seeMore": "See More", 
     "seeLess": "See Less",
     "travelInspiration": "Inspiration for your next trips",
-    "noResult": "No results found"
+    "noResult": "No results found",
+    "noStops": "No stops added yet",
+    "stopsCount": "{{count}} stops",
+    "and": "and"
 }

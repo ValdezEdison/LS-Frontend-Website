@@ -137,11 +137,11 @@ const PlaceService = {
     return apiService.get(`/sites/${placeId}/generate_link`);
   },
 
-  getNearMePlaces: async (page = 1, latitude, longitude) => {
-    return apiService.get(`/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}`);
+  getNearMePlaces: async (page = 1, latitude, longitude, type) => {
+    return apiService.get(`/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}&type=${type}`);
   },
-  getRandomPlaces: async (page = 1) => {
-    return apiService.get(`/sites/random?page=${page}`);
+  getRandomPlaces: async (page = 1, type) => {
+    return apiService.get(`/sites/random?page=${page}&type=${type}`);
   },
 };
 

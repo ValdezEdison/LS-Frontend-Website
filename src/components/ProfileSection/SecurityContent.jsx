@@ -9,7 +9,7 @@ const SecurityContent = ({
   onEdit, 
   onSave, 
   onCancel, 
-  onChange 
+  onChange, 
 }) => {
   const { t } = useTranslation('ProfileSection');
 
@@ -78,12 +78,7 @@ const SecurityContent = ({
       action: "edit",
       buttonText: t('security.sections.delete.buttonText'),
       fields: [
-        {
-          label: t('security.sections.delete.fields.accountDeletionConfirmed.label'),
-          name: "accountDeletionConfirmed",
-          type: "checkbox",
-          checked: securityData.accountDeletionConfirmed
-        }
+       
       ]
     }
   ];

@@ -109,8 +109,8 @@
                 "buttonText": "No disponible"
             },
             "delete": {
-                "title": "Eliminar cuenta",
-                "description": "Eliminar permanentemente tu cuenta",
+                "title": "¿Estás seguro de eliminar tu cuenta?",
+                "description": "Si eliminas tu cuenta no será posible volver a tu perfil y toda la información guardada se perderá.",
                 "buttonText": "Eliminar cuenta",
                 "fields": {
                     "accountDeletionConfirmed": {

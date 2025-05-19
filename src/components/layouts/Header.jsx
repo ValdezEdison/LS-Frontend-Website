@@ -40,6 +40,7 @@ const Header = () => {
   const isProfilePage = location.pathname.startsWith("/profile");
   const isFavoritesPage = location.pathname.startsWith("/favorites");
   const isHomepage = location.pathname === "/";
+  const isTripEditPage = location.pathname === '/my-trips/edit';
 
   const handleNavigation = (path) => {
     if (path === "/login") {
@@ -184,13 +185,13 @@ const Header = () => {
 
   const handleLogout = () => {
         dispatch(logout()).then((result) => {
-          console.log(result, "result");
+         
           if (result.type === "auth/logout/fulfilled") {
             toast.success(result.payload?.detail);
             dispatch(clearLocation())
             resetLocationAccess();
             localStorage.removeItem('locationUpdated');
-            if(isProfilePage || isFavoritesPage){
+            if(isProfilePage || isFavoritesPage || isTripEditPage){
               navigate("/");
             }
           }
@@ -248,7 +249,7 @@ useEffect(() => {
   const LOCATION_UPDATE_KEY = 'locationUpdated';
   
   const updateUserLocation = async () => {
-    console.log("updateUserLocation called", localStorage.getItem(LOCATION_UPDATE_KEY));
+    
     // Skip if not authenticated or already updated
     if (!isAuthenticated || localStorage.getItem(LOCATION_UPDATE_KEY) === 'true') {
       return;

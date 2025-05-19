@@ -99,7 +99,7 @@ const HomePage = () => {
 
 
   useEffect(() => {
-    console.log(state.continent, "state.continent");
+    
     if (state.continent) {
       navigate("/explore", { state: { id: state.continent } });
     }

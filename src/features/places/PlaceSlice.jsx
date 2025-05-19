@@ -306,6 +306,7 @@ const placeSlice = createSlice({
             })
             .addCase(fetchNearMePlaces.fulfilled, (state, action) => {
                 state.loading = false;
+                state.count = action.payload?.count;
                 state.next = action.payload?.next;
                 state.places = action.payload?.results || [];
             })
@@ -320,6 +321,7 @@ const placeSlice = createSlice({
             })
             .addCase(fetchRandomPlaces.fulfilled, (state, action) => {
                 state.loading = false;
+                state.count = action.payload?.count;
                 state.next = action.payload?.next;
                 state.places = action.payload?.results || [];
             })

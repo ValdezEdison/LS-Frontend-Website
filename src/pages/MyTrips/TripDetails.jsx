@@ -50,7 +50,7 @@ const TripDetails = () => {
     
   }, [language, id, dispatch]);
 
-  const handleViewMoreDetails = (id) => {
+  const handleViewMoreDetails = (e,id) => {
     ;
     navigate('/places/details', { state: { id } });
   };

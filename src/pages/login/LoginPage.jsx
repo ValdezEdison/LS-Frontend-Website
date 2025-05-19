@@ -176,54 +176,33 @@ const LoginPage = () => {
     };
   
     dispatch(login(payload))
-  .then((action) => {
-    if (login.fulfilled.match(action)) {
-      toast.success(t('messages.success'));
+    .then((action) => {
+      if (login.fulfilled.match(action)) {
+        toast.success(t('messages.success'));
+
+        const fromLocation = location.state?.from;
+        const fromPath = fromLocation?.pathname || "/";
+        
+        // Preserve all original navigation properties
+        const navigationOptions = {
+          replace: true,
+          ...(fromLocation?.state && { state: fromLocation.state }),
+          ...(fromLocation?.search && { search: fromLocation.search }),
+          ...(fromLocation?.hash && { hash: fromLocation.hash })
+        };
       
-      // Dispatch getProfile after successful login
-      return dispatch(getProfile())
-        .then((profileAction) => {
-          if (getProfile.fulfilled.match(profileAction)) {
-            // Profile fetched successfully
-            requestLocationAccess();
-            const fromLocation = location.state?.from;
-            const fromPath = fromLocation?.pathname || "/";
-            navigate(fromPath, {
-              replace: true,
-              ...(fromLocation?.state && { state: fromLocation.state }),
-              ...(fromLocation?.search && { search: fromLocation.search }),
-              ...(fromLocation?.hash && { hash: fromLocation.hash })
-            });
-            // Show browser location permission popup
-            // if ("geolocation" in navigator) {
-            //   navigator.geolocation.getCurrentPosition(
-            //     (position) => {
-            //       // Location access granted
-            //       console.log("Location access granted", position);
-            //       proceedWithNavigation();
-            //     },
-            //     (error) => {
-            //       // Location access denied or error
-            //       console.warn("Location access denied or error", error);
-            //       // Still proceed with navigation even if location is denied
-            //       proceedWithNavigation();
-            //     },
-            //     { enableHighAccuracy: true }
-            //   );
-            // } else {
-            //   // Geolocation not supported
-            //   console.warn("Geolocation not supported by browser");
-            //   proceedWithNavigation();
-            // }
-          } else {
-            throw new Error("Failed to fetch profile");
-          }
-        });
-    }
-  })
-  .catch((error) => {
-    // toast.error(error.message);
-  });
+        navigate(fromPath, navigationOptions);
+        dispatch(getProfile());
+    
+      } else if (login.rejected.match(action)) {
+        toast.error(action.payload?.error_description || t('messages.error'));
+        throw new Error("Login failed");
+      }
+    })
+    .catch((err) => {
+      // toast.error(err.message || t('messages.error'));
+      
+    });
   };
 
   const handleNavigate = (path) => {
@@ -303,7 +282,7 @@ const LoginPage = () => {
       // Using getCurrentPosition with maximum expiration to force fresh request
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log("Location access granted", position);
+          
           // You can store the permission state if needed
           dispatch(setLocationPermission(true));
         },

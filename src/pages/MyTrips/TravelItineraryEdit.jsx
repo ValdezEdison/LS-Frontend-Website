@@ -30,6 +30,7 @@ import Loader from "../../components/common/Loader";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { toast } from "react-toastify";
 
 
 const TravelItineraryEdit = () => {
@@ -184,28 +185,35 @@ const TravelItineraryEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formatDate = (date) => {
-      if (date instanceof Date) {
-        return date.toISOString().split('T')[0];
-      }
-      // If it's already in YYYY-MM-DD format, return as-is
-      if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    function formatLocalDate(date) {
+
+      if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
         return date;
       }
-      // Fallback - try to parse or use current date
-      return new Date(date).toISOString().split('T')[0];
-    };
-
+      if (date instanceof Date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+      return date;
+  }
+ 
     const tripData = {
       title: formState.tripName,
       type: formState.tripType,
       // cities: formState.destinations.map(d => d.destinationId),
-      initial_date: formatDate(formState.startDate),
-      end_date: formatDate(formState.endDate),
+      initial_date: formatLocalDate(formState.startDate),
+      end_date: formatLocalDate(formState.endDate),
       // stops: formState.sites,
     };
 
-    dispatch(updateTrip({ tripId: id, tripData: tripData })).then(() => {
+    dispatch(updateTrip({ tripId: id, tripData: tripData })).then((response) => {
+
+      if (response.type === "myTrips/updateTrip/fulfilled") {
+        toast.success(t('success.tripUpdated.message'));
+        navigate(-1);
+      }
       
     });
     if (hasStopsChangedRef.current) {

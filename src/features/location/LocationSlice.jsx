@@ -24,7 +24,7 @@ const locationSlice = createSlice({
             state.trackingId = null;
         },
         enableTracking: (state) => {
-            console.log("enableTracking");
+            
             state.trackingEnabled = true;
         },
         disableTracking: (state) => {
@@ -51,7 +51,7 @@ const locationSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateLocation.fulfilled, (state, action) => {
-                console.log(action.payload, "action.payload");
+               
                 state.loading = false;
                 state.error = null;
                 state.currentLocation = action.payload;

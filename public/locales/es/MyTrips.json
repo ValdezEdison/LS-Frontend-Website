@@ -88,5 +88,12 @@
     "tripDeleted": "Se ha eliminado un viaje.",
     "undo": "Deshacer",
     "close": "Cerrar"
+  },
+  "success": {
+    "tripDeleted": "El viaje ha sido eliminado correctamente.",
+    "tripUpdated": {
+      "title": "Viaje actualizado",
+      "message": "El viaje ha sido actualizado correctamente."
+    }
   }
 }

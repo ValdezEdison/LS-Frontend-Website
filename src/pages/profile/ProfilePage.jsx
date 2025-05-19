@@ -23,6 +23,7 @@ import { fetchLanguages } from "../../features/common/languages/LanguageAction";
 import LocationSettings from "../../components/ProfileSection/LocationSettings";
 import { debounce } from "lodash";
 import { fetchCities } from "../../features/common/cities/CityAction";
+import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 
 const ProfilePage = () => {
   const { tab } = useParams();
@@ -32,6 +33,7 @@ const ProfilePage = () => {
 
   const { language } = useContext(LanguageContext);
   const { t } = useTranslation('Places');
+  const { t: tProfileSection } = useTranslation('ProfileSection');
 
   const { user,  loading: mainLoading, userLoading, error, isAuthenticated, groups, groupsLoading } = useSelector((state) => state.auth);
   const loading = userLoading || mainLoading;
@@ -184,6 +186,9 @@ const ProfilePage = () => {
 
   const handleSecurityEdit = (section) => {
     setEditingSecurityField(section);
+    if (section === 'delete') {
+      togglePopup('deleteConfirm', true);
+    }
   };
 
   const handleSecuritySave = async (section) => {
@@ -396,6 +401,18 @@ const ProfilePage = () => {
       }
       return () => debouncedFetchCities.cancel();
     }, [locationState.destinationSearchQuery, debouncedFetchCities, dispatch]);
+
+    const handleConfirmDelete = () => {
+      togglePopup("deleteConfirm", false);
+      setSecurityData(prev => ({
+        ...prev,
+        accountDeletionConfirmed: true
+      }))
+
+      setEditingSecurityField(null);
+  
+      handleSecuritySave("delete");
+    }
   
 
 
@@ -439,6 +456,25 @@ const ProfilePage = () => {
   };
 
   return (
+    <>
+      {isOpen && popupState.deleteConfirm && (
+        <Modal
+          onClose={() => togglePopup("deleteConfirm", false)}
+          customClass="modalSmTypeOne"
+          hideCloseButton={true}
+        >
+          <ConfirmationPopup
+            title={tProfileSection('security.sections.delete.title')}
+            description={tProfileSection('security.sections.delete.description')}
+            onCancel={() => {
+              togglePopup("deleteConfirm", false)
+              setEditingSecurityField(null);
+             
+            }}
+            onConfirm={handleConfirmDelete}
+          />
+        </Modal>
+      )}
     <div className={styles.profilePage}>
       <Header />
       <main className="page-center">
@@ -460,6 +496,7 @@ const ProfilePage = () => {
         </Modal>
       )}
     </div>
+    </>
   );
 };
 

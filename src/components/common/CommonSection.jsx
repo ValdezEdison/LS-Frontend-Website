@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCarousel }) => {
     
     const { t } = useTranslation("Common");
-console.log(items);
+
     const carouselSettings = {
         dots: false,
         infinite: items.length > 4,
