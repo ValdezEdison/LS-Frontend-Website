@@ -55,5 +55,6 @@
   "noStops": "No hay paradas añadidas",
   "stopsCount": "{{count}} paradas",
   "and": "y",
-  "peopleAlsoSeen": "Otras personas tambien han visto"
+  "peopleAlsoSeen": "Otras personas tambien han visto",
+  "pageNotFound": "Página no encontrada"
 }
