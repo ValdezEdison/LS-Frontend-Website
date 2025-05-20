@@ -1,9 +1,11 @@
 import React from "react";
 import styles from "../../../pages/footerBlockPages/lifeAtLocalSecret/LifeAtLocalSecrets.module.css";
+import { Beach, FirstAid, Grapes, Leaf, Verify } from "../../common/Images";
 
 function BenefitsSection() {
   return (
-    <section className={styles.benefitsSection}>
+    <div className={styles.topSection}>
+       <section className={styles.benefitsSection}>
       <div className={styles.benefitsContainer}>
         <h2 className={styles.benefitsTitle}>
           Beneficios de trabajar en Local Secrets
@@ -15,45 +17,67 @@ function BenefitsSection() {
         </p>
         <div className={styles.benefitsList}>
           <article className={styles.benefitItem}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/0353d8fd7eef3419d7a287ce00ca0fb78bc01808?placeholderIfAbsent=true"
+            <div className={styles.benefitItemIn}>
+              <img
+              src={Leaf}
               alt="Icono de flexibilidad"
               className={styles.benefitIcon}
-            />
-            <h3 className={styles.benefitFlexibility}>
+              />
+              <h3 className={styles.benefitFlexibility}>
               Flexibilidad y tiempo libre
-            </h3>
+              </h3>
+            </div>
           </article>
-          <article className={styles.benefitHealth}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/00cbe13a3a3c20a2e1271e0d0b999aafc7b47cfd?placeholderIfAbsent=true"
-              alt="Icono de salud"
-              className={styles.healthIcon}
-            />
-            <h3 className={styles.healthTitle}>Salud y bienestar</h3>
+         <article className={styles.benefitItem}>
+            <div className={styles.benefitItemIn}>
+              <img
+              src={FirstAid}
+              alt="Icono de flexibilidad"
+              className={styles.benefitIcon}
+              />
+              <h3 className={styles.benefitFlexibility}>
+              Salud y bienestar
+              </h3>
+            </div>
           </article>
-          <article className={styles.benefitCoverage}>
-            Cobertura más allá
+         <article className={styles.benefitItem}>
+            <div className={styles.benefitItemIn}>
+              <img
+              src={Verify}
+              className={styles.benefitIcon}
+              />
+              <h3 className={styles.benefitFlexibility}>
+             Cobertura más allá
+              </h3>
+            </div>
           </article>
-          <article className={styles.benefitFruit}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/795e18f4ef89bffd5fe1b96a4fe370d41095a845?placeholderIfAbsent=true"
-              alt="Icono de fruta"
-              className={styles.fruitIcon}
-            />
-            <h3 className={styles.fruitTitle}>Fruta en la oficina</h3>
+          <article className={styles.benefitItem}>
+            <div className={styles.benefitItemIn}>
+              <img
+              src={Grapes}
+              className={styles.benefitIcon}
+              />
+              <h3 className={styles.benefitFlexibility}>
+             Fruta en la oficina
+              </h3>
+            </div>
           </article>
-          <article className={styles.benefitVacation}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/821fd69fd1233090246dccbf1d12351e3bb4a6af?placeholderIfAbsent=true"
-              alt="Icono de vacaciones"
-              className={styles.vacationIcon}
-            />
-            <h3 className={styles.vacationTitle}>Comprar vacaciones</h3>
+          <article className={styles.benefitItem}>
+            <div className={styles.benefitItemIn}>
+              <img
+              src={Beach}
+              className={styles.benefitIcon}
+              />
+              <h3 className={styles.benefitFlexibility}>
+              Comprar vacaciones
+              </h3>
+            </div>
           </article>
         </div>
       </div>
     </section>
+    </div>
+   
   );
 }
 
