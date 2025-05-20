@@ -37,3 +37,15 @@ export const fetchWhoWeAre = createAsyncThunk(
         }
     }
 );
+
+export const fetchContactUs = createAsyncThunk(
+    "pages/fetchContactUs",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getContactUs(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

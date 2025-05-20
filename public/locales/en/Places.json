@@ -106,6 +106,8 @@
     "addToTrip": "Add to trip",
     "stopCount": "{{count}} stops",
     "noStops": "No stops available"
-  }
+  },
+  "noResultsBasedOnManualLocation": "We’ve customized content for {{city}}. Change location or Disable location services.",
+  "noResultsBasedOnCurrentLocation": "We’ve customized content for your current location. Change location or Disable location services."
   
 }

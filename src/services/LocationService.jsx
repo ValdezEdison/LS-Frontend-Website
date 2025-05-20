@@ -39,7 +39,7 @@ const LocationService = {
   stopLocationTracking: (intervalId) => {
     if (intervalId) {
       clearInterval(intervalId);
-      store.dispatch(clearLocation());
+      // store.dispatch(clearLocation());
     }
   }
 };

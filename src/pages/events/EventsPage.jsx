@@ -61,9 +61,16 @@ const EventsPage = () => {
     bannerBlocks, bannerLoading
   } = useSelector((state) => state.cms.blocks);
 
-  const { currentLocation } = useSelector((state) => state.locationSettings);
+  const { currentLocation, loading: currentLocationLoading } = useSelector((state) => state.locationSettings);
+ 
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
 
   const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
+
+    const isManuallySelected = currentLocation?.preferences?.location_mode === "manual";
+    const isCurrentLocationSelected = currentLocation?.preferences?.location_mode === "current";
+  
+    const [selectedCityBasedOnLocation, setSelectedCityBasedOnLocation] = useState(null);
 
   // Add trip functionality
   const {
@@ -120,20 +127,29 @@ const EventsPage = () => {
     filterPanel: false
   });
 
+  function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
   const [alertMessage, setAlertMessage] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
 
   // Fetch events and locations
   useEffect(() => {
-    if(currentLocation) {
-      dispatch(fetchNearMeEvents({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
-      dispatch(fetchSuggestedPlaces({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
+    if(!currentLocationLoading){
       
-    }else{
-      dispatch(fetchEvents({ type: state.type, page: state.page }));
-      dispatch(fetchSuggestedPlaces({ page: state.page, type: state.type }));
+      if(currentLocation && trackingEnabled && isAuthenticated) {
+        dispatch(fetchNearMeEvents({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
+        dispatch(fetchSuggestedPlaces({ page: state.page, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: state.type }));
+        
+      }else{
+        dispatch(fetchEvents({ type: state.type, page: state.page }));
+        dispatch(fetchSuggestedPlaces({ page: state.page, type: state.type }));
+      }
     }
-    
     dispatch(fetchGeoLocations({ type: state.type }));
     dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
     if (isAuthenticated) {
@@ -273,20 +289,27 @@ const EventsPage = () => {
       categories: state.selectedCategory,
       subcategories: state.selectedSubcategory,
       levels: state.selectedLevel,
-      sortBy: state.selectedOrder
+      sortBy: state.selectedOrder,
+      latitude: currentLocation.preferences?.last_known_latitude,
+      longitude: currentLocation.preferences?.last_known_longitude
     };
 
     // Only add startDate if it exists
     if (state.startDate) {
-      params.startDate = state.startDate.toISOString().split('T')[0];
+      params.startDate = formatLocalDate(state.startDate);
     }
 
     // Only add endDate if it exists
     if (state.endDate) {
-      params.endDate = state.endDate.toISOString().split('T')[0];
+      params.endDate = formatLocalDate(state.endDate); // state.endDate.toISOString().split('T')[0];
     }
+    if(isAuthenticated && currentLocation && trackingEnabled) {
+      dispatch(fetchNearMeEvents(params));
 
-    dispatch(fetchEvents(params));
+    }else {
+      dispatch(fetchEvents(params));
+    }
+    
     dispatch(closePopup());
     togglePopup("filterPanel", false);
   }
@@ -321,18 +344,25 @@ const EventsPage = () => {
         cityId: state.selectedCityId,
         categories: state.selectedCategory,
         subcategories: state.selectedSubcategory,
-        levels: state.selectedLevel
+        levels: state.selectedLevel,
+        latitude: currentLocation.preferences?.last_known_latitude,
+        longitude: currentLocation.preferences?.last_known_longitude
       };
 
       if (state.startDate) {
-        params.startDate = state.startDate.toISOString().split('T')[0];
+        params.startDate = formatLocalDate(state.startDate); // state.startDate.toISOString().split('T')[0];
       }
 
       if (state.endDate) {
-        params.endDate = state.endDate.toISOString().split('T')[0];
+        params.endDate = formatLocalDate(state.endDate); // state.endDate.toISOString().split('T')[0];
       }
 
-      dispatch(fetchEvents(params));
+      if(isAuthenticated && currentLocation && trackingEnabled) {
+        dispatch(fetchNearMeEvents(params));
+  
+      }else {
+        dispatch(fetchEvents(params));
+      }
     }, 500);
 
     return () => clearTimeout(debounceTimer);
@@ -365,6 +395,22 @@ const EventsPage = () => {
       setAlertMessage(tCommon('authAlert.viewDetails.description'));
     }
   };
+
+    useEffect(() => {
+  
+      if(isManuallySelected && trackingEnabled && isAuthenticated) {
+        const selectedCity = cities.find(
+          (city) => city.latitude === currentLocation.preferences?.last_known_latitude &&
+            city.longitude === currentLocation.preferences?.last_known_longitude
+        )
+  
+        if (selectedCity) {
+          setSelectedCityBasedOnLocation(selectedCity.name);
+        }
+      }
+      
+    }, [currentLocation, trackingEnabled]);
+
 
   return (
     <>
@@ -447,7 +493,18 @@ const EventsPage = () => {
             handleActions={handleActions}
           />
           {visibleEvents?.length === 0 &&
-            <div className="no-results-wrapper">{tCommon("noResults")}</div>
+            // <div className="no-results-wrapper">{tCommon("noResults")}</div>
+            currentLocation && trackingEnabled ? (
+              isManuallySelected ? (
+                <div className="no-results-wrapper"> {t('noResultsBasedOnManualLocation', { city: selectedCityBasedOnLocation })}</div>
+              ) : isCurrentLocationSelected ? (
+                <div className="no-results-wrapper">{t('noResultsBasedOnCurrentLocation')}</div>
+              ) : (
+                <div className="no-results-wrapper">{tCommon('noResult')}</div>
+              )
+            ) : (
+              <div className="no-results-wrapper">{tCommon('noResult')}</div>
+            )
           }
 
           <div className={styles.showMoreWrapper}>

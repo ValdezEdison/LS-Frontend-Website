@@ -34,6 +34,13 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isOpen } = useSelector((state) => state.popup);
 
+  const { currentLocation, loading: currentLocationLoading } = useSelector((state) => state.locationSettings);
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
+  const isManuallySelected = currentLocation?.preferences?.location_mode === "manual";
+  const isCurrentLocationSelected = currentLocation?.preferences?.location_mode === "current";
+
+  const [selectedCityBasedOnLocation, setSelectedCityBasedOnLocation] = useState(null);
+
   const suggestionRef = useRef(null);
   const placesListRef = useRef(null);
   const mainRef = useRef(null);
@@ -228,6 +235,20 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   };
 
 
+  useEffect(() => {
+
+    if(isManuallySelected && trackingEnabled && isAuthenticated) {
+      const selectedCity = cities.find(
+        (city) => city.latitude === currentLocation.preferences?.last_known_latitude &&
+          city.longitude === currentLocation.preferences?.last_known_longitude
+      )
+
+      if (selectedCity) {
+        setSelectedCityBasedOnLocation(selectedCity.name);
+      }
+    }
+    
+  }, [currentLocation, trackingEnabled]);
 
 
   return (
@@ -315,7 +336,17 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
             return placeCard;
           })
         ) : (
-          <div className="no-results-wrapper">{tCommon('noResult')}</div>
+          currentLocation && trackingEnabled ? (
+            isManuallySelected ? (
+              <div className="no-results-wrapper"> {t('noResultsBasedOnManualLocation', { city: selectedCityBasedOnLocation })}</div>
+            ) : isCurrentLocationSelected ? (
+              <div className="no-results-wrapper">{t('noResultsBasedOnCurrentLocation')}</div>
+            ) : (
+              <div className="no-results-wrapper">{tCommon('noResult')}</div>
+            )
+          ) : (
+            <div className="no-results-wrapper">{tCommon('noResult')}</div>
+          )
         )}
 
     

@@ -11,7 +11,7 @@ export const LocationProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector(state => state.auth);
   const { trackingId, currentLocation } = useSelector(state => state.locationSettings);
-  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled && currentLocation?.preferences?.location_mode === "current";
   
   const trackingIdRef = useRef(trackingId);
 
@@ -38,7 +38,7 @@ export const LocationProvider = ({ children }) => {
       } else if (trackingIdRef.current) {
         // Stop tracking if user logs out or tracking gets disabled
         LocationService.stopLocationTracking(trackingIdRef.current);
-        dispatch(clearLocation());
+        // dispatch(clearLocation());
       }
     };
 
@@ -47,7 +47,7 @@ export const LocationProvider = ({ children }) => {
     return () => {
       if (trackingIdRef.current) {
         LocationService.stopLocationTracking(trackingIdRef.current);
-        dispatch(clearLocation());
+        // dispatch(clearLocation());
       }
     };
   }, [isAuthenticated, user, trackingEnabled, dispatch]);

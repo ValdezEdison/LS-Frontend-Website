@@ -106,5 +106,7 @@
     "addToTrip": "Añadir a viaje",
     "stopCount": "{{count}} paradas",
     "noStops": "No hay paradas disponibles"
-  }
+  },
+  "noResultsBasedOnManualLocation": "Hemos personalizado el contenido para {{city}}. Cambiar ubicación o Desactivar los servicios de ubicación.",
+  "noResultsBasedOnCurrentLocation": "Hemos personalizado el contenido para tu ubicación actual. Cambiar ubicación o Desactivar los servicios de ubicación."
 }

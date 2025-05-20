@@ -192,6 +192,7 @@ const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilt
       endDate: null,
       seletedOrder: null
     });
+    onApplyFilters();
   };
 
   const applyFilters = () => {

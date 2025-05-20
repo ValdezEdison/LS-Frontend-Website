@@ -37,7 +37,7 @@ const HomePage = () => {
 
   const { language, languageId } = useContext(LanguageContext);
 
-  const { currentLocation } = useSelector((state) => state.locationSettings);
+  const { currentLocation, loading: currentLocationLoading } = useSelector((state) => state.locationSettings);
 
 
   const dispatch = useDispatch();
@@ -65,17 +65,21 @@ const HomePage = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const placesList = currentLocation && isAuthenticated ? places : randomPlaces;
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
   // Fetch places on component mount
   useEffect(() => {
-    if(currentLocation && isAuthenticated){
-      dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
-      dispatch(fetchNearMeEvents({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "event" }));
 
-    }else{
-      dispatch(fetchRandomSites({page: 1, type: "place"}));
-      dispatch(fetchEvents({ page: 1, type: "event" }));
+    if(!currentLocationLoading){
+      
+      if(currentLocation && isAuthenticated && trackingEnabled){
+        dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
+        dispatch(fetchNearMeEvents({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "event" }));
+
+      }else{
+        dispatch(fetchRandomSites({page: 1, type: "place"}));
+        dispatch(fetchEvents({ page: 1, type: "event" }));
+      }
     }
-    
     dispatch(fetchHeroContent(languageId));
     dispatch(fetchOurPartners(languageId));
     dispatch(fetchPosts({ per_page: 10 }));

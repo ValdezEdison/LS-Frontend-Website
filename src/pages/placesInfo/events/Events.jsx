@@ -151,6 +151,13 @@ const Events = () => {
     }
   }, [dispatch, id, isAuthenticated, language]);
 
+  function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   // Events with filters
   useEffect(() => {
     if (id) {
@@ -161,8 +168,8 @@ const Events = () => {
         levels: state.selectedLevel,
         points: state.points,
         ...(state.selectedDateRange.startDate && {
-          startDate: state.selectedDateRange?.startDate.toISOString().split('T')[0],
-          endDate: state.selectedDateRange?.endDate?.toISOString().split('T')[0]
+          startDate: formatLocalDate(state.selectedDateRange.startDate), // state.selectedDateRange?.startDate.toISOString().split('T')[0],
+          endDate: formatLocalDate(state.selectedDateRange.endDate), // state.selectedDateRange?.endDate?.toISOString().split('T')[0]
         })
       };
       dispatch(fetchEventsByCityId(params));

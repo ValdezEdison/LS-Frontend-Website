@@ -12,6 +12,9 @@ const LocationService = {
     updateLocationSettings: async (data) => {
         return ApiService.post('/users/update_location_settings', data);
     },
+    toggleUserLocation: async (data) => {
+        return ApiService.post('/users/location-toggle', data);
+    },
   
 };
 
