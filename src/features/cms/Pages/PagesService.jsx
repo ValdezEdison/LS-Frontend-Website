@@ -11,6 +11,10 @@ const PagesService = {
     getWhoWeAre: async (language) => {
         return CmsApiService.get('/api/v2/who-we-are/?locale=' + language);
     },
+
+    getContactUs: async (language) => {
+        return CmsApiService.get('/api/v2/contact-sections/?locale=' + language);
+    },
 }
 
 export default PagesService

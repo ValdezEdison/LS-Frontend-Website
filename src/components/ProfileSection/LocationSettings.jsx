@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './LocationSettings.module.css';
-import { fetchLocationSettings, updateLocation, updateLocationSettings } from '../../features/location/LocationAction';
+import { fetchLocationSettings, updateLocation, updateLocationSettings, toggleUserLocation } from '../../features/location/LocationAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCities } from '../../features/common/cities/CityAction';
 import SearchInput from '../common/SearchInput';
@@ -28,6 +28,7 @@ const LocationSettings = ({ state, setState}) => {
   const suggestionRef = useRef(null);
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
   const [isLocationEnabled, setIsLocationEnabled] = useState(false);
+  const isInitialRender = useRef(true);
 
   const dispatch = useDispatch();
 
@@ -38,10 +39,13 @@ const LocationSettings = ({ state, setState}) => {
     locationSettings, 
     loading: settingsLoading, 
     error: settingsError, 
+    userLocationStatus,
+    toggleUserLocationLoading
 
   } = useSelector((state) => state.locationSettings);
 
   const { cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.cities);
+
 
   // Fetch user's location settings
   const fetchSettings = async () => {
@@ -50,6 +54,7 @@ const LocationSettings = ({ state, setState}) => {
       
       if (fetchLocationSettings.fulfilled.match(resultAction)) {
         const data = resultAction.payload;
+     
         setSettings({
           geolocation_enabled: data.preferences?.geolocation_enabled || false,
           last_known_latitude: data.preferences?.last_known_latitude || null,
@@ -61,10 +66,24 @@ const LocationSettings = ({ state, setState}) => {
         
         // Set location preference
         if (data.preferences?.geolocation_enabled) {
-          setLocationPreferences('geolocation');
-
-        } else if (data.default_latitude && data.default_longitude) {
+          setIsLocationEnabled(true);
+        }
+        
+        if (data.preferences?.location_mode === 'manual') {
           setLocationPreferences('manual');
+        
+          const selectedCity = cities.find(
+            (city) =>
+              city.latitude === data.preferences?.last_known_latitude &&
+              city.longitude === data.preferences?.last_known_longitude
+          );
+        
+          console.log('selectedCity', selectedCity);
+          updateState("selectedDestinationId", selectedCity?.id || null);
+        
+        } else if (data.preferences?.location_mode === 'current') {
+          setLocationPreferences('geolocation');
+        
         } else {
           setLocationPreferences(null);
         }
@@ -91,25 +110,28 @@ const LocationSettings = ({ state, setState}) => {
         }
         
         payload = {
-          geolocation_enabled: true,
+          // geolocation_enabled: true,
           latitude: settings.default_latitude,
           longitude: settings.default_longitude,
-          city_id: null
+          city_id: null,
+          location_mode: "current"
         };
       } else if (locationPreferences === 'manual') {
         if (state.selectedDestinationId) {
           payload = {
-            geolocation_enabled: false,
+            // geolocation_enabled: false,
             city_id: state.selectedDestinationId,
             latitude: state.default_latitude,
-            longitude: state.default_longitude
+            longitude: state.default_longitude,
+            location_mode: "manual"
           };
         } else if (state.default_latitude && state.default_longitude) {
           payload = {
-            geolocation_enabled: false,
+            // geolocation_enabled: false,
             latitude: state.default_latitude,
             longitude: state.default_longitude,
-            city_id: null
+            city_id: null,
+            location_mode: "manual"
           };
         } else {
           setError('Please select a location.');
@@ -153,6 +175,7 @@ const LocationSettings = ({ state, setState}) => {
         if (state.default_latitude && state.default_longitude) {
           payload.default_latitude = state.default_latitude;
           payload.default_longitude = state.default_longitude;
+          payload.location_mode = "manual";
         }
       }
       
@@ -219,6 +242,9 @@ const LocationSettings = ({ state, setState}) => {
           default_longitude: null
         }))
         setGeoLocationError(errorMessage);
+        setTimeout(() => {
+          getCurrentLocation();
+        }, 5000);
       }
     );
   };
@@ -250,6 +276,7 @@ const LocationSettings = ({ state, setState}) => {
   const handleSearchClick = () => {
     if(!showSuggestionDropDown && state.destinationSearchQuery.length === 0){
       // Toggle the dropdown visibility
+      setShowSuggestionDropDown(!showSuggestionDropDown);
     }else if(state.destinationSearchQuery.length > 0){
       setShowSuggestionDropDown(!showSuggestionDropDown);
     }
@@ -302,6 +329,48 @@ const LocationSettings = ({ state, setState}) => {
  
   };
 
+
+
+  const handleToggleLocation = () => {
+    setIsLocationEnabled(!isLocationEnabled);
+    dispatch(toggleUserLocation({geolocation_enabled: !isLocationEnabled})).then((response) => {
+      if (toggleUserLocation.fulfilled.match(response)) {
+        if (response.type === 'locations/toggleUserLocation/fulfilled') {
+         fetchSettings();
+        }
+      }
+    })
+  }
+
+
+
+    const handleClickOutside = (event) => {
+  
+      // Check if the click is outside both the SearchInput and the dropdown
+      if (
+        suggestionRef.current &&
+        !suggestionRef.current.contains(event.target)
+  
+      ) {
+        setShowSuggestionDropDown(false); // Close the dropdown
+      }
+    };
+  
+    useEffect(() => {
+      // Add event listener when the dropdown is shown
+      if (showSuggestionDropDown) {
+        document.addEventListener('mousedown', handleClickOutside);
+      } else {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
+  
+      // Cleanup the event listener on component unmount
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [showSuggestionDropDown]);
+
+
   if (settingsLoading) {
     return (
       <>
@@ -336,7 +405,7 @@ const LocationSettings = ({ state, setState}) => {
         <div className={styles.locationSwitch}>
           <label className={styles.switch}>
             <input type="checkbox"   checked={isLocationEnabled}
-            onChange={() => setIsLocationEnabled(!isLocationEnabled)}/>
+            onChange={() => handleToggleLocation()}/>
             <span className={styles.slider}></span>
           </label>
           <span className={`${styles.toggleAction} ${isLocationEnabled ? styles.checkedd : ''}`}>

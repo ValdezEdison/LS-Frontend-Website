@@ -113,7 +113,10 @@ const PlacesPage = () => {
   } = useSelector((state) => state.cms.blocks);
 
 
-  const { currentLocation } = useSelector((state) => state.locationSettings);
+  const { currentLocation, loading: currentLocationLoading } = useSelector((state) => state.locationSettings);
+
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
+
 
   // Constants
   const RATINGS = [
@@ -450,10 +453,10 @@ const PlacesPage = () => {
     state.subcategories !== "" ||
     state.points !== "";
 
-  if (!hasFilters) {
+  if (!hasFilters && !currentLocationLoading) {
     // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));
     dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
-    if(currentLocation && isAuthenticated){
+    if(currentLocation && isAuthenticated && trackingEnabled){
       dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
     }else{
       // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));\
@@ -549,36 +552,71 @@ const PlacesPage = () => {
 
     if (hasChanged) {
 
-      dispatch(fetchPlacesByCityId({
-        cityId: state.selectedDestinationId !== null
-          ? state.selectedDestinationId
-          : state.selectedDestinations,
-        country: state.selectedCountryName,
-        page: state.page,
-        preview: 1,
-        avg_rating: state.ratings,
-        categories: state.categories,
-        levels: state.levels,
-        subcategories: state.subcategories,
-        points: state.points,
-        sort_by: state.selectedOrder
-      }));
+      if(currentLocation && isAuthenticated && trackingEnabled){
+        
+        dispatch(fetchNearMePlaces({
+          page: 1,
+          latitude: currentLocation.preferences?.last_known_latitude,
+          longitude: currentLocation.preferences?.last_known_longitude,
+          type: "place",
+          avg_rating: state.ratings,
+          categories: state.categories,
+          levels: state.levels,
+          subcategories: state.subcategories,
+          sort_by: state.selectedOrder
+        }));
 
-      dispatch(fetchGeoLocations({
-        cityId: state.selectedDestinationId !== null
-          ? state.selectedDestinationId
-          : state.selectedDestinations,
-        type: "place",
-        country: state.selectedCountryName,
-        // page: state.page,
-        // preview: 1,
-        avg_rating: state.ratings,
-        categories: state.categories,
-        levels: state.levels,
-        subcategories: state.subcategories,
-        points: state.points
-      }));
+        dispatch(fetchGeoLocations({
+          cityId: state.selectedDestinationId !== null
+            ? state.selectedDestinationId
+            : state.selectedDestinations,
+          type: "place",
+          country: state.selectedCountryName,
+          // page: state.page,
+          // preview: 1,
+          avg_rating: state.ratings,
+          categories: state.categories,
+          levels: state.levels,
+          subcategories: state.subcategories,
+          points: state.points,
+          latitude: currentLocation.preferences?.last_known_latitude,
+          longitude: currentLocation.preferences?.last_known_longitude
+        }));
 
+      }else{
+        dispatch(fetchPlacesByCityId({
+          cityId: state.selectedDestinationId !== null
+            ? state.selectedDestinationId
+            : state.selectedDestinations,
+          country: state.selectedCountryName,
+          page: state.page,
+          preview: 1,
+          avg_rating: state.ratings,
+          categories: state.categories,
+          levels: state.levels,
+          subcategories: state.subcategories,
+          points: state.points,
+          sort_by: state.selectedOrder
+        }));
+
+        dispatch(fetchGeoLocations({
+          cityId: state.selectedDestinationId !== null
+            ? state.selectedDestinationId
+            : state.selectedDestinations,
+          type: "place",
+          country: state.selectedCountryName,
+          // page: state.page,
+          // preview: 1,
+          avg_rating: state.ratings,
+          categories: state.categories,
+          levels: state.levels,
+          subcategories: state.subcategories,
+          points: state.points
+        }));
+
+      }
+
+ 
       prevDepsRef.current = currentDeps;
     }
   }, [

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchLocationSettings, updateLocation, updateLocationSettings } from "./LocationAction";
+import { fetchLocationSettings, updateLocation, updateLocationSettings, toggleUserLocation } from "./LocationAction";
 
 const initialState = {
     trackingEnabled: false,
@@ -8,6 +8,8 @@ const initialState = {
     loading: false,
     error: null,
     trackingId: null,
+    toggleUserLocationLoading: false,
+    userLocationStatus: null,
 };
 
 
@@ -72,6 +74,20 @@ const locationSlice = createSlice({
             })
             .addCase(updateLocationSettings.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(toggleUserLocation.pending, (state) => {
+                state.toggleUserLocationLoading = true;
+                state.error = null;
+            })
+            .addCase(toggleUserLocation.fulfilled, (state, action) => {
+                state.toggleUserLocationLoading = false;
+                state.error = null;
+                state.userLocationStatus = action.payload;
+            })
+            .addCase(toggleUserLocation.rejected, (state, action) => {
+                state.toggleUserLocationLoading = false;
                 state.error = action.payload;
             });
            

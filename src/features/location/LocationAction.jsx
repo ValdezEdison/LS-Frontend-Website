@@ -38,3 +38,15 @@ export const updateLocationSettings = createAsyncThunk(
     }
 );
 
+export const toggleUserLocation = createAsyncThunk(
+    "locations/toggleUserLocation",
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await LocationService.toggleUserLocation(data);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
+

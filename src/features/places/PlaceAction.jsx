@@ -45,9 +45,9 @@ export const fetchPlacesByCityId = createAsyncThunk(
 
 export const fetchGeoLocations = createAsyncThunk(
   'places/fetchGeoLocations',
-  async ({ cityId, type, country, page, preview, avg_rating, categories, levels,subcategories, points }, { rejectWithValue }) => {
+  async ({ cityId, type, country, page, preview, avg_rating, categories, levels,subcategories, points, latitude, longitude }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, subcategories, points);
+      const response = await placeService.getGeoLocations(cityId, type, country, page, preview, avg_rating, categories, levels, subcategories, points, latitude, longitude);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
@@ -194,9 +194,17 @@ export const generateLink = createAsyncThunk(
 
 export const fetchNearMePlaces = createAsyncThunk(
   'places/fetchNearMePlaces',
-  async ({ page, latitude, longitude, type }, { rejectWithValue }) => {
+  async ({ page, latitude, longitude, type,  avg_rating, 
+    categories, 
+    levels, 
+    subcategories, 
+    sort_by  }, { rejectWithValue }) => {
     try {
-      const response = await placeService.getNearMePlaces(page, latitude, longitude, type);
+      const response = await placeService.getNearMePlaces(page, latitude, longitude, type,  avg_rating,
+        categories,
+        levels,
+        subcategories,
+        sort_by);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
