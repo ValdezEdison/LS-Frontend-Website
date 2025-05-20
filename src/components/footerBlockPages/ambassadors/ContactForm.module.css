@@ -1,0 +1,82 @@
+.form {
+  width: 100%;
+}
+
+.fields {
+  color: #bdbdbd;
+  width: 100%;
+  font-size: 14px;
+}
+
+@media (width<=991px) {
+  .fields {
+    max-width: 100%;
+  }
+}
+
+.input {
+  background-color: #fff;
+  border: 1px solid #718295;
+  border-radius: 6px;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.textarea {
+  background-color: #fff;
+  border: 1px solid #718295;
+  border-radius: 6px;
+  width: 100%;
+  height: 140px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.disclaimer {
+  color: #bdbdbd;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+@media (width<=991px) {
+  .disclaimer {
+    max-width: 100%;
+  }
+}
+
+.privacy {
+  color: #151820;
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+@media (width<=991px) {
+  .privacy {
+    max-width: 100%;
+  }
+}
+
+.privacyLink {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.submitButton {
+  color: #151820;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 12px;
+  min-height: 40px;
+  margin-top: 14px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  width: 146px;
+}

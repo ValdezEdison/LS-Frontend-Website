@@ -1,0 +1,14 @@
+.embajadores {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+}
+
+@media (width<=991px) {
+  .container {
+    max-width: 100%;
+  }
+}
