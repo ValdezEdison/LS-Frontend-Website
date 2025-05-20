@@ -14,6 +14,7 @@ import { handleFacebookLogin } from "../../utils/FacebookLogin";
 import { initializeGoogleSDK, handleGoogleLogin } from "../../utils/GoogleLogin";
 import { useTranslation } from 'react-i18next';
 import { getClientId, getClientSecret } from "../../utils/decryptSecrets";
+import { updateLocation, toggleUserLocation } from "../../features/location/LocationAction";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -179,7 +180,7 @@ const LoginPage = () => {
     .then((action) => {
       if (login.fulfilled.match(action)) {
         toast.success(t('messages.success'));
-
+        
         const fromLocation = location.state?.from;
         const fromPath = fromLocation?.pathname || "/";
         
@@ -190,7 +191,7 @@ const LoginPage = () => {
           ...(fromLocation?.search && { search: fromLocation.search }),
           ...(fromLocation?.hash && { hash: fromLocation.hash })
         };
-      
+        requestLocationAccess();
         navigate(fromPath, navigationOptions);
         dispatch(getProfile());
     
@@ -253,7 +254,9 @@ const LoginPage = () => {
           toast.success(t('messages.success'));
           // await dispatch(getProfile()).unwrap();
           const from = location.state?.from?.pathname || "/";
+          await requestLocationAccess();
           navigate(from, { replace: true });
+         
         }
       }
     } catch (error) {
@@ -277,27 +280,47 @@ const LoginPage = () => {
     navigate(fromPath, navigationOptions);
   }
 
-  const requestLocationAccess = () => {
-    if ("geolocation" in navigator) {
-      // Using getCurrentPosition with maximum expiration to force fresh request
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          
-          // You can store the permission state if needed
-          dispatch(setLocationPermission(true));
-        },
-        (error) => {
-          console.warn("Location access denied or error", error);
-          dispatch(setLocationPermission(false));
-        },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 0,  // Force fresh position
-          timeout: 5000
-        }
-      );
-    } else {
-      console.warn("Geolocation not supported by browser");
+
+  const handleLocationAccess = async () => {
+    try {
+      // First check if we have location access
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+      
+      // If we get here, user granted access
+      const { latitude, longitude } = position.coords;
+      await dispatch(updateLocation({ latitude, longitude })).unwrap();
+      await dispatch(toggleUserLocation({geolocation_enabled: true})).unwrap();
+      return true;
+    } catch (error) {
+      // User denied location access or error occurred
+      await dispatch(toggleUserLocation({geolocation_enabled: false})).unwrap();
+      return false;
+    }
+  };
+
+  const requestLocationAccess = async () => {
+    try {
+      // Request location permission (this will show the browser's native popup)
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
+  
+      // If permission granted, update location
+      const { latitude, longitude } = position.coords;
+      await dispatch(updateLocation({ latitude, longitude })).unwrap();
+      await dispatch(toggleUserLocation({geolocation_enabled: true})).unwrap();
+      return true;
+    } catch (error) {
+      // Permission denied or error occurred
+      console.log('Location access denied or error:', error);
+      await dispatch(toggleUserLocation({geolocation_enabled: false})).unwrap();
+      return false;
     }
   };
 
