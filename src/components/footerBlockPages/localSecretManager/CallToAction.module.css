@@ -1,0 +1,106 @@
+.ctaSection {
+  text-align: center;
+  background-color: #212d94;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+  width: 100%;
+  padding: 66px 311px 66px 309px;
+  display: flex;
+  overflow: hidden;
+}
+
+@media (width<=991px) {
+  .ctaSection {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.ctaContent {
+  color: #fff;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+  width: 100%;
+  display: flex;
+}
+
+@media (width<=991px) {
+  .ctaContent {
+    max-width: 100%;
+  }
+}
+
+.ctaTitle {
+  font-family:
+    Montserrat,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (width<=991px) {
+  .ctaTitle {
+    max-width: 100%;
+  }
+}
+
+.ctaDescription {
+  align-self: center;
+  width: 567px;
+  margin-top: 20px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+@media (width<=991px) {
+  .ctaDescription {
+    max-width: 100%;
+  }
+}
+
+.buttonContainer {
+  color: #151820;
+  align-self: center;
+  width: 196px;
+  max-width: 100%;
+  margin-top: 30px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ctaButton {
+  color: #151820;
+  background-color: #f4c031;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px 13px 12px 14px;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  width: 100%;
+}

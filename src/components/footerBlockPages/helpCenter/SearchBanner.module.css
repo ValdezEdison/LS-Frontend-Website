@@ -1,0 +1,112 @@
+.helpSection {
+  width: 100%;
+  margin-top: 40px;
+  padding-left: 120px;
+  padding-right: 120px;
+}
+
+@media (width <= 991px) {
+  .helpSection {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.helpTitle {
+  color: #151820;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+@media (width <= 991px) {
+  .helpTitle {
+    max-width: 100%;
+  }
+}
+
+.searchBanner {
+  border-radius: 6px;
+  flex-direction: column;
+  width: 100%;
+  min-height: 170px;
+  margin-top: 12px;
+  padding: 34px 385px 40px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (width <= 991px) {
+  .searchBanner {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.bannerImage {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.bannerTitle {
+  color: #fff;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 600;
+  position: relative;
+}
+
+@media (width <= 991px) {
+  .bannerTitle {
+    max-width: 100%;
+  }
+}
+
+.searchBar {
+  color: #828282;
+  background-color: #fff;
+  border: 2px solid #718295;
+  border-radius: 12px;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 17px;
+  padding: 13px 198px 13px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  position: relative;
+}
+
+@media (width <= 991px) {
+  .searchBar {
+    max-width: 100%;
+    padding-right: 20px;
+  }
+}
+
+.searchIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 22px;
+  min-height: 22px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.searchPlaceholder {
+  align-self: stretch;
+  width: 186px;
+  margin-top: auto;
+  margin-bottom: auto;
+}

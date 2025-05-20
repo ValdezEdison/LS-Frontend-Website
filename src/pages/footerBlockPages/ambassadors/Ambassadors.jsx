@@ -19,8 +19,8 @@ function Ambassadors() {
           <AboutSection />
           <BenefitsSection />
           <TestimonialsSection />
-          <ContactSection />
         </main>
+        <ContactSection />
         <Footer />
       </div>
     </div>

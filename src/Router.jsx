@@ -31,6 +31,8 @@ import Contacto from "./pages/contact/Contacto";
 import DynamicRoutes from "./DynamicRoutes";
 import LifeAtLocalSecrets from "./pages/footerBlockPages/lifeAtLocalSecret/LifeAtLocalSecrets";
 import Ambassadors from "./pages/footerBlockPages/ambassadors/Ambassadors";
+import LocalSecretManager from "./pages/footerBlockPages/localSecretManager/LocalSecretManager";
+import HelpCenter from "./pages/footerBlockPages/helpCenter/HelpCenter";
 const Router = () => {
     return (
         <>
@@ -75,6 +77,8 @@ const Router = () => {
 
                 <Route path="/life-at-local-secrets" element={<LifeAtLocalSecrets />} />
                 <Route path="/ambassadors" element={<Ambassadors />} />
+                <Route path="/local-secret-manager" element={<LocalSecretManager />} />
+                <Route path="/help-center" element={<HelpCenter />} />
 
 
                 <Route path="/blog-list" element={<BlogPage />} />
