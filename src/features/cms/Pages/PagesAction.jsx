@@ -49,3 +49,15 @@ export const fetchContactUs = createAsyncThunk(
         }
     }
 );
+
+export const fetchFreePages = createAsyncThunk(
+    "pages/fetchFreePages",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getFreePages(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

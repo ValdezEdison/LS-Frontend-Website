@@ -55,5 +55,6 @@
   "noStops": "No stops added yet",
   "stopsCount": "{{count}} stops",
   "and": "and",
-  "peopleAlsoSeen": "Other people have also seen"
+  "peopleAlsoSeen": "Other people have also seen",
+  "pageNotFound": "Page not found" 
 }

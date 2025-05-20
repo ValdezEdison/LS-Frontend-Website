@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeroContent, fetchOurPartners, fetchWhoWeAre, fetchContactUs } from "./PagesAction";
+import { fetchHeroContent, fetchOurPartners, fetchWhoWeAre, fetchContactUs, fetchFreePages } from "./PagesAction";
 
 const initialState = {
     heroContent: null,
@@ -13,7 +13,10 @@ const initialState = {
     whoWeAreError: null,
     contactUs: null,
     contactUsLoading: false,
-    contactUsError: null
+    contactUsError: null,
+    freePages: [],
+    freePagesLoading: false,
+    freePagesError: null
 };
 
 const pagesSlice = createSlice({
@@ -74,7 +77,22 @@ const pagesSlice = createSlice({
             .addCase(fetchContactUs.rejected, (state, action) => {
                 state.contactUsLoading = false;
                 state.error = action.payload;
-            });
+            })
+
+            .addCase(fetchFreePages.pending, (state) => {
+                state.freePagesLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchFreePages.fulfilled, (state, action) => {
+                state.freePagesLoading = false;                
+                state.freePages = action.payload?.results;                
+            })
+            .addCase(fetchFreePages.rejected, (state, action) => {
+                state.freePagesLoading = false;
+                state.error = action.payload;
+            })
+            
+            ;
     },
 });
 

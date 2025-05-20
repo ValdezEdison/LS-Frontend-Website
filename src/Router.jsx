@@ -28,6 +28,7 @@ import WorkWithUs from "./pages/joinOurTeam/WorkWithUs";
 import BlogPage from "./pages/Blog/BlogPage";
 import BlogDetail from "./pages/BlogDetailPage/BlogDetail";
 import Contacto from "./pages/contact/Contacto";
+import DynamicRoutes from "./DynamicRoutes";
 const Router = () => {
     return (
         <>
@@ -75,6 +76,7 @@ const Router = () => {
                 <Route path="/blog-detail" element={<BlogDetail />} />
 
                 <Route path="/contact" element={<Contacto />} />
+                <Route path="/*" element={<DynamicRoutes />} />
             </Routes>
         </>
     );

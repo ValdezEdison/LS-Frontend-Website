@@ -15,6 +15,10 @@ const PagesService = {
     getContactUs: async (language) => {
         return CmsApiService.get('/api/v2/contact-sections/?locale=' + language);
     },
+
+    getFreePages: async (language) => {
+        return CmsApiService.get('/api/v2/free-page-blocks/?locale=' + language);
+    }
 }
 
 export default PagesService
