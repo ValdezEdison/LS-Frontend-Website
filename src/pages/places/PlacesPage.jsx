@@ -457,10 +457,23 @@ const PlacesPage = () => {
     // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));
     dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
     if(currentLocation && isAuthenticated && trackingEnabled){
+
+
+      const center = {
+        lat: currentLocation.preferences?.last_known_latitude,
+        lng: currentLocation.preferences?.last_known_longitude
+      };
+      
+      // Generate polygon coordinates
+      const polygonCoords = generatePolygonCoordinates(center);
+
+      const pointsParam = formatPolygonForAPI(polygonCoords);
+      // dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam }));
       dispatch(fetchNearMePlaces({ page: 1, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude, type: "place" }));
     }else{
       // dispatch(fetchPlacesByCityId({ cityId: "", type: "place" }));\
       dispatch(fetchRandomPlaces({ page: 1, type: "place" }));
+     
     }
   }
     dispatch(fetchPlacesFilterCategories({ page: 1, type: "place", cityId: "" }));
@@ -807,6 +820,29 @@ const PlacesPage = () => {
       document.body.classList.remove('overflowHide');
     };
   }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
+
+
+    // Function to generate polygon coordinates
+    const generatePolygonCoordinates = (center, radiusInDegrees = 0.01) => {
+      if (!center?.lat || !center?.lng) return null;
+      return [
+        { lat: center.lat + radiusInDegrees, lng: center.lng - radiusInDegrees },
+        { lat: center.lat + radiusInDegrees, lng: center.lng + radiusInDegrees },
+        { lat: center.lat - radiusInDegrees, lng: center.lng + radiusInDegrees },
+        { lat: center.lat - radiusInDegrees, lng: center.lng - radiusInDegrees },
+      ];
+    };
+  
+    // Function to format coordinates for API
+    const formatPolygonForAPI = (coords) => {
+      // return coords?.map(coord => `${coord.lat},${coord.lng}`).join('|') || '';
+      const pointsQueryString = coords
+      .map(coord => `points=${coord.lat},${coord.lng}`)
+      .join('&');
+
+      return pointsQueryString;
+    };
+
 
   return (
     <>
