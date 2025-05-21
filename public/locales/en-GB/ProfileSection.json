@@ -38,7 +38,13 @@
             "save": "Save",
             "cancel": "Cancel"
         },
-        "emailNote": "This email address is what you used to log in and where all current profiles are sent to."
+        "emailNote": "This email address is what you used to log in and where all current profiles are sent to.",
+        "user_stats": "{{trips}} trips made, {{places}} places visited and {{events}} events seen",
+        "userCategories": {
+            "title": "What are user categories?",
+            "description": "Local Secrets users have different categories based on their role and access level in the application. You can find more details below.",
+            "subtitle": "Category types"
+        }
     },
     "preferences": {
         "title": "Preferences",

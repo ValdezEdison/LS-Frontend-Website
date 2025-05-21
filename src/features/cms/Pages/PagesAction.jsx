@@ -61,3 +61,15 @@ export const fetchFreePages = createAsyncThunk(
         }
     }
 );
+
+export const fetchWorkWithUs = createAsyncThunk(
+    "pages/fetchWorkWithUs",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getWorkWithUs(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

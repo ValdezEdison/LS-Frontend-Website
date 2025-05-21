@@ -22,9 +22,9 @@ const PersonalDetails = ({
 
   const { t } = useTranslation('ProfileSection');
 
-  const toggleGroupsInfo = () => {
-    setShowGroupsInfo(!showGroupsInfo);
-  };
+  // const toggleGroupsInfo = () => {
+  //   setShowGroupsInfo(!showGroupsInfo);
+  // };
   
   const genderOptions = [
     { value: "male", label: t('personalDetails.genderOptions.male') },
@@ -98,7 +98,7 @@ const PersonalDetails = ({
       label: t('personalDetails.fields.profileType'), 
       value: user?.current_trip?.type || groups.find(g => g.name === user?.group)?.name || "", 
       action: t('personalDetails.actions.info'),
-      onClick: toggleGroupsInfo
+      // onClick: toggleGroupsInfo
     },
     { 
       label: t('personalDetails.fields.name'), 
@@ -163,6 +163,21 @@ const PersonalDetails = ({
           />
         </div>
       </div>
+      <div className={styles.userInfo}>
+      <p className={styles.username}>{user?.username}</p>
+      <p className={styles.tripStats}>
+        {/* {user?.num_of_past_travels || 0} trips made, {user?.visited_places || 0} places visited and {user?.visited_events || 0} events seen */}
+        {t('personalDetails.user_stats', {
+        trips: user?.num_of_past_travels || 0,
+        places: user?.visited_places || 0,
+        events: user?.visited_events || 0
+      })}
+      </p>
+    </div>
+
+   
+
+
       {details.map((detail, index) => (
         <React.Fragment key={index}>
           <div className={styles.detailRow}>
@@ -282,25 +297,44 @@ const PersonalDetails = ({
                         ))}
                       </div>
                     ) : (
-                      <input
-                        type="text"
-                        value={personalDetails[detail.label.toLowerCase().replace(' ', '')] || ""}
-                        onChange={(e) => onPersonalDetailsChange(
-                          detail.label.toLowerCase().replace(' ', ''), 
-                          e.target.value
-                        )}
-                        className={styles.editInput}
-                      />
+                      // <input
+                      //   type="text"
+                      //   value={personalDetails[detail.label.toLowerCase().replace(' ', '')] || ""}
+                      //   onChange={(e) => onPersonalDetailsChange(
+                      //     detail.label.toLowerCase().replace(' ', ''), 
+                      //     e.target.value
+                      //   )}
+                      //   className={styles.editInput}
+                      // />
+                      editingField === t('personalDetails.fields.profileType') && (
+                        <div className={styles.categorySection}>
+                        <h2 className={styles.sectionTitle}>{t('personalDetails.userCategories.title')}</h2>
+                        <p className={styles.sectionText}>
+                        {t('personalDetails.userCategories.description')}
+                        </p>
+                        
+                        <h3 className={styles.subsectionTitle}>{t('personalDetails.userCategories.subtitle')}</h3>
+                       {groups.length > 0 && groups.map((group, index) => (
+                           <div className={styles.categoryItem}>
+                           <h4 className={styles.categoryName}>{group.name}:</h4>
+                           <p className={styles.categoryDescription}>
+                             {group.description || group.general_description}
+                           </p>
+                         </div>
+                       ))}
+                      </div>
+                     )
+                      // <></>
                     )
                   ) : (
                     <span className={styles.value}>{detail.value}</span>
                   )}
-                  {detail.verified && !editingField && (
+                  {detail.verified &&  (
                     <span className={styles.verifiedBadge}>{t('personalDetails.actions.verified')}</span>
                   )}
                 </div>
                 <div className={styles.valueRowBottom}>
-                  {detail.verified && !editingField && detail.label === t('personalDetails.fields.email') && (
+                  {detail.verified && detail.label === t('personalDetails.fields.email') && (
                     <p className={styles.emailNote}>
                       {t('personalDetails.emailNote')}
                     </p>
@@ -327,7 +361,7 @@ const PersonalDetails = ({
               </button>
             )}
           </div>
-          {editingField === detail.label && detail.action !== "none" && (
+          {/* {editingField === detail.label && detail.action !== "none" && (
             <div className={styles.saveButtonWrapper}>
               <button 
                 className={`${styles.actionButton} ${styles.saveButton}`}
@@ -336,7 +370,7 @@ const PersonalDetails = ({
                  {t('personalDetails.actions.save')}
               </button>
             </div>
-          )}
+          )} */}
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}

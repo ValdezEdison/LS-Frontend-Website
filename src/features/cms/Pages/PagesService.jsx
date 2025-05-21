@@ -18,7 +18,11 @@ const PagesService = {
 
     getFreePages: async (language) => {
         return CmsApiService.get('/api/v2/free-page-blocks/?locale=' + language);
-    }
+    },
+
+    getWorkWithUs: async (language) => {
+        return CmsApiService.get('/api/v2/work-with-us/?locale=' + language);
+    },
 }
 
 export default PagesService

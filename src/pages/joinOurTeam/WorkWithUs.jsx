@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./WorkWithUs.module.css";
 import Header from "../../components/layouts/Header";
 import Sidebar from "../../components/footerBlockPages/common/Sidebar";
@@ -10,8 +10,20 @@ import Testimonials from "../../components/footerBlockPages/joinOurTeam/Testimon
 import ContactCTA from "../../components/footerBlockPages/joinOurTeam/ContactCTA";
 import Footer from "../../components/layouts/Footer";
 import NewsletterBanner from "../../components/footerBlockPages/common/NewsLetterBanner";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWorkWithUs } from "../../features/cms/Pages/PagesAction";
+import { LanguageContext } from "../../context/LanguageContext";
+
 
 function WorkWithUs() {
+
+const { language, languageId } = useContext(LanguageContext);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchWorkWithUs(language));
+  }, [dispatch, language, languageId]);
+
   return (
     <div className={styles.trabajaconnosotros}>
       <Header />
