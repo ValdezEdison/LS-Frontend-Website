@@ -266,7 +266,10 @@ const TravelItineraryEdit = () => {
   useEffect(() => {
     if (formState.cityIds) {
       
-      const cityIdsString = formState.cityIds.join(',');
+      // const cityIdsString = formState.cityIds.join(',');
+      const cityIdsString = formState.cityIds
+      .filter(id => id != null && id !== '') // Remove empty/null values
+      .join(',');
       
       dispatch(fetchStops({
         cityId: cityIdsString,
