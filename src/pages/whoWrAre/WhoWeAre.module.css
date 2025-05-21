@@ -164,6 +164,7 @@
   font-size: 14px;
   font-weight: 400;
   display: flex;
+  flex-shrink: 0;
 }
 .sidebarContent {
   align-self: start;
@@ -218,6 +219,7 @@
 @media (width<=991px) {
   .sidebarLinks {
     /* padding-right: 20px; */
+    border-right: none;
   }
 }
 /* .lifeAtCompanyLink {
