@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import styles from "../../../pages/footerBlockPages/lifeAtLocalSecret/LifeAtLocalSecrets.module.css";
-
+import { useTranslation } from "react-i18next";
 function FaqSection() {
+
+  const { t } = useTranslation("LifeAtLocalSecrets");
+
   const [openFaq, setOpenFaq] = useState(null);
 
   const toggleFaq = (index) => {
@@ -88,12 +91,14 @@ function FaqSection() {
 
   return (
     <section className={styles.faqSection}>
-      <h2 className={styles.faqTitle}>Resolvemos tus dudas</h2>
+      <h2 className={styles.faqTitle}>{t('faq.title')}</h2>
       <div className={styles.faqContainer}>
-        {faqItems.map((item, index) => (
+        {[0, 1, 2, 3, 4].map((index) => (
           <React.Fragment key={index}>
             <div className={getRowClassName(index)}>
-              <h3 className={getQuestionClassName(index)}>{item.question}</h3>
+              <h3 className={getQuestionClassName(index)}>
+                {t(`faq.items.${index}.question`)}
+              </h3>
               <button
                 onClick={() => toggleFaq(index)}
                 aria-expanded={openFaq === index}
@@ -111,14 +116,14 @@ function FaqSection() {
                             ? "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/212295c414ffb46216909d47d11a162f2bf22a8d?placeholderIfAbsent=true"
                             : "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/948ce91a9c3c4cb050838a840974e4d233d36775?placeholderIfAbsent=true"
                   }
-                  alt={openFaq === index ? "Cerrar" : "Abrir"}
+                  alt={openFaq === index ? t('faq.close') : t('faq.open')}
                   className={getIconClassName(index)}
                 />
               </button>
             </div>
             {openFaq === index && (
               <div id={`faq-answer-${index}`} className={styles.faqAnswer}>
-                {item.answer}
+                {t(`faq.items.${index}.answer`)}
               </div>
             )}
             <div className={getDividerClassName(index)} />

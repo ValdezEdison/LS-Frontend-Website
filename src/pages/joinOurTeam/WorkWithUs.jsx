@@ -13,9 +13,12 @@ import NewsletterBanner from "../../components/footerBlockPages/common/NewsLette
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkWithUs } from "../../features/cms/Pages/PagesAction";
 import { LanguageContext } from "../../context/LanguageContext";
+import { useTranslation } from "react-i18next";
 
 
 function WorkWithUs() {
+
+  const { t } = useTranslation("WorkWithUs");
 
 const { language, languageId } = useContext(LanguageContext);
 
@@ -34,10 +37,10 @@ const { language, languageId } = useContext(LanguageContext);
             <JobSearch />
           </div>
           <h2 className={styles.sectionTitle}>
-            Explora posiciones abiertas por departamento
+          {t('departmentSection.title')}
           </h2>
           <DepartmentSection />
-          <button className={styles.viewAllButton}>Ver todo</button>
+          <button className={styles.viewAllButton}> {t('departmentSection.viewAll')}</button>
         </main>
         
       </div>
@@ -46,8 +49,8 @@ const { language, languageId } = useContext(LanguageContext);
         <Testimonials />
         
       </div>
-      <NewsletterBanner title="Si no encuentras la posición que buscas, puedes ponerte en contacto
-          con nosotros" buttonText="Contactar"/>
+      <NewsletterBanner title={t('newsletter.title')}
+        buttonText={t('newsletter.buttonText')}/>
      
       <Footer />
     </div>

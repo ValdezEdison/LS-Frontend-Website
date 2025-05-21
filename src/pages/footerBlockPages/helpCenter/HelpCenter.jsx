@@ -1,12 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./HelpCenter.module.css";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
 import { Activity, Destinos, Fav, Itinerarios, Lugares, Misviajes, PlaceFilter, Preguntas, Ticket } from "../../../components/common/Images";
+import { useDispatch, useSelector } from "react-redux";
+import { LanguageContext } from "../../../context/LanguageContext";
+import { fetchFaqBlocks } from "../../../features/cms/Pages/PagesAction";
 
 // Header component for the help center
 const HelpCenterHeader = () => {
+
+  const { language, languageId } = useContext(LanguageContext);
+  const { faqBlocks, faqBlocksLoading } = useSelector((state) => state.cms.pages);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    dispatch(fetchFaqBlocks(languageId));
+   
+  }, [language]);
+
   return (
     <header className={styles.headerSection}>
       <h1 className={styles.helpCenterTitle}>Centro de ayuda</h1>

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../../../pages/whoWrAre/WhoWeAre.module.css";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
+
+  const { t } = useTranslation("FooterBlockSideBar"); 
   const navigate = useNavigate();
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
@@ -17,10 +20,10 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-    { name: "Quiénes somos", path: "/who-we-are" },
-    { name: "Trabaja con nosotros", path: "/join-our-team" },
+    { name: t('sidebar.aboutUs'), path: "/who-we-are" },
+    { name: t('sidebar.joinUs'), path: "/join-our-team" },
     { 
-      name: "La vida en Local Secrets", 
+      name: t('sidebar.lifeAtCompany'), 
       path: "/life-at-local-secrets",
       className: styles.lifeAtCompanyLink 
     },

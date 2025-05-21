@@ -1,0 +1,75 @@
+{
+    "hero": {
+      "title": "Embajadores",
+      "bannerAlt": "Banner de Embajadores",
+      "bannerTitle": "¡Conviértete en embajador de Local Secrets!"
+    },
+    "about": {
+      "paragraphs": [
+        "Local Secrets es la marca española del grupo Local Secrets. Fundada en 20XX, nuestra empresa es una de las más dinámicas y populares en el sector turístico europeo. Local Secrets tiene más de 10 millones de fans en Facebook y más de 30 millones de visitantes en sus plataformas cada mes.",
+        "Nuestro éxito se basa principalmente en nuestra capacidad para encontrar y difundir continuamente ofertas de productos turísticos inspiradoras y atractivas.",
+        "Pero también es nuestro auténtico amor por los viajes lo que nos une y nos impulsa, día a día, a ofrecer a nuestra comunidad las ofertas de viajes y destinos con los que soñamos nosotros mismos.",
+        "Queremos seguir soñando, creciendo y cambiando la industria del viaje de forma sostenible con socios sólidos a nuestro lado. Te proponemos destacar, en varios medios, las ventajas de tu marca, tus ofertas y tus destinos ante nuestra importante comunidad de viajeros."
+      ]
+    },
+    "benefits": {
+      "title": "¿Por qué trabajar con Local Secrets?",
+      "items": [
+        {
+          "title": "Cultura de innovación y creatividad",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e08cdcbad23ed5f1136b2547d34d284f833e89?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Oportunidades de crecimiento profesional",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/56caf4404aa5e408994bfadeecb4fab3d888afcc?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Enfoque en la comunidad local",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a658e25bb6e2806981c1ad98bd9f920ab9e31480?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Impacto en la industria del turismo",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/79343fec988fcf0c51c287ee5292c8d921ae4888?placeholderIfAbsent=true"
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "Qué opinan nuestros viajeros",
+      "subtitle": "Echa un vistazo lo que dicen nuestros trabajadores sobre el portal de Local Secrets. Nuestro objetivo es brindar la máxima calidad para todos los públicos.",
+      "items": [
+        {
+          "text": "\"Desde el principio me ha parecido super sencillo utilizar Local Secrets. Además me he descargado la app para poder gestionar mi negocio desde cualquier lugar. Increible\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/5d7bb9ccd4c28a2b6763735918f97577c2c904a2?placeholderIfAbsent=true"
+        },
+        {
+          "text": "\"Simplemente la mejor web. Lo recomiendo sobre todo para negocios que están empezando y no saben como hacerse ver\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/c9b431a587a9df8e73c2f5686acfd4a48f5620d4?placeholderIfAbsent=true"
+        },
+        {
+          "text": "\"Súper atentos. En todo momento han respondido a mis dudas super rápido y mi local ha tenido más visitas desde que estamos en Local Secrets. Muchas gracias\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/164e45e55fb8202175efd993a673dfe5ae08c781?placeholderIfAbsent=true"
+        }
+      ]
+    },
+    "contact": {
+      "title": "¿Quieres formar parte de Local Secrets?",
+      "prompt": "Contacta con nuestro departamento comercial o rellena el formulario:",
+      "address": "Catalina Ederer\nKey Account Manager\nexample@gmail.com",
+      "formTitle": "Completa el formulario para contactar con nosotros",
+      "imageAlt": "Imagen de contacto"
+    },
+    "contactForm": {
+        "firstName": "Nombre*",
+        "lastName": "Apellido*",
+        "linkedin": "Perfil de LinkedIn*",
+        "email": "Correo electrónico*",
+        "message": "Mensaje*",
+        "disclaimer": "No facilites ningún dato personal o sensible en esta casilla",
+        "privacy": {
+          "text": "Al hacer clic en 'Enviar' confirmas que has leído nuestra",
+          "link": "Política de privacidad",
+          "optOut": ". Si no deseas recibir nuestros correos electrónicos sobre servicios similares, escríbenos a ejemplo@gmail.com"
+        },
+        "submit": "Enviar"
+      }
+  }

@@ -1,0 +1,42 @@
+{
+    "departmentSection": {
+      "title": "Explora posiciones abiertas por departamento",
+      "viewAll": "Ver todo"
+    },
+    "jobSearch": {
+      "title": "Busca posiciones abiertas",
+      "backgroundAlt": "Imagen de fondo del lugar de trabajo",
+      "searchIconAlt": "Icono de búsqueda",
+      "placeholder": "Busca una posición o localización"
+    },
+    "departments": {
+      "engineering": "Ingeniería y tecnología",
+      "sales": "Ventas",
+      "customerService": "Atención al cliente",
+      "marketing": "Marketing",
+      "administration": "Administración",
+      "design": "Diseño"
+    },
+    "companyStats": {
+      "title": "Ayudamos al mundo a viajar",
+      "description": "Todos los días, Local Secrets ayuda a las personas a planificar viajes, conectando a viajeros, empresas y comunidades de todo el mundo",
+      "users": "Atendemos a más de 100 mil usuarios",
+      "reviews": "Recibimos más de 100 mil reseñas al año",
+      "countries": "Tenemos actividad en más de 20 países",
+      "businesses": "Potenciamos a más de 100 mil empresas"
+    },
+    "newsletter": {
+      "title": "Si no encuentras la posición que buscas, puedes ponerte en contacto con nosotros",
+      "buttonText": "Contactar"
+    },
+    "testimonials": {
+        "title": "¿Qué dicen los empleados de nosotros?",
+        "description": "Echa un vistazo lo que dicen nuestros trabajadores sobre el portal de Local Secrets. Nuestro objetivo es brindar la máxima calidad para todos los públicos.",
+        "avatarAlt": "Retrato de empleado",
+        "quotes": [
+          "\"Desde el principio me ha parecido super sencillo utilizar Local Secrets. Además me he descargado la app para poder gestionar mi negocio desde cualquier lugar. Increible\"",
+          "\"Simplemente la mejor web. Lo recomiendo sobre todo para negocios que están empezando y no saben como hacerse ver\"",
+          "\"Súper atentos. En todo momento han respondido a mis dudas super rápido y mi local ha tenido más visitas desde que estamos en Local Secrets. Muchas gracias\""
+        ]
+      }
+  }

@@ -73,3 +73,15 @@ export const fetchWorkWithUs = createAsyncThunk(
         }
     }
 );
+
+export const fetchFaqBlocks = createAsyncThunk(
+    "pages/fetchFaqBlocks",
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await pagesService.getFaqBlocks(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

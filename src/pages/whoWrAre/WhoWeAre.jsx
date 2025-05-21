@@ -24,11 +24,14 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { PlaceHolderImg1 } from "../../components/common/Images";
 import config from "../../config";
+import { useTranslation } from "react-i18next";
 
 function WhoWeAre() {
   const { language, languageId } = useContext(LanguageContext);
   const { whoWeAre, whoWeAreLoading } = useSelector((state) => state.cms.pages);
   const dispatch = useDispatch();
+
+  const { t } = useTranslation("WhoWeAre");
 
   useEffect(() => {
     dispatch(fetchWhoWeAre(languageId));
@@ -84,8 +87,8 @@ function WhoWeAre() {
       </div>
       
       <NewsLetterBanner 
-        title="¿Quieres conocer más sobre la vida en Local Secrets?" 
-        buttonText="Descubrir más"
+       title={t('newsletter.title')}
+       buttonText={t('newsletter.buttonText')}
       />
       <Footer />
     </main>

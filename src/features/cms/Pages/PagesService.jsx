@@ -23,6 +23,9 @@ const PagesService = {
     getWorkWithUs: async (language) => {
         return CmsApiService.get('/api/v2/work-with-us/?locale=' + language);
     },
+    getFaqBlocks: async (language) => {
+        return CmsApiService.get('/api/v2/faq-blocks/?locale=' + language);
+    },
 }
 
 export default PagesService
