@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./HelpCenter.module.css";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
+import { Activity, Destinos, Fav, Itinerarios, Lugares, Misviajes, PlaceFilter, Preguntas, Ticket } from "../../../components/common/Images";
 
 // Header component for the help center
 const HelpCenterHeader = () => {
@@ -44,14 +45,14 @@ const TopicCard = ({ icon, title, className }) => {
   // Map title to the corresponding text class name
   const getTextClassName = (title) => {
     const titleMap = {
-      Itinerarios: "itineraryText",
-      Eventos: "eventsText",
-      Actividades: "activitiesText",
-      Lugares: "placesText",
-      "Preguntas frecuentes": "faqCardText",
-      Destinos: "destinationsText",
-      "Mis viajes": "myTripsText",
-      Favoritos: "favoritesText",
+      Itinerarios: "textWrapper",
+      Eventos: "textWrapper",
+      Actividades: "textWrapper",
+      Lugares: "textWrapper",
+      Preguntas : "textWrapper",
+      Destinos: "textWrapper",
+      Misviajes: "textWrapper",
+      Favoritos: "textWrapper",
     };
     return styles[titleMap[title]];
   };
@@ -59,13 +60,9 @@ const TopicCard = ({ icon, title, className }) => {
   // Map icon to the corresponding icon class name
   const getIconClassName = (title) => {
     const iconMap = {
-      Itinerarios: {
-        className: styles.iconWrapper,
-        content: <div className={styles.vectorIcon} />,
-      },
-      Eventos: { className: styles.ticketIcon, content: null },
-      Actividades:
-        "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/61ad17e2b1c12c15c35aa3e6dad9a813d2a2074c?placeholderIfAbsent=true",
+      Itinerarios: {Itinerarios},
+      Eventos: {Ticket},
+      Actividades:{Activity},
       Lugares:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/fd79b17b58ea0b1ed50f819983f98dee981a0a1e?placeholderIfAbsent=true",
       "Preguntas frecuentes":
@@ -80,11 +77,9 @@ const TopicCard = ({ icon, title, className }) => {
   };
 
   const iconElement =
-    typeof icon === "string" ? (
+    
       <img src={icon} alt={title} className={styles.cardIcon} />
-    ) : (
-      <div className={icon.className}>{icon.content}</div>
-    );
+   
 
   return (
     <article className={className}>
@@ -106,47 +101,44 @@ const TopicsSection = () => {
       <div className={styles.topicsGrid}>
         <div className={styles.topicsCardContainer}>
           <TopicCard
-            icon={{
-              className: styles.iconWrapper,
-              content: <div className={styles.vectorIcon} />,
-            }}
+            icon={Itinerarios}
             title="Itinerarios"
-            className={styles.itineraryCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon={{ className: styles.ticketIcon, content: null }}
+            icon={Ticket}
             title="Eventos"
-            className={styles.eventsCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/61ad17e2b1c12c15c35aa3e6dad9a813d2a2074c?placeholderIfAbsent=true"
+            icon={Activity}
             title="Actividades"
-            className={styles.activitiesCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/fd79b17b58ea0b1ed50f819983f98dee981a0a1e?placeholderIfAbsent=true"
+            icon={Lugares}
             title="Lugares"
-            className={styles.placesCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/8d16a9e91c9a292c65ff211254f76d783b60ea39?placeholderIfAbsent=true"
+            icon={Preguntas}
             title="Preguntas frecuentes"
-            className={styles.faqCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/07860fa5891a44ec099153108e39f5b25020c2f5?placeholderIfAbsent=true"
+            icon={Destinos}
             title="Destinos"
-            className={styles.destinationsCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/106898fed6603c063eeb4457a4b8146d86a4e2dd?placeholderIfAbsent=true"
+            icon={Misviajes}
             title="Mis viajes"
-            className={styles.myTripsCard}
+            className={styles.cardItem}
           />
           <TopicCard
-            icon={{ className: styles.heartIcon, content: null }}
+             icon={Fav}
             title="Favoritos"
-            className={styles.favoritesCard}
+            className={styles.cardItem}
           />
         </div>
       </div>
@@ -209,11 +201,7 @@ const FAQItem = ({
   return (
     <article className={className}>
       <div
-        className={
-          index === 0
-            ? styles.faqQuestionRow
-            : styles[`faqQuestionRow${index + 1}`]
-        }
+        className={styles.faqQuestionRow}
       >
         <h3 className={getQuestionClassName(index)}>{question}</h3>
         <button onClick={toggleOpen}>
@@ -313,16 +301,20 @@ const ContactSection = () => {
   return (
     <footer className={styles.contactWrapper}>
       <section className={styles.contactSection}>
-        <div className={styles.contactContent}>
-          <h2 className={styles.contactTitle}>Contacta con nosotros</h2>
-          <p className={styles.contactDescription}>
-            Para más información escribe tu correo o llama al teléfono de
-            contacto, te responderemos con la mayor brevedad posible.
-          </p>
+        <div className="page-center">
+          <div className={styles.contactContent}>
+            <h2 className={styles.contactTitle}>Contacta con nosotros</h2>
+            <p className={styles.contactDescription}>
+              Para más información escribe tu correo o llama al teléfono de
+              contacto, te responderemos con la mayor brevedad posible.
+            </p>
+          </div>
+          <div className={styles.buttonWrapper}>
+            <button className={styles.contactButton}>Contacto</button>
+          </div>
         </div>
-        <div className={styles.buttonWrapper}>
-          <button className={styles.contactButton}>Contacto</button>
-        </div>
+        
+       
       </section>
     </footer>
   );

@@ -1,6 +1,7 @@
 const LSLogo2_1 = "/images/app-local-secrets-logo-2-1.svg";
 const LSLogo2 = "/images/app-local-secrets-logo-2.svg";
 const LSLogo2_2 = "/images/app-local-secrets-logo-2-2.svg";
+const Activity = "/images/actividades.svg"
 const AddCircle = "/images/add-circle.svg"
 const Africa = "/images/africa.svg";
 const America = "/images/america.svg";
@@ -23,6 +24,7 @@ const FacebookWhite = "/images/facebookwhite.svg";
 const FirstAid = "/images/first_aid.svg";
 const Filter = "/images/filter.svg";
 const Grapes = "/images/grapes.svg";
+const Itinerarios = "/images/itinerarios.svg";
 const QR = "/images/QR.png";
 const FirstSection = "/images/imgen-primera-seccin-1@2x.png";
 const FirstSection1 = "/images/imgen-primera-seccin-1-1@2x.png";
@@ -71,6 +73,7 @@ const Spain = "/images/spain.png";
 const Star = "/images/star.svg";
 const StarFill = "/images/star-fill.svg";
 const Subtract = "/images/subtract.svg";
+const Ticket = "/images/ticket.svg";
 const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
@@ -79,13 +82,18 @@ const Verify = "/images/verify.svg";
 const Warning = "/images/warning.svg";
 const Wifi = "/images/wifi.svg";
 
-
+const Lugares = "/images/lugares.svg";
+const Fav = "/images/fav.svg";
+const Misviajes = "/images/misviajes.svg";
+const Destinos = "/images/destinos.svg";
+const Preguntas = "/images/preguntas.svg";
 
 
 export {
     LSLogo2_1,
     LSLogo2,
     LSLogo2_2,
+    Activity,
     AddCircle,
     Africa,
     America,
@@ -119,6 +127,7 @@ export {
     FirstSection7,
     Google,
     Grapes,
+    Itinerarios,
     SecondSection3,
     SecondSection3_1,
     SecondSection4,
@@ -155,6 +164,7 @@ export {
     Setting,
     Subtract,
     Spain,
+    Ticket,
     UK,
     US,
     userAdd,
@@ -162,5 +172,10 @@ export {
     Wifi,
     Star,
     StarFill,
-    Warning
+    Warning,
+    Lugares,
+    Fav,
+    Misviajes ,
+    Destinos ,
+    Preguntas 
 };

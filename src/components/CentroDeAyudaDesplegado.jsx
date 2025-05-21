@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./CentroDeAyudaDesplegado.module.css";
+import { Activity, Itinerarios, Ticket } from "./common/Images";
 
 // Header component for the help center
 const HelpCenterHeader = () => {
@@ -57,13 +58,9 @@ const TopicCard = ({ icon, title, className }) => {
   // Map icon to the corresponding icon class name
   const getIconClassName = (title) => {
     const iconMap = {
-      Itinerarios: {
-        className: styles.iconWrapper,
-        content: <div className={styles.vectorIcon} />,
-      },
-      Eventos: { className: styles.ticketIcon, content: null },
-      Actividades:
-        "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/61ad17e2b1c12c15c35aa3e6dad9a813d2a2074c?placeholderIfAbsent=true",
+       Itinerarios: {Itinerarios},
+       Eventos: {Ticket},
+       Actividades:{Activity},
       Lugares:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/fd79b17b58ea0b1ed50f819983f98dee981a0a1e?placeholderIfAbsent=true",
       "Preguntas frecuentes":

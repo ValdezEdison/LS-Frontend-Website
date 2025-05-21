@@ -26,14 +26,14 @@
 }
 .headerSection {
   width: 100%;
-  padding-left: 120px;
-  padding-right: 120px;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
 }
 @media (width<=991px) {
   .headerSection {
     max-width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
   }
 }
 .helpCenterTitle {
@@ -94,7 +94,7 @@
   gap: 10px;
   width: 100%;
   margin-top: 17px;
-  padding: 13px 198px 13px 14px;
+  padding: 13px 14px 13px 14px;
   font-size: 14px;
   font-weight: 400;
   display: flex;
@@ -119,22 +119,25 @@
 }
 .searchPlaceholder {
   align-self: stretch;
-  width: 186px;
+  /* width: 186px; */
   margin-top: auto;
   margin-bottom: auto;
+  flex-grow: 1;
+  border: none;
+  outline: none;
 }
 .topicsSection {
   width: 100%;
   margin-top: 46px;
-  padding-left: 120px;
-  padding-right: 120px;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
 }
 @media (width<=991px) {
   .topicsSection {
     max-width: 100%;
     margin-top: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
   }
 }
 .topicsHeader {
@@ -162,10 +165,11 @@
 .leftDivider {
   background-color: #bdbdbd;
   border: 1px solid #bdbdbd;
-  flex-shrink: 0;
+  flex: 1;
   align-self: stretch;
-  width: 429px;
-  min-width: 240px;
+  max-width: 429px;
+  /* min-width: 240px; */
+  width: 100%;
   height: 1px;
   margin-top: auto;
   margin-bottom: auto;
@@ -181,9 +185,10 @@
   border: 1px solid #bdbdbd;
   flex: 1;
   align-self: stretch;
-  width: 428px;
-  min-width: 240px;
-  height: 0;
+  max-width: 429px;
+  /* min-width: 240px; */
+  width: 100%;
+  height: 1px;
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -202,15 +207,27 @@
   align-items: center;
   gap: 28px;
   width: 100%;
-  padding-left: 120px;
-  padding-right: 120px;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
   display: flex;
 }
 @media (width<=991px) {
+.topicsHeader{
+  gap: 40px;
+}
+}
+
+@media (width<=768px) {
+  .leftDivider,.rightDivider{
+    display: none;
+}
+}
+
+@media (width<=991px) {
   .topicsCardContainer {
     max-width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
   }
 }
 .itineraryCard {
@@ -246,7 +263,7 @@
   min-height: 40px;
   display: flex;
 }
-.itineraryText {
+.textWrapper,h3 {
   color: #151820;
   margin-top: 20px;
   font-family:
@@ -258,39 +275,48 @@
   font-size: 16px;
   font-weight: 600;
 }
-.eventsCard {
+.cardItem {
   color: #151820;
   white-space: nowrap;
-  background-color: #fafaff;
+  background-color:#FAFAFF;
   border-radius: 6px;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
-  justify-content: start;
+  justify-content: center;
   align-self: stretch;
-  align-items: stretch;
-  width: 175px;
+  align-items: center;
+  /* width: 175px; */
+  max-width: calc(25% - 21px);
+  width: 100%;
   margin-top: auto;
   margin-bottom: auto;
-  padding: 49px 82px 45px;
-  font-family:
-    Source Sans Pro,
-    -apple-system,
-    Roboto,
-    Helvetica,
-    sans-serif;
+  /* padding: 49px 82px 45px; */
+  padding: 10px;
   font-size: 16px;
   font-weight: 600;
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
+  height: 170px;
 }
 @media (width<=991px) {
-  .eventsCard {
-    white-space: initial;
-    padding-left: 20px;
-    padding-right: 20px;
+
+  .cardItem {
+    max-width: calc(50% - 14px);
   }
 }
+
+@media (width<=480px) {
+
+  .cardItem {
+    max-width: 100%;
+  }
+
+  .textWrapper{
+    margin-top: 10px ;
+  }
+}
+
 .ticketIcon {
   align-self: center;
   width: 38px;
@@ -614,8 +640,9 @@
   }
 }
 .faqList {
-  width: 505px;
-  min-width: 240px;
+  max-width: 505px;
+  width: 100%;
+  /* min-width: 240px; */
   font-family:
     Source Sans Pro,
     -apple-system,
@@ -647,6 +674,13 @@
   gap: 20px;
   display: flex;
 }
+
+.faqQuestionRow button{
+  border: none;
+  background: none;
+  outline: none;
+}
+
 @media (width<=991px) {
   .faqQuestionRow {
     max-width: 100%;
@@ -892,7 +926,7 @@
   justify-content: start;
   align-items: stretch;
   width: 100%;
-  padding: 60px 439px 60px 434px;
+  /* padding: 60px 439px 60px 434px; */
   display: flex;
   overflow: hidden;
 }
@@ -906,6 +940,8 @@
 .contactContent {
   color: #fff;
   width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
 }
 @media (width<=991px) {
   .contactContent {
@@ -949,7 +985,7 @@
   align-self: center;
   width: 146px;
   max-width: 100%;
-  margin-top: 36px;
+  margin: 36px auto 60px;
   font-family:
     Source Sans Pro,
     -apple-system,
@@ -966,16 +1002,24 @@
 }
 .contactButton {
   color: #151820;
-  leading-trim: both;
-  text-edge: cap;
   background-color: #f4c031;
   border-radius: 12px;
   align-self: stretch;
   gap: 8px;
-  min-height: 40px;
-  padding: 15px 16px;
-  overflow: hidden;
+  height: 40px;
+  padding: 5px 45px;
+  border:none;
+  outline: none;
+  cursor: pointer;
+  transition: all ease .3s;
+  font-size: 15px;
+  font-weight: 600;
+  /* overflow: hidden; */
 }
+.contactButton:hover {
+  background-color: #e4b230;
+}
+
 @media (width<=991px) {
   .contactButton {
     white-space: initial;
