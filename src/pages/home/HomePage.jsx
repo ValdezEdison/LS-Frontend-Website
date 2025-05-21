@@ -64,8 +64,9 @@ const HomePage = () => {
   const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const placesList = currentLocation && isAuthenticated ? places : randomPlaces;
+  
   const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
+  const placesList = currentLocation && isAuthenticated && trackingEnabled ? places : randomPlaces;
   // Fetch places on component mount
   useEffect(() => {
 
