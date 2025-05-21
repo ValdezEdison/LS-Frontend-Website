@@ -1,0 +1,21 @@
+{
+    "mission": {
+      "title": "Nuestra misión"
+    },
+    "values": {
+      "title": "Nuestros valores"
+    },
+    "vision": {
+      "title": "Nuestra visión"
+    },
+    "company": {
+      "title": "Nuestra empresa"
+    },
+    "team": {
+      "title": "Nuestro equipo"
+    },
+    "newsletter": {
+      "title": "¿Quieres conocer más sobre la vida en Local Secrets?",
+      "buttonText": "Descubrir más"
+    }
+  }

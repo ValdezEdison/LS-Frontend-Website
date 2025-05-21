@@ -1,0 +1,42 @@
+{
+    "departmentSection": {
+      "title": "Explore open positions by department",
+      "viewAll": "View all"
+    },
+    "jobSearch": {
+      "title": "Search open positions",
+      "backgroundAlt": "Background image of workplace",
+      "searchIconAlt": "Search icon",
+      "placeholder": "Search for a position or location"
+    },
+    "departments": {
+      "engineering": "Engineering & Technology",
+      "sales": "Sales",
+      "customerService": "Customer Service",
+      "marketing": "Marketing",
+      "administration": "Administration",
+      "design": "Design"
+    },
+    "companyStats": {
+      "title": "We help the world travel",
+      "description": "Every day, Local Secrets helps people plan trips, connecting travelers, businesses and communities around the world",
+      "users": "We serve over 100,000 users",
+      "reviews": "We receive over 100,000 reviews per year",
+      "countries": "We operate in more than 20 countries",
+      "businesses": "We empower over 100,000 businesses"
+    },
+    "newsletter": {
+      "title": "If you don't find the position you're looking for, you can contact us",
+      "buttonText": "Contact"
+    },
+    "testimonials": {
+        "title": "What do employees say about us?",
+        "description": "Check out what our workers say about the Local Secrets portal. Our goal is to provide the highest quality for all audiences.",
+        "avatarAlt": "Employee portrait",
+        "quotes": [
+          "\"From the beginning I found Local Secrets super easy to use. Plus I downloaded the app to manage my business from anywhere. Amazing!\"",
+          "\"Simply the best website. I especially recommend it for businesses that are just starting out and don't know how to get noticed\"",
+          "\"Super attentive. They answered all my questions very quickly and my location has had more visits since we've been on Local Secrets. Thank you very much\""
+        ]
+      }
+  }

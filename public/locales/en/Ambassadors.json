@@ -1,0 +1,75 @@
+{
+    "hero": {
+      "title": "Ambassadors",
+      "bannerAlt": "Ambassadors Banner",
+      "bannerTitle": "Become a Local Secrets ambassador!"
+    },
+    "about": {
+      "paragraphs": [
+        "Local Secrets is the Spanish brand of the Local Secrets group. Founded in 20XX, our company is one of the most dynamic and popular in the European tourism sector. Local Secrets has more than 10 million fans on Facebook and more than 30 million visitors to its platforms every month.",
+        "Our success is based primarily on our ability to continuously find and disseminate inspiring and attractive tourism product offers.",
+        "But it's also our genuine love of travel that unites and drives us, day after day, to offer our community the travel deals and destinations we dream of ourselves.",
+        "We want to keep dreaming, growing and changing the travel industry sustainably with strong partners by our side. We propose to highlight, in various media, the advantages of your brand, your offers and your destinations to our important community of travelers."
+      ]
+    },
+    "benefits": {
+      "title": "Why work with Local Secrets?",
+      "items": [
+        {
+          "title": "Culture of innovation and creativity",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e08cdcbad23ed5f1136b2547d34d284f833e89?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Professional growth opportunities",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/56caf4404aa5e408994bfadeecb4fab3d888afcc?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Focus on local community",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a658e25bb6e2806981c1ad98bd9f920ab9e31480?placeholderIfAbsent=true"
+        },
+        {
+          "title": "Impact on tourism industry",
+          "image": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/79343fec988fcf0c51c287ee5292c8d921ae4888?placeholderIfAbsent=true"
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "What our travelers say",
+      "subtitle": "Check out what our workers say about the Local Secrets portal. Our goal is to provide the highest quality for all audiences.",
+      "items": [
+        {
+          "text": "\"From the beginning I found Local Secrets super easy to use. Plus I downloaded the app to manage my business from anywhere. Amazing!\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/5d7bb9ccd4c28a2b6763735918f97577c2c904a2?placeholderIfAbsent=true"
+        },
+        {
+          "text": "\"Simply the best website. I especially recommend it for businesses that are just starting out and don't know how to get noticed\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/c9b431a587a9df8e73c2f5686acfd4a48f5620d4?placeholderIfAbsent=true"
+        },
+        {
+          "text": "\"Super attentive. They answered all my questions very quickly and my location has had more visits since we've been on Local Secrets. Thank you very much\"",
+          "avatar": "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/164e45e55fb8202175efd993a673dfe5ae08c781?placeholderIfAbsent=true"
+        }
+      ]
+    },
+    "contact": {
+      "title": "Want to be part of Local Secrets?",
+      "prompt": "Contact our sales department or fill out the form:",
+      "address": "Catalina Ederer\nKey Account Manager\nexample@gmail.com",
+      "formTitle": "Complete the form to contact us",
+      "imageAlt": "Contact illustration"
+    },
+    "contactForm": {
+        "firstName": "First Name*",
+        "lastName": "Last Name*",
+        "linkedin": "LinkedIn Profile*",
+        "email": "Email*",
+        "message": "Message*",
+        "disclaimer": "Do not provide any personal or sensitive data in this field",
+        "privacy": {
+          "text": "By clicking 'Submit' you confirm that you have read our",
+          "link": "Privacy Policy",
+          "optOut": ". If you don't want to receive our emails about similar services, write to us at example@gmail.com"
+        },
+        "submit": "Submit"
+      }
+  }

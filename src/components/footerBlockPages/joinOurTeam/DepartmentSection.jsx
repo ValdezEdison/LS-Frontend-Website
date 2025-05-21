@@ -1,41 +1,45 @@
 import React from "react";
 import styles from "../../../pages/joinOurTeam/WorkWithUs.module.css";
 import DepartmentCard from "./DepartmentCard";
+import { useTranslation } from "react-i18next";
 
 function DepartmentSection() {
+
+  const { t } = useTranslation("WorkWithUs");
+
   const departments = [
     {
-      title: "Ingeniería y tecnología",
+      title:t('departments.engineering'),
       jobCount: 3,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,
     },
     {
-      title: "Ventas",
+      title: t('departments.sales'),
       jobCount: 1,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,
     },
     {
-      title: "Atención al cliente",
+      title: t('departments.customerService'),
       jobCount: 0,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,
     },
     {
-      title: "Marketing",
+      title:t('departments.marketing'),
       jobCount: 2,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,
     },
     {
-      title: "Administración",
+      title: t('departments.administration'),
       jobCount: 1,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,
     },
     {
-      title: "Diseño",
+      title: t('departments.design'),
       jobCount: 3,
       columnClass: styles.departmentColumn,
       cardClass: styles.departmentCard,

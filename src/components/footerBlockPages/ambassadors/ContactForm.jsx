@@ -1,14 +1,16 @@
 import React from "react";
 import styles from "./ContactForm.module.css";
+import { useTranslation } from "react-i18next";
 
 function ContactForm() {
+  const { t } = useTranslation("Ambassadors");
   return (
     <form className={styles.form}>
       <div className={styles.fields}>
         <div className={styles.field}>
           <input
             type="text"
-            placeholder="Nombre*"
+            placeholder={t('contactForm.firstName')}
             className={styles.input}
             required
           />
@@ -16,7 +18,7 @@ function ContactForm() {
         <div className={styles.field}>
           <input
             type="text"
-            placeholder="Apellido*"
+            placeholder={t('contactForm.lastName')}
             className={styles.input}
             required
           />
@@ -24,7 +26,7 @@ function ContactForm() {
         <div className={styles.field}>
           <input
             type="text"
-            placeholder="Perfil de LinkedIn*"
+            placeholder={t('contactForm.linkedin')}
             className={styles.input}
             required
           />
@@ -32,32 +34,31 @@ function ContactForm() {
         <div className={styles.field}>
           <input
             type="email"
-            placeholder="Correo electrónico*"
+            placeholder={t('contactForm.email')}
             className={styles.input}
             required
           />
         </div>
         <div className={styles.field}>
           <textarea
-            placeholder="Mensaje*"
+            placeholder={t('contactForm.message')}
             className={styles.textarea}
             required
           ></textarea>
         </div>
       </div>
       <p className={styles.disclaimer}>
-        No facilites ningún dato personal o sensible en esta casilla
+      {t('contactForm.disclaimer')}
       </p>
       <p className={styles.privacy}>
-        Al hacer clic en "Enviar" confirmas que has leído nuestra{" "}
+      {t('contactForm.privacy.text')}{" "}
         <a href="#" className={styles.privacyLink}>
-          Política de privacidad
+        {t('contactForm.privacy.link')}
         </a>
-        . Si no deseas recibir nuestros correos electrónicos sobre servicios
-        similares, escríbenos a nombre@gmail.com
+        {t('contactForm.privacy.optOut')}
       </p>
       <button type="submit" className={styles.submitButton}>
-        Enviar
+      {t('contactForm.submit')}
       </button>
     </form>
   );

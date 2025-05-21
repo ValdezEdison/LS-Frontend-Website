@@ -1,8 +1,12 @@
 "use client";
 import React from "react";
 import styles from "./ThreeStepsSection.module.css";
+import { useTranslation } from "react-i18next";
 
 function ThreeStepsSection() {
+
+  const { t } = useTranslation("LocalSecretManager");
+
   return (
     <section className={styles.stepsSection}>
       <div className={styles.iconsContainer}>
@@ -31,38 +35,33 @@ function ThreeStepsSection() {
         </div>
       </div>
       <div className={styles.stepsContent}>
-        <h2 className={styles.mainTitle}>TRES SIMPLES PASOS</h2>
+        <h2 className={styles.mainTitle}>{t('steps.mainTitle')}</h2>
         <div className={styles.stepsContainer}>
           <div className={styles.stepsWrapper}>
             <div className={styles.stepBlock}>
-              <h3 className={styles.stepTitle}>GESTIONA</h3>
+              <h3 className={styles.stepTitle}>{t('steps.step1.title')}</h3>
               <h4 className={styles.stepSubtitle}>
-                Crea y gestiona tus anuncios
+              {t('steps.step1.subtitle')}
               </h4>
               <p className={styles.stepDescription}>
-                Introduce la información necesaria para crear un anuncio de tu
-                local secret o evento. Recuerda que puedes gestionar tu
-                establecimiento desde cualquier lugar.
+              {t('steps.step1.description')}
               </p>
             </div>
             <div className={styles.stepBlock}>
-              <h3 className={styles.stepTitle}>CONECTA</h3>
-              <h4 className={styles.stepSubtitle}>Responde a opiniones</h4>
+              <h3 className={styles.stepTitle}>{t('steps.step2.title')}</h3>
+              <h4 className={styles.stepSubtitle}>{t('steps.step2.subtitle')}</h4>
               <p className={styles.stepDescription}>
-                Descubre qué dicen tus clientes sobre tu establecimiento y
-                responde a sus comentarios en cualquier momento.
+              {t('steps.step2.description')}
               </p>
             </div>
           </div>
           <div className={styles.stepBlock}>
-            <h3 className={styles.stepTitle}>CRECE</h3>
+            <h3 className={styles.stepTitle}>{t('steps.step3.title')}</h3>
             <h4 className={styles.stepSubtitle}>
-              Publica tu establecimiento o evento
+            {t('steps.step3.subtitle')}
             </h4>
             <p className={styles.stepDescription}>
-              Finalmente, cuando la validación del anuncio haya sido completada,
-              será publicado en la web y app de Local Secrets. Recuerda que
-              siempre puedes editar tus anuncios desde tu perfil.
+            {t('steps.step3.description')}
             </p>
           </div>
         </div>

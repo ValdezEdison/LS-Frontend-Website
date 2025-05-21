@@ -2,8 +2,11 @@ import React from "react";
 import styles from "../../../pages/whoWrAre/WhoWeAre.module.css";
 import { People } from "../../common/Images";
 import config from "../../../config";
+import { useTranslation } from "react-i18next";
 
 const ValuesSection = ({ values }) => {
+
+  const { t } = useTranslation("WhoWeAre");
 
 const handleImage = (url) => {
   return `${config.api.cmsBaseUrl}${url}`;
@@ -11,7 +14,7 @@ const handleImage = (url) => {
 
   return (
     <>
-      <h2 className={styles.valuesTitle}>Nuestros valores</h2>
+      <h2 className={styles.valuesTitle}>{t('values.title')}</h2>
       <div className={styles.valuesContainer}>
         {values.map((value, index) => (
           <div className={styles.valueItem} key={index}>

@@ -1,0 +1,12 @@
+{
+    "page": {
+      "title": "Contact"
+    },
+    "contact": {
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "responsible": "Contact person",
+      "officeAlt": "office"
+    }
+  }

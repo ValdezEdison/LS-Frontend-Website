@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "../../../pages/joinOurTeam/WorkWithUs.module.css";
+import { useTranslation } from "react-i18next";
 
 function CompanyStats() {
+
+  const { t } = useTranslation("WorkWithUs");
   const stats = [
     {
       image:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/06ae8f17fc1d700a099574b4f386c2ef078b9fcf?placeholderIfAbsent=true",
       imageClass: styles.statIcon,
-      text: "Atendemos a más de 100 mil usuarios",
+      text: t('companyStats.users'),
       textClass: styles.statText,
       columnClass: styles.statColumn,
       divClass: styles.statContainer,
@@ -16,7 +19,7 @@ function CompanyStats() {
       image:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/010d201cd4ac62a9fea33111b88cbc0dfd323322?placeholderIfAbsent=true",
       imageClass: styles.statIcon,
-      text: "Recibimos más de 100 mil reseñas al año",
+      text:  t('companyStats.reviews'),
       textClass: styles.statText,
       columnClass: styles.statColumn,
       divClass: styles.statContainer,
@@ -25,7 +28,7 @@ function CompanyStats() {
       image:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/ffdd666f1c602859e45526bc96800fdaebcf2fb6?placeholderIfAbsent=true",
       imageClass: styles.statIcon,
-      text: "Tenemos actividad en más de 20 países",
+      text: t('companyStats.countries'),
       textClass: styles.statText,
       columnClass: styles.statColumn,
       divClass: styles.statContainer,
@@ -34,7 +37,7 @@ function CompanyStats() {
       image:
         "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/d7dee23ecf290fb521434ed8ddb2c73ed51d7f8b?placeholderIfAbsent=true",
       imageClass: styles.statIcon,
-      text: "Potenciamos a más de 100 mil empresas",
+      text: t('companyStats.businesses'),
       textClass: styles.statText,
       columnClass: styles.statColumn,
       divClass: styles.statContainer,
@@ -45,10 +48,9 @@ function CompanyStats() {
     <section className={styles.statsSection}>
       <div className="page-center">
       <div className={styles.statsSectionContent}>
-        <h2 className={styles.statsSectionTitle}>Ayudamos al mundo a viajar</h2>
+        <h2 className={styles.statsSectionTitle}>{t('companyStats.title')}</h2>
         <p className={styles.statsSectionDescription}>
-          Todos los días, Local Secrets ayuda a las personas a planificar
-          viajes, conectando a viajeros, empresas y comunidades de todo el mundo
+        {t('companyStats.description')}
         </p>
         <div className={styles.statsWrapper}>
           <div className={styles.statsGrid}>

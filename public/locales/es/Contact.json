@@ -1,0 +1,12 @@
+{
+    "page": {
+      "title": "Contacto"
+    },
+    "contact": {
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "address": "Dirección",
+      "responsible": "Responsable",
+      "officeAlt": "oficina"
+    }
+  }
