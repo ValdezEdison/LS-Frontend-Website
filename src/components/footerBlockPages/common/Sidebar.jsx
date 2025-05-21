@@ -21,7 +21,7 @@ const Sidebar = () => {
     { name: "Trabaja con nosotros", path: "/join-our-team" },
     { 
       name: "La vida en Local Secrets", 
-      path: "/life-at-company",
+      path: "/life-at-local-secrets",
       className: styles.lifeAtCompanyLink 
     },
   ];

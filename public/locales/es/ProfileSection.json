@@ -38,7 +38,13 @@
             "save": "Guardar",
             "cancel": "Cancelar"
         },
-        "emailNote": "Esta dirección de email es la que has utilizado para iniciar sesión y a la que se envía todos los perfiles actuales."
+        "emailNote": "Esta dirección de email es la que has utilizado para iniciar sesión y a la que se envía todos los perfiles actuales.",
+        "user_stats": "{{trips}} viajes realizados, {{places}} lugares visitados y {{events}} eventos vistos",
+        "userCategories": {
+            "title": "¿Qué son las categorías de usuarios?",
+            "description": "Los usuarios de Local Secrets tienen diferentes categorías según el rol y el acceso otorgado a la aplicación. Puedes encontrar más detalles a continuación.",
+            "subtitle": "Tipos de categorías"
+        }
     },
     "preferences": {
         "title": "Preferencias",

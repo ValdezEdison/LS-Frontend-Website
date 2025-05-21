@@ -1,0 +1,42 @@
+.helpCenter {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+}
+
+@media (width <= 991px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+.contentWrapper {
+  width: 100%;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+
+@media (width <= 991px) {
+  .contentWrapper {
+    max-width: 100%;
+  }
+}
+
+.contactSection {
+  width: 100%;
+  margin-top: 75px;
+}
+
+@media (width <= 991px) {
+  .contactSection {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}

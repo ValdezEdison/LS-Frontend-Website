@@ -1,0 +1,1027 @@
+.helpCenterContainer {
+  background-color: #fff;
+  overflow: hidden;
+}
+.mainWrapper {
+  width: 100%;
+}
+@media (width<=991px) {
+  .mainWrapper {
+    max-width: 100%;
+  }
+}
+.contentContainer {
+  width: 100%;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+}
+@media (width<=991px) {
+  .contentContainer {
+    max-width: 100%;
+  }
+}
+.headerSection {
+  width: 100%;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
+}
+@media (width<=991px) {
+  .headerSection {
+    max-width: 100%;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+  }
+}
+.helpCenterTitle {
+  color: #151820;
+  font-size: 25px;
+  font-weight: 600;
+}
+@media (width<=991px) {
+  .helpCenterTitle {
+    max-width: 100%;
+  }
+}
+.searchSection {
+  border-radius: 6px;
+  flex-direction: column;
+  width: 100%;
+  min-height: 170px;
+  margin-top: 12px;
+  padding: 34px 385px 40px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .searchSection {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.searchTitle {
+  color: #fff;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 600;
+  position: relative;
+}
+@media (width<=991px) {
+  .searchTitle {
+    max-width: 100%;
+  }
+}
+.searchBar {
+  color: #828282;
+  background-color: #fff;
+  border: 2px solid #718295;
+  border-radius: 12px;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 17px;
+  padding: 13px 14px 13px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  position: relative;
+}
+@media (width<=991px) {
+  .searchBar {
+    max-width: 100%;
+    padding-right: 20px;
+  }
+}
+.searchIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 22px;
+  min-height: 22px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.searchPlaceholder {
+  align-self: stretch;
+  /* width: 186px; */
+  margin-top: auto;
+  margin-bottom: auto;
+  flex-grow: 1;
+  border: none;
+  outline: none;
+}
+.topicsSection {
+  width: 100%;
+  margin-top: 46px;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
+}
+@media (width<=991px) {
+  .topicsSection {
+    max-width: 100%;
+    margin-top: 40px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+  }
+}
+.topicsHeader {
+  color: #151820;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 40px 72px;
+  width: 100%;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+}
+@media (width<=991px) {
+  .topicsHeader {
+    max-width: 100%;
+  }
+}
+.leftDivider {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex: 1;
+  align-self: stretch;
+  max-width: 429px;
+  /* min-width: 240px; */
+  width: 100%;
+  height: 1px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.topicsTitle {
+  color: #151820;
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.rightDivider {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex: 1;
+  align-self: stretch;
+  max-width: 429px;
+  /* min-width: 240px; */
+  width: 100%;
+  height: 1px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.topicsGrid {
+  width: 100%;
+  margin-top: 18px;
+}
+@media (width<=991px) {
+  .topicsGrid {
+    max-width: 100%;
+  }
+}
+.topicsCardContainer {
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  /* padding-left: 120px; */
+  /* padding-right: 120px; */
+  display: flex;
+}
+@media (width<=991px) {
+.topicsHeader{
+  gap: 40px;
+}
+}
+
+@media (width<=768px) {
+  .leftDivider,.rightDivider{
+    display: none;
+}
+}
+
+@media (width<=991px) {
+  .topicsCardContainer {
+    max-width: 100%;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+  }
+}
+.itineraryCard {
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  min-height: 170px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 45px 73px 8px 74px;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .itineraryCard {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.iconWrapper {
+  align-self: center;
+  width: 40px;
+  overflow: hidden;
+}
+.vectorIcon {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+}
+.textWrapper,h3 {
+  color: #151820;
+  margin-top: 20px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+.cardItem {
+  color: #151820;
+  white-space: nowrap;
+  background-color:#FAFAFF;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: center;
+  align-self: stretch;
+  align-items: center;
+  /* width: 175px; */
+  max-width: calc(25% - 21px);
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  /* padding: 49px 82px 45px; */
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  /* overflow: hidden; */
+  height: 170px;
+}
+@media (width<=991px) {
+
+  .cardItem {
+    max-width: calc(50% - 14px);
+  }
+}
+
+@media (width<=480px) {
+
+  .cardItem {
+    max-width: 100%;
+  }
+
+  .textWrapper{
+    margin-top: 10px ;
+  }
+}
+
+.ticketIcon {
+  align-self: center;
+  width: 38px;
+  min-height: 38px;
+  display: flex;
+}
+.eventsText {
+  color: #151820;
+  margin-top: 18px;
+}
+.activitiesCard {
+  color: #151820;
+  white-space: nowrap;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 51px 69px 46px 70px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .activitiesCard {
+    white-space: initial;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.cardIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 38px;
+}
+.activitiesText {
+  color: #151820;
+  margin-top: 15px;
+}
+.placesCard {
+  color: #151820;
+  white-space: nowrap;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 50px 82px 48px 83px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .placesCard {
+    white-space: initial;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.placesIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 36px;
+}
+.placesText {
+  color: #151820;
+  margin-top: 16px;
+}
+.faqCard {
+  color: #151820;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 50px 36px 45px 37px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .faqCard {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.faqIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 38px;
+}
+.faqCardText {
+  color: #151820;
+  margin-top: 17px;
+}
+.destinationsCard {
+  color: #151820;
+  white-space: nowrap;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 51px 79px 46px 80px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .destinationsCard {
+    white-space: initial;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.destinationsIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 36px;
+}
+.destinationsText {
+  color: #151820;
+  margin-top: 17px;
+}
+.myTripsCard {
+  color: #151820;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 51px 76px 46px 77px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .myTripsCard {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.myTripsIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
+  width: 36px;
+}
+.myTripsText {
+  color: #151820;
+  margin-top: 17px;
+}
+.favoritesCard {
+  color: #151820;
+  white-space: nowrap;
+  background-color: #fafaff;
+  border-radius: 6px;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: start;
+  align-self: stretch;
+  align-items: stretch;
+  width: 175px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 53px 77px 46px 78px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .favoritesCard {
+    white-space: initial;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.heartIcon {
+  align-self: center;
+  width: 32px;
+  min-height: 32px;
+  display: flex;
+}
+.favoritesText {
+  color: #151820;
+  margin-top: 19px;
+}
+.faqSection {
+  color: #151820;
+  width: 100%;
+  margin-top: 30px;
+}
+@media (width<=991px) {
+  .faqSection {
+    max-width: 100%;
+  }
+}
+.sectionDivider {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  width: 100%;
+  min-height: 0;
+}
+@media (width<=991px) {
+  .sectionDivider {
+    max-width: 100%;
+  }
+}
+.faqContainer {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+}
+@media (width<=991px) {
+  .faqContainer {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}
+.faqSectionTitle {
+  color: #151820;
+  flex: 1;
+  font-family:
+    Montserrat,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+@media (width<=991px) {
+  .faqSectionTitle {
+    max-width: 100%;
+  }
+}
+.faqList {
+  max-width: 505px;
+  width: 100%;
+  /* min-width: 240px; */
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+@media (width<=991px) {
+  .faqList {
+    max-width: 100%;
+  }
+}
+.faqItem {
+  width: 100%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+@media (width<=991px) {
+  .faqItem {
+    max-width: 100%;
+  }
+}
+.faqQuestionRow {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  display: flex;
+}
+
+.faqQuestionRow button{
+  border: none;
+  background: none;
+  outline: none;
+}
+
+@media (width<=991px) {
+  .faqQuestionRow {
+    max-width: 100%;
+    margin-right: 6px;
+  }
+}
+.faqQuestion {
+  color: #151820;
+}
+.toggleIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: start;
+  width: 24px;
+}
+.faqDivider {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex-shrink: 0;
+  height: 1px;
+  margin-top: 8px;
+}
+@media (width<=991px) {
+  .faqDivider {
+    max-width: 100%;
+  }
+}
+.faqAnswer {
+  color: #151820;
+  margin-top: 19px;
+  font-size: 16px;
+  font-weight: 400;
+}
+@media (width<=991px) {
+  .faqAnswer {
+    max-width: 100%;
+  }
+}
+.faqItem2 {
+  width: 100%;
+  margin-top: 19px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+@media (width<=991px) {
+  .faqItem2 {
+    max-width: 100%;
+  }
+}
+.faqQuestionRow2 {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  display: flex;
+}
+@media (width<=991px) {
+  .faqQuestionRow2 {
+    max-width: 100%;
+    margin-right: 6px;
+  }
+}
+.itineraryQuestion {
+  color: #151820;
+}
+.toggleIcon2 {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: start;
+  width: 24px;
+}
+.faqDivider2 {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex-shrink: 0;
+  height: 1px;
+  margin-top: 7px;
+}
+@media (width<=991px) {
+  .faqDivider2 {
+    max-width: 100%;
+  }
+}
+.faqItem3 {
+  width: 100%;
+  margin-top: 19px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+@media (width<=991px) {
+  .faqItem3 {
+    max-width: 100%;
+  }
+}
+.faqQuestionRow3 {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  display: flex;
+}
+@media (width<=991px) {
+  .faqQuestionRow3 {
+    max-width: 100%;
+    margin-right: 6px;
+  }
+}
+.citiesQuestion {
+  color: #151820;
+}
+.toggleIcon3 {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: start;
+  width: 24px;
+}
+.faqDivider3 {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex-shrink: 0;
+  height: 1px;
+  margin-top: 8px;
+}
+@media (width<=991px) {
+  .faqDivider3 {
+    max-width: 100%;
+  }
+}
+.faqItem4 {
+  width: 100%;
+  margin-top: 19px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+@media (width<=991px) {
+  .faqItem4 {
+    max-width: 100%;
+  }
+}
+.faqQuestionRow4 {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  display: flex;
+}
+@media (width<=991px) {
+  .faqQuestionRow4 {
+    max-width: 100%;
+    margin-right: 6px;
+  }
+}
+.favoritesQuestion {
+  color: #151820;
+}
+.toggleIcon4 {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: start;
+  width: 24px;
+}
+.faqDivider4 {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex-shrink: 0;
+  height: 1px;
+  margin-top: 8px;
+}
+@media (width<=991px) {
+  .faqDivider4 {
+    max-width: 100%;
+  }
+}
+.faqItem5 {
+  width: 100%;
+  margin-top: 19px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+@media (width<=991px) {
+  .faqItem5 {
+    max-width: 100%;
+  }
+}
+.faqQuestionRow5 {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  display: flex;
+}
+@media (width<=991px) {
+  .faqQuestionRow5 {
+    max-width: 100%;
+    margin-right: 6px;
+  }
+}
+.officeQuestion {
+  color: #151820;
+}
+.toggleIcon5 {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+  align-self: start;
+  width: 24px;
+}
+.faqDivider5 {
+  background-color: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  flex-shrink: 0;
+  height: 1px;
+  margin-top: 8px;
+}
+@media (width<=991px) {
+  .faqDivider5 {
+    max-width: 100%;
+  }
+}
+.contactWrapper {
+  text-align: center;
+  width: 100%;
+  margin-top: 75px;
+}
+@media (width<=991px) {
+  .contactWrapper {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}
+.contactSection {
+  background-color: #212d94;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+  width: 100%;
+  /* padding: 60px 439px 60px 434px; */
+  display: flex;
+  overflow: hidden;
+}
+@media (width<=991px) {
+  .contactSection {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.contactContent {
+  color: #fff;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+@media (width<=991px) {
+  .contactContent {
+    max-width: 100%;
+  }
+}
+.contactTitle {
+  font-family:
+    Montserrat,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+}
+@media (width<=991px) {
+  .contactTitle {
+    max-width: 100%;
+  }
+}
+.contactDescription {
+  margin-top: 20px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+@media (width<=991px) {
+  .contactDescription {
+    max-width: 100%;
+  }
+}
+.buttonWrapper {
+  color: #151820;
+  white-space: nowrap;
+  align-self: center;
+  width: 146px;
+  max-width: 100%;
+  margin: 36px auto 60px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+@media (width<=991px) {
+  .buttonWrapper {
+    white-space: initial;
+  }
+}
+.contactButton {
+  color: #151820;
+  background-color: #f4c031;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  height: 40px;
+  padding: 5px 45px;
+  border:none;
+  outline: none;
+  cursor: pointer;
+  transition: all ease .3s;
+  font-size: 15px;
+  font-weight: 600;
+  /* overflow: hidden; */
+}
+.contactButton:hover {
+  background-color: #e4b230;
+}
+
+@media (width<=991px) {
+  .contactButton {
+    white-space: initial;
+  }
+}

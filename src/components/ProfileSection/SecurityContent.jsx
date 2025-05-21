@@ -28,33 +28,62 @@ const SecurityContent = ({
   };
 
   const sections = [
-    {
-      id: "password",
-      title: t('security.sections.password.title'),
-      description: t('security.sections.password.description'),
-      action: "edit",
-      buttonText: t('security.sections.password.buttonText'),
-      fields: [
-        {
-          label: t('security.sections.password.fields.currentPassword.label'),
-          name: "currentPassword",
-          type: "password",
-          placeholder: t('security.sections.password.fields.currentPassword.placeholder')
-        },
-        {
-          label: t('security.sections.password.fields.newPassword.label'),
-          name: "newPassword",
-          type: "password",
-          placeholder: t('security.sections.password.fields.newPassword.placeholder')
-        },
-        {
-          label: t('security.sections.password.fields.confirmPassword.label'),
-          name: "confirmPassword",
-          type: "password",
-          placeholder: t('security.sections.password.fields.confirmPassword.placeholder')
-        }
-      ]
-    },
+    // {
+    //   id: "password",
+    //   title: t('security.sections.password.title'),
+    //   description: t('security.sections.password.description'),
+    //   action: "edit",
+    //   buttonText: t('security.sections.password.buttonText'),
+    //   fields: [
+    //     {
+    //       label: t('security.sections.password.fields.currentPassword.label'),
+    //       name: "currentPassword",
+    //       type: "password",
+    //       placeholder: t('security.sections.password.fields.currentPassword.placeholder')
+    //     },
+    //     {
+    //       label: t('security.sections.password.fields.newPassword.label'),
+    //       name: "newPassword",
+    //       type: "password",
+    //       placeholder: t('security.sections.password.fields.newPassword.placeholder')
+    //     },
+    //     {
+    //       label: t('security.sections.password.fields.confirmPassword.label'),
+    //       name: "confirmPassword",
+    //       type: "password",
+    //       placeholder: t('security.sections.password.fields.confirmPassword.placeholder')
+    //     }
+    //   ]
+    // },
+    ...(user?.is_social_login ? [] : [
+      {
+          id: "password",
+          title: t('security.sections.password.title'),
+          description: t('security.sections.password.description'),
+          action: "edit",
+          buttonText: t('security.sections.password.buttonText'),
+          fields: [
+              {
+                  label: t('security.sections.password.fields.currentPassword.label'),
+                  name: "currentPassword",
+                  type: "password",
+                  placeholder: t('security.sections.password.fields.currentPassword.placeholder')
+              },
+              {
+                  label: t('security.sections.password.fields.newPassword.label'),
+                  name: "newPassword",
+                  type: "password",
+                  placeholder: t('security.sections.password.fields.newPassword.placeholder')
+              },
+              {
+                  label: t('security.sections.password.fields.confirmPassword.label'),
+                  name: "confirmPassword",
+                  type: "password",
+                  placeholder: t('security.sections.password.fields.confirmPassword.placeholder')
+              }
+          ]
+      }
+  ]),
     {
       id: "twoFactor",
       title: t('security.sections.twoFactor.title'),

@@ -1,0 +1,43 @@
+.infoSection {
+  color: #151820;
+  width: 100%;
+  margin-top: 28px;
+  font-family:
+    Source Sans Pro,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+}
+
+@media (width<=991px) {
+  .infoSection {
+    max-width: 100%;
+  }
+}
+
+.sectionTitle {
+  color: #151820;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (width<=991px) {
+  .sectionTitle {
+    max-width: 100%;
+  }
+}
+
+.sectionDescription {
+  color: #151820;
+  margin-top: 12px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+@media (width<=991px) {
+  .sectionDescription {
+    max-width: 100%;
+  }
+}

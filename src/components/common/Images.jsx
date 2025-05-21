@@ -1,6 +1,7 @@
 const LSLogo2_1 = "/images/app-local-secrets-logo-2-1.svg";
 const LSLogo2 = "/images/app-local-secrets-logo-2.svg";
 const LSLogo2_2 = "/images/app-local-secrets-logo-2-2.svg";
+const Activity = "/images/actividades.svg"
 const AddCircle = "/images/add-circle.svg"
 const Africa = "/images/africa.svg";
 const America = "/images/america.svg";
@@ -9,6 +10,7 @@ const Arrow = "/images/arrow-1.svg";
 const ArrowRight = "/images/arrowright.svg";
 const ArrowRight1 = "/images/arrowright-1.svg";
 const Banner = "/images/banner.png";
+const Beach = "/images/beach.svg";
 const Flag = "/images/bandera-idioma@2x.png";
 const Cap = "/images/cap.svg";
 const Card = "/images/card.png";
@@ -19,7 +21,10 @@ const Down = "/images/down.svg";
 const Download = "/images/download.svg"
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
+const FirstAid = "/images/first_aid.svg";
 const Filter = "/images/filter.svg";
+const Grapes = "/images/grapes.svg";
+const Itinerarios = "/images/itinerarios.svg";
 const QR = "/images/QR.png";
 const FirstSection = "/images/imgen-primera-seccin-1@2x.png";
 const FirstSection1 = "/images/imgen-primera-seccin-1-1@2x.png";
@@ -37,6 +42,7 @@ const SecondSection4_1 = "/images/imgen-segunda-seccin-4-1@2x.png";
 const InstagramWhite = "/images/instagramwhite@2x.png";
 const LinkedinWhite = "/images/linkedinwhite@2x.png";
 const Lock = "/images/lock.png";
+const Leaf = "/images/leaf.svg";
 const MapIcon = "/images/map-icon.png";
 const MapsSearchAmericaDefault = "/images/mapas-buscadoramerica-default.svg";
 const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
@@ -67,20 +73,27 @@ const Spain = "/images/spain.png";
 const Star = "/images/star.svg";
 const StarFill = "/images/star-fill.svg";
 const Subtract = "/images/subtract.svg";
+const Ticket = "/images/ticket.svg";
 const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
+const Verify = "/images/verify.svg";
 const Warning = "/images/warning.svg";
 const Wifi = "/images/wifi.svg";
 
-
+const Lugares = "/images/lugares.svg";
+const Fav = "/images/fav.svg";
+const Misviajes = "/images/misviajes.svg";
+const Destinos = "/images/destinos.svg";
+const Preguntas = "/images/preguntas.svg";
 
 
 export {
     LSLogo2_1,
     LSLogo2,
     LSLogo2_2,
+    Activity,
     AddCircle,
     Africa,
     America,
@@ -89,6 +102,7 @@ export {
     ArrowRight,
     ArrowRight1,
     Banner,
+    Beach,
     Close,
     Flag,
     Filter,
@@ -103,6 +117,7 @@ export {
     QR,
     Favorite,
     FirstSection,
+    FirstAid,
     FirstSection1,
     FirstSection2,
     FirstSection3,
@@ -111,6 +126,8 @@ export {
     FirstSection6,
     FirstSection7,
     Google,
+    Grapes,
+    Itinerarios,
     SecondSection3,
     SecondSection3_1,
     SecondSection4,
@@ -119,6 +136,7 @@ export {
     InstagramWhite,
     LinkedinWhite,
     Lock,
+    Leaf,
     MapIcon,
     MapsSearchAmericaDefault,
     MapsFindersiaDefault,
@@ -146,11 +164,18 @@ export {
     Setting,
     Subtract,
     Spain,
+    Ticket,
     UK,
     US,
     userAdd,
+    Verify,
     Wifi,
     Star,
     StarFill,
-    Warning
+    Warning,
+    Lugares,
+    Fav,
+    Misviajes ,
+    Destinos ,
+    Preguntas 
 };
