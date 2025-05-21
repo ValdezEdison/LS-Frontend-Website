@@ -147,33 +147,38 @@ const PersonalDetails = ({
           {t('personalDetails.subtitle')}
           </p>
         </div>
-        <div className={styles.profileImageWrapper}>
-         <div className={styles.galleryEditOverlay}>
-            <div className={styles.galleryEdit} onClick={onProfilePhotoClick}>
+        <div className={styles.profileUserDetail}>
+           <div className={styles.profileImageWrapper}>
+              <div className={styles.galleryEditOverlay}>
+                <div className={styles.galleryEdit} onClick={onProfilePhotoClick}>
+                </div>
+              </div>
+              <img
+                src={user?.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
+                alt="Profile"
+                className={styles.profileImage}
+                onError={(e) => {
+                  e.target.src = ProfilePlaceholder;
+                }}
+              />
+          
             </div>
-          </div>
-         
-          <img
-            src={user?.profile_picture?.original ? user.profile_picture.original : ProfilePlaceholder}
-            alt="Profile"
-            className={styles.profileImage}
-            onError={(e) => {
-              e.target.src = ProfilePlaceholder;
-            }}
-          />
+            <div className={styles.userInfo}>
+              <p className={styles.username}>{user?.username}</p>
+              <p className={styles.tripStats}>
+                {/* {user?.num_of_past_travels || 0} trips made, {user?.visited_places || 0} places visited and {user?.visited_events || 0} events seen */}
+                {t('personalDetails.user_stats', {
+                trips: user?.num_of_past_travels || 0,
+                places: user?.visited_places || 0,
+                events: user?.visited_events || 0
+              })}
+              </p>
+            </div>
         </div>
+       
+        
       </div>
-      <div className={styles.userInfo}>
-      <p className={styles.username}>{user?.username}</p>
-      <p className={styles.tripStats}>
-        {/* {user?.num_of_past_travels || 0} trips made, {user?.visited_places || 0} places visited and {user?.visited_events || 0} events seen */}
-        {t('personalDetails.user_stats', {
-        trips: user?.num_of_past_travels || 0,
-        places: user?.visited_places || 0,
-        events: user?.visited_events || 0
-      })}
-      </p>
-    </div>
+      
 
    
 
@@ -181,7 +186,9 @@ const PersonalDetails = ({
       {details.map((detail, index) => (
         <React.Fragment key={index}>
           <div className={styles.detailRow}>
-            <div className={styles.labelValue}>
+            <div className={`${styles.labelValue} ${
+                editingField === t('personalDetails.fields.profileType') ? styles.profileTypeLabel : ''
+              }`}>
               <span className={styles.label}>{detail.label}</span>
               <div className={styles.valueRow}>
                 <div className={styles.valueRowTop}>
