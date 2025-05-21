@@ -9,6 +9,7 @@ const Arrow = "/images/arrow-1.svg";
 const ArrowRight = "/images/arrowright.svg";
 const ArrowRight1 = "/images/arrowright-1.svg";
 const Banner = "/images/banner.png";
+const Beach = "/images/beach.svg";
 const Flag = "/images/bandera-idioma@2x.png";
 const Cap = "/images/cap.svg";
 const Card = "/images/card.png";
@@ -19,7 +20,9 @@ const Down = "/images/down.svg";
 const Download = "/images/download.svg"
 const Delete = "/images/delete-icon.svg";
 const FacebookWhite = "/images/facebookwhite.svg";
+const FirstAid = "/images/first_aid.svg";
 const Filter = "/images/filter.svg";
+const Grapes = "/images/grapes.svg";
 const QR = "/images/QR.png";
 const FirstSection = "/images/imgen-primera-seccin-1@2x.png";
 const FirstSection1 = "/images/imgen-primera-seccin-1-1@2x.png";
@@ -37,6 +40,7 @@ const SecondSection4_1 = "/images/imgen-segunda-seccin-4-1@2x.png";
 const InstagramWhite = "/images/instagramwhite@2x.png";
 const LinkedinWhite = "/images/linkedinwhite@2x.png";
 const Lock = "/images/lock.png";
+const Leaf = "/images/leaf.svg";
 const MapIcon = "/images/map-icon.png";
 const MapsSearchAmericaDefault = "/images/mapas-buscadoramerica-default.svg";
 const MapsFindersiaDefault = "/images/mapas-buscadorasia-default@2x.png";
@@ -71,6 +75,7 @@ const Favorite = "/images/vector.svg";
 const UK = "/images/eng-uk.png";
 const userAdd = "/images/user-add.png";
 const US = "/images/eng-us.png";
+const Verify = "/images/verify.svg";
 const Warning = "/images/warning.svg";
 const Wifi = "/images/wifi.svg";
 
@@ -89,6 +94,7 @@ export {
     ArrowRight,
     ArrowRight1,
     Banner,
+    Beach,
     Close,
     Flag,
     Filter,
@@ -103,6 +109,7 @@ export {
     QR,
     Favorite,
     FirstSection,
+    FirstAid,
     FirstSection1,
     FirstSection2,
     FirstSection3,
@@ -111,6 +118,7 @@ export {
     FirstSection6,
     FirstSection7,
     Google,
+    Grapes,
     SecondSection3,
     SecondSection3_1,
     SecondSection4,
@@ -119,6 +127,7 @@ export {
     InstagramWhite,
     LinkedinWhite,
     Lock,
+    Leaf,
     MapIcon,
     MapsSearchAmericaDefault,
     MapsFindersiaDefault,
@@ -149,6 +158,7 @@ export {
     UK,
     US,
     userAdd,
+    Verify,
     Wifi,
     Star,
     StarFill,

@@ -4,7 +4,8 @@ import styles from "./HeroSection.module.css";
 
 function HeroSection() {
   return (
-    <section className={styles.heroSection}>
+    <div className="page-center">
+       <section className={styles.heroSection}>
       <div className={styles.heroContent}>
         <h1 className={styles.title}>Local secret manager</h1>
         <div className={styles.bannerContainer}>
@@ -19,6 +20,8 @@ function HeroSection() {
         </div>
       </div>
     </section>
+    </div>
+   
   );
 }
 
