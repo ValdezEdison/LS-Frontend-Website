@@ -1,7 +1,7 @@
 .card {
   border-radius: 8px;
   flex-direction: column;
-  width: 534px;
+  width: 100%;
   max-width: 100%;
   min-height: 280px;
   padding: 172px 101px 30px 30px;
@@ -37,4 +37,10 @@
   color: #fff;
   margin: 0;
   font-size: 32px;
+}
+
+@media (width<=768px) {
+  .title {
+    font-size: 24px;
+  }
 }

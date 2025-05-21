@@ -6,25 +6,33 @@ function ContactSection() {
   return (
     <section className={styles.section}>
       <div className={styles.banner}>
-        <h2 className={styles.bannerTitle}>
-          ¿Quieres formar parte de Local Secrets?
-        </h2>
-        <div className={styles.contactInfo}>
-          <p className={styles.contactPrompt}>
-            Contacta con nuestro departamento comercial o rellena el formulario:
-          </p>
-          <address className={styles.contactAddress}>
-            Catalina Ederer
-            <br />
-            Key Account Manager
-            <br />
-            ejemplo@gmail.com
-          </address>
+        <div className="page-center">
+          <div className={styles.bannerWrapper}>
+             <h2 className={styles.bannerTitle}>
+              ¿Quieres formar parte de Local Secrets?
+              </h2>
+              <div className={styles.contactInfo}>
+                <p className={styles.contactPrompt}>
+                  Contacta con nuestro departamento comercial o rellena el formulario:
+                </p>
+                <address className={styles.contactAddress}>
+                  Catalina Ederer
+                  <br />
+                  Key Account Manager
+                  <br />
+                  ejemplo@gmail.com
+                </address>
+              </div>
+          </div>
+          
         </div>
+       
       </div>
 
-      <div className={styles.formSection}>
-        <h2 className={styles.formTitle}>
+      
+        <div className="page-center">
+          <div className={styles.formSection}>
+          <h2 className={styles.formTitle}>
           Completa el formulario para contactar con nosotros
         </h2>
         <div className={styles.formContainer}>
@@ -37,6 +45,8 @@ function ContactSection() {
             className={styles.contactImage}
           />
         </div>
+        </div>
+        
       </div>
     </section>
   );

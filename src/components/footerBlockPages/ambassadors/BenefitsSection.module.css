@@ -1,12 +1,16 @@
 .benefitsSection {
   width: 100%;
   margin-top: 44px;
+  padding-left: 38px;
+  padding-right: 38px;
 }
 
 @media (width<=991px) {
   .benefitsSection {
     max-width: 100%;
     margin-top: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 
@@ -50,6 +54,14 @@
 @media (width<=991px) {
   .grid {
     max-width: 100%;
+    gap: 20px;
+  }
+}
+
+@media (width<=640px) {
+  .grid {
+    font-size: 22px;
+    flex-direction: column;
   }
 }
 
@@ -57,9 +69,11 @@
   color: #fff;
   flex: 1;
   align-self: stretch;
-  min-width: 240px;
+  /* min-width: 240px; */
   margin-top: auto;
   margin-bottom: auto;
+  max-width: calc(50% - 20px);
+  width: 100%;
 }
 
 @media (width<=991px) {
