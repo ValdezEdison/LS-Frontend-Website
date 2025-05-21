@@ -32,9 +32,24 @@ function Contacto() {
   if (!contactData) return null;
 
   // Find specific offices
-  const headquarters = contactData.headquarters?.find(office => office.location_name === "Headquarters USA");
-  const spainOffice = contactData.headquarters?.find(office => office.location_name === "Spain Offices");
-  const pressRoom = contactData.headquarters?.find(office => office.location_name === "Conference Press");
+  // const headquarters = contactData.headquarters?.find(office => office.location_name === "Headquarters USA");
+  // const spainOffice = contactData.headquarters?.find(office => office.location_name === "Spain Offices");
+  // const pressRoom = contactData.headquarters?.find(office => office.location_name === "Conference Press");
+
+  const headquarters = contactData.headquarters?.find(office => 
+    office.location_name === "Headquarters USA" || 
+    office.location_name === "Sede en EE. UU."
+  );
+  
+  const spainOffice = contactData.headquarters?.find(office => 
+    office.location_name === "Spain Offices" || 
+    office.location_name === "Oficinas en España"
+  );
+  
+  const pressRoom = contactData.headquarters?.find(office => 
+    office.location_name === "Conference Press" || 
+    office.location_name === "Conferencia de Prensa"
+  );
 
   return (
     <div className={styles.contactPage}>
