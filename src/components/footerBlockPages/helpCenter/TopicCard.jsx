@@ -1,21 +1,19 @@
-import React from "react";
-import styles from "./TopicCard.module.css";
+import React from 'react';
+import styles from "../../../pages/footerBlockPages/helpCenter/HelpCenter.module.css";
+import { useTranslation } from 'react-i18next';
 
-const TopicCard = ({ icon, title, isVector = false }) => {
-  return (
-    <div className={styles.topicCard}>
-      {isVector ? (
-        <div className={styles.topicIcon}>
-          <div className={styles.vectorIcon} />
-        </div>
-      ) : icon.startsWith("URL_") ? (
-        <img src={icon} className={styles.topicImage} alt={`${title} icon`} />
-      ) : (
-        <div className={styles[icon]} />
-      )}
-      <div className={styles.topicName}>{title}</div>
-    </div>
-  );
-};
+const TopicCard = ({ icon, title, className }) => {
+    const { t } = useTranslation("HelpCenter");
+    
+    const iconElement = <img src={icon} alt={title} className={styles.cardIcon} />;
+  
+    return (
+      <article className={className}>
+        {iconElement}
+        <h3 className={styles.textWrapper}>{t(`helpCenter.topics.${title}`)}</h3>
+      </article>
+    );
+  };
 
-export default TopicCard;
+
+export default TopicCard
