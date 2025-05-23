@@ -89,10 +89,10 @@ const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCaro
                                 }}
                             /></div>
                         ) : (
-                            <div className="no-results-wrapper">{tCommon('noResult')}</div>
+                            <div className="no-results-wrapper">{t('noResult')}</div>
                         )
                     ) : (
-                        <div className="no-results-wrapper">{tCommon('noResult')}</div>
+                        <div className="no-results-wrapper">{t('noResult')}</div>
                     )
                 ) :
                     (isCarousel ? (
