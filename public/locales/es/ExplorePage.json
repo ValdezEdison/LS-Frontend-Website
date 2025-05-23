@@ -16,5 +16,6 @@
     "buttons": {
         "seeMore": "Ver más",
         "showSites": "Ver sitios"
-    }
+    },
+    "results": "{{count}} resultados"
 }

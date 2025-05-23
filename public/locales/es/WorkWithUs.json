@@ -15,7 +15,10 @@
       "customerService": "Atención al cliente",
       "marketing": "Marketing",
       "administration": "Administración",
-      "design": "Diseño"
+      "design": "Diseño",
+      "none": "No hay posiciones",
+      "singular": "1 trabajo",
+      "plural": "{{count}} trabajos"
     },
     "companyStats": {
       "title": "Ayudamos al mundo a viajar",

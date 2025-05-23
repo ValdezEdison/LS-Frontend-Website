@@ -11,7 +11,7 @@ import styles2 from "../common/MainSearchBar.module.css";
 import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Arrow, PlaceFilter } from "../common/Images";
 import styles3 from "../common/PlaceCard.module.css";
 import Loader from "../common/Loader";
@@ -20,6 +20,7 @@ import styles4 from "../common/FilterBar.module.css";
 import SelectedItemList from "../common/SelectedItemList";
 import GoToFilterCard from "../common/GoToFilterCard";
 import { listUpdater } from "../../features/places/PlaceSlice";
+import { Trans } from 'react-i18next';
 
 const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
@@ -338,9 +339,22 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
         ) : (
           currentLocation && trackingEnabled ? (
             isManuallySelected ? (
-              <div className="no-results-wrapper"> {t('noResultsBasedOnManualLocation', { city: selectedCityBasedOnLocation })}</div>
+              <div className="no-results-wrapper">    <Trans
+              i18nKey="Places:noResultsBasedOnManualLocation"
+              values={{ city: selectedCityBasedOnLocation }}
+              components={{
+                changeLocation: <Link to="/profile/location" className="text-link" />,
+                disableLocation: <Link to="/profile/location" className="text-link" />
+              }}
+            /></div>
             ) : isCurrentLocationSelected ? (
-              <div className="no-results-wrapper">{t('noResultsBasedOnCurrentLocation')}</div>
+              <div className="no-results-wrapper"><Trans
+              i18nKey="Places:noResultsBasedOnCurrentLocation"
+              components={{
+                changeLocation: <Link to="/profile/location" className="text-link" />,
+                disableLocation: <Link to="/profile/location" className="text-link" />
+              }}
+            /></div>
             ) : (
               <div className="no-results-wrapper">{tCommon('noResult')}</div>
             )

@@ -23,6 +23,11 @@ const eventSlice = createSlice({
     listUpdater: (state, action) => {
       state.events = [...state.events, ...action.payload?.results];
       state.next = action.payload.next;
+    },
+    resetEventsList: (state) => {
+      state.events = [];
+      state.next = null;
+      state.count = 0;
     }
   },
   extraReducers: (builder) => {
@@ -145,5 +150,5 @@ const eventSlice = createSlice({
   },
 });
 
-export const { setFavTogglingId, listUpdater } = eventSlice.actions;
+export const { setFavTogglingId, listUpdater, resetEventsList } = eventSlice.actions;
 export default eventSlice.reducer;

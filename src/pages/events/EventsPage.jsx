@@ -8,7 +8,7 @@ import AppPromotion from "../../components/EventsPage/AppPromotion";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
 import styles from "./EventsPage.module.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import styles1 from "../../components/PlacesPage/MainContent.module.css";
 import PromotionalBanner from "../../components/common/PromotionalBanner";
 import { fetchEvents, fetchNearMeEvents } from "../../features/events/EventAction";
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
 import Loader from "../../components/common/Loader";
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
@@ -39,13 +39,14 @@ import { listUpdater } from "../../features/events/EventSlice";
 import { fetchSuggestedPlaces } from "../../features/suggestions/SuggestionAction";
 import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import { resetGeoLocations } from "../../features/places/PlaceSlice";
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { language, languageId } = useContext(LanguageContext);
-  const { t } = useTranslation('places');
+  const { t } = useTranslation('Places');
   const { t: tEventsPage } = useTranslation('EventsPage');
   const { t: tCommon } = useTranslation('Common');
   const isInitialMount = useRef(true);
@@ -412,6 +413,15 @@ const EventsPage = () => {
     }, [currentLocation, trackingEnabled]);
 
 
+    useEffect(() => {
+      return () => {
+        dispatch(closePopup());
+        closeAddToTrip()
+        dispatch(resetGeoLocations())
+      }
+    },[])
+
+
   return (
     <>
       {/* Popups and Modals */}
@@ -496,9 +506,22 @@ const EventsPage = () => {
             // <div className="no-results-wrapper">{tCommon("noResults")}</div>
             currentLocation && trackingEnabled ? (
               isManuallySelected ? (
-                <div className="no-results-wrapper"> {t('noResultsBasedOnManualLocation', { city: selectedCityBasedOnLocation })}</div>
+                <div className="no-results-wrapper">  <Trans
+                i18nKey="Places:noResultsBasedOnManualLocation"
+                values={{ city: selectedCityBasedOnLocation }}
+                components={{
+                  changeLocation: <Link to="/profile/location" className="text-link" />,
+                  disableLocation: <Link to="/profile/location" className="text-link" />
+                }}
+              /></div>
               ) : isCurrentLocationSelected ? (
-                <div className="no-results-wrapper">{t('noResultsBasedOnCurrentLocation')}</div>
+                <div className="no-results-wrapper">   <Trans
+                i18nKey="Places:noResultsBasedOnCurrentLocation"
+                components={{
+                  changeLocation: <Link to="/profile/location" className="text-link" />,
+                  disableLocation: <Link to="/profile/location" className="text-link" />
+                }}
+              /></div>
               ) : (
                 <div className="no-results-wrapper">{tCommon('noResult')}</div>
               )

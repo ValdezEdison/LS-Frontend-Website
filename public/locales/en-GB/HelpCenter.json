@@ -1,0 +1,25 @@
+{
+    "helpCenter": {
+      "title": "Help Centre",
+      "backgroundAlt": "Background image",
+      "searchTitle": "How can we help you?",
+      "searchIconAlt": "Search icon",
+      "searchPlaceholder": "Search by keywords",
+      "topicsTitle": "Topics for travellers",
+      "topics": {
+        "Itinerarios": "Itineraries",
+        "Eventos": "Events",
+        "Actividades": "Activities",
+        "Lugares": "Places",
+        "Preguntas": "Frequently Asked Questions",
+        "Destinos": "Destinations",
+        "Misviajes": "My Trips",
+        "Favoritos": "Favourites"
+      },
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "contactTitle": "Contact us",
+      "contactDescription": "For more information write your email or call the contact telephone number, we will respond as soon as possible.",
+      "contactButton": "Contact"
+    }
+  }

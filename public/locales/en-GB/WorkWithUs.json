@@ -15,7 +15,10 @@
       "customerService": "Customer Service",
       "marketing": "Marketing",
       "administration": "Administration",
-      "design": "Design"
+      "design": "Design",
+      "none": "No positions",
+      "singular": "1 job",
+      "plural": "{{count}} jobs"
     },
     "companyStats": {
       "title": "We help the world travel",

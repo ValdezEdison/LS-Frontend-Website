@@ -10,7 +10,12 @@ const initialState = {
 const homeSlice = createSlice({
     name: "home",
     initialState,
-    reducers: {},
+    reducers: {
+        resetRandomPlaces: (state) => {
+            state.randomPlaces = [];
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchRandomSites.pending, (state) => {
@@ -29,4 +34,5 @@ const homeSlice = createSlice({
     },
 });
 
+export const { resetRandomPlaces } = homeSlice.actions;
 export default homeSlice.reducer;

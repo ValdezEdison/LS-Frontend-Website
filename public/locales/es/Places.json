@@ -107,6 +107,6 @@
     "stopCount": "{{count}} paradas",
     "noStops": "No hay paradas disponibles"
   },
-  "noResultsBasedOnManualLocation": "Hemos personalizado el contenido para {{city}}. Cambiar ubicación o Desactivar los servicios de ubicación.",
-  "noResultsBasedOnCurrentLocation": "Hemos personalizado el contenido para tu ubicación actual. Cambiar ubicación o Desactivar los servicios de ubicación."
+   "noResultsBasedOnManualLocation": "Hemos personalizado el contenido para {{city}}. <br/> <changeLocation>Cambiar ubicación</changeLocation> o <disableLocation>Desactivar servicios de ubicación</disableLocation>",
+  "noResultsBasedOnCurrentLocation": "Hemos personalizado el contenido para tu ubicación actual.<br/> <changeLocation>Cambiar ubicación</changeLocation> o <disableLocation>Desactivar servicios de ubicación</disableLocation>"
 }
