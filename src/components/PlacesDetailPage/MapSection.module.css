@@ -62,6 +62,7 @@
 
 .day {
   font-weight: 400;
+  text-transform: capitalize;
 }
 
 .hours {

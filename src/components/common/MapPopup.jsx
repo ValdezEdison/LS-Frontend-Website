@@ -23,6 +23,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const location = useLocation();
     const isEventsRoute = location.pathname === 'places/events';
     const isDetailsRoute = location.pathname === '/places/details' || location.pathname === '/events/details';
+    const isPlacesDetailsPage = location.pathname === '/places/details';
 
     const mapContainerRef = useRef(null);
     const placeRefs = useRef({});
@@ -33,7 +34,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const apiKey = getGoogleMapsApiKey();
     const mapId = getGoogleMapsMapId();
 
-    const placesToUse = NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places;
+    const placesToUse = isPlacesDetailsPage ? (NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places) : places;
 
     const dataToMap = isEventsRoute ? events || EventsList : placesToUse;
     const geoDataToMap = geoLocations;
@@ -62,7 +63,9 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
         
         setState(prevState => ({
             ...prevState,
-            points: pointsQueryString
+            points: pointsQueryString,
+            latitude: center.lat,
+            longitude: center.lng
         }));
     };
 
@@ -111,6 +114,8 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
         setState(prevState => ({
             ...prevState,
             latAndLng: `${lat},${lng}`,
+            latitude: lat,
+            longitude: lng
         }));
 
         // Create polygon around the marker

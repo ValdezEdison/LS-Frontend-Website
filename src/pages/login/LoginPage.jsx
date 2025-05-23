@@ -313,8 +313,8 @@ const LoginPage = () => {
   
       // If permission granted, update location
       const { latitude, longitude } = position.coords;
-      await dispatch(updateLocation({ latitude, longitude })).unwrap();
-      await dispatch(toggleUserLocation({geolocation_enabled: true})).unwrap();
+      // await dispatch(updateLocation({ latitude, longitude, location_mode: "current" })).unwrap();
+       dispatch(toggleUserLocation({geolocation_enabled: true})).unwrap();
       return true;
     } catch (error) {
       // Permission denied or error occurred

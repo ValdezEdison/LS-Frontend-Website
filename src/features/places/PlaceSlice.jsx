@@ -55,6 +55,22 @@ const placeSlice = createSlice({
         listUpdater: (state, action) => {
             state.places = [...state.places, ...action.payload?.results];
             state.next = action.payload.next;
+        },
+        resetGeoLocations: (state) => {
+            state.geoLocations = [];
+        },
+        resetPlacesList: (state) => {
+            state.places = [];
+            state.next = null;
+            state.count = 0;
+        },
+        resetNearByPlaces: (state) => {
+            state.NearbyPlaces = [];
+        },
+        resetRandomPlaces: (state) => {
+            state.places = [];
+            state.next = null;
+            state.count = 0;
         }
     },
     extraReducers: (builder) => {
@@ -333,5 +349,5 @@ const placeSlice = createSlice({
     },
 });
 
-export const { setFavTogglingId, resetShareableLink, listUpdater } = placeSlice.actions;
+export const { setFavTogglingId, resetShareableLink, listUpdater, resetGeoLocations, resetPlacesList, resetNearByPlaces, resetRandomPlaces } = placeSlice.actions;
 export default placeSlice.reducer;

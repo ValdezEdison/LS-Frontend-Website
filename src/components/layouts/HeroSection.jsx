@@ -19,7 +19,7 @@ const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
 
     // const backgroundImage = heroContent?.background_image_url || images?.[0]?.original || Banner || PlaceHolderImg1;
     const backgroundImage = heroContent?.background_image_url
-  ? `${config.api.cmsBaseUrl}${heroContent.background_image_url}`
+  ? `${heroContent.background_image_url}`
   : images?.[0]?.original || Banner || PlaceHolderImg1;
 
 

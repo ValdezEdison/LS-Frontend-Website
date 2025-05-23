@@ -280,7 +280,7 @@ useEffect(() => {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const payload = {
-              geolocation_enabled: true,
+              location_mode: 'current',
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
               city_id: null

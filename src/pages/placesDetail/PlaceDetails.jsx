@@ -28,7 +28,7 @@ import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton"
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
 import CommentPopup from "../../components/popup/Comment/CommentPopup";
-import { setFavTogglingId } from "../../features/places/PlaceSlice";
+import { setFavTogglingId, resetNearByPlaces } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
@@ -552,6 +552,15 @@ const PlaceDetails = () => {
   const handleNavigate = () => {
     navigate('/places')
   }
+
+  useEffect(() => {
+
+    return () => {
+      dispatch(resetNearByPlaces());
+      dispatch(resetShareableLink());
+    }
+    
+  },[])
 
 
   return (

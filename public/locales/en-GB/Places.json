@@ -107,6 +107,6 @@
     "stopCount": "{{count}} stops",
     "noStops": "No stops available"
   },
-  "noResultsBasedOnManualLocation": "We’ve customised content for {{city}}. Change location or Disable location services.",
-  "noResultsBasedOnCurrentLocation": "We’ve customised content for your current location. Change location or Disable location services."
+   "noResultsBasedOnManualLocation": "We've customised content for {{city}}. <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>",
+  "noResultsBasedOnCurrentLocation": "We've customised content for your current location. <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>"
 }
