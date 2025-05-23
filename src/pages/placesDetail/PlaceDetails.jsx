@@ -130,6 +130,42 @@ const PlaceDetails = () => {
     }
   };
 
+  const handleActions = (e, action, id, name) => {
+    
+    e.stopPropagation();
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      // case 'addToTrip':
+      //   handleAddToTripClick(e, id, name);
+      //   setFormState(prev => ({ ...prev, type: "place" }));
+      //   break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      // case 'addToStop':
+      //   setFormState(prev => ({
+      //     ...prev,
+      //     stops: [...prev.stops, id]
+      //   }));
+      //   break;
+      default:
+        break;
+    }
+  };
+
+  const handleViewMoreDetails = (e, id) => {
+    togglePopup("map", false);
+    if (isAuthenticated) {
+      navigate('/places/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
   const updateState = (key, value) => {
     setState((prevState) => ({ ...prevState, [key]: value }));
   };
@@ -575,7 +611,7 @@ const PlaceDetails = () => {
           ratings={{}}
           state={state}
           setState={setState}
-          handleActions={handleFavClick}
+          handleActions={handleActions}
         />
       )}
 

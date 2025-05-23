@@ -36,6 +36,10 @@ import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { listUpdater } from "../../../features/places/placesInfo/places/PlacesSlice";
+import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
+import Widget from "../../../components/common/Widget";
+import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
+import { resetGeoLocations } from "../../../features/places/PlaceSlice";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -53,6 +57,7 @@ const Places = () => {
     const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next, listUpdater);
     const { isOpen } = useSelector((state) => state.popup);
     const { cities } = useSelector((state) => state.cities);
+    const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
     const [showMapPopup, setShowMapPopup] = useState(false);
 
@@ -131,6 +136,7 @@ const Places = () => {
                 dispatch(fetchTravelLiteList());
             }
             dispatch(fetchCities({}));
+            dispatch(fetchSuggestedPlaces({ page: 1, type: state.type }));
             return () => {
                 dispatch(closePopup());
                 closeAddToTrip()
@@ -158,7 +164,7 @@ const Places = () => {
 
 
     const handleViewMoreDetails = (e, id) => {
-
+        togglePopup("map", false);
         if (isAuthenticated) {
             navigate('/places/details', { state: { id } });
         } else {
@@ -363,9 +369,31 @@ const Places = () => {
         };
     }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
+    const handleNavActions = (e, id, action) => {
+        
+        if (isAuthenticated && action === "viewDetail") {
+          navigate('/places/details', { state: { id } });
+        } else if (action === "viewList") {
+          navigate('/places');
+        } else {
+          togglePopup("alert", true);
+          setAlertTitle(tCommon('authAlert.viewDetails.title'));
+          setAlertMessage(tCommon('authAlert.viewDetails.description'));
+        }
+      };
+    
+    
+      useEffect(() => {
+    
+        return () => {
+          dispatch(resetGeoLocations());
+        }
+        
+      },[])
+
     return (
         <>
-            {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+            {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} handleActions={handleActions}/>}
             {isOpen && popupState.alert && (
                 <Modal
                     onClose={() => togglePopup("alert", false)}
@@ -483,7 +511,11 @@ const Places = () => {
                     }
                 </div>
                 <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
-                <RecommendedPlaces />
+                {suggestedPlacesLoading ? (
+                <WidgetSkeleton />
+                ) : (
+                <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+                )}
             </main>
             <Footer />
         </>

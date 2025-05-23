@@ -30,6 +30,12 @@ import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
 import { listUpdater } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import { fetchCities } from "../../../features/common/cities/CityAction";
+import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
+import { fetchTravelLiteList } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
+import { fetchGeoLocations } from "../../../features/places/PlaceAction";
+import Widget from "../../../components/common/Widget";
+import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
+import { resetGeoLocations } from "../../../features/places/PlaceSlice";
 
 
 const ItineraryList = () => {
@@ -49,6 +55,7 @@ const ItineraryList = () => {
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, listUpdater);
   const { isOpen } = useSelector((state) => state.popup);
   const { cities } = useSelector((state) => state.cities);
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
   const [showArrow, setShowArrow] = useState(true);
 
@@ -113,6 +120,7 @@ const ItineraryList = () => {
     if (id) {
       dispatch(fetchItineriesInCity(id));
       dispatch(fetchCities({}));
+      dispatch(fetchSuggestedPlaces({ page: 1, type:"place" }));
     }
   }, [dispatch, language]);
 
@@ -325,6 +333,32 @@ const ItineraryList = () => {
           };
       }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
+
+
+
+      const handleNavActions = (e, id, action) => {
+          
+        if (isAuthenticated && action === "viewDetail") {
+          navigate('/places/details', { state: { id } });
+        } else if (action === "viewList") {
+          navigate('/places');
+        } else {
+          togglePopup("alert", true);
+          setAlertTitle(tCommon('authAlert.viewDetails.title'));
+          setAlertMessage(tCommon('authAlert.viewDetails.description'));
+        }
+      };
+    
+    
+      useEffect(() => {
+    
+        return () => {
+          dispatch(resetGeoLocations());
+        }
+        
+      },[])
+
+
   return (
     // <div className={styles.athenasPlaces}>
     <>
@@ -410,7 +444,11 @@ const ItineraryList = () => {
           }
         </div>
         <div className={styles.placesListbreaker} ref={placesListBreakerRef}></div>
-        <RecommendedPlaces />
+        {suggestedPlacesLoading ? (
+          <WidgetSkeleton />
+          ) : (
+          <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+        )}
       </main>
       <Footer />
       {/* </div> */}

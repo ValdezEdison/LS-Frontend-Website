@@ -19,11 +19,19 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const { loading, NearbyPlaces, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
     const { loading: eventsLoading, events: EventsList } = useSelector((state) => state.events);
+    const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
+    const { loading: placesLoading, placesList } = useSelector((state) => state.placesInCity);
+    
 
     const location = useLocation();
     const isEventsRoute = location.pathname === 'places/events';
     const isDetailsRoute = location.pathname === '/places/details' || location.pathname === '/events/details';
     const isPlacesDetailsPage = location.pathname === '/places/details';
+    const isEventDetailsPage = location.pathname === '/events/details';
+    const isPlacesPage = location.pathname === '/places';
+    const isDestinationEvents = location.pathname === '/places/events';
+    const isDestinationPlaces = location.pathname === '/places/destination-places';
+    const isEventsPage = location.pathname === '/events';
 
     const mapContainerRef = useRef(null);
     const placeRefs = useRef({});
@@ -34,9 +42,9 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const apiKey = getGoogleMapsApiKey();
     const mapId = getGoogleMapsMapId();
 
-    const placesToUse = isPlacesDetailsPage ? (NearbyPlaces && NearbyPlaces.length > 0 ? NearbyPlaces : places) : places;
+    const placesToUse = isPlacesPage ? places : isPlacesDetailsPage || isEventDetailsPage ? NearbyPlaces : isDestinationEvents ? events : isDestinationPlaces ? placesList : isEventsPage ? EventsList : suggestedPlaces ;
 
-    const dataToMap = isEventsRoute ? events || EventsList : placesToUse;
+    const dataToMap =  placesToUse;
     const geoDataToMap = geoLocations;
 
     const createPolygon = (mapInstance, center) => {

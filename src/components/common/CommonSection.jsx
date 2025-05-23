@@ -18,6 +18,7 @@ const CommonSection = ({ title, subtitle, seeMoreLink, items, renderItem, isCaro
       const isManuallySelected = currentLocation?.preferences?.location_mode === "manual";
       const isCurrentLocationSelected = currentLocation?.preferences?.location_mode === "current";
       const { isAuthenticated } = useSelector((state) => state.auth);
+      const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
     
       const [selectedCityBasedOnLocation, setSelectedCityBasedOnLocation] = useState(null);
 

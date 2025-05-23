@@ -177,6 +177,10 @@ const LocationSettings = ({ state, setState}) => {
           payload.default_longitude = state.default_longitude;
           payload.location_mode = "manual";
         }
+      }else{
+        payload.location_mode = "current";
+        payload.default_latitude = settings.default_latitude;
+        payload.default_longitude = settings.default_longitude;
       }
       
       const resultAction = await dispatch(updateLocationSettings(payload));
