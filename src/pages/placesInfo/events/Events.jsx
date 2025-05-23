@@ -31,6 +31,10 @@ import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
 import { listUpdater } from "../../../features/places/placesInfo/events/EventSlice";
+import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
+import Widget from "../../../components/common/Widget";
+import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
+import { resetGeoLocations } from "../../../features/places/PlaceSlice";
 
 const recommendedEvents = [
   {
@@ -68,6 +72,7 @@ const Events = () => {
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { cities } = useSelector((state) => state.cities);
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
   const { isOpen } = useSelector((state) => state.popup);
 
@@ -143,7 +148,8 @@ const Events = () => {
         dispatch(fetchTravelLiteList());
       }
       dispatch(fetchCities({}));
-
+      dispatch(fetchSuggestedPlaces({ page: 1, type: state.type }));
+      
       return () => {
         dispatch(closePopup());
         closeAddToTrip();
@@ -280,16 +286,7 @@ const Events = () => {
     navigate('/login', { state: { from: location } });
   }
 
-  const handleViewMoreDetails = (e, id) => {
 
-    if (isAuthenticated) {
-      navigate('/events/details', { state: { id } });
-    } else {
-      togglePopup("alert", true);
-      setAlertTitle(tCommon('authAlert.viewDetails.title'));
-      setAlertMessage(tCommon('authAlert.viewDetails.description'));
-    }
-  };
 
   // Modal props
   const modalSearchProps = {
@@ -314,9 +311,45 @@ const Events = () => {
   }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
 
+  const handleNavActions = (e, id, action) => {
+    
+    if (isAuthenticated && action === "viewDetail") {
+      navigate('/places/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
+
+  useEffect(() => {
+
+    return () => {
+      dispatch(resetGeoLocations());
+    }
+    
+  },[])
+
+
+
+  const handleViewMoreDetails = (e, id) => {
+    togglePopup("map", false);
+    if (isAuthenticated) {
+      navigate('/events/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
+
   return (
     <>
-      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} />}
+      {isOpen && showMapPopup && <MapPopup onClose={handleCloseMapPopup} state={state} setState={setState} handleActions={handleActions}/>}
 
       {isOpen && popupState.alert && (
         <Modal
@@ -424,17 +457,17 @@ const Events = () => {
           </div>
         }
         </section>
-        <div className={styles.divider} />
-        <section className={styles.recommendedSection}>
-          <h2 className={styles.sectionTitle}>
+        {/* <div className={styles.divider} />
+        <section className={styles.recommendedSection}> */}
+          {/* <h2 className={styles.sectionTitle}>
             {t('Events.recommendedEvents')}
-          </h2>
-          <div className={styles.recommendedGrid}>
-            {recommendedEvents.map((event, index) => (
-              <RecommendedEvent key={index} {...event} />
-            ))}
-          </div>
-        </section>
+          </h2> */}
+          {suggestedPlacesLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+            )}
+        {/* </section> */}
       </main>
       <Footer />
     </>

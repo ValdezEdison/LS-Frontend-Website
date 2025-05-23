@@ -13,10 +13,11 @@ const Widget = ({ data = [], title, count, handleNavActions, seeMore = true}) =>
 ;
   const settings = {
     // dots: true,
-    infinite: true,
+    infinite:  data.length > 4,
     speed: 500,
     slidesToShow: count,
     slidesToScroll: 1,
+    arrows: data.length > 4,
     responsive: [
       {
         breakpoint: 1024,

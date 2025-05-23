@@ -209,6 +209,18 @@ const placeSlice = createSlice({
                         is_fav: action.payload.response.detail === "Marked as favorite"
                     };
                 }
+                if(state.NearbyPlaces){
+                    const updatedNearbyPlaces = state.NearbyPlaces.map(place => {
+                        if (place.id === action.payload.id) {
+                            return {
+                                ...place,
+                                is_fav: action.payload.response.detail === "Marked as favorite"
+                            };
+                        }
+                        return place;
+                    });
+                    state.NearbyPlaces = updatedNearbyPlaces;
+                }
             })
             .addCase(toggleFavorite.rejected, (state, action) => {
                 state.isFavoriteToggling = false;

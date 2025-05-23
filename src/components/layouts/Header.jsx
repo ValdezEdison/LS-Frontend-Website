@@ -285,8 +285,10 @@ useEffect(() => {
               longitude: position.coords.longitude,
               city_id: null
             };
-            await dispatch(updateLocation(payload));
-            localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+            if(isAuthenticated){
+              await dispatch(updateLocation(payload));
+              localStorage.setItem(LOCATION_UPDATE_KEY, 'true');
+            }
           },
           (error) => {
             if (error.code === error.PERMISSION_DENIED) {

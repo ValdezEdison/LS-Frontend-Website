@@ -6,6 +6,7 @@ import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { useTranslation } from "react-i18next";
 import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecrets';
 import { useLocation } from 'react-router-dom';
+import PageLoader from "../../components/common/Loader";
 
 const Map = ({ onOpenPopup }) => {
     const { geoLocations, place, geoLocationsLoading } = useSelector((state) => state.places);
@@ -96,7 +97,13 @@ const Map = ({ onOpenPopup }) => {
 
     return (
         <div className={styles.mapContainer}>
-            
+              {geoLocationsLoading &&
+                <div className="loaderOverlay">
+                    <div className="loaderBtnWrapper">
+                        <PageLoader /> 
+                    </div>
+                </div>
+                }
             <div
                 ref={mapContainerRef}
                 className={styles.mapFrame}

@@ -7,11 +7,10 @@ import { PlaceHolderImg2 } from "../../common/Images";
 const SidebarSkeleton = () => {
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.mapContainer}>
-        {/* <Skeleton height={157} /> */}
+      {/* <div className={styles.mapContainer}>
         <img src={PlaceHolderImg2} alt="" />
         <Skeleton height={40} width={100} />
-      </div>
+      </div> */}
       <div className={styles.filters}>
         <h2 className={styles.filterTitle}><Skeleton width={100} /></h2>
         <div className={styles.categoryFilters}>

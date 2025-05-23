@@ -478,11 +478,8 @@ const PlacesPage = () => {
           longitude: lng,
           type: "place"
         }));
-        if (currentLocation?.preferences?.location_mode === 'manual') {
-          dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam }));
-        }else {
-          dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
-        }
+        dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam }));
+      
          
       } else {
         dispatch(fetchRandomPlaces({ page: 1, type: "place" }));
@@ -698,6 +695,7 @@ const PlacesPage = () => {
             categories: state.categories,
             levels: state.levels,
             subcategories: state.subcategories,
+            points: pointsParam
             
           }));
         }
@@ -1019,20 +1017,21 @@ const PlacesPage = () => {
         <>
           <div className="page-center">
             <div className={styles.content}>
-              {filterLoading ? (
+              {/* {filterLoading ? (
                 <SidebarSkeleton />
               )
                 :
-                (
+                ( */}
                   <Sidebar
                     handleShowMapPopup={handleShowMapPopup}
                     categories={categories}
                     ratings={RATINGS}
                     state={state}
                     setState={setState}
+                    filterLoading={filterLoading}
                   />
-                )
-              }
+              {/* //   )
+              // } */}
 
               {placesLoading ? (
                 <MainContentSkeleton />

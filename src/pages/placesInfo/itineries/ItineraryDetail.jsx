@@ -30,6 +30,9 @@ import { useTranslation } from "react-i18next";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
 import { useTripSummary } from "../../../hooks/useTripSummary";
+import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
+import Widget from "../../../components/common/Widget";
+
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -45,6 +48,7 @@ const ItineraryDetail = () => {
   const { isOpen } = useSelector((formState) => formState.popup);
   const { geoLocations } = useSelector((formState) => formState.places);
   const { cities, loading: citiesLoading } = useSelector((formState) => formState.cities);
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
 
   const { t } = useTranslation("Places");
   const { t: tCommon } = useTranslation("Common");
@@ -124,6 +128,7 @@ const ItineraryDetail = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
+      dispatch(fetchSuggestedPlaces({ page: 1, type: "place" }));
       if (isAuthenticated) {
         dispatch(fetchTravelLiteList());
       }
@@ -453,6 +458,21 @@ const ItineraryDetail = () => {
     
   },[formState.destinations])
 
+    const handleNavActions = (e, id, action) => {
+      
+      if (isAuthenticated && action === "viewDetail") {
+        navigate('/places/details', { state: { id } });
+      } else if (action === "viewList") {
+        navigate('/places');
+      } else {
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.viewDetails.title'));
+        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      }
+    };
+  
+
+
   if (loading) {
     return (
       <>
@@ -596,7 +616,11 @@ const ItineraryDetail = () => {
               <div className="no-results-wrapper">{t('Itinerary.noStops')}</div>
             )}
           </section>
-          <RelatedContent />
+          {suggestedPlacesLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+            )}
         </main>
         <Footer />
       </div>
