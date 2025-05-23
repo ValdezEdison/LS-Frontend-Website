@@ -29,6 +29,9 @@ import { fetchContinents } from "../../features/common/continents/ContinentActio
 import { debounce } from "lodash";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import { fetchNearMePlaces } from "../../features/places/PlaceAction";
+import { resetPlacesList } from "../../features/places/PlaceSlice";
+import { resetRandomPlaces } from "../../features/home/HomeSlice";
+import { resetEventsList } from "../../features/events/EventSlice";
 
 const HomePage = () => {
 
@@ -147,6 +150,15 @@ const HomePage = () => {
     }
 
   }, [state.tag, dispatch]);
+
+
+  useEffect(() => {
+   return () => {
+     dispatch(resetPlacesList());
+     dispatch(resetRandomPlaces());
+     dispatch(resetEventsList());
+   }
+  }, []);
 
 
   return (

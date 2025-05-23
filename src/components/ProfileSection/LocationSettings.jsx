@@ -149,7 +149,7 @@ const LocationSettings = ({ state, setState}) => {
        
         if(resultAction.type === 'locations/updateLocation/fulfilled') {
 
-          toast.success('Location updated successfully');
+          toast.success(t('locationSettings.success.locationUpdated'));
           if(resultAction.payload?.preferences?.geolocation_enabled === true) {
             dispatch(enableTracking());
           }
@@ -184,7 +184,7 @@ const LocationSettings = ({ state, setState}) => {
       updateState('selectedDestinationId', null);
       if (updateLocationSettings.fulfilled.match(resultAction)) {
         if (resultAction.type === 'locations/updateLocationSettings/fulfilled') {
-          toast.success('Location settings updated successfully');
+          toast.success(t('locationSettings.success.settingsUpdated'));
           if (resultAction.payload?.preferences?.geolocation_enabled === true) {
             dispatch(enableTracking());
           }
