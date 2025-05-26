@@ -28,6 +28,9 @@ import { useAddTrip } from "../../hooks/useAddTrip";
 import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
 import { listUpdater } from "../../features/itineraries/ItinerarySlice";
+import { fetchSuggestedPlaces } from "../../features/suggestions/SuggestionAction";
+import Widget from "../../components/common/Widget";
+import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 
 const ItineraryPage = () => {
   const { t: tCommon } = useTranslation("Common");
@@ -42,6 +45,8 @@ const ItineraryPage = () => {
   const { cities, loading: citiesLoading, error: citiesError } = useSelector((state) => state.cities);
   const { itineraries, loading: itinerariesLoading, error: itinerariesError, next, count } = useSelector((state) => state.itineraries);
   const { data: visibleItineraries, loading, next: hasNext, loadMore } = useSeeMore(itineraries, next, listUpdater);
+  const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
+  
 
   const { isOpen } = useSelector((state) => state.popup);
 
@@ -102,6 +107,8 @@ const ItineraryPage = () => {
     dispatch(fetchCities({}));
     // dispatch(fetchItineraries(state.page));
     dispatch(fetchItinerariesInCity({ page: state.page, cityId: state.cityId }));
+    dispatch(fetchSuggestedPlaces({ page: state.page, type: "place" }));
+    
   }, [dispatch, language]);
 
   const debouncedSearch = useMemo(
@@ -245,6 +252,19 @@ const ItineraryPage = () => {
       };
     }, [isAddToPopupOpen, tripPopupState.addTripPopup]);
 
+    const handleNavActions = (e, id, action) => {
+    
+      if (isAuthenticated && action === "viewDetail") {
+        navigate('/places/details', { state: { id } });
+      } else if (action === "viewList") {
+        navigate('/places');
+      } else {
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.viewDetails.title'));
+        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      }
+    };
+
   return (
     <>
 
@@ -295,7 +315,11 @@ const ItineraryPage = () => {
             </div>
           }
 
-          <RecommendedEvents />
+            {suggestedPlacesLoading ? (
+              <WidgetSkeleton />
+            ) : (
+              <Widget data={suggestedPlaces} title={tCommon("peopleAlsoSeen")} count={4} handleNavActions={handleNavActions}/>
+            )}
         </main>
         {!isAuthenticated && <Newsletter />}
         <Footer />

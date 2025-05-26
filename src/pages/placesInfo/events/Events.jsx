@@ -35,29 +35,10 @@ import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAc
 import Widget from "../../../components/common/Widget";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 import { resetGeoLocations } from "../../../features/places/PlaceSlice";
-
-const recommendedEvents = [
-  {
-    title: "Kensington Dollshouse Festival",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/40931c085bffa3ac5e5d7f41ef51ecfe5c77c819",
-  },
-  {
-    title: "Summer Social 2024",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/40931c085bffa3ac5e5d7f41ef51ecfe5c77c819",
-  },
-  {
-    title: "Open Bar Afro Caribbean",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/dd8283b2c6cf2f47b20143530ae9cd5605d37d9a",
-  },
-  {
-    title: "Asbury Park Vegan Food Festival",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/86c884c27449396d500c38a043d02ab9574d0223",
-  },
-];
+import { fetchEventsOrPlacesByTag } from "../../../features/places/placesInfo/tags/TagsAction";
+import useDynamicContent from "../../../hooks/useDynamicContent";
+import useHasTagDetails from "../../../hooks/useHasTagDetails";
+import { listUpdater as tagsListUpdater, resetState } from "../../../features/places/placesInfo/tags/TagsSlice";
 
 const Events = () => {
 
@@ -66,10 +47,13 @@ const Events = () => {
   const navigate = useNavigate();
 
   const { language } = useContext(LanguageContext);
-  const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
+  const hasTagDetails = useHasTagDetails();
+  const tagDetails = hasTagDetails ? JSON.parse(localStorage.getItem('tagDetails')) : null;
+  // const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
+  const { loading: eventLoading, error, data: events, next } = useDynamicContent('events');
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
-  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next, listUpdater);
+  const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next, hasTagDetails ? tagsListUpdater : listUpdater, hasTagDetails ? 'events' : '');
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { cities } = useSelector((state) => state.cities);
@@ -140,11 +124,12 @@ const Events = () => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
   };
-
+  const cityId = hasTagDetails ? tagDetails.cityId : id;
+  
   useEffect(() => {
-    if (id) {
-      dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
-      dispatch(fetchGeoLocations({ cityId: id, type: "event" }));
+    if (cityId) {
+      dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: cityId }));
+      dispatch(fetchGeoLocations({ cityId: cityId, type: "event" }));
       if (isAuthenticated) {
         dispatch(fetchTravelLiteList());
       }
@@ -156,7 +141,7 @@ const Events = () => {
         closeAddToTrip();
       };
     }
-  }, [dispatch, id, isAuthenticated, language]);
+  }, [dispatch, cityId, isAuthenticated, language]);
 
   function formatLocalDate(date) {
     const year = date.getFullYear();
@@ -167,9 +152,9 @@ const Events = () => {
 
   // Events with filters
   useEffect(() => {
-    if (id) {
+    if (cityId) {
       const params = {
-        cityId: id,
+        cityId: cityId,
         page: 1,
         type: 'event',
         levels: state.selectedLevel,
@@ -179,9 +164,18 @@ const Events = () => {
           endDate: formatLocalDate(state.selectedDateRange.endDate), // state.selectedDateRange?.endDate?.toISOString().split('T')[0]
         })
       };
-      dispatch(fetchEventsByCityId(params));
+       if (hasTagDetails) {
+        const tagDetails = JSON.parse(localStorage.getItem('tagDetails'));
+        dispatch(fetchEventsOrPlacesByTag({ 
+          type: 'event',
+          tagId: tagDetails.tagId,
+          cityId: tagDetails.cityId,
+        }));
+      } else {
+        dispatch(fetchEventsByCityId(params));
+      }
     }
-  }, [dispatch, id, state.selectedLevel, state.points, state.selectedDateRange, language]);
+  }, [dispatch, cityId, state.selectedLevel, state.points, state.selectedDateRange, language, hasTagDetails]);
 
 
   const handleShowMapPopup = () => {
@@ -330,6 +324,7 @@ const Events = () => {
 
     return () => {
       dispatch(resetGeoLocations());
+      dispatch(resetState())
     }
     
   },[])
@@ -406,9 +401,10 @@ const Events = () => {
 
       <Header />
       <main className="page-center">
-        <h1 className={styles.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
+        <h1 className={styles.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.name}`}</h1>
         <SubNavMenu activeLink="eventos" />
-
+      {!hasTagDetails &&
+      <>
         <div className={styles.searchSection}>
           <div className={styles.mapButtonContainer}>
             <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
@@ -426,9 +422,11 @@ const Events = () => {
             type="submenu-events"
           />
         </div>
+        </>
+      }
         <section className={styles.eventsSection}>
           <h2 className={styles.sectionTitle}>
-            {t('Events.popularEvents', { city: destination?.name })}
+          {!hasTagDetails && t('Events.popularEvents', { city: destination?.name }) }
           </h2>
           <div className={styles.eventGrid}>
             {eventLoading ? (

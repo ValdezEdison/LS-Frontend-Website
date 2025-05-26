@@ -227,8 +227,8 @@ const ProfilePage = () => {
         
         case 'delete':
           if (!securityData.accountDeletionConfirmed) {
-            toast.error("Please confirm account deletion");
-            return;
+            // toast.error("Please confirm account deletion");
+            // return;
           }
           await dispatch(deleteAccount()).then((result) => {
             if (result.type === "auth/deleteAccount/fulfilled") {
@@ -413,6 +413,11 @@ const ProfilePage = () => {
   
       handleSecuritySave("delete");
     }
+
+
+    const handleManagePrivacy = () => {
+      navigate('/privacy-policy');
+    }
   
 
 
@@ -447,7 +452,7 @@ const ProfilePage = () => {
           />
         );
       case "privacy":
-        return <PrivacyContent user={user} />;
+        return <PrivacyContent user={user} handleManagePrivacy={handleManagePrivacy}/>;
       case "notifications":
         return <NotificationForm  user={user}/>;
       default:

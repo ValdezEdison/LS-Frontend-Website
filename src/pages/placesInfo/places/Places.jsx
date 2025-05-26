@@ -40,6 +40,10 @@ import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAc
 import Widget from "../../../components/common/Widget";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 import { resetGeoLocations } from "../../../features/places/PlaceSlice";
+import { fetchEventsOrPlacesByTag } from "../../../features/places/placesInfo/tags/TagsAction";
+import useDynamicContent from "../../../hooks/useDynamicContent";
+import useHasTagDetails from "../../../hooks/useHasTagDetails";
+import { listUpdater as tagsListUpdater, resetState } from "../../../features/places/placesInfo/tags/TagsSlice";
 
 const Places = () => {
     const { t } = useTranslation('Places');
@@ -49,13 +53,16 @@ const Places = () => {
     const navigate = useNavigate();
 
     const { language } = useContext(LanguageContext);
+    const hasTagDetails = useHasTagDetails();
+    const tagDetails = hasTagDetails ? JSON.parse(localStorage.getItem('tagDetails')) : null;
 
-    const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
+    // const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
+    const { loading: placesLoading, error, data: placesList, next, count } = useDynamicContent('places');
     const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
     const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
-    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next, listUpdater);
+    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next, hasTagDetails ? tagsListUpdater : listUpdater, hasTagDetails ? "places" : "");
     const { isOpen } = useSelector((state) => state.popup);
     const { cities } = useSelector((state) => state.cities);
     const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
@@ -127,12 +134,22 @@ const Places = () => {
     const placesListBreakerRef = useRef(null);
 
     const { id } = location.state || {};
+    const cityId = hasTagDetails ? tagDetails.cityId : id;
 
     useEffect(() => {
-        if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', preview: state.preview }));
-            dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
-            dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
+        if (cityId) {
+            if(hasTagDetails) {
+                const tagDetails = JSON.parse(localStorage.getItem('tagDetails'));
+                dispatch(fetchEventsOrPlacesByTag({ 
+                    type: 'place',
+                    tagId: tagDetails.tagId,
+                    cityId: tagDetails.cityId,
+                }));
+            }else{
+                dispatch(fetchPlacesInCity({ cityId: cityId, page: 1, type: 'place', preview: state.preview }));
+            }
+            dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: cityId }));
+            dispatch(fetchGeoLocations({ cityId: cityId, type: "place" }));
             if (isAuthenticated) {
                 dispatch(fetchTravelLiteList());
             }
@@ -143,7 +160,7 @@ const Places = () => {
                 closeAddToTrip()
             }
         }
-    }, [dispatch, id, language]);
+    }, [dispatch, cityId, language]);
 
 
 
@@ -388,6 +405,7 @@ const Places = () => {
     
         return () => {
           dispatch(resetGeoLocations());
+          dispatch(resetState())
         }
         
       },[])
@@ -449,8 +467,10 @@ const Places = () => {
             )}
             <Header />
             <main className="page-center" ref={mainRef}>
-                <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
+                <h1 className={commonStyle.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.name}`}</h1>
                 <SubNavMenu activeLink="lugares" />
+                {!hasTagDetails &&
+                <>
                 <div className={styles.searchFilters}>
                     <div className={styles.mapButtonContainer}>
                         <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
@@ -468,7 +488,9 @@ const Places = () => {
                         type="submenu-places"
                     />
                 </div>
-                <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
+                </>
+                }
+                <p className={commonStyle.availablePlaces}>{!hasTagDetails && t('Places.availableCount', { count })}</p>
                 <div className={styles.placesList} ref={placesListRef}>
                     {/* <button
                         style={{
@@ -497,7 +519,7 @@ const Places = () => {
                             />
                         ))
                     ) : (
-                        <div className="no-results-wrapper">{t('Places:noResults')}</div>
+                        <div className="no-results-wrapper">{t('Places.noResults')}</div>
                     )}
                     {loading ? <Loader /> : next && isAuthenticated && <SeeMoreButton
                         onClick={loadMore}

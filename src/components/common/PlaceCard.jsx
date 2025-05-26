@@ -5,13 +5,15 @@ import { getRatingText } from "../../constants/RatingText";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
 
 const PlaceCard = forwardRef(
     ({ place, translate, isAuthenticated, handleViewMoreDetails = () => { }, isPopup = false, handleActions = () => { }, isFavoriteToggling = false }, ref) => {
-        console.log(place, "dddddd")
+        
         const location = useLocation();
         const isItineraryPage = location.pathname.includes("itineraries");
         const { isAddToPopupOpen } = useSelector((state) => state.popup);
+        const navigate = useNavigate();
 
 
         const hasStopsOrTags = place?.num_of_stops !== undefined || (place?.tags && place?.tags.length > 0);
@@ -62,6 +64,18 @@ const PlaceCard = forwardRef(
                 country: place?.country?.name || ''
             };
         };
+
+        const handleTagsAction = (e, id, title) => {
+            e.stopPropagation();
+            navigate('/places/tags', { 
+              state: { 
+                cityId: place?.cities[0]?.id || place?.city?.id || '',    
+                cityName: place?.cities[0]?.name || place?.city?.name || '', 
+                tagId: id, 
+                title 
+              } 
+            });
+          };
 
         return (
             <div
@@ -121,7 +135,16 @@ const PlaceCard = forwardRef(
                     {/* Conditionally render the stops and views section */}
                     {!isPopup && hasStopsOrTags && !hasComments && isItineraryPage && (
                     <div className={styles.placeStopsTags}>
-                        <p className={styles.placeItenary}>{translate("placeCard.itinerary")}</p>
+                        {place?.tags?.length > 0 && (
+                        <div className={styles.placeTags}>
+                            {place.tags.map((tag, index) => (
+                            <p key={index} className={styles.placeItenary} onClick={(e) => handleTagsAction(e, tag.id, tag.title)}>
+                                {tag.title}
+                            </p>
+                            ))}
+                        </div>
+                        )}
+                        {/* <p className={styles.placeItenary}>{translate("placeCard.itinerary")}</p> */}
                         {(() => {
                         const { city, country } = getLocationInfo(place);
                         return (

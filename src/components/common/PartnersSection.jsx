@@ -117,7 +117,7 @@ const PartnersSection = ({ ourPartners, ourPartnersLoading }) => {
             <div key={partner.id} className={styles.partnerLogo}>
               {partner.logo?.url ? (
                 <img
-                src={partner.logo?.url ? config.api.cmsBaseUrl + partner.logo.url : PlaceHolderImg1}
+                src={partner.logo?.url ?  partner.logo.url : PlaceHolderImg1}
                   alt={partner.logo.alt || partner.name}
                   width={partner.logo.width}
                   height={partner.logo.height}

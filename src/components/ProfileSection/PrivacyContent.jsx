@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./PrivacySettings.module.css";
 import { useTranslation } from "react-i18next";
 
-const PrivacyContent = ({ user }) => {
+const PrivacyContent = ({ user, handleManagePrivacy }) => {
   const { t } = useTranslation('ProfileSection');
 
   return (
@@ -17,13 +17,13 @@ const PrivacyContent = ({ user }) => {
           <div className={styles.settingsGroup}>
             <h2 className={styles.settingsTitle}>{t('privacy.settings.title')}</h2>
             <div className={styles.settingsDetails}>
-              <p className={styles.userEmail}>{user.email}</p>
+              <p className={styles.userEmail}>{user?.email}</p>
               <p className={styles.settingsDescription}>
                 {t('privacy.settings.description')}
               </p>
             </div>
           </div>
-          <button className={styles.manageButton}>
+          <button className={styles.manageButton} onClick={handleManagePrivacy}>
             {t('privacy.actions.manage')}
           </button>
         </div>

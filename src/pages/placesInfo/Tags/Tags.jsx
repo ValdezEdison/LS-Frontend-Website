@@ -361,7 +361,7 @@ const Tags = () => {
                 <SubNavMenu activeLink="tags" />
                
            
-                <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
+                {/* <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p> */}
                 <div className={styles.placesList} ref={placesListRef}>
                     {/* <button
                         style={{
