@@ -3,8 +3,11 @@ import styles from "./TripDetails.module.css";
 import { useTranslation } from "react-i18next";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import ShareOptions from "../common/ShareOptions";
+import { useSelector } from "react-redux";
+import styles2 from "../../pages/placesInfo/itineries/ItineraryDetail.module.css";
 
-const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
+const TripInfo = ({ handleActions, id, tripDetails, loading, toggleShareOptions, showShareOptions, handleGenerateLink }) => {
 
   const { t } = useTranslation('MyTrips');
   // Format dates to display
@@ -19,6 +22,7 @@ const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
       return dateString;
     }
   };
+  const { generatedLink } = useSelector((formState) => formState.itineriesInCity);
 
 
   if (loading) {
@@ -83,13 +87,24 @@ const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
           
         </button>
         <div className="shareButtonWrapper">
-        <button 
+        {/* <button 
           className={`${styles.actionButton} ${styles.shareButton}`} 
           aria-label={t('tripInfo.ariaLabels.shareTrip')}
           onClick={(e) => handleActions(e, 'shareTrip', id)}
         >
         
-        </button>
+        </button> */}
+          <div className={styles2.shareIconWrapper}>
+            <button className={styles2.shareBtnIcon} onClick={handleGenerateLink}></button>
+            {showShareOptions && generatedLink && (
+              <ShareOptions
+                url={generatedLink}
+                title={tripDetails?.title}
+                description={tripDetails?.description}
+                onClose={toggleShareOptions}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

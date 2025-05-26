@@ -121,7 +121,7 @@ const TripDetails = () => {
     <>
       <Header />
       <main className="page-center">
-        <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails} loading={loading}/>
+        <TripInfo handleActions={handleActions} id={id} tripDetails={tripDetails} loading={loading} toggleShareOptions={toggleShareOptions} showShareOptions={showShareOptions} handleGenerateLink={handleGenerateLink}/>
         <ItineraryMap places={tripDetails?.stops} formState={formState} setFormState={setFormState} />
         {/* {tripDetails?.stops?.length > 0 && ( */}
         <StopList tripDetails={tripDetails} handleViewMoreDetails={handleViewMoreDetails} setFormState={setFormState} handleClickDownloadTrip={handleClickDownloadTrip}/>
@@ -132,17 +132,6 @@ const TripDetails = () => {
               <Widget data={similarStops} title={t('tripDetails.similarPlaces')} count={4} seeMore={false}/>
             )}
 
-              <div className={styles.shareIconWrapper}>
-                  <button className={styles.shareBtnIcon} onClick={handleGenerateLink}></button>
-                  {showShareOptions && generatedLink && (
-                    <ShareOptions
-                      url={generatedLink}
-                      title={tripDetails?.title}
-                      description={tripDetails?.description}
-                      onClose={toggleShareOptions}
-                    />
-                  )}
-                </div>
       </main>
       <Footer />
     </>
