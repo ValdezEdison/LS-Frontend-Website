@@ -368,7 +368,7 @@ const PersonalDetails = ({
               </button>
             )}
           </div>
-          {/* {editingField === detail.label && detail.action !== "none" && (
+          {editingField === detail.label && detail.action !== "none" && editingField !== t('personalDetails.fields.profileType') && (
             <div className={styles.saveButtonWrapper}>
               <button 
                 className={`${styles.actionButton} ${styles.saveButton}`}
@@ -377,7 +377,7 @@ const PersonalDetails = ({
                  {t('personalDetails.actions.save')}
               </button>
             </div>
-          )} */}
+          )}
           {index < details.length - 1 && <div className={styles.separator} />}
         </React.Fragment>
       ))}
