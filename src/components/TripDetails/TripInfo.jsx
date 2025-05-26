@@ -82,13 +82,15 @@ const TripInfo = ({ handleActions, id, tripDetails, loading }) => {
         >
           
         </button>
+        <div className="shareButtonWrapper">
         <button 
           className={`${styles.actionButton} ${styles.shareButton}`} 
           aria-label={t('tripInfo.ariaLabels.shareTrip')}
           onClick={(e) => handleActions(e, 'shareTrip', id)}
         >
-          
+        
         </button>
+        </div>
       </div>
     </div>
   );
