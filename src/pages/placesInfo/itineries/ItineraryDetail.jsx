@@ -25,7 +25,7 @@ import ShareOptions from "../../../components/common/ShareOptions";
 import { resetShareableLink, resetDownloadedTrip, setTripType, resetTripType } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
-import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { setFavTogglingId } from "../../../features/favorites/FavoritesSlice";
 import { useTranslation } from "react-i18next";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
@@ -134,6 +134,7 @@ const ItineraryDetail = () => {
       }
       dispatch(fetchCities({}));
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+      dispatch(generateLink(id));
     }
     return () => {
       dispatch(resetTripType());
@@ -377,8 +378,7 @@ const ItineraryDetail = () => {
   const handleGenerateLink = () => {
     
     if (id) {
-      dispatch(resetShareableLink());
-      dispatch(generateLink(id));
+      setShowShareOptions(true)
     }
   }
 
@@ -388,12 +388,7 @@ const ItineraryDetail = () => {
     setShowShareOptions(!showShareOptions);
   };
 
-  useEffect(() => {
-    if (generatedLink) {
-      setShowShareOptions(true);
-    }
 
-  }, [generatedLink])
 
   const handleClickDownloadTrip = () => {
     if (id) {
@@ -580,7 +575,7 @@ const ItineraryDetail = () => {
 
                 <div className={styles.shareIconWrapper}>
                   <button className={styles.shareBtnIcon} onClick={handleGenerateLink}></button>
-                  {showShareOptions && (
+                  {showShareOptions && generatedLink && (
                     <ShareOptions
                       url={generatedLink}
                       title={itineraryDetails?.title}

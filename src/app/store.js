@@ -23,6 +23,7 @@ import exploreReducer from "../features/explore/ExploreSlice.jsx"
 import favoriteReducer from "../features/favorites/FavoritesSlice.jsx"
 import myTripsReducer from "../features/myTrips/MyTripsSlice.jsx"
 import suggestionReducer from "../features/suggestions/SuggestionSlice.jsx"
+import tagsReducer from "../features/places/placesInfo/tags/TagsSlice.jsx"
 
 // cms reducer
 import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
@@ -107,7 +108,8 @@ const store = configureStore({
     favorites: favoriteReducer,
     myTrips: myTripsReducer,
     locationSettings: persistedLocationReducer,
-    suggestions: suggestionReducer
+    suggestions: suggestionReducer,
+    tags: tagsReducer
   },
  
   middleware: (getDefaultMiddleware) =>

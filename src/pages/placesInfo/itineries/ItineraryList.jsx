@@ -21,7 +21,7 @@ import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
 import FilterBar from "../../../components/common/FilterBar";
 import { LanguageContext } from "../../../context/LanguageContext";
 import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
-import { setFavTogglingId } from "../../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { setFavTogglingId } from "../../../features/favorites/FavoritesSlice";
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import Modal from "../../../components/modal/Modal";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
@@ -49,7 +49,8 @@ const ItineraryList = () => {
 
   const { language } = useContext(LanguageContext);
 
-  const { loading: itineriesLoading, error, itineries, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineriesInCity);
+  const { loading: itineriesLoading, error, itineries, next, count} = useSelector((state) => state.itineriesInCity);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, listUpdater);

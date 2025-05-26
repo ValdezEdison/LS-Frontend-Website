@@ -8,12 +8,15 @@ import { startsWith } from "lodash";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { ProfilePlaceholder } from "../common/Images";
+import { useNavigate } from "react-router-dom";
 
 const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handleClickEditComment, handleClickDeleteComment, comments, placeDetails }) => {
 
   const { isAuthenticated, user } = useSelector((state) => state.auth)
 
   const { t } = useTranslation("DetailsPage");
+
+  const navigate = useNavigate();
 
   const sliderSettings = {
     // dots: true,
@@ -34,7 +37,20 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handl
     ],
   };
 
-  
+  const handleTagsAction = (id, title) => {
+    console.log(placeDetails?.city?.id, "placeDetails?.city?.id");
+    navigate('/places/tags', { 
+      state: { 
+        cityId: placeDetails?.city?.id,    
+        cityName: placeDetails?.city?.name, 
+        tagId: id, 
+        title 
+      } 
+    });
+  };
+   
+
+  console.log(placeDetails, "placeDetails");
 
   const renderStars = (rating) => {
     const stars = [];
@@ -65,7 +81,7 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handl
       </div>
       <div className={styles.tagContainer}>
         {placeDetails?.tags?.map((tag, index) => (
-          <span key={index} className={styles.tag}>
+          <span key={index} className={styles.tag} onClick={() => handleTagsAction(tag.id, tag.title)}>
             {tag.title}
           </span>
         ))}

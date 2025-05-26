@@ -14,7 +14,20 @@ const SubNavMenu = ({ activeLink }) => {
   const { t } = useTranslation("Common");
 
   const handleNavigation = (path) => {
-    navigate(path, { state: { id } });
+    if (path === '/places/tags') {
+      // Special handling for tags path
+      const tagDetails = JSON.parse(localStorage.getItem('tagDetails') || '{}');
+      navigate(path, {
+        state: {
+          cityId: tagDetails.cityId || '',
+          cityName: tagDetails.cityName || '',
+          tagId: tagDetails.tagId || '',
+          title: tagDetails.title || ''
+        }
+      });
+    } else {
+      navigate(path, { state: { id } });
+    }
   };
 
   const isActive = (path) => {
@@ -29,30 +42,62 @@ const SubNavMenu = ({ activeLink }) => {
       "/places/destination-places",
       "/places/itineraries",
       "/places/itineraries-details",
+      "/places/tags",
     ];
 
     const isSubNavRouteActive = subNavRoutes.some((route) =>
       location.pathname.startsWith(route)
     );
-
     if (!isSubNavRouteActive) {
       // Clear persisted data if the user navigates away from the sub-navigation routes
       dispatch({
         type: PURGE,
         key: "destination", // Key used in persistConfig
-        result: () => null, // Optional callback
       });
+      localStorage.removeItem('tagDetails');
     }
   }, [location.pathname, dispatch]);
 
+
+  const isTagsPage = location.pathname === '/places/tags';
+
+  useEffect(() => {
+    if(isTagsPage){
+      const { cityId, title, tagId, cityName } = location?.state ?? {};    
+      const tagDetails = {
+        cityId: cityId || '',
+        title: title || '',
+        tagId: tagId || '',
+        cityName: cityName || ''
+      };
+  
+      localStorage.setItem('tagDetails', JSON.stringify(tagDetails));
+
+    }
+
+  }, [isTagsPage, location]);
+
+  const hasTagDetails = Boolean(JSON.parse(localStorage.getItem('tagDetails') || 'null'));
+
   return (
     <nav className={styles.subNav}>
-      <a
+      {isTagsPage || hasTagDetails ? (
+        <a
+          className={`${styles.subNavLink} ${isActive("/places/tags") ? styles.active : ""}`}
+          onClick={() => handleNavigation("/places/tags")}
+        >
+          {t('subNav.tags')}
+        </a>
+      )
+        :(
+        <a
         className={`${styles.subNavLink} ${isActive("/places/destination") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/destination")}
       >
        {t('subNav.destination')}
       </a>
+      )}
+   
       <a
         className={`${styles.subNavLink} ${isActive("/places/events") ? styles.active : ""}`}
         onClick={() => handleNavigation("/places/events")}

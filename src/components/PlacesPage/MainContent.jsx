@@ -25,7 +25,8 @@ import { Trans } from 'react-i18next';
 const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
-  const { places, loading: placesLoading, error: placesError, next, count, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
+  const { places, loading: placesLoading, error: placesError, next, count } = useSelector((state) => state.places);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
   const { loading: countriesLoading } = useSelector((state) => state.countries);
   const { loading: citiesLoading } = useSelector((state) => state.cities);

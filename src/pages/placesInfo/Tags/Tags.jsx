@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
-import SearchFilters from "../../../components/PlacesInfo/Places/SearchFilters";
-import RecommendedPlaces from "../../../components/PlacesInfo/Places/RecommendedPlaces";
 import commonStyle from "../Common.module.css";
 import SubNavMenu from "../../../components/common/SubNavMenu";
 import { useEffect, useRef } from "react";
@@ -10,23 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPlacesInCity } from "../../../features/places/placesInfo/places/PlacesAction";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceCard from "../../../components/common/PlaceCard";
-import styles from "./Places.module.css";
+import styles from "../places/Places.module.css";
 import { useTranslation } from "react-i18next";
 import useSeeMore from "../../../hooks/useSeeMore";
 import Loader from "../../../components/common/Loader";
 import SeeMoreButton from "../../../components/common/SeeMoreButton";
-import { Arrow } from "../../../components/common/Images";
-import styles2 from "../../../components/common/PlaceCard.module.css";
 import CardSkeleton from "../../../components/skeleton/common/CardSkeleton";
-import { fetchPlacesFilterCategories, fetchGeoLocations } from "../../../features/places/PlaceAction";
 import { toggleFavorite } from "../../../features/favorites/FavoritesAction";
-import FilterBar from "../../../components/common/FilterBar";
 import { openPopup, closePopup, openAddToTripPopup } from "../../../features/popup/PopupSlice";
 import MapPopup from "../../../components/common/MapPopup";
-import SelectedItemList from "../../../components/common/SelectedItemList";
-import styles3 from "../../../components/PlacesPage/MainContent.module.css"
 import { LanguageContext } from "../../../context/LanguageContext";
-import { setFavTogglingId } from "../../../features/favorites/FavoritesSlice";
 import Modal from "../../../components/modal/Modal";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import { useAddTrip } from "../../../hooks/useAddTrip";
@@ -35,13 +26,14 @@ import { fetchTravelLiteList } from "../../../features/places/placesInfo/itinera
 import AddToTripPopup from "../../../components/popup/AddToTrip/AddToTripPopup";
 import AddTripPopup from "../../../components/popup/AddToTrip/AddTripPopup";
 import SuccessMessagePopup from "../../../components/popup/SuccessMessage/SuccessMessagePopup";
-import { listUpdater } from "../../../features/places/placesInfo/places/PlacesSlice";
 import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
 import Widget from "../../../components/common/Widget";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
-import { resetGeoLocations } from "../../../features/places/PlaceSlice";
+import { fetchTags } from "../../../features/places/placesInfo/tags/TagsAction";
+import { listUpdater } from "../../../features/places/placesInfo/tags/TagsSlice";
+import { setFavTogglingId } from "../../../features/favorites/FavoritesSlice";
 
-const Places = () => {
+const Tags = () => {
     const { t } = useTranslation('Places');
     const { t: tCommon } = useTranslation('Common');
     const location = useLocation();
@@ -50,15 +42,15 @@ const Places = () => {
 
     const { language } = useContext(LanguageContext);
 
-    const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
-    const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
+    const { loading: tagsLoading, tags, next, count } = useSelector((state) => state.tags);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
     const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);
-    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(placesList, next, listUpdater);
+    const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(tags, next, listUpdater);
     const { isOpen } = useSelector((state) => state.popup);
     const { cities } = useSelector((state) => state.cities);
     const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
+    const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
     const [showMapPopup, setShowMapPopup] = useState(false);
 
@@ -126,13 +118,12 @@ const Places = () => {
     const gotoTopButtonRef = useRef(null);
     const placesListBreakerRef = useRef(null);
 
-    const { id } = location.state || {};
-
+    const { cityId, title, tagId, cityName } = location?.state ?? {};    
     useEffect(() => {
-        if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', preview: state.preview }));
-            dispatch(fetchPlacesFilterCategories({ page: 1, type: 'place', cityId: id }));
-            dispatch(fetchGeoLocations({ cityId: id, type: "place" }));
+        if (tagId && cityId) {
+            console.log('tagId, cityId', tagId, cityId)
+           dispatch(fetchTags({tagId: tagId, cityId: cityId, page: 1}));
+
             if (isAuthenticated) {
                 dispatch(fetchTravelLiteList());
             }
@@ -143,25 +134,7 @@ const Places = () => {
                 closeAddToTrip()
             }
         }
-    }, [dispatch, id, language]);
-
-
-
-
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchPlacesInCity({
-                cityId: id,
-                page: state.page,
-                type: 'place',
-                levels: state.selectedLevel,
-                categories: state.selectedCategory,
-                subcategories: state.selectedSubcategory,
-                preview: state.preview
-            }));
-
-        }
-    }, [dispatch, id, state.page, state.selectedLevel, state.selectedCategory, state.selectedSubcategory, language]);
+    }, [dispatch, tagId, cityId, language]);
 
 
     const handleViewMoreDetails = (e, id) => {
@@ -230,57 +203,7 @@ const Places = () => {
         };
     }, []);
 
-    const filters = [
-        {
-            label: t('Filters.level'),
-            type: "select",
-            options: categories.map(category => ({ id: category.id, title: category.title })),
-            selectedId: state.selectedLevel,
-            onSelect: (value) => {
-                setState((prevState) => ({
-                    ...prevState,
-                    selectedLevel: value,
-                    selectedCategory: null,
-                    selectedSubcategory: null,
-                }));
-            },
-        },
-        {
-            label: t('Filters.category'),
-            type: "select",
-            options: state.selectedLevel
-                ? categories.find(cat => cat.id === state.selectedLevel)?.categories || []
-                : [],
-            selectedId: state.selectedCategory,
-            onSelect: (value) => {
-                setState((prevState) => ({
-                    ...prevState,
-                    selectedCategory: value,
-                    selectedSubcategory: null,
-                }));
-            },
-        },
-        {
-            label: t('Filters.subcategory'),
-            type: "select",
-            options: state.selectedCategory
-                ? categories
-                    .find(cat => cat.id === state.selectedLevel)
-                    ?.categories.find(c => c.id === state.selectedCategory)?.subcategories || []
-                : [],
-            selectedId: state.selectedSubcategory,
-            onSelect: (value) => {
-                setState((prevState) => ({ ...prevState, selectedSubcategory: value }));
-            },
-        },
-    ];
-
-
-    const handleShowMapPopup = () => {
-        setShowMapPopup(true);
-        setState({ ...state, latAndLng: "" });
-        dispatch(openPopup());
-    };
+   
 
     const handleCloseMapPopup = () => {
         setShowMapPopup(false);
@@ -340,13 +263,6 @@ const Places = () => {
         navigate('/login', { state: { from: location } });
     }
 
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchPlacesInCity({ cityId: id, page: 1, type: 'place', points: state.points, preview: state.preview }));
-
-        }
-    }, [dispatch, id, state.points]);
-
 
     // Modal props
     const modalSearchProps = {
@@ -382,15 +298,7 @@ const Places = () => {
           setAlertMessage(tCommon('authAlert.viewDetails.description'));
         }
       };
-    
-    
-      useEffect(() => {
-    
-        return () => {
-          dispatch(resetGeoLocations());
-        }
-        
-      },[])
+
 
     return (
         <>
@@ -449,25 +357,10 @@ const Places = () => {
             )}
             <Header />
             <main className="page-center" ref={mainRef}>
-                <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
-                <SubNavMenu activeLink="lugares" />
-                <div className={styles.searchFilters}>
-                    <div className={styles.mapButtonContainer}>
-                        <button className={styles.mapButton} onClick={handleShowMapPopup}>{tCommon('seeMap')}</button>
-                    </div>
-                    <div className={styles.filterContainer}>
-                        <FilterBar filters={filters} />
-                    </div>
-                </div>
-                <div className={styles3.placesSelectedItemsList}>
-                    <SelectedItemList
-                        state={state}
-                        setState={setState}
-                        categories={categories}
-                        translate={t}
-                        type="submenu-places"
-                    />
-                </div>
+                <h1 className={commonStyle.pageTitle}>{cityName}, #{title}</h1>
+                <SubNavMenu activeLink="tags" />
+               
+           
                 <p className={commonStyle.availablePlaces}>{t('Places.availableCount', { count })}</p>
                 <div className={styles.placesList} ref={placesListRef}>
                     {/* <button
@@ -480,7 +373,7 @@ const Places = () => {
                     >
                         <img src={Arrow} alt={t('arrowIcon')} />
                     </button> */}
-                    {placesLoading ? (
+                    {tagsLoading ? (
                         Array.from({ length: 5 }).map((_, index) => (
                             <CardSkeleton key={index} />
                         ))
@@ -523,4 +416,4 @@ const Places = () => {
     );
 };
 
-export default Places;
+export default Tags;

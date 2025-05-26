@@ -16,7 +16,7 @@ import { LanguageContext } from "../../context/LanguageContext";
 import useSeeMore from "../../hooks/useSeeMore";
 import { fetchItineraries, fetchItinerariesInCity } from "../../features/itineraries/ItineraryAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
-import { setFavTogglingId } from "../../features/itineraries/ItinerarySlice";
+import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 import { openPopup, closePopup, openAddToTripPopup } from "../../features/popup/PopupSlice";
 import Loader from "../../components/common/Loader";
 import SeeMoreButton from "../../components/common/SeeMoreButton";

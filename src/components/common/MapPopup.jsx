@@ -16,12 +16,12 @@ import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecr
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
     const { isAuthenticated } = useSelector((state) => state.auth);
-    const { loading, NearbyPlaces, places, geoLocations, isFavoriteToggling, favTogglingId } = useSelector((state) => state.places);
+    const { loading, NearbyPlaces, places, geoLocations } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
     const { loading: eventsLoading, events: EventsList } = useSelector((state) => state.events);
     const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
     const { loading: placesLoading, placesList } = useSelector((state) => state.placesInCity);
-    
+    const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
     const location = useLocation();
     const isEventsRoute = location.pathname === 'places/events';

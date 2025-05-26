@@ -56,7 +56,8 @@ import {
   resetTripType,
   setTripType
 } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
-import { setFavTogglingId, resetGeoLocations, resetPlacesList } from "../../features/places/PlaceSlice";
+import { resetGeoLocations, resetPlacesList } from "../../features/places/PlaceSlice";
+import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 
 // Styles
 import styles from "./PlacesPage.module.css";
