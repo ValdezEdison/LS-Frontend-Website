@@ -465,6 +465,17 @@ const ItineraryDetail = () => {
         setAlertMessage(tCommon('authAlert.viewDetails.description'));
       }
     };
+
+    const handleTagsAction = (id, title) => {
+      navigate('/places/tags', { 
+        state: { 
+          cityId: itineraryDetails?.cities[0]?.id || '',    
+          cityName: itineraryDetails?.cities[0]?.name || '', 
+          tagId: id, 
+          title 
+        } 
+      });
+    };
   
 
 
@@ -593,7 +604,7 @@ const ItineraryDetail = () => {
             <div className={styles.itenaryTagWrapper}>
               {itineraryDetails?.tags.map((tag, index) => (
                 <div key={index} className={styles.itineraryTag}>
-                  <span className={styles.tagText}>#{tag.title}</span>
+                  <span className={styles.tagText} onClick={() => handleTagsAction(tag.id, tag.title)}>#{tag.title}</span>
                 </div>
               ))}
             </div>

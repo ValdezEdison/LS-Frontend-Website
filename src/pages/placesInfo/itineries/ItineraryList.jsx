@@ -36,6 +36,10 @@ import { fetchGeoLocations } from "../../../features/places/PlaceAction";
 import Widget from "../../../components/common/Widget";
 import { WidgetSkeleton } from "../../../components/skeleton/common/WidgetSkeleton";
 import { resetGeoLocations } from "../../../features/places/PlaceSlice";
+import useDynamicContent from "../../../hooks/useDynamicContent";
+import useHasTagDetails from "../../../hooks/useHasTagDetails";
+import { listUpdater as tagsListUpdater, resetState } from "../../../features/places/placesInfo/tags/TagsSlice";
+import { fetchItinerariesByTag } from "../../../features/places/placesInfo/tags/TagsAction";
 
 
 const ItineraryList = () => {
@@ -48,12 +52,15 @@ const ItineraryList = () => {
   const navigate = useNavigate();
 
   const { language } = useContext(LanguageContext);
+  const hasTagDetails = useHasTagDetails();
+  const tagDetails = hasTagDetails ? JSON.parse(localStorage.getItem('tagDetails')) : null;
 
-  const { loading: itineriesLoading, error, itineries, next, count} = useSelector((state) => state.itineriesInCity);
+  // const { loading: itineriesLoading, error, itineries, next, count} = useSelector((state) => state.itineriesInCity);
+  const { loading: itineriesLoading, error, data: itineries, next, count } = useDynamicContent('itineraries');
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
-  const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, listUpdater);
+  const { data: visiblePlaces, loading, next: hasNext, loadMore } = useSeeMore(itineries, next, hasTagDetails ? tagsListUpdater : listUpdater, hasTagDetails ? "itineraries" : "");
   const { isOpen } = useSelector((state) => state.popup);
   const { cities } = useSelector((state) => state.cities);
   const { suggestedPlaces, loading: suggestedPlacesLoading } = useSelector((state) => state.suggestions);
@@ -117,13 +124,25 @@ const ItineraryList = () => {
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
+  const cityId = hasTagDetails ? tagDetails.cityId : id;
+
   useEffect(() => {
-    if (id) {
-      dispatch(fetchItineriesInCity(id));
+    if (cityId) {
+         if(hasTagDetails) {
+            const tagDetails = JSON.parse(localStorage.getItem('tagDetails'));
+            dispatch(fetchItinerariesByTag({ 
+                tagId: tagDetails.tagId,
+                cityId: tagDetails.cityId,
+                page: 1
+            }));
+        }else{
+          dispatch(fetchItineriesInCity(cityId));
+        }
+      
       dispatch(fetchCities({}));
       dispatch(fetchSuggestedPlaces({ page: 1, type:"place" }));
     }
-  }, [dispatch, language]);
+  }, [dispatch, language, cityId]);
 
   const handleViewMoreDetails = (e, id) => {
 
@@ -355,6 +374,7 @@ const ItineraryList = () => {
     
         return () => {
           dispatch(resetGeoLocations());
+          dispatch(resetState())
         }
         
       },[])
@@ -390,8 +410,10 @@ const ItineraryList = () => {
       )}
       <Header />
       <main className="page-center" ref={mainRef}>
-        <h1 className={commonStyle.pageTitle}>{destination?.name}, {destination?.country?.name}</h1>
+        <h1 className={commonStyle.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.name}`}</h1>
         <SubNavMenu activeLink="lugares" />
+        {!hasTagDetails &&
+        <>
         <div className={styles.searchFilters}>
           <div className="">
 
@@ -400,7 +422,9 @@ const ItineraryList = () => {
             <FilterBar filters={filters} />
           </div>
         </div>
-        <p className={commonStyle.availablePlaces}>{t('Itineraries.availableCount', { count })}</p>
+        </>
+        }
+        <p className={commonStyle.availablePlaces}>{!hasTagDetails && t('Itineraries.availableCount', { count })}</p>
         <div className={styles.placesList} ref={placesListRef}>
           {/* <button
             style={{

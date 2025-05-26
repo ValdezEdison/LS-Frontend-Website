@@ -38,7 +38,6 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handl
   };
 
   const handleTagsAction = (id, title) => {
-    console.log(placeDetails?.city?.id, "placeDetails?.city?.id");
     navigate('/places/tags', { 
       state: { 
         cityId: placeDetails?.city?.id,    
@@ -49,8 +48,6 @@ const ReviewSection = ({ handleClickSeeAllComments, handleClickAddComment, handl
     });
   };
    
-
-  console.log(placeDetails, "placeDetails");
 
   const renderStars = (rating) => {
     const stars = [];
