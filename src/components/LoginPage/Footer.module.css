@@ -18,4 +18,5 @@
 .footerLink {
   color: #000;
   text-decoration: underline;
+  cursor: pointer;
 }

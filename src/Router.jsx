@@ -34,6 +34,7 @@ import Ambassadors from "./pages/footerBlockPages/ambassadors/Ambassadors";
 import LocalSecretManager from "./pages/footerBlockPages/localSecretManager/LocalSecretManager";
 import HelpCenter from "./pages/footerBlockPages/helpCenter/HelpCenter";
 import Tags from "./pages/placesInfo/Tags/Tags";
+import AuthGuard from "./hooks/AuthGuard";
 const Router = () => {
     return (
         <>
@@ -47,7 +48,7 @@ const Router = () => {
                 <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
 
                 <Route path="/profile" element={<Navigate to="/profile/personal" replace />} />
-                <Route path="/profile/:tab" element={<ProfilePage />} />
+                <Route path="/profile/:tab" element={<AuthGuard><ProfilePage /></AuthGuard>} />
 
                 <Route path="/favorites" element={<FavoritesPage />} />
                 
@@ -70,9 +71,9 @@ const Router = () => {
 
                 <Route path="/explore" element={<ExplorePage />} />
 
-                <Route path="/my-trips" element={<MyTrips />} />
-                <Route path="/my-trips/details" element={<TripDetails/>} />
-                <Route path="/my-trips/edit" element={<TravelItineraryEdit/>} />
+                <Route path="/my-trips" element={<AuthGuard><MyTrips /></AuthGuard>} />
+                <Route path="/my-trips/details" element={<AuthGuard><TripDetails/></AuthGuard>} />
+                <Route path="/my-trips/edit" element={<AuthGuard><TravelItineraryEdit/></AuthGuard>} />
 
                 <Route path="/who-we-are" element={<WhoWeAre />} />
                 <Route path="/join-our-team" element={<WorkWithUs />} />

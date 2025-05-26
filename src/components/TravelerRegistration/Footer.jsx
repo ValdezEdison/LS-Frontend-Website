@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Footer.module.css";
 import { useTranslation } from "react-i18next";
 
-const Footer = () => {
+const Footer = ({ handlePrivacyAndTermsActions }) => {
 
   const { t } = useTranslation('Registration');
   return (
@@ -10,12 +10,12 @@ const Footer = () => {
       <div className={styles.termsAndPolicy}>
         <p>
         {t("footer.termsText")}{" "}
-          <a href="#" className={styles.link}>
+          <a className={styles.link} onClick={(e) => handlePrivacyAndTermsActions(e, 'terms')}>
           {t("footer.termsLink")}
           </a>
           {" "}
           {t("footer.privacyText")}{" "}
-          <a href="#" className={styles.link}>
+          <a className={styles.link}  onClick={(e) => handlePrivacyAndTermsActions(e, 'privacy')}>
           {t("footer.privacyLink")}{" "}
           </a>
         </p>

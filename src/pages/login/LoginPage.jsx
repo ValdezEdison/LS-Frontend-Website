@@ -324,6 +324,14 @@ const LoginPage = () => {
     }
   };
 
+  const handlePrivacyAndTermsActions = (e, action) => {
+    if(action === 'terms') {
+      navigate('/terms-conditions');
+    } else if (action === 'privacy') {
+      navigate('/privacy-policy');
+    }
+  }
+
   return (
     <>
     
@@ -364,7 +372,7 @@ const LoginPage = () => {
                   setRememberMe={setRememberMe}
                 />
                 <SocialLogin onSocialLogin={handleSocialLogin}/>
-                <Footer />
+                <Footer handlePrivacyAndTermsActions={handlePrivacyAndTermsActions}/>
               </div>
             </div>
           </div>

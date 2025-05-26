@@ -350,6 +350,14 @@ const TravelerRegistration = () => {
       }
     };
 
+    const handlePrivacyAndTermsActions = (e, action) => {
+      if(action === 'terms') {
+        navigate('/terms-conditions');
+      } else if (action === 'privacy') {
+        navigate('/privacy-policy');
+      }
+    }
+
 
   return (
     <div className={`${styles.registrationPage} ${styles.authPage}`}>
@@ -396,7 +404,7 @@ const TravelerRegistration = () => {
                     t={t}
                   />
                   <SocialLogin onSocialLogin={handleSocialLogin}/>
-                  <Footer />
+                  <Footer handlePrivacyAndTermsActions={handlePrivacyAndTermsActions}/>
                 </div>
               </div>
             </main>
