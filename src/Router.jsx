@@ -33,6 +33,7 @@ import LifeAtLocalSecrets from "./pages/footerBlockPages/lifeAtLocalSecret/LifeA
 import Ambassadors from "./pages/footerBlockPages/ambassadors/Ambassadors";
 import LocalSecretManager from "./pages/footerBlockPages/localSecretManager/LocalSecretManager";
 import HelpCenter from "./pages/footerBlockPages/helpCenter/HelpCenter";
+import Tags from "./pages/placesInfo/Tags/Tags";
 const Router = () => {
     return (
         <>
@@ -58,6 +59,7 @@ const Router = () => {
                 <Route path="/places/destination-places" element={<Places />} />
                 <Route path="/places/itineraries" element={<ItineraryList />} />
                 <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
+                <Route path="/places/tags" element={<Tags />} />
 
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/events/details" element={<EventDetails />} />

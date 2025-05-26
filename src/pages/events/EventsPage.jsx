@@ -22,7 +22,7 @@ import AlertPopup from "../../components/popup/Alert/AlertPopup";
 import Modal from "../../components/modal/Modal";
 import { fetchPlacesFilterCategories } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
-import { setFavTogglingId } from "../../features/events/EventSlice";
+import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
 import { fetchGeoLocations } from "../../features/places/PlaceAction";

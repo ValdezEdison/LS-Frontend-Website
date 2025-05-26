@@ -30,7 +30,8 @@ const AddToTripPopup = ({ closeModal, state, setState, cities, onSubmit, formErr
   const [startDate, endDate] = dateRange;
   const [storedTripType, setStoredTripType] = useState(null);
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails, stopsNext, addTripLoading } = useSelector((state) => state.itineriesInCity);
+  const { stops, stopsLoading, itineraryDetails, stopsNext, addTripLoading } = useSelector((state) => state.itineriesInCity);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { data: visibleStops, loading, next: hasNext, loadMore } = useSeeMore(stops, stopsNext, listUpdater, 'stops');
 
 

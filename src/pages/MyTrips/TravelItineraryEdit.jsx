@@ -24,13 +24,14 @@ import { fetchStops } from "../../features/places/placesInfo/itinerary/Itinerary
 import EventCard from "../../components/common/EventCard";
 import EventCardSkeleton from "../../components/skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
 import useSeeMore from "../../hooks/useSeeMore";
-import { listUpdater, setFavTogglingId } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
+import { listUpdater } from "../../features/places/placesInfo/itinerary/ItinerarySlice";
 import SeeMoreButton from "../../components/common/SeeMoreButton";
 import Loader from "../../components/common/Loader";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { toast } from "react-toastify";
+import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 
 
 const TravelItineraryEdit = () => {
@@ -72,7 +73,8 @@ const TravelItineraryEdit = () => {
 
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading: tripDetailsLoading, similarStopsLoading } = useSelector((state) => state.myTrips);
-  const { favTogglingId, isFavoriteToggling, stops, stopsLoading, itineraryDetails, stopsNext } = useSelector((state) => state.itineriesInCity);
+  const { stops, stopsLoading, itineraryDetails, stopsNext } = useSelector((state) => state.itineriesInCity);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { data: visibleStops, loading, next: hasNext, loadMore } = useSeeMore(stops, stopsNext, listUpdater, 'stops');
   const { cities } = useSelector((state) => state.cities);
   const { isAuthenticated } = useSelector((state) => state.auth);

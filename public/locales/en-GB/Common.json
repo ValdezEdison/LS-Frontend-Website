@@ -17,7 +17,8 @@
     "destination": "Destination",
     "events": "Events",
     "places": "Places",
-    "itineraries": "Itineraries"
+    "itineraries": "Itineraries",
+    "tags": "All"
   },
   "authAlert": {
     "favorites": {

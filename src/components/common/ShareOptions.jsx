@@ -9,11 +9,15 @@ import {
     EmailIcon,
   } from 'react-share';
   import { CopyToClipboard } from 'react-copy-to-clipboard';
-  import { useState, useEffect } from 'react';
+  import { useState, useEffect, useRef } from 'react';
   import styles from "../../pages/placesDetail/PlaceDetails.module.css";
+  import useOutsideClick from '../../hooks/useOutsideClick';
   
   const ShareOptions = ({ url, title, description, onClose }) => {
     const [copied, setCopied] = useState(false);
+
+    const shareOptionsRef = useRef(null);
+    useOutsideClick(shareOptionsRef, onClose);
   
     useEffect(() => {
       if (copied) {
@@ -23,7 +27,7 @@ import {
     }, [copied]);
   
     return (
-      <div className={styles.shareOptions}>
+      <div className={styles.shareOptions} ref={shareOptionsRef}>
         {/* <div className={styles.shareOption}>
           <FacebookShareButton url={url} quote={description}>
             <FacebookIcon size={32} round />

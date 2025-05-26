@@ -21,7 +21,7 @@ import MapPopup from "../../../components/common/MapPopup";
 import SelectedItemList from "../../../components/common/SelectedItemList";
 import styles2 from "../../../components/PlacesPage/MainContent.module.css";
 import { LanguageContext } from "../../../context/LanguageContext";
-import { setFavTogglingId } from "../../../features/places/placesInfo/events/EventSlice";
+import { setFavTogglingId } from "../../../features/favorites/FavoritesSlice";
 import AlertPopup from "../../../components/popup/Alert/AlertPopup";
 import Modal from "../../../components/modal/Modal";
 import { fetchCities } from "../../../features/common/cities/CityAction";
@@ -66,7 +66,8 @@ const Events = () => {
   const navigate = useNavigate();
 
   const { language } = useContext(LanguageContext);
-  const { loading: eventLoading, error, events, next, isFavoriteToggling, favTogglingId } = useSelector((state) => state.eventsByCity);
+  const { loading: eventLoading, error, events, next } = useSelector((state) => state.eventsByCity);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
   const { data: visibleEvents, loading, next: hasNext, loadMore } = useSeeMore(events, next, listUpdater);
   const { loading: placesFilterCategoriesLoading, categories } = useSelector((state) => state.places);

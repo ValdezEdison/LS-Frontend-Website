@@ -13,6 +13,9 @@ import Widget from "../../components/common/Widget";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import { resetTripDetails, resetDownloadedTrip } from "../../features/myTrips/MyTripsSlice";
 import { useTranslation } from "react-i18next";
+import { generateLink } from "../../features/places/placesInfo/itinerary/ItineraryAction";
+import ShareOptions from "../../components/common/ShareOptions";
+import styles from "../Itinerary/ItineraryDetails.module.css";
 
 const TripDetails = () => {
 
@@ -26,6 +29,7 @@ const TripDetails = () => {
       page: 1
     
     });
+  const [showShareOptions, setShowShareOptions] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +38,7 @@ const TripDetails = () => {
 
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading, similarStopsLoading, downloadedTrip } = useSelector((state) => state.myTrips);
+   const { generatedLink } = useSelector((formState) => formState.itineriesInCity);
 
   
 
@@ -42,10 +47,12 @@ const TripDetails = () => {
       dispatch(fetchTripDetails(id));
       dispatch(fetchSimilarStops({page: 1, tripId: id}));
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+      dispatch(generateLink(id));
     }
 
     return () => {
       dispatch(resetTripDetails());
+      dispatch(resetDownloadedTrip());
     }
     
   }, [language, id, dispatch]);
@@ -58,6 +65,8 @@ const TripDetails = () => {
   const handleActions = (e, action, id) => {
    if(action === 'editTrip') {
     navigate('/my-trips/edit', { state: { id: id } });
+   }else if (action === 'shareTrip') {
+    handleGenerateLink();
    }
   };
 
@@ -95,6 +104,18 @@ const TripDetails = () => {
           }
         }, [downloadedTrip, tripDetails?.title]);
 
+        const handleGenerateLink = () => {
+    
+          if (id) {
+            setShowShareOptions(true)
+          }
+        }
+      
+      
+        const toggleShareOptions = () => {
+          setShowShareOptions(!showShareOptions);
+        };
+
 
   return (
     <>
@@ -110,6 +131,18 @@ const TripDetails = () => {
             ) : (
               <Widget data={similarStops} title={t('tripDetails.similarPlaces')} count={4} seeMore={false}/>
             )}
+
+              <div className={styles.shareIconWrapper}>
+                  <button className={styles.shareBtnIcon} onClick={handleGenerateLink}></button>
+                  {showShareOptions && generatedLink && (
+                    <ShareOptions
+                      url={generatedLink}
+                      title={tripDetails?.title}
+                      description={tripDetails?.description}
+                      onClose={toggleShareOptions}
+                    />
+                  )}
+                </div>
       </main>
       <Footer />
     </>

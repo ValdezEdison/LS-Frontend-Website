@@ -52,7 +52,8 @@ const itineraries = [
 const ItineraryList = ({ visibleItineraries,  handleViewMoreDetails, handleActions }) => {
 
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { loading, isFavoriteToggling, favTogglingId } = useSelector((state) => state.itineraries);
+  const { loading } = useSelector((state) => state.itineraries);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
   const { t } = useTranslation('Places');
   const { t: tItineraryPage } = useTranslation("ItineraryPage")

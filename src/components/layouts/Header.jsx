@@ -17,6 +17,7 @@ import { languagesList } from "../../constants/LanguagesList";
 import { toast } from "react-toastify";
 import { clearLocation } from "../../features/location/LocationSlice";
 import { updateLocation, fetchLocationSettings } from "../../features/location/LocationAction";
+import useSubNavDataCleanup from "../../hooks/useSubNavDataCleanup";
 
 const Header = () => {
 
@@ -41,6 +42,8 @@ const Header = () => {
   const isFavoritesPage = location.pathname.startsWith("/favorites");
   const isHomepage = location.pathname === "/";
   const isTripEditPage = location.pathname === '/my-trips/edit';
+
+  useSubNavDataCleanup();
 
   const handleNavigation = (path) => {
     if (path === "/login") {

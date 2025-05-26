@@ -6,8 +6,8 @@ import EventCardSkeleton from "../skeleton/PlacesPage/PlacesInfo/events/EventCar
 import GoToFilterCard from "../common/GoToFilterCard";
 
 const EventList = ({ events, handleActions, handleActionFilter }) => {
-  const { loading, isFavoriteToggling, favTogglingId } = useSelector((state) => state.events);
-
+  const { loading } = useSelector((state) => state.events);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   if (loading) {
     return (
       <div className={styles.eventList}>

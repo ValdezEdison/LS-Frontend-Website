@@ -28,7 +28,7 @@ import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton"
 import { LanguageContext } from "../../context/LanguageContext";
 import MapPopup from "../../components/common/MapPopup";
 import CommentPopup from "../../components/popup/Comment/CommentPopup";
-import { setFavTogglingId } from "../../features/places/PlaceSlice";
+import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
@@ -49,7 +49,8 @@ const ItineraryDetails = () => {
   const [showShareOptions, setShowShareOptions] = useState(false);
 
   const { isOpen } = useSelector((state) => state.popup);
-  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, isFavoriteToggling, favTogglingId, shareableLink } = useSelector((state) => state.places);
+  const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, shareableLink } = useSelector((state) => state.places);
+  const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 

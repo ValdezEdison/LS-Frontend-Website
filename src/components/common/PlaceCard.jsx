@@ -8,7 +8,7 @@ import Loader from "./Loader";
 
 const PlaceCard = forwardRef(
     ({ place, translate, isAuthenticated, handleViewMoreDetails = () => { }, isPopup = false, handleActions = () => { }, isFavoriteToggling = false }, ref) => {
-
+        console.log(place, "dddddd")
         const location = useLocation();
         const isItineraryPage = location.pathname.includes("itineraries");
         const { isAddToPopupOpen } = useSelector((state) => state.popup);
