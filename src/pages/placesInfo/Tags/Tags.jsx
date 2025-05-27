@@ -121,7 +121,7 @@ const Tags = () => {
     const { cityId, title, tagId, cityName } = location?.state ?? {};    
     useEffect(() => {
         if (tagId && cityId) {
-            console.log('tagId, cityId', tagId, cityId)
+            
            dispatch(fetchTags({tagId: tagId, cityId: cityId, page: 1}));
 
             if (isAuthenticated) {

@@ -32,6 +32,7 @@ import { fetchNearMePlaces } from "../../features/places/PlaceAction";
 import { resetPlacesList } from "../../features/places/PlaceSlice";
 import { resetRandomPlaces } from "../../features/home/HomeSlice";
 import { resetEventsList } from "../../features/events/EventSlice";
+import { fetchUnifiedSearchResults } from "../../features/unifiedSearch/UnifiedSearchAction";
 
 const HomePage = () => {
 
@@ -41,6 +42,7 @@ const HomePage = () => {
   const { language, languageId } = useContext(LanguageContext);
 
   const { currentLocation, loading: currentLocationLoading } = useSelector((state) => state.locationSettings);
+  const { unifiedSearchResults } = useSelector((state) => state.unifiedSearch);
 
 
   const dispatch = useDispatch();
@@ -53,6 +55,7 @@ const HomePage = () => {
     selectedDestinationId: null,
     tag: null,
     tagName: "",
+    keyword: ""
 
   });
 
@@ -134,6 +137,25 @@ const HomePage = () => {
   }, [state.destinationSearchQuery, debouncedFetchCities, dispatch]);
 
 
+   const debouncedUnifiedSearch = useCallback(
+       debounce((keyword) => {
+         dispatch(fetchUnifiedSearchResults(keyword));
+       }, 500),
+       [dispatch]
+     );
+     
+     useEffect(() => {
+       if (state.keyword.trim() !== "") {
+         debouncedUnifiedSearch(state.keyword);
+       } else {
+         // Explicit empty search with object format
+         dispatch(fetchUnifiedSearchResults({ keyword: "" }));
+       }
+     
+       return () => debouncedUnifiedSearch.cancel();
+    }, [state.keyword, debouncedUnifiedSearch, dispatch]);
+
+
   useEffect(() => {
     // Navigation when destination is selected
     if (state.selectedDestinationId !== null) {
@@ -166,7 +188,7 @@ const HomePage = () => {
       <Header />
       {heroContentLoading ? <HeroSectionSkeleton /> : <HeroSection handleNavigateToLogin={handleNavigateToLogin} heroContent={heroContent} />}
 
-      <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} cities={cities} />
+      <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} unifiedSearchResults={unifiedSearchResults} />
       {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={placesList} />}
       {eventsLoading ? <CommonWidgetSkeleton /> : <EventsSection events={events} />}
       <History

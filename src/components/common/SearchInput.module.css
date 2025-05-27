@@ -136,6 +136,14 @@
   padding: 10px;
 }
 
+.suggestionType {
+  margin: 0;
+  padding: 10px 20px 5px;
+  font-size: 20px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
 @media (max-width: 991px) {
   .searchInput,
   .suggestionsContainer {

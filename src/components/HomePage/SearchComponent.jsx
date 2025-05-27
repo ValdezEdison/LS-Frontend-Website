@@ -5,27 +5,16 @@ import styles from "./SearchComponent.module.css";
 import { America } from "../common/Images";
 import { useTranslation } from "react-i18next";
 import Loader from "../common/Loader";
+import SearchInputForUnifiedSearch from "../common/SearchInputForUnifiedSearch";
+import AlertPopup from "../popup/Alert/AlertPopup";
+import Modal from "../modal/Modal";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const regions = [
-  { name: "Búsqueda flexible", image: "mapas-buscador-default" },
-  {
-    name: "América",
-    image:
-      America,
-  },
-  { name: "Asia", image: "mapas-buscador-asia-default" },
-  { name: "África", image: "mapas-buscador-africa-default" },
-  {
-    name: "Europa",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/8f9b7163972103673c2bf201de81d81ffc2853eb773ca199d7cd08d294bfb993?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&",
-  },
-  { name: "Oceanía", image: "oceania" },
-];
+ 
 
-
-
-function SearchComponent({ continents, loading, state, setState, cities }) {
+function SearchComponent({ continents, loading, state, setState, unifiedSearchResults }) {
 
   const { t } = useTranslation("SearchComponent");
   const { t: tCommon } = useTranslation("Common");
@@ -35,10 +24,37 @@ function SearchComponent({ continents, loading, state, setState, cities }) {
   // const [searchValue, setSearchValue] = useState("");
   const [showSuggestionDropDown, setShowSuggestionDropDown] = useState(false);
 
+  const { isOpen } = useSelector((state) => state.popup);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const [popupState, setPopupState] = useState({
+    map: false,
+    gallery: false,
+    reviewDrawer: false,
+    alert: false,
+    comment: false,
+    deleteConfirm: false,
+    success: false,
+    addTrip: false
+  });
+
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertTitle, setAlertTitle] = useState("");
+  
+  
+    const togglePopup = (name, state) => {
+        setPopupState(prev => ({ ...prev, [name]: state }));
+        state ? dispatch(openPopup()) : dispatch(closePopup());
+    };
+
   const handleSearchClick = () => {
-    if(!showSuggestionDropDown && state.destinationSearchQuery.length === 0){
+    if(!showSuggestionDropDown && state.keyword.length === 0){
       setShowRegionDropDown(!showRegionDropDown); // Toggle the dropdown visibility
-    }else if(state.destinationSearchQuery.length > 0){
+    }else if(state.keyword.length > 0){
       setShowSuggestionDropDown(!showSuggestionDropDown);
     }
     
@@ -52,7 +68,7 @@ function SearchComponent({ continents, loading, state, setState, cities }) {
     }
     setShowRegionDropDown(false); // Close the dropdown when a region is selected
     // setSearchValue(e);
-    updateState("destinationSearchQuery", value);
+    updateState("keyword", value);
   };
 
 
@@ -61,8 +77,7 @@ function SearchComponent({ continents, loading, state, setState, cities }) {
   const handleSearchClose = () => {
     setShowRegionDropDown(false); // Close the dropdown
     setShowSuggestionDropDown(false); // Close the dropdown
-    updateState("destinationSearchQuery", "");
-    updateState("selectedDestinationId", null);
+    updateState("keyword", "");
   };
 
 
@@ -109,35 +124,69 @@ function SearchComponent({ continents, loading, state, setState, cities }) {
   };
   useEffect(() => {
     // open the dropdown when the search value changes
-    if(state.destinationSearchQuery.length === 0){
+    if(state.keyword.length === 0){
       setShowSuggestionDropDown(false);
     }
-  }, [state.destinationSearchQuery]);
+  }, [state.keyword]);
 
   const updateState = (key, value) => {
     setState((prev) => ({ ...prev, [key]: value }));
  
   };
 
+  const handleNavigate = (id, type) => {
+
+    if(isAuthenticated){
+      if (type === "place") {
+        navigate(`/places/details`, { state: { id: id } });
+      } else if (type === "event") {
+        navigate(`/events/details`, { state: { id: id } });
+      }
+    }else{
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+
+   
+  }
+
+
+  const handleNavigateToLogin = () => {
+    navigate('/login', { state: { from: location } });
+  };
+
+
   return (
+    <>
+      {isOpen && popupState.alert && (
+      <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
+        <AlertPopup
+          handleNavigateToLogin={handleNavigateToLogin}
+          title={alertTitle}
+          description={alertMessage}
+          buttonText={tCommon('authAlert.favorites.button')}
+        />
+      </Modal>
+    )}
     <div className="page-center ">
       <div className={styles.searchWrapperMain}>
         <div className={styles.searchContainer}>
           <div >
             {/* <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} suggestionRef={suggestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/> */}
-            <SearchInput
+            <SearchInputForUnifiedSearch
             handleSearchClick={() => handleSearchClick()}
             showRegionDropDown={showRegionDropDown}
             suggestionRef={suggestionRef}
             handleSearch={handleSearch}
             showSuggestionDropDown={showSuggestionDropDown}
             handleSearchClose={handleSearchClose}
-            searchValue={state.destinationSearchQuery}
-            suggestionsList={cities}
+            searchValue={state.keyword}
+            suggestionsList={unifiedSearchResults}
             placeholder={tCommon("search.placeholder")}
-            onSelect={(value) => updateState("selectedDestinationId", value)}
+            onSelect={handleNavigate}
             // customClassName="placesSearchInputContainer"
-            selectedValue={state.selectedDestinationId}
+            selectedValue={""}
           />
           </div>
           <div className={`${styles.regionSearchContainer} ${showRegionDropDown ? styles.active : ""}`} ref={dropdownRef} >
@@ -151,7 +200,7 @@ function SearchComponent({ continents, loading, state, setState, cities }) {
         </div>
       </div>
     </div>
-
+    </>
   );
 }
 

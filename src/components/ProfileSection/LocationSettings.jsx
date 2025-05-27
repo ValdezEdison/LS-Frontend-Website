@@ -78,7 +78,6 @@ const LocationSettings = ({ state, setState}) => {
               city.longitude === data.preferences?.last_known_longitude
           );
         
-          console.log('selectedCity', selectedCity);
           updateState("selectedDestinationId", selectedCity?.id || null);
         
         } else if (data.preferences?.location_mode === 'current') {
