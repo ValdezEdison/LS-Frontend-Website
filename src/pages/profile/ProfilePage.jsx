@@ -9,7 +9,7 @@ import PreferencesForm from "../../components/ProfileSection/PreferencesForm";
 import SecurityContent from "../../components/ProfileSection/SecurityContent";
 import NotificationForm from "../../components/ProfileSection/NotificationForm";
 import PrivacyContent from "../../components/ProfileSection/PrivacyContent";
-import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions, logout } from "../../features/authentication/AuthActions";
+import { getProfile, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions, logout, fetchNotificationPreferences, saveNotificationPreferences } from "../../features/authentication/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountriesPhonecodes } from "../../features/common/countries/CountryAction";
 import Modal from "../../components/modal/Modal";
@@ -24,6 +24,8 @@ import LocationSettings from "../../components/ProfileSection/LocationSettings";
 import { debounce } from "lodash";
 import { fetchCities } from "../../features/common/cities/CityAction";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
+import { languagesList } from "../../constants/LanguagesList";
+import { Spain, UK, US } from "../../components/common/Images";
 
 const ProfilePage = () => {
   const { tab } = useParams();
@@ -31,15 +33,22 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const { language } = useContext(LanguageContext);
-  const { t } = useTranslation('Places');
+  const { language, setLanguage } = useContext(LanguageContext);
+  const { t, i18n } = useTranslation('Places');
   const { t: tProfileSection } = useTranslation('ProfileSection');
 
-  const { user,  loading: mainLoading, userLoading, error, isAuthenticated, groups, groupsLoading } = useSelector((state) => state.auth);
+  const { user,  loading: mainLoading, userLoading, error, isAuthenticated, groups, groupsLoading, notificationPreferences } = useSelector((state) => state.auth);
   const loading = userLoading || mainLoading;
   const { phoneCodes } = useSelector((state) => state.countries);
   const { isOpen } = useSelector((state) => state.popup);
   const { categories } = useSelector((state) => state.places);
+
+  const flagImages = {
+    "es": Spain,
+    "en": US,
+    "en-GB": UK,
+  };
+
 
   // State for personal details form
   const [personalDetails, setPersonalDetails] = useState({
@@ -98,6 +107,15 @@ const ProfilePage = () => {
     selectedDestinationId: null,
   })
 
+
+  const [notificationPrefs, setNotificationPrefs] = useState({
+    is_promotion: false,
+    is_recommendation: false,
+    is_weekly_discovery: false
+  });
+
+
+
   const isPreferencesTab = location.pathname === "/profile/preferences";
   const isSecurityTab = location.pathname === "/profile/security";
   const isLocationTab = location.pathname === "/profile/location";
@@ -132,6 +150,17 @@ const ProfilePage = () => {
   }, [user]);
 
   useEffect(() => {
+
+    if (notificationPreferences) {
+      setNotificationPrefs({
+        is_promotion: notificationPreferences.is_promotion || false,
+        is_recommendation: notificationPreferences.is_recommendation || false,
+        is_weekly_discovery: notificationPreferences.is_weekly_discovery || false
+      });
+    }
+  }, [ notificationPreferences ]);
+
+  useEffect(() => {
     if(isAuthenticated){
       dispatch(getProfile());
       dispatch(fetchCountriesPhonecodes());
@@ -142,10 +171,12 @@ const ProfilePage = () => {
         dispatch(fetchLanguages());
       } else if(isLocationTab){
         dispatch(fetchCities({}));
+      } else if(isNotificationTab){
+        dispatch(fetchNotificationPreferences());
       }
     }
    
-  }, [dispatch, language, isAuthenticated, isLocationTab, isPreferencesTab]);
+  }, [dispatch, language, isAuthenticated, location.pathname]);
 
   const handleTabChange = (newTab) => {
     navigate(`/profile/${newTab}`);
@@ -340,7 +371,18 @@ const ProfilePage = () => {
         if (result.type === "auth/updateUserLanguage/fulfilled") {
           if (result.payload?.detail) {
             toast.success(result.payload.detail);
-            dispatch(getProfile());
+            dispatch(getProfile()).then((result) => {
+              if (result.type === "auth/getProfile/fulfilled") {
+                if (result.payload?.language) {
+                  const { code, name } = result.payload.language;
+                  const selectedLang = languagesList.find(lang => lang.code === code);
+                  setLanguage(selectedLang.id, result.payload.language.code, flagImages[code], name);
+                  i18n.changeLanguage(code);
+                }
+              }
+            });
+           
+
           }
         } else if (result.type === "auth/updateUserLanguage/rejected") {
           const errorMessage = result.payload?.detail || result.error?.message || "Failed to update profile picture";
@@ -418,7 +460,37 @@ const ProfilePage = () => {
     const handleManagePrivacy = () => {
       navigate('/privacy-policy');
     }
-  
+
+
+    const handleNotificationPrefChange = (field, value) => {
+      setNotificationPrefs(prev => ({
+        ...prev,
+        [field]: value
+      }));
+      handleSaveNotificationPrefs(field, value);
+    };
+
+
+
+    const handleSaveNotificationPrefs = async (field, value) => {
+   
+      try {
+        await dispatch(saveNotificationPreferences({ [field]: value })).then((result) => {
+          if (result.type === "auth/saveNotificationPreferences/fulfilled") {
+            if (result.payload?.detail) {
+              toast.success(result.payload.detail);
+              dispatch(fetchNotificationPreferences());
+            }
+          } else if (result.type === "auth/saveNotificationPreferences/rejected") {
+            const errorMessage = result.payload?.detail || result.error?.message || "Failed to save notification preferences";
+            toast.error(errorMessage);
+          }
+        });
+      } catch (error) {
+        toast.error("Failed to save notification preferences");
+        console.error("Failed to save notification preferences:", error);
+      }
+    };
 
 
   const renderContent = () => {
@@ -454,7 +526,10 @@ const ProfilePage = () => {
       case "privacy":
         return <PrivacyContent user={user} handleManagePrivacy={handleManagePrivacy}/>;
       case "notifications":
-        return <NotificationForm  user={user}/>;
+        return <NotificationForm  user={user}    
+        notificationPreferences={notificationPrefs}
+        onPreferenceChange={handleNotificationPrefChange}
+        />;
       default:
         return <Navigate to="/profile/personal" replace />;
     }

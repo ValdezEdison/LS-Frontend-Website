@@ -543,7 +543,7 @@ const EventsPage = () => {
               </div>
             }
           </div>
-          <hr className={styles.divider} />
+          {/* <hr className={styles.divider} /> */}
           {/* <PopularEvents /> */}
           {suggestedPlacesLoading ? (
               <WidgetSkeleton />

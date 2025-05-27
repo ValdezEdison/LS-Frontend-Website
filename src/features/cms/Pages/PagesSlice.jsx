@@ -11,7 +11,7 @@ const initialState = {
     whoWeAre: null,
     whoWeAreLoading: false,
     whoWeAreError: null,
-    contactUs: null,
+    contactUs: [],
     contactUsLoading: false,
     contactUsError: null,
     freePages: [],

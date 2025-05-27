@@ -148,15 +148,18 @@
         "toggleOptions": {
             "promotions": {
                 "label": "Promociones y novedades",
-                "action": "Darme de baja"
+                "actionSubscribed": "Suscribirme",
+                "actionUnsubscribed": "Darme de baja"
             },
             "referFriend": {
                 "label": "Recomendar a un amigo",
-                "action": "Suscribirme"
+                "actionSubscribed": "Suscribirme",
+                "actionUnsubscribed": "Darme de baja"
             },
             "weeklyDiscovery": {
                 "label": "Descubrimiento semanal",
-                "action": "Suscribirme"
+                "actionSubscribed": "Suscribirme",
+                "actionUnsubscribed": "Darme de baja"
             }
         },
         "actions": {

@@ -159,15 +159,18 @@
         "toggleOptions": {
             "promotions": {
                 "label": "Promotions and news",
-                "action": "Unsubscribe"
+                "actionSubscribed": "Subscribed",
+                "actionUnsubscribed": "Unsubscribe"
             },
             "referFriend": {
                 "label": "Recommend to a friend",
-                "action": "Subscribe"
+                "actionSubscribed": "Subscribed",
+                "actionUnsubscribed": "Subscribe"
             },
             "weeklyDiscovery": {
                 "label": "Weekly discovery",
-                "action": "Subscribe"
+                "actionSubscribed": "Subscribed",
+                "actionUnsubscribed": "Subscribe"
             }
         },
         "actions": {
