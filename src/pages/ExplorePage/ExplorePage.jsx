@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import DestinationGrid from "../../components/exoplore/DestinationGrid";
@@ -20,6 +20,9 @@ import { LanguageContext } from "../../context/LanguageContext";
 import ArticlesSection from "../../components/common/ArticlesSection";
 import { fetchPosts, fetchTags, fetchPostsByTag } from "../../features/cms/wordpress/WordPressAction";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
+import SearchComponent from "../../components/HomePage/SearchComponent";
+import { fetchUnifiedSearchResults } from "../../features/unifiedSearch/UnifiedSearchAction";
+import { debounce } from "lodash";
 
 const ExplorePage = () => {
   const dispatch = useDispatch();
@@ -34,12 +37,14 @@ const ExplorePage = () => {
   const { data: visibleCitiesInContinent, loading, next: hasNext, loadMore } = useSeeMore(citiesInContinent, next, listUpdater);
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { posts, loading: postsLoading, error: postsError, tags } = useSelector((state) => state.cms.wordpress);
+  const { unifiedSearchResults } = useSelector((state) => state.unifiedSearch);
   
   const { id } = location.state || {};
 
   const [state, setState] = useState({
     tag: null,
     tagName: "",
+    keyword: ""
   });
 
   // Set default continent to the first one when loaded
@@ -108,6 +113,25 @@ const ExplorePage = () => {
   
     }, [state.tag, dispatch]);
 
+    const debouncedUnifiedSearch = useCallback(
+      debounce((keyword) => {
+        dispatch(fetchUnifiedSearchResults(keyword));
+      }, 500),
+      [dispatch]
+    );
+    
+    useEffect(() => {
+      if (state.keyword.trim() !== "") {
+        debouncedUnifiedSearch(state.keyword);
+      } else {
+        // Explicit empty search with object format
+        dispatch(fetchUnifiedSearchResults({ keyword: "" }));
+      }
+    
+      return () => debouncedUnifiedSearch.cancel();
+    }, [state.keyword, debouncedUnifiedSearch, dispatch]);
+
+
 
   if (continentsLoading) {
     return (
@@ -126,7 +150,9 @@ const ExplorePage = () => {
       <Header />
       <main className="page-center">
         <h1 className={styles.pageTitle}> {tExplore('pageTitle', { count })}</h1>
-        <SearchBar />
+        {/* <SearchBar /> */}
+        <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} unifiedSearchResults={unifiedSearchResults} />
+
         <h2 className={styles.sectionTitle}>{tExplore('sectionTitle')}</h2>
         <p className={styles.sectionSubtitle}>{tExplore('sectionSubtitle')}</p>
         

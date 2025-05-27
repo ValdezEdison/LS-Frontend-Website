@@ -61,9 +61,9 @@ export const forgotPassword = createAsyncThunk(
 
 export const verifyEmail = createAsyncThunk(
   'auth/verifyEmail',
-  async (email, { rejectWithValue }) => {
+  async ({email, timeStamp}, { rejectWithValue }) => {
     try {
-      const response = await authService.verifyEmail(email);
+      const response = await authService.verifyEmail(email, timeStamp);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

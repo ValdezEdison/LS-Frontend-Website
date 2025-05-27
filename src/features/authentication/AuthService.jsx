@@ -23,8 +23,8 @@ const authService = {
     return apiService.post('/users/create/restore_password', { email });
   },  
 
-  verifyEmail: async (email) => {
-    return apiService.post('/users/verify', { email });
+  verifyEmail: async (email, timeStamp) => {
+    return apiService.post('/users/verify', { email, timeStamp });
   },
 
   resendVerificationMail: async (email) => {

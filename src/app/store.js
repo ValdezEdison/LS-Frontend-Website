@@ -24,6 +24,7 @@ import favoriteReducer from "../features/favorites/FavoritesSlice.jsx"
 import myTripsReducer from "../features/myTrips/MyTripsSlice.jsx"
 import suggestionReducer from "../features/suggestions/SuggestionSlice.jsx"
 import tagsReducer from "../features/places/placesInfo/tags/TagsSlice.jsx"
+import unifiedSearchReducer from "../features/unifiedSearch/UnifiedSearchSlice.jsx"
 
 // cms reducer
 import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
@@ -109,7 +110,8 @@ const store = configureStore({
     myTrips: myTripsReducer,
     locationSettings: persistedLocationReducer,
     suggestions: suggestionReducer,
-    tags: tagsReducer
+    tags: tagsReducer,
+    unifiedSearch: unifiedSearchReducer
   },
  
   middleware: (getDefaultMiddleware) =>

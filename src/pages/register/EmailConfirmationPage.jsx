@@ -20,6 +20,7 @@ const EmailConfirmationPage = () => {
     
     const searchParams = new URLSearchParams(location.search);
     const email = searchParams.get('email');
+    const timeStamp = searchParams.get('timestamp');
     const { isOpen, emailConfirmation } = useSelector((state) => state.popup);
 
     const [isOpenSuccessPopup, setIsOpenSuccessPopup] = useState(false);
@@ -68,7 +69,7 @@ const EmailConfirmationPage = () => {
 
     useEffect(() => {
         if (email) {
-            dispatch(verifyEmail(email))
+            dispatch(verifyEmail({email, timeStamp}))
                 .then((response) => {
                     if (response.error) {
                         toast.error(response.error.message ||  t('emailConfirmation.toast.verifyError'));
