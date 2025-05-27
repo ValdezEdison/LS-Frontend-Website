@@ -1,9 +1,17 @@
 import React from "react";
 import styles from "./PrivacySettings.module.css";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
 const PrivacyContent = ({ user, handleManagePrivacy }) => {
   const { t } = useTranslation('ProfileSection');
+
+  const { loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <section className={styles.mainSection}>

@@ -1,6 +1,6 @@
 // src/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions } from "./AuthActions";
+import { login, register, getProfile, logout, forgotPassword, verifyEmail, resendVerificationMail, updateProfile, updateProfilePicture, changePassword, deleteAccount, fetchUsersGroups, updateUserLanguage, saveSuggestions, saveNotificationPreferences, fetchNotificationPreferences } from "./AuthActions";
 import { socialLogin } from "./socialLogin/SocialAuthAction";
 const userToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 const authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -12,7 +12,9 @@ const initialState = {
   isAuthenticated: !!userToken,
   userLoading: false,
   groups: [],
-  groupsLoading: false
+  groupsLoading: false,
+  notificationPreferences: [],
+  notificationPreferencesLoading: false
 };
 
 const authSlice = createSlice({
@@ -250,6 +252,33 @@ const authSlice = createSlice({
       state.error = null; // Clear any previous errors
     })
     .addCase(saveSuggestions.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+    })
+
+    .addCase(saveNotificationPreferences.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(saveNotificationPreferences.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(saveNotificationPreferences.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload; // Set the error from the rejected action
+    })
+
+    .addCase(fetchNotificationPreferences.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(fetchNotificationPreferences.fulfilled, (state, action) => {
+      state.loading = false;
+      state.notificationPreferences = action.payload;
+      state.error = null; // Clear any previous errors
+    })
+    .addCase(fetchNotificationPreferences.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload; // Set the error from the rejected action
     })

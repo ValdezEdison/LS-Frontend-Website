@@ -6,68 +6,29 @@ import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import { useTranslation } from "react-i18next";
 import { LanguageContext } from "../../context/LanguageContext";
-
+import { fetchContactUs } from "../../features/cms/Pages/PagesAction";
+import { useDispatch, useSelector } from "react-redux";
+import { ContactPageSkeleton } from "../../components/skeleton/common/ContactPageSkeleton";
 function Contacto() {
   const { t: tCommon } = useTranslation("Common");
-  const [contactData, setContactData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { language } = useContext(LanguageContext);
-
+  const { t } = useTranslation("Contact");
+  // const [contactData, setContactData] = useState(null);
+  const dispatch = useDispatch();
+  const { language, languageId } = useContext(LanguageContext);
+  const { contactUs, contactUsLoading, error } = useSelector((state) => state.cms.pages);
+  
   useEffect(() => {
-    const fetchContactData = async () => {
-      try {
-        const localeMap = {
-          en: 1, // English
-          es: 3, // Spanish
-          gb: 6, // British English
-          default: 1,
-        };
-        const userLocale = localeMap[language] || localeMap.default;
+    dispatch(fetchContactUs(languageId));
+  }, [dispatch, language]);
 
-        const apiUrl = `https://cms-ls-yerpb.ondigitalocean.app/api/v2/contact-sections/?format=json&locale=${userLocale}`;
-
-        const response = await fetch(apiUrl, {
-          headers: {
-            Accept: "application/json",
-            "Accept-Language": language,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setContactData(data.results[0]);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchContactData();
-  }, [language]);
-
-  if (loading) {
-    return <div className={styles.loading}>{tCommon("loading") || "Loading..."}</div>;
+  if (contactUsLoading) {
+    return <ContactPageSkeleton />;
   }
 
-  if (error) {
-    return (
-      <div className={styles.error}>
-        <h2>{tCommon("error") || "Error"}</h2>
-        <p>{error}</p>
-      </div>
-    );
+  if (!contactUs[0]?.headquarters?.length) {
+    return <div className={styles.error}>{tCommon("noResult") || "No contact data available"}</div>;
   }
-
-  if (!contactData?.headquarters?.length) {
-    return <div className={styles.error}>{tCommon("no_data") || "No contact data available"}</div>;
-  }
-
+  const contactData = contactUs[0];
   return (
     <div className={styles.contactPage}>
       <div className={styles.pageContainer}>
@@ -92,7 +53,7 @@ function Contacto() {
             
                     {office.email && (
                       <p>
-                        <strong>{tCommon("email") || "Email"}:</strong>{" "}
+                        <strong>{t("contact.email") || "Email"}:</strong>{" "}
                          
                           {office.email}
                          
@@ -109,7 +70,7 @@ function Contacto() {
             
                     {office.phone_number && (
                       <p>
-                        <strong>{tCommon("phone") || "Phone"}:</strong>{" "}
+                        <strong>{t("contact.phone") || "Phone"}:</strong>{" "}
                         {office.phone_number}
                       </p>
                     )}

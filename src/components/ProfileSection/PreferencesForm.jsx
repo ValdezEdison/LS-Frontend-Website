@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Spain, UK, US } from "../common/Images";
 import { set } from "lodash";
 import { useTranslation } from "react-i18next";
+import Loader from "../common/Loader";
 
 const PreferencesForm = ({
   user,
@@ -19,6 +20,7 @@ const PreferencesForm = ({
   const [editingField, setEditingField] = useState(null);
 
   const { languages } = useSelector((state) => state.languages);
+  const { loading } = useSelector((state) => state.auth);
 
   const { t } = useTranslation('ProfileSection');
 
@@ -151,6 +153,9 @@ const PreferencesForm = ({
     };
   }, []);
 
+  if(loading) {
+    return <Loader />
+  }
 
   return (
     <div className={styles.preferencesForm}>
@@ -213,7 +218,10 @@ const PreferencesForm = ({
           <div className={styles.saveButtonWrapper}>
             <button
               className={styles.saveButton}
-              onClick={onSaveLanguage}
+              onClick={async () => {
+                await onSaveLanguage();
+                handleCancel();
+              }}
             >
              {t('preferences.language.save')}
             </button>

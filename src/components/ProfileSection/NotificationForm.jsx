@@ -1,9 +1,26 @@
 import React from "react";
 import styles from "./NotificationForm.module.css";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
-const NotificationForm = ({ user }) => {
+const NotificationForm = ({ user,   notificationPreferences, onPreferenceChange }) => {
   const { t } = useTranslation('ProfileSection');
+
+  const handleToggleChange = (field) => (e) => {
+    onPreferenceChange(field, e.target.checked);
+  };
+
+  const getToggleAction = (preferenceKey, translationPath) => {
+    const isChecked = notificationPreferences[preferenceKey];
+    return t(`${translationPath}.${isChecked ? 'actionUnsubscribed' : 'actionSubscribed'}`);
+  };
+
+  const { loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <form className={styles.notificationForm}>
@@ -24,11 +41,12 @@ const NotificationForm = ({ user }) => {
         </div>
         <div className={styles.toggleRightWrapper}>
           <label className={styles.switch}>
-            <input type="checkbox" disabled />
+            <input type="checkbox"  checked={notificationPreferences.is_promotion} 
+              onChange={handleToggleChange('is_promotion')}/>
             <span className={styles.slider}></span>
           </label>
           <span className={`${styles.toggleAction} ${styles.checkedd}`}>
-            {t('notifications.toggleOptions.promotions.action')}
+          {getToggleAction('is_promotion', 'notifications.toggleOptions.promotions')}
           </span>
         </div>
       </div>
@@ -40,11 +58,12 @@ const NotificationForm = ({ user }) => {
         </div>
         <div className={styles.toggleRightWrapper}>
           <label className={styles.switch}>
-            <input type="checkbox" disabled />
+            <input type="checkbox"   checked={notificationPreferences.is_recommendation} 
+              onChange={handleToggleChange('is_recommendation')}/>
             <span className={styles.slider}></span>
           </label>
           <span className={styles.toggleAction}>
-            {t('notifications.toggleOptions.referFriend.action')}
+          {getToggleAction('is_recommendation', 'notifications.toggleOptions.referFriend')}
           </span>
         </div>
       </div>
@@ -56,19 +75,20 @@ const NotificationForm = ({ user }) => {
         </div>
         <div className={styles.toggleRightWrapper}>
           <label className={styles.switch}>
-            <input type="checkbox" disabled />
+            <input type="checkbox" checked={notificationPreferences.is_weekly_discovery} 
+              onChange={handleToggleChange('is_weekly_discovery')}/>
             <span className={styles.slider}></span>
           </label>
           <span className={styles.toggleAction}>
-            {t('notifications.toggleOptions.weeklyDiscovery.action')}
+          {getToggleAction('is_weekly_discovery', 'notifications.toggleOptions.weeklyDiscovery')}
           </span>
         </div>
       </div>
 
       <div className={styles.btnWrapper}>
-        <button type="submit" className={styles.saveButton} disabled>
+        {/* <button className={styles.saveButton}>
           {t('notifications.actions.save')}
-        </button>
+        </button> */}
       </div>
       <div className={styles.divider} />
     </form>

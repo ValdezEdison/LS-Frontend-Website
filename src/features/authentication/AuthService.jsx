@@ -55,6 +55,14 @@ const authService = {
   saveSuggestions : async (suggestions) => {
     return apiService.post('/users/suggestions', { suggestions });
   },
+
+  saveNotificationPreferences : async (preferences) => {
+    return apiService.patch('/users/notification-preference',  preferences );
+  },
+
+  getNotificationPreferences : async () => {
+    return apiService.get('/users/notification-preference');
+  },
 };
 
 export default authService; 

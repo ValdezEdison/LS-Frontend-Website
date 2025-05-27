@@ -170,3 +170,28 @@ export const saveSuggestions = createAsyncThunk(
     } 
   }
 );
+
+
+export const saveNotificationPreferences = createAsyncThunk(
+  'auth/saveNotificationPreferences',
+  async (preferences, { rejectWithValue }) => {
+    try {
+      const response = await authService.saveNotificationPreferences(preferences);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
+
+export const fetchNotificationPreferences = createAsyncThunk(
+  'auth/fetchNotificationPreferences',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.getNotificationPreferences();
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    } 
+  }
+);
