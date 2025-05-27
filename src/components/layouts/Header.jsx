@@ -18,10 +18,14 @@ import { toast } from "react-toastify";
 import { clearLocation } from "../../features/location/LocationSlice";
 import { updateLocation, fetchLocationSettings } from "../../features/location/LocationAction";
 import useSubNavDataCleanup from "../../hooks/useSubNavDataCleanup";
+import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import AlertPopup from "../popup/Alert/AlertPopup";
+import Modal from "../modal/Modal";
 
 const Header = () => {
 
   const { t, i18n } = useTranslation("Header");
+  const { t: tCommon } = useTranslation("Common");
   const { language, setLanguage, languageId } = useContext(LanguageContext); // Use context to manage language
   const [showNavBar, setShownavBar] = useState(false);
   const [showLanguageOption, setShowLanguageOption] = useState(false);
@@ -33,6 +37,7 @@ const Header = () => {
 
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
   const { languages } = useSelector((state) => state.languages);
+  const { isOpen } = useSelector((state) => state.popup);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -45,10 +50,39 @@ const Header = () => {
 
   useSubNavDataCleanup();
 
+   const [popupState, setPopupState] = useState({
+      map: false,
+      gallery: false,
+      reviewDrawer: false,
+      alert: false,
+      comment: false,
+      deleteConfirm: false,
+      success: false,
+      addTrip: false
+    });
+
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertTitle, setAlertTitle] = useState("");
+
+
+   const togglePopup = (name, state) => {
+      setPopupState(prev => ({ ...prev, [name]: state }));
+      state ? dispatch(openPopup()) : dispatch(closePopup());
+    };
+
   const handleNavigation = (path) => {
     if (path === "/login") {
       // Pass the current location as state when navigating to /login
       navigate(path, { state: { from: location } });
+    }else if(path === "/favorites") {
+      if(isAuthenticated){
+        navigate(path);
+      }else{
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.favorites.title'));
+        setAlertMessage(tCommon('authAlert.favorites.description'));
+      }
+
     } else {
       navigate(path);
     }
@@ -311,8 +345,24 @@ useEffect(() => {
 
 }, [isAuthenticated, dispatch]);
 
+const handleNavigateToLogin = () => {
+  navigate('/login', { state: { from: location } });
+};
+
   return (
     <>
+
+  {isOpen && popupState.alert && (
+      <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
+        <AlertPopup
+          handleNavigateToLogin={handleNavigateToLogin}
+          title={alertTitle}
+          description={alertMessage}
+          buttonText={tCommon('authAlert.favorites.button')}
+        />
+      </Modal>
+    )}
+
    {loading && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/password-recovery"  && location.pathname !== "/register/email-confirmation" && !location.pathname.includes("/profile") && <div className="fullPageOverlay">
       <div className="loaderBtnWrapper">
           <Loader /> 

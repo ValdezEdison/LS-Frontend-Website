@@ -54,7 +54,7 @@ import {
           {/* <span>Email</span> */}
         </div>
         
-        <div className={styles.shareOption}>
+        {/* <div className={styles.shareOption}>
           <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
             <button className={styles.copyButton}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@ import {
             </button>
           </CopyToClipboard>
           <span className={styles.copyText}>{copied ? 'Copied!' : ''}</span>
-        </div>
+        </div> */}
         
         <button className={styles.closeShareButton} onClick={onClose}>
         </button>
