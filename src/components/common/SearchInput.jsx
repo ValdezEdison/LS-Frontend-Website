@@ -14,7 +14,10 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
 
   const { t } = useTranslation("SearchInput");
   const inputPlaceholder = placeholder || t("placeholder");
-  const { loading } = useSelector((state) => state.cities);
+  const { loading: citiesLoading } = useSelector((state) => state.cities);
+  const {loading: placesSearchResultsLoading} = useSelector((state) => state.places);
+
+  const loading = placesSearchResultsLoading ? placesSearchResultsLoading : citiesLoading;
 
   const suggestions = Array.isArray(suggestionsList) && suggestionsList.length > 0 ? suggestionsList : defaultSuggestions;
 
@@ -54,7 +57,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
                 <SuggestionItem
                   key={index}
                   id={suggestion.id}
-                  text={`${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
+                  text={suggestion?.title || `${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
                   onSelect={onSelect}
                 />
               ))

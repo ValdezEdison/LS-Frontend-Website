@@ -22,10 +22,10 @@ import GoToFilterCard from "../common/GoToFilterCard";
 import { listUpdater } from "../../features/places/PlaceSlice";
 import { Trans } from 'react-i18next';
 
-const MainContent = ({ state, setState, countries, cities, handleActions }) => {
+const MainContent = ({ state, setState, countries, cities, handleActions, handleNavigate }) => {
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
-  const { places, loading: placesLoading, error: placesError, next, count } = useSelector((state) => state.places);
+  const { places, loading: placesLoading, error: placesError, next, count, placesSearchResults } = useSelector((state) => state.places);
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
   const { loading: countriesLoading } = useSelector((state) => state.countries);
@@ -101,7 +101,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
   ];
 
   const handleSearch = (value) => {
-    updateState("destinationSearchQuery", value);
+    updateState("keyword", value);
 
   };
 
@@ -110,7 +110,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
 
   const handleSearchClose = (e) => {
     e.stopPropagation();
-    updateState("destinationSearchQuery", "");
+    updateState("keyword", "");
     updateState("selectedDestinationId", null);
     setShowSuggestionDropDown(false);
   };
@@ -264,10 +264,10 @@ const MainContent = ({ state, setState, countries, cities, handleActions }) => {
             handleSearch={handleSearch}
             showSuggestionDropDown={showSuggestionDropDown}
             handleSearchClose={handleSearchClose}
-            searchValue={state.destinationSearchQuery}
-            suggestionsList={cities}
+            searchValue={state.keyword}
+            suggestionsList={placesSearchResults}
             placeholder={t("search.placeholder")}
-            onSelect={(value) => updateState("selectedDestinationId", value)}
+            onSelect={handleNavigate}
             customClassName="placesSearchInputContainer"
             selectedValue={state.selectedDestinationId}
           />

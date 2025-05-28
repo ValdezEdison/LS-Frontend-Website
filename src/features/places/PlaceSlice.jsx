@@ -17,7 +17,8 @@ import {
     deleteComment,
     generateLink,
     fetchNearMePlaces,
-    fetchRandomPlaces
+    fetchRandomPlaces,
+    fetchPlacesSearchResults
 } from './PlaceAction';
 import { Favorite } from '../../components/common/Images';
 import { toggleFavorite } from '../favorites/FavoritesAction';
@@ -38,7 +39,9 @@ const initialState = {
     favTogglingId : null,
     generateLinkLoading: false,
     shareableLink: null,
-    geoLocationsLoading: false
+    geoLocationsLoading: false,
+    placesSearchResults: [],
+    placesSearchResultsLoading: false
 };
 
 const placeSlice = createSlice({
@@ -355,6 +358,19 @@ const placeSlice = createSlice({
             })
             .addCase(fetchRandomPlaces.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchPlacesSearchResults.pending, (state) => {
+                state.placesSearchResultsLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchPlacesSearchResults.fulfilled, (state, action) => {
+                state.placesSearchResultsLoading = false;
+                state.placesSearchResults = action.payload || [];
+            })
+            .addCase(fetchPlacesSearchResults.rejected, (state, action) => {
+                state.placesSearchResultsLoading = false;
                 state.error = action.payload;
             })
             ;

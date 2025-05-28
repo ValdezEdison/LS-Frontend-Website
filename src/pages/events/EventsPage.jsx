@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
+import React, { useState, useEffect, useContext, useMemo, useRef, useCallback } from "react";
 import Header from "../../components/layouts/Header";
 import EventSearch from "../../components/common/SearchBar";
 import LoginBanner from "../../components/common/LoginBanner";
@@ -11,7 +11,7 @@ import styles from "./EventsPage.module.css";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import styles1 from "../../components/PlacesPage/MainContent.module.css";
 import PromotionalBanner from "../../components/common/PromotionalBanner";
-import { fetchEvents, fetchNearMeEvents } from "../../features/events/EventAction";
+import { fetchEvents, fetchNearMeEvents, fetchEventsSearchResults } from "../../features/events/EventAction";
 import { useDispatch, useSelector } from "react-redux";
 import SeeMoreButton from "../../components/common/SeeMoreButton";
 import useSeeMore from "../../hooks/useSeeMore";
@@ -368,7 +368,7 @@ const EventsPage = () => {
 
     return () => clearTimeout(debounceTimer);
   }, [
-    state.keyword, // Triggers when search term changes
+    // state.keyword, // Triggers when search term changes
     dispatch,
   ]);
 
@@ -420,6 +420,42 @@ const EventsPage = () => {
         dispatch(resetGeoLocations())
       }
     },[])
+
+
+    const debouncedEventsSearch = useCallback(
+        debounce((keyword) => {
+          dispatch(fetchEventsSearchResults({keyword, type: "event"}));
+        }, 500),
+        [dispatch]
+      );
+      
+      useEffect(() => {
+        if (state.keyword.trim() !== "") {
+          debouncedEventsSearch(state.keyword);
+        } else {
+          // Explicit empty search with object format
+          dispatch(fetchEventsSearchResults({ keyword: "", type: "event" }));
+        }
+      
+        return () => debouncedEventsSearch.cancel();
+    }, [state.keyword, debouncedEventsSearch, dispatch]);
+
+
+    const handleNavigate = (id) => {
+
+      if(isAuthenticated){
+      
+        navigate(`/events/details`, { state: { id: id } });
+
+      }else{
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.viewDetails.title'));
+        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      }
+  
+      
+    }
+
 
 
   return (
@@ -495,7 +531,7 @@ const EventsPage = () => {
         <Header />
         <main className="page-center">
           <h1 className={styles.eventCount}>{tEventsPage('events.availableEvents', { count })}</h1>
-          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state} setState={setState}/>
+          <EventSearch togglePopup={togglePopup} handleSearch={handleSearch} state={state} setState={setState} handleNavigate={handleNavigate}/>
           {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles1} />}
           <h2 className={styles.sectionTitle}>{tEventsPage('events.popularEvents')}</h2>
           <EventList

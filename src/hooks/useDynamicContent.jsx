@@ -20,7 +20,7 @@ const useDynamicContent = (type) => {
     switch (type) {
       case 'events':
         return state.eventsByCity;
-      case 'places':
+      case 'placesList':
         return state.placesInCity;
       case 'itineraries':
         return state.itineraries;

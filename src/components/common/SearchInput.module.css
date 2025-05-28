@@ -144,6 +144,16 @@
   font-weight: 600;
 }
 
+.eventsSearchInputContainer {
+  position: relative;
+  max-width: 308px;
+  width: 100%;
+}
+
+.eventsSearchInputContainer .searchBar{
+  padding: 12px 19px;
+}
+
 @media (max-width: 991px) {
   .searchInput,
   .suggestionsContainer {
