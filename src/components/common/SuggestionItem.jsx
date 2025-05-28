@@ -18,7 +18,7 @@ const SuggestionItem = ({ id, text, onSelect, type = "", isUnified = false }) =>
       role="option"
       onClick={handleClick}
     >
-      <div className={styles.suggestionIcon} />
+      <div className="suggestionIcon" />
       <div className={styles.suggestionText}>{text}</div>
     </div>
   );
