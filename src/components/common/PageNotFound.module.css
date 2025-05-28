@@ -1,0 +1,57 @@
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .pageCenter {
+    width: 100%;
+  }
+  
+  .notfoundPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagecenter {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .contentwrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contentwrap img {
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+  
+  .notfound {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .ctaButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ctaButton:hover {
+    background-color: #0056b3;
+  }
+  

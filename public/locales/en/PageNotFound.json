@@ -1,0 +1,14 @@
+{
+    "errorBoundary": {
+      "oops": "Oops!",
+      "content": "Something went wrong. Please try again later.",
+      "message": "We apologize for any inconvenience caused and kindly ask for your patience as we strive to provide a seamless experience.",
+      "backButton": "Back"
+    },
+    "pageNotFound": {
+      "404": "404",
+      "content": "Page not found.",
+      "message": "Double-check the URL for any typos and make sure it is entered correctly."
+      
+    }
+  }

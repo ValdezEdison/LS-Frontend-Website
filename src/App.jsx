@@ -9,15 +9,15 @@ import { LocationProvider } from './context/LocationContext';
 function App() {
   return (
     <Provider store={store}>
+      <Suspense fallback={<div></div>}>
       <ErrorBoundary>
         <LocationProvider>
-          <Suspense fallback={<div></div>}>
             <BrowserRouter>
               <Router />
             </BrowserRouter>
-          </Suspense>
         </LocationProvider>
       </ErrorBoundary>
+      </Suspense>
     </Provider>
   );
 }

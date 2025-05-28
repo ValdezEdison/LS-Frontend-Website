@@ -219,7 +219,7 @@ export const useAddTrip = () => {
           
           if (res.type === "places/addSite/fulfilled" || res.type === "places/addToExistingTrip/fulfilled") {
            if(res.payload?.detail){
-            toast.success(res.payload.detail);
+            toast.success(res.payload.detail || t('AddTrip.success.tripAdded.message'));
            }
             closeAddTripPopup();
             resetAllStates();
@@ -278,6 +278,7 @@ export const useAddTrip = () => {
           title: t('AddTrip.success.tripAdded.title'),
           show: true
         });
+        toast.success(t('AddTrip.success.tripAdded.message'));
         dispatch(resetTripType());
         resetAllStates(); 
       } else {

@@ -1,0 +1,14 @@
+{
+    "errorBoundary": {
+      "oops": "¡Ups!",
+      "content": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+      "message": "Nos disculpamos por cualquier inconveniente y agradecemos tu paciencia mientras trabajamos para brindarte una experiencia sin problemas.",
+      "backButton": "Volver"
+    },
+    "pageNotFound": {
+      "404": "404",
+      "content": "Página no encontrada.",
+      "message": "Verifica la URL en busca de errores y asegúrate de que esté escrita correctamente."
+      
+    }
+  }
