@@ -67,7 +67,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           Object.entries(groupedSuggestions)
             .filter(([_, suggestions]) => suggestions.length > 0)
             .map(([type, suggestions]) => (
-              <div key={type}>
+              <div key={type} className={`suggestion-${type}`}>
                 <h4 className={styles.suggestionType}>{t(type)}</h4>
                 {suggestions.map((suggestion, index) => (
                   <SuggestionItem

@@ -667,6 +667,41 @@ button,input,select,textarea{
   height: 30px;
 }
 
+.suggestionIcon {
+  align-self: center;
+  display: flex;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+
+}
+
+.suggestion-events .suggestionIcon {
+  background: url(../../../public/images/calendar-icon-black.png) no-repeat 0 0;
+  background-size: 100%;
+  width: 15px;
+}
+
+.suggestion-cities .suggestionIcon,.suggestion-neighborhoods  .suggestionIcon,.suggestion-places .suggestionIcon {
+  background: url(../../../public/images/map-icon.png) no-repeat 0 0;
+  background-size: 100%;
+}
+
+.suggestion-countries .suggestionIcon {
+  background: url(../../../public/images/globe.png) no-repeat 0 0;
+  background-size: 100%;
+}
+
+.suggestion-countries .suggestionIcon {
+  background: url(../../../public/images/globe.png) no-repeat 0 0;
+  background-size: 100%;
+}
+
+.suggestion-regions .suggestionIcon {
+  background: url(../../../public/images/region.png) no-repeat 0 0;
+  background-size: 100%;
+}
+
 @media screen and (max-width: 1260px) {
   .page-center{
     max-width: 100%;
