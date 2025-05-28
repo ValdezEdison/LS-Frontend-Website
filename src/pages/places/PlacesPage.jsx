@@ -33,7 +33,8 @@ import {
   fetchGeoLocations,
   fetchPlacesFilterCategories,
   fetchNearMePlaces,
-  fetchRandomPlaces
+  fetchRandomPlaces,
+  fetchPlacesSearchResults
 } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import { fetchCountries } from "../../features/common/countries/CountryAction";
@@ -149,6 +150,7 @@ const PlacesPage = () => {
     selectedPlaceName: "",
     latitude: "",
     longitude: "",
+    keyword: "",
   });
 
   const [popupState, setPopupState] = useState({
@@ -477,7 +479,8 @@ const PlacesPage = () => {
           page: 1,
           latitude: lat,
           longitude: lng,
-          type: "place"
+          type: "place",
+          radius: currentLocation.preferences?.default_radius || 5000
         }));
         dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam }));
       
@@ -943,6 +946,41 @@ const PlacesPage = () => {
     }, [])
 
 
+       const debouncedPlacesSearch = useCallback(
+           debounce((keyword) => {
+             dispatch(fetchPlacesSearchResults({keyword, type: "place"}));
+           }, 500),
+           [dispatch]
+         );
+         
+         useEffect(() => {
+           if (state.keyword.trim() !== "") {
+             debouncedPlacesSearch(state.keyword);
+           } else {
+             // Explicit empty search with object format
+             dispatch(fetchPlacesSearchResults({ keyword: "", type: "place" }));
+           }
+         
+           return () => debouncedPlacesSearch.cancel();
+        }, [state.keyword, debouncedPlacesSearch, dispatch]);
+
+
+        const handleNavigate = (id) => {
+
+          if(isAuthenticated){
+          
+            navigate(`/places/details`, { state: { id: id } });
+    
+          }else{
+            togglePopup("alert", true);
+            setAlertTitle(tCommon('authAlert.viewDetails.title'));
+            setAlertMessage(tCommon('authAlert.viewDetails.description'));
+          }
+      
+          
+        }
+
+
   return (
     <>
       {/* Popups and Modals */}
@@ -1043,6 +1081,7 @@ const PlacesPage = () => {
                   countries={countries}
                   cities={cities}
                   handleActions={handleActions}
+                  handleNavigate={handleNavigate}
                 />
               )}
             </div>

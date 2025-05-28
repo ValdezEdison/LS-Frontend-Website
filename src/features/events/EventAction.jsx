@@ -102,3 +102,17 @@ export const fetchNearMeEvents = createAsyncThunk(
     }
   }
 );
+
+
+
+export const fetchEventsSearchResults = createAsyncThunk(
+  'events/fetchEventsSearchResults',
+  async ({ page, type, keyword }, { rejectWithValue }) => {
+    try {
+      const response = await eventService.getEventsSearchResults(page, type, keyword);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);

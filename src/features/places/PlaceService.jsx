@@ -147,7 +147,8 @@ const PlaceService = {
     categories,
     levels,
     subcategories,
-    sort_by) => {
+    sort_by,
+    radius) => {
     // return apiService.get(`/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}&type=${type}`);
     let url = `/sites/near-me?page=${page}&latitude=${latitude}&longitude=${longitude}&type=${type}`;
   
@@ -157,11 +158,16 @@ const PlaceService = {
     if (levels) url += `&levels=${levels}`;
     if (subcategories) url += `&subcategories=${subcategories}`;
     if (sort_by) url += `&sort_by=${sort_by}`;
+    if (radius) url += `&radius=${radius}`;
     
     return apiService.get(url);
   },
   getRandomPlaces: async (page = 1, type) => {
     return apiService.get(`/sites/random?page=${page}&type=${type}`);
+  },
+
+  getPlacesSearchResults: async (page = 1, type, keyword) => {
+    return apiService.get(`/sites/search/sites/${type}/${keyword}`);
   },
 };
 

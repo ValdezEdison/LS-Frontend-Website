@@ -11,6 +11,7 @@
   align-items: center;
   gap: 14px;
   flex-grow: 1;
+  position: relative;
 }
 
 .searchTitle {

@@ -1,6 +1,6 @@
 // src/features/events/EventSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchEvents, fetchEventById, createEvent, updateEvent, deleteEvent, fetchNearMeEvents } from './EventAction';
+import { fetchEvents, fetchEventById, createEvent, updateEvent, deleteEvent, fetchNearMeEvents, fetchEventsSearchResults } from './EventAction';
 import { toggleFavorite } from "../../features/favorites/FavoritesAction"
 
 const initialState = {
@@ -10,7 +10,9 @@ const initialState = {
   next: null,
   count: 0,
   isFavoriteToggling: false,
-  favTogglingId: null
+  favTogglingId: null,
+  eventsSearchResults: [],
+  eventsSearchResultsLoading: false
 };
 
 const eventSlice = createSlice({
@@ -145,6 +147,19 @@ const eventSlice = createSlice({
       })
       .addCase(fetchNearMeEvents.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      
+      .addCase(fetchEventsSearchResults.pending, (state) => {
+        state.eventsSearchResultsLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchEventsSearchResults.fulfilled, (state, action) => {
+        state.eventsSearchResultsLoading = false;
+        state.eventsSearchResults = action.payload || [];
+      })
+      .addCase(fetchEventsSearchResults.rejected, (state, action) => {
+        state.eventsSearchResultsLoading = false;
         state.error = action.payload;
       });
   },

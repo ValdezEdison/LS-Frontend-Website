@@ -198,13 +198,15 @@ export const fetchNearMePlaces = createAsyncThunk(
     categories, 
     levels, 
     subcategories, 
-    sort_by  }, { rejectWithValue }) => {
+    sort_by,
+    radius  }, { rejectWithValue }) => {
     try {
       const response = await placeService.getNearMePlaces(page, latitude, longitude, type,  avg_rating,
         categories,
         levels,
         subcategories,
-        sort_by);
+        sort_by,
+        radius);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));
@@ -217,6 +219,19 @@ export const fetchRandomPlaces = createAsyncThunk(
   async ({ page, type }, { rejectWithValue }) => {
     try {
       const response = await placeService.getRandomPlaces(page, type);
+      return response;
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
+
+
+export const fetchPlacesSearchResults = createAsyncThunk(
+  'places/fetchPlacesSearchResults',
+  async ({ page, type, keyword }, { rejectWithValue }) => {
+    try {
+      const response = await placeService.getPlacesSearchResults(page, type, keyword);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

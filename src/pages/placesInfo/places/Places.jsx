@@ -57,7 +57,7 @@ const Places = () => {
     const tagDetails = hasTagDetails ? JSON.parse(localStorage.getItem('tagDetails')) : null;
 
     // const { loading: placesLoading, error, placesList, next, count } = useSelector((state) => state.placesInCity);
-    const { loading: placesLoading, error, data: placesList, next, count } = useDynamicContent('places');
+    const { loading: placesLoading, error, data: placesList, next, count } = useDynamicContent('placesList');
     const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading: destinationLoading, destination } = useSelector((state) => state.destination);

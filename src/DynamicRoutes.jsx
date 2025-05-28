@@ -4,11 +4,17 @@ import FreePage from './pages/FreePages/FreePage';
 import { fetchFreePages } from './features/cms/Pages/PagesAction';
 import { useEffect, useContext } from 'react';
 import { LanguageContext } from './context/LanguageContext';
+import Loader from './components/common/Loader';
+import PageNotFound from './components/common/PageNotFound';
+import { useTranslation } from 'react-i18next';
 
 const DynamicRoutes = () => {
   const dispatch = useDispatch();
   const { languageId } = useContext(LanguageContext);
   const freePages = useSelector((state) => state.cms.pages.freePages);
+  const { freePagesLoading } = useSelector((state) => state.cms.pages);
+
+  const { t } = useTranslation("PageNotFound");
 
   // Slug mapping for simplified URLs
   const slugMapping = {
@@ -39,6 +45,12 @@ const DynamicRoutes = () => {
           />
         );
       })}
+      {!freePagesLoading &&  <Route path="*" element={<PageNotFound 
+        type={t("pageNotFound.404")} 
+        content={t("pageNotFound.content")}
+        message={t("pageNotFound.message")}
+      />} />
+      }
     </Routes>
   );
 };

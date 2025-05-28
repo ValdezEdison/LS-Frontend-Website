@@ -44,6 +44,10 @@ const eventService = {
     getNearMeEvents: async (page = 1, lat, lng, type = "event") => {
         return apiService.get(`/sites/near-me?latitude=${lat}&longitude=${lng}&page=${page}&type=${type}`);
     },
+
+    getEventsSearchResults: async (page = 1, type, keyword) => {
+        return apiService.get(`/sites/search/sites/${type}/${keyword}`);
+    },
 };
 
 export default eventService;

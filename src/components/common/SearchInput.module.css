@@ -101,14 +101,8 @@
   background-color: #F1F5FA;
 }
 
-.suggestionIcon {
-  align-self: center;
-  display: flex;
-  width: 17px;
-  height: 17px;
-  margin: 0;
-  background: url(../../../public/images/map-icon.png) no-repeat 0 0;
-  background-size: 100%;
+.suggestionsContainerInner p{
+  padding: 0 15px;
 }
 
 .suggestionText {
@@ -142,6 +136,16 @@
   font-size: 20px;
   text-transform: capitalize;
   font-weight: 600;
+}
+
+.eventsSearchInputContainer {
+  position: relative;
+  max-width: 308px;
+  width: 100%;
+}
+
+.eventsSearchInputContainer .searchBar{
+  padding: 12px 19px;
 }
 
 @media (max-width: 991px) {
