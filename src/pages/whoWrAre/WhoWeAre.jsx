@@ -67,7 +67,7 @@ function WhoWeAre() {
       ) : (
         <img
           src={backgroundImage}
-          alt={data.hero_image.alt || "Company image"}
+          alt={data?.hero_image?.alt || "Company image"}
           className={styles.companyImage}
         />
       )}

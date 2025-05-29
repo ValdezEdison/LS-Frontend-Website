@@ -2,7 +2,7 @@ import ApiService from "../../services/ApiService";
 
 const SuggestionService = {
 
-    getSuggestedPlaces: async (page, latitude, longitude, type, id) => {
+    getSuggestedPlaces: async (page, latitude, longitude, type, cityId) => {
 
         const params = new URLSearchParams();
         
@@ -15,6 +15,7 @@ const SuggestionService = {
             params.append('latitude', latitude);
             params.append('longitude', longitude);
         }
+        if (cityId) params.append('city_id', cityId);
 
         return ApiService.get(`/sites/suggested?${params.toString()}`);
     },

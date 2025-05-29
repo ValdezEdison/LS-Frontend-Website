@@ -52,7 +52,7 @@ const SocialLogin = ({ onSocialLogin }) => {
           />
         </button> */}
         
-        <FacebookLogin
+        {/* <FacebookLogin
           appId={import.meta.env.VITE_FACEBOOK_ID} // Add this to your .env
           onSuccess={handleFacebookSuccess}
           onFail={handleFacebookFailure}
@@ -64,7 +64,7 @@ const SocialLogin = ({ onSocialLogin }) => {
             alt="Login with Facebook"
             className={styles.socialIcon}
           />
-        </FacebookLogin>
+        </FacebookLogin> */}
         <button className={styles.socialButton} onClick={() => onSocialLogin('google-oauth2')}>
           <img src={Google}/>
         </button>
