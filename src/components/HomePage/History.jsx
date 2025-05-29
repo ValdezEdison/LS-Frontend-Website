@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./AppPromotion.module.css";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 const History = ({
   h1Data,
@@ -19,13 +18,6 @@ const History = ({
     temp.innerHTML = htmlString;
     return temp.textContent || temp.innerText || t("description");
   };
-
-  const navigate = useNavigate();
-
-  const handleNavActions = (e, link) => {
-    e.preventDefault();
-    navigate(link);
-  }
 
   return (
     <section className={styles.appPromotion}>
@@ -49,12 +41,12 @@ const History = ({
               }}
             />
             {bannerData.cta_text && (
-              <button
+              <a
+                href={bannerData.cta_link}
                 className={styles.promotionButton}
-                onClick={(e) => handleNavActions(e, bannerData.cta_link)}
               >
                 {bannerData.cta_text}
-              </button>
+              </a>
             )}
           </div>
         </div>

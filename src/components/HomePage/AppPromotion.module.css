@@ -59,10 +59,13 @@
   margin-top: 15px;
   cursor: pointer;
   transition: all ease .3s;
+  color: #151820;
+  text-decoration: none;
 }
 
 .promotionButton:hover {
   background-color: #e4b230;
+  color: #151820;
 }
 
 .appStoreImage {
