@@ -21,7 +21,7 @@ const LocationService = {
         store.dispatch(updateLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          geolocation_enabled: true,
+          location_mode: "current",
           city_id: null
         }));
       } catch (error) {
