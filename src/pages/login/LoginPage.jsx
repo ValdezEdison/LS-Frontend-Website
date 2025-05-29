@@ -212,7 +212,7 @@ const LoginPage = () => {
 
 
    // Social Login Handler
-   const handleSocialLogin = async (provider, token, error, ) => {
+   const handleSocialLogin = async (provider, token, error) => {
 
     if (error) {
       toast.error(error.message || t('messages.error'));
