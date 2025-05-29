@@ -191,7 +191,6 @@ const HomePage = () => {
    }
   }, []);
 
-console.log(h2Data, 'h1Data');
   return (
     <div className={styles.homePage}>
       <Header />

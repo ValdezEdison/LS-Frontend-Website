@@ -110,7 +110,7 @@ const EventsPage = () => {
     page: 1,
     type: "event",
     selectedDestinationId: null,
-    selectedDestinationId: null,
+    // selectedDestinationId: null,
     destinationSearchQuery: "",
     startDate: null,
     endDate: null,

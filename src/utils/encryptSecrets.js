@@ -30,6 +30,7 @@ const encrypted = CryptoJS.AES.encrypt(JSON.stringify(secrets), VITE_SECRET_KEY)
 
 const VITE_API_BASE_URL = 'https://localsecrets-staging.rudo.es';
 const VITE_API_CMS_BASE_URL =  'https://cms-ls-yerpb.ondigitalocean.app';
+const VITE_API_WORDPRESS_BASE_URL= 'https://www.localsecrets.travel';
 const VITE_NAME = 'dev'
 const VITE_DEBUG_MODE = true
 
@@ -38,6 +39,7 @@ const VITE_DEBUG_MODE = true
 const envContent = `VITE_ENCRYPTED_SECRETS=${encrypted}\n` +
                    `VITE_API_BASE_URL=${VITE_API_BASE_URL}\n` +
                    `VITE_API_CMS_BASE_URL=${VITE_API_CMS_BASE_URL}\n` +
+                   `VITE_API_WORDPRESS_BASE_URL=${VITE_API_WORDPRESS_BASE_URL}\n` +
                    `VITE_DEBUG_MODE=${VITE_DEBUG_MODE}\n` +
                   
                    `VITE_APP_NAME=dev\n`;
