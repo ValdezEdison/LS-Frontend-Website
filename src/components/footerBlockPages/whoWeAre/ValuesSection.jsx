@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../../pages/whoWrAre/WhoWeAre.module.css";
-import { People } from "../../common/Images";
+import { PlaceHolderImg3 } from "../../common/Images";
 import config from "../../../config";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,11 @@ const ValuesSection = ({ values }) => {
   const { t } = useTranslation("WhoWeAre");
 
 const handleImage = (url) => {
-  return `${config.api.cmsBaseUrl}${url}`;
+  if ( url === null || url === undefined) {
+    return PlaceHolderImg3
+  }else{
+    return `${config.api.cmsBaseUrl}${url}`
+  }
 };
 
   return (
@@ -19,7 +23,7 @@ const handleImage = (url) => {
         {values.map((value, index) => (
           <div className={styles.valueItem} key={index}>
             <div className={`${styles.valueIcon} ${styles.placeholder}`}>
-              <img src={handleImage(value.icon.url)} />
+              <img src={handleImage(value?.icon?.url)} />
             </div>
             <div className={styles.valueText}>{value.title}</div>
           </div>

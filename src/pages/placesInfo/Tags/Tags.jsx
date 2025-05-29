@@ -128,7 +128,7 @@ const Tags = () => {
                 dispatch(fetchTravelLiteList());
             }
             dispatch(fetchCities({}));
-            dispatch(fetchSuggestedPlaces({ page: 1, type: state.type }));
+            dispatch(fetchSuggestedPlaces({ page: 1, type: state.type, cityId: cityId }));
             return () => {
                 dispatch(closePopup());
                 closeAddToTrip()

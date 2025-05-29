@@ -294,7 +294,16 @@ const ItineraryList = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "itinerary" }));
+        const selectedItinerary = itineries.find((itinerary) => itinerary.id === id);
+        const stops = selectedItinerary?.stops || [];
+        const firstCity = selectedItinerary?.cities?.[0] || {};
+        setFormState(prev => ({ ...prev, type: "itinerary", stops: stops,
+          destinations: [{
+            destinationSearchQuery: '',
+            destinationId: firstCity.id || null,
+            destinationName: firstCity.name || ''
+          }]
+        }));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);
