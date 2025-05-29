@@ -2,13 +2,15 @@ import React from "react";
 import AppPromotionContent from "./AppPromotionContent";
 import AppPromotionImage from "./AppPromotionImage";
 import { QR } from "../common/Images";
-const AppPromotion = () => {
+const AppPromotion = ({ campaignData }) => {
+
   return (
     <div className="app-promotion">
       <div className="page-center">
       <div className="app-promotion__container">
-        <AppPromotionImage />
-        <AppPromotionContent />
+        <AppPromotionImage imageUrl={campaignData.image_url}/>
+        <AppPromotionContent   title={campaignData.title}
+            description={campaignData.description}/>
         <img
           src={QR}
           alt="App QR code"

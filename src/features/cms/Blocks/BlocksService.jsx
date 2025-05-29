@@ -15,6 +15,10 @@ const BlocksService = {
     getFooterBlocks: async (language) => {
         return CmsApiService.get('/api/v2/footer-blocks/?locale=' + language);
     },
+
+    getMarketingCampaigns: async (language, name) => {
+        return CmsApiService.get(`/api/v2/marketing-campaigns/?locale=${encodeURIComponent(language)}&name=${encodeURIComponent(name)}`);
+    },
   
 }
 

@@ -49,3 +49,16 @@ export const fetchFooterBlocks = createAsyncThunk(
         }
     }
 );
+
+
+export const fetchMarketingCampaigns = createAsyncThunk(
+    'blocks/fetchMarketingCampaigns',
+    async ({language, name}, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getMarketingCampaigns(language, name);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

@@ -33,6 +33,9 @@ import { resetPlacesList } from "../../features/places/PlaceSlice";
 import { resetRandomPlaces } from "../../features/home/HomeSlice";
 import { resetEventsList } from "../../features/events/EventSlice";
 import { fetchUnifiedSearchResults } from "../../features/unifiedSearch/UnifiedSearchAction";
+import { fetchMarketingCampaigns } from "../../features/cms/Blocks/BlocksAction";
+import { selectCampaignsByName } from "../../features/cms/Blocks/BlocksSelectors";
+import AppPromotionSkeleton from "../../components/skeleton/HomePage/AppPromotionSkeleton";
 
 const HomePage = () => {
 
@@ -70,7 +73,11 @@ const HomePage = () => {
   const { cities, loading: citiesLoading } = useSelector((state) => state.cities);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  
+  const h1Campaign = useSelector(state => selectCampaignsByName(state, 'H1'));
+  const h2Campaign = useSelector(state => selectCampaignsByName(state, 'H2'));
+  const { data: h1Data, loading: h1Loading } = h1Campaign;
+  const { data: h2Data, loading: h2Loading } = h2Campaign;
+
   const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
   const placesList = currentLocation && isAuthenticated && trackingEnabled ? places : randomPlaces;
   // Fetch places on component mount
@@ -92,6 +99,8 @@ const HomePage = () => {
     dispatch(fetchPosts({ per_page: 10 }));
     dispatch(fetchTags({ per_page: 100 }));
     dispatch(fetchContinents());
+    dispatch(fetchMarketingCampaigns({language: languageId, name: "H1"}));
+    dispatch(fetchMarketingCampaigns({language: languageId, name: "H2"}));
 
   
 
@@ -182,7 +191,7 @@ const HomePage = () => {
    }
   }, []);
 
-
+console.log(h2Data, 'h1Data');
   return (
     <div className={styles.homePage}>
       <Header />
@@ -191,17 +200,32 @@ const HomePage = () => {
       <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} unifiedSearchResults={unifiedSearchResults} />
       {placesLoading ? <CommonWidgetSkeleton /> : <PlacesSection places={placesList} />}
       {eventsLoading ? <CommonWidgetSkeleton /> : <EventsSection events={events} />}
-      <History
-        title="¡Conóce nuestra historia!"
-        description="Descubre cómo nació Local Secrets. Te invitamos a conocer nuestra trayectoria y a inspirarte para tu próxima aventura."
-        buttonText="Saber más"
-        imageSrc={LSLogo2_2}
-      />
+      {h1Loading ? (
+        <AppPromotionSkeleton />
+      ) : h1Data?.length > 0 ? (
+        <History
+          h1Data={h1Data}
+          imageSrc={LSLogo2_2}
+        />
+      ) : (
+        <History
+          title={t("defaultTitle")}
+          description={t("defaultDescription")}
+          buttonText={t("defaultButtonText")}
+          imageSrc={LSLogo2_2}
+        />
+      )}
       {postsLoading ? <WidgetSkeleton /> :
         <ArticlesSection title={tCommon('travelInspiration')} posts={posts} seeMore={true} handleNavActions={handleNavActions} tags={tags} layout="carousel"  // Default carousel layout
           setState={setState} />
       }
-      <AppPromotion />
+        {h2Loading ? (
+        <AppPromotionSkeleton />
+        ) : h2Data?.length > 0 ? (
+          <AppPromotion campaignData={h2Data[0]} />
+        ) : (
+          <></>
+        )}
       <PartnersSection ourPartners={ourPartners} ourPartnersLoading={ourPartnersLoading} />
       <Newsletter />
       <Footer />
