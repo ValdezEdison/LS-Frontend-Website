@@ -109,7 +109,7 @@ const EventsPage = () => {
     selectedDateRange: { startDate: null, endDate: null },
     page: 1,
     type: "event",
-    selectedCityId: null,
+    selectedDestinationId: null,
     selectedDestinationId: null,
     destinationSearchQuery: "",
     startDate: null,
@@ -152,7 +152,7 @@ const EventsPage = () => {
       }
     }
     dispatch(fetchGeoLocations({ type: state.type }));
-    dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
+    dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedDestinationId }));
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
@@ -195,7 +195,13 @@ const EventsPage = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "event" }));
+        const selectedEvent = events.find((event) => event.id === id);
+        const firstCity = selectedEvent?.cities?.[0] || selectedEvent?.city || {};
+        setFormState(prev => ({ ...prev, type: "event", destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]}));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);
@@ -274,11 +280,11 @@ const EventsPage = () => {
 
 
   useEffect(() => {
-    if (state.selectedCityId) {
-      dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedCityId }));
+    if (state.selectedDestinationId) {
+      dispatch(fetchPlacesFilterCategories({ page: state.page, type: state.type, cityId: state.selectedDestinationId }));
     }
 
-  }, [state.selectedCityId]);
+  }, [state.selectedDestinationId]);
 
   const onApplyFilters = () => {
     
@@ -286,7 +292,7 @@ const EventsPage = () => {
     const params = {
       type: state.type,
       page: state.page,
-      cityId: state.selectedCityId,
+      cityId: state.selectedDestinationId,
       categories: state.selectedCategory,
       subcategories: state.selectedSubcategory,
       levels: state.selectedLevel,
@@ -342,7 +348,7 @@ const EventsPage = () => {
         type: state.type,
         page: 1, // Reset to first page when searching
         keyword: state.keyword,
-        cityId: state.selectedCityId,
+        cityId: state.selectedDestinationId,
         categories: state.selectedCategory,
         subcategories: state.selectedSubcategory,
         levels: state.selectedLevel,
@@ -430,7 +436,7 @@ const EventsPage = () => {
       );
       
       useEffect(() => {
-        if (state.keyword.trim() !== "") {
+        if (state.keyword && state.keyword.trim() !== "") {
           debouncedEventsSearch(state.keyword);
         } else {
           // Explicit empty search with object format

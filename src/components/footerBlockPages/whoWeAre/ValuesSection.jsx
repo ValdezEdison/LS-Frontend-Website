@@ -12,7 +12,7 @@ const handleImage = (url) => {
   if ( url === null || url === undefined) {
     return PlaceHolderImg3
   }else{
-    return `${config.api.cmsBaseUrl}${url}`
+    return `${url}`
   }
 };
 

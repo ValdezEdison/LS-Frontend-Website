@@ -315,7 +315,13 @@ const Places = () => {
                 break;
             case 'addToTrip':
                 handleAddToTripClick(e, id, name);
-                setFormState(prev => ({ ...prev, type: "event" }));
+                const selectedPlace = placesList.find((place) => place.id === id);
+                const firstCity = selectedPlace?.cities?.[0] || selectedPlace?.city || {};
+                setFormState(prev => ({ ...prev, type: "place", destinations: [{
+                    destinationSearchQuery: '',
+                    destinationId: firstCity.id || null,
+                    destinationName: firstCity.name || ''
+                }]}));
                 break;
             case 'viewMore':
                 handleViewMoreDetails(e, id);

@@ -229,7 +229,13 @@ const Events = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "event" }));
+        const selectedEvent = events.find((event) => event.id === id);
+        const firstCity = selectedEvent?.cities?.[0] || selectedEvent?.city || {};
+        setFormState(prev => ({ ...prev, type: "event", destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]}));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);

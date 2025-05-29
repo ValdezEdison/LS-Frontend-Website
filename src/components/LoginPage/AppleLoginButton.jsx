@@ -1,6 +1,8 @@
 import React from 'react';
 import AppleSignin from 'react-apple-signin-auth';
 import styles from './SocialLogin.module.css';
+import { getSocialAuthAppleIdKey } from '../../utils/decryptSecrets';
+import config from '../../config';
 
 const AppleLoginButton = ({ onSuccess, onFailure }) => {
   const appleSignInRef = React.useRef(null);
@@ -12,14 +14,17 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
     }
   };
 
+  const clientId = getSocialAuthAppleIdKey();
+  const baseURL  = config.api.baseUrl;
+
   return (
     <>
       {/* Hidden Apple Sign-In button */}
       <div ref={appleSignInRef} style={{ display: 'none' }}>
         <AppleSignin
           authOptions={{
-            clientId: import.meta.env.VITE_APPLE_SERVICE_ID_KEY,
-            redirectURI: import.meta.env.VITE_APPLE_REDIRECT_URI,
+            clientId: clientId,
+            redirectURI: `${baseURL}/auth/apple/callback`,
             scope: 'name email',
             state: 'state',
             usePopup: true

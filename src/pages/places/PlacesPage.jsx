@@ -340,7 +340,14 @@ const PlacesPage = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "place" }));
+        const selectedPlace = places.find(place => place.id === id);
+        const firstCity = selectedPlace?.cities?.[0] || selectedPlace?.city || {};
+        setFormState(prev => ({ ...prev, type: "place",
+          destinations: [{
+            destinationSearchQuery: '',
+            destinationId: firstCity.id || null,
+            destinationName: firstCity.name || ''
+        }]}));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);

@@ -45,3 +45,6 @@ export const getGoogleMapsApiKey = () => getSecret('GOOGLEMAPSAPIKEY');
 export const getGoogleMapsMapId = () => getSecret('GOOGLEMAPSMAP_ID');
 export const getClientId = () => getSecret('CLIENTID');
 export const getClientSecret = () => getSecret('CLIENTSECRET');
+export const getSocialAuthAppleIdTeam = () => getSecret('SOCIAL_AUTH_APPLE_ID_TEAM');
+export const getSocialAuthAppleIdKey = () => getSecret('SOCIAL_AUTH_APPLE_ID_KEY');
+export const getSocialAuthAppleIdSecret = () => getSecret('SOCIAL_AUTH_APPLE_ID_SECRET');

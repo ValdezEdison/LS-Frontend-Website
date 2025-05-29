@@ -29,7 +29,7 @@ const SocialLogin = ({ onSocialLogin }) => {
 
 
   const handleAppleSuccess = (token, user) => {
-    onSocialLogin('apple', token, null, user);
+    onSocialLogin('apple-id', token, null);
   };
 
   const handleAppleFailure = (error) => {
