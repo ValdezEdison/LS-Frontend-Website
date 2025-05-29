@@ -18,6 +18,8 @@ import SocialLogin from "../../components/LoginPage/SocialLogin";
 import { socialLogin } from "../../features/authentication/socialLogin/SocialAuthAction";
 import { useTranslation } from 'react-i18next';
 import { getClientId, getClientSecret } from "../../utils/decryptSecrets";
+import { toggleUserLocation, updateLocation } from "../../features/location/LocationAction";
+import { initializeGoogleSDK, handleGoogleLogin } from "../../utils/GoogleLogin";
 
 const TravelerRegistration = () => {
   const dispatch = useDispatch();
@@ -327,6 +329,13 @@ const TravelerRegistration = () => {
         //   token = facebookResponse.accessToken;
         //   // token = import.meta.env.VITE_APP_FACEBOOK_TOKEN;
         // }
+
+         if (provider === 'google-oauth2') {
+            await initializeGoogleSDK();
+            token = await handleGoogleLogin();
+            
+          } 
+
   
         if (token) {
           const result = await dispatch(socialLogin({
@@ -341,6 +350,7 @@ const TravelerRegistration = () => {
             toast.success(t('messages.success'));
             // await dispatch(getProfile()).unwrap();
             const from = location.state?.from?.pathname || "/";
+            await requestLocationAccess();
             navigate(from, { replace: true });
           }
         }
@@ -357,6 +367,31 @@ const TravelerRegistration = () => {
         navigate('/privacy-policy');
       }
     }
+
+      const requestLocationAccess = async () => {
+        try {
+          // Request location permission (this will show the browser's native popup)
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              resolve,
+              reject,
+              { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+          });
+      
+          // If permission granted, update location
+          const { latitude, longitude } = position.coords;
+          await dispatch(updateLocation({ latitude, longitude, location_mode: "current" })).unwrap();
+           dispatch(toggleUserLocation({geolocation_enabled: true})).unwrap();
+          return true;
+        } catch (error) {
+          // Permission denied or error occurred
+          console.log('Location access denied or error:', error);
+          await dispatch(toggleUserLocation({geolocation_enabled: false})).unwrap();
+          return false;
+        }
+      };
+
 
 
   return (
