@@ -11,11 +11,11 @@ const AppPromotion = ({ campaignData }) => {
         <AppPromotionImage imageUrl={campaignData.image_url}/>
         <AppPromotionContent   title={campaignData.title}
             description={campaignData.description}/>
-        <img
+        {/* <img
           src={QR}
           alt="App QR code"
           className="app-promotion__qr-code"
-        />
+        /> */}
         </div>
       </div>
       <style jsx>{`
@@ -26,14 +26,14 @@ const AppPromotion = ({ campaignData }) => {
           padding: 67px 0px 60px;
         }
         .app-promotion__container {
-          align-items: start;
+          align-items: center;
           border-radius: 24px;
           border: 2px solid var(--Color-principal-azul, #212d94);
           display: flex;
           width: 100%;
           flex-direction: row;
           overflow: hidden;
-          padding: 42px 50px 0;
+          // padding: 42px 50px 0;
           gap: 20px;
           justify-content:space-between;
         }
@@ -47,7 +47,7 @@ const AppPromotion = ({ campaignData }) => {
       @media screen and (max-width:1400px){
        .app-promotion__container {
           gap: 20px;
-           padding: 30px 25px 0;
+          //  padding: 30px 25px 0;
         }
       }
 
@@ -57,7 +57,7 @@ const AppPromotion = ({ campaignData }) => {
           }
           .app-promotion__container {
             max-width: 100%;
-            padding: 20px;
+            // padding: 20px;
           }
         }
 

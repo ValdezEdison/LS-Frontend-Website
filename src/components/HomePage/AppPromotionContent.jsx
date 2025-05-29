@@ -16,11 +16,14 @@ const AppPromotionContent = ({ title, description }) => {
       <style jsx>{`
         .app-promotion-content {
           display: flex;
-          min-width: 240px;
+          // min-width: 240px;
           flex-direction: column;
           color: #000001;
           justify-content: start;
-          width: 419px;
+          width: 100%;
+          max-width: 50%;
+          padding: 10px;
+
         }
         .app-promotion-content__title {
           font: 700 32px/42px Montserrat, -apple-system, Roboto, Helvetica,
@@ -38,6 +41,12 @@ const AppPromotionContent = ({ title, description }) => {
           .app-promotion-content {
             width: 100%;
           }
+        }
+        @media (max-width: 768px) {
+          .app-promotion-content {
+            max-width: 100%;
+          }
+          
         }
       `}</style>
     </div>
