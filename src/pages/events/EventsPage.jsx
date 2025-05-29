@@ -291,8 +291,8 @@ const EventsPage = () => {
       subcategories: state.selectedSubcategory,
       levels: state.selectedLevel,
       sortBy: state.selectedOrder,
-      latitude: currentLocation.preferences?.last_known_latitude,
-      longitude: currentLocation.preferences?.last_known_longitude
+      latitude: currentLocation?.preferences?.last_known_latitude,
+      longitude: currentLocation?.preferences?.last_known_longitude
     };
 
     // Only add startDate if it exists
@@ -346,8 +346,8 @@ const EventsPage = () => {
         categories: state.selectedCategory,
         subcategories: state.selectedSubcategory,
         levels: state.selectedLevel,
-        latitude: currentLocation.preferences?.last_known_latitude,
-        longitude: currentLocation.preferences?.last_known_longitude
+        latitude: currentLocation?.preferences?.last_known_latitude,
+        longitude: currentLocation?.preferences?.last_known_longitude
       };
 
       if (state.startDate) {
@@ -457,6 +457,10 @@ const EventsPage = () => {
     }
 
 
+    const handleActionFilter = () => {
+      togglePopup("filterPanel", true);
+    }
+
 
   return (
     <>
@@ -537,6 +541,7 @@ const EventsPage = () => {
           <EventList
             events={visibleEvents}
             handleActions={handleActions}
+            handleActionFilter={handleActionFilter}
           />
           {visibleEvents?.length === 0 &&
             // <div className="no-results-wrapper">{tCommon("noResults")}</div>
@@ -562,7 +567,8 @@ const EventsPage = () => {
                 <div className="no-results-wrapper">{tCommon('noResult')}</div>
               )
             ) : (
-              <div className="no-results-wrapper">{tCommon('noResult')}</div>
+              // <></>
+              visibleEvents?.length === 0 &&  <div className="no-results-wrapper">{tCommon('noResult')}</div>
             )
           }
 
