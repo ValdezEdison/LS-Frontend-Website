@@ -1,19 +1,15 @@
 import React from "react";
 import { AppPromotion as AppPromotionImg } from "../common/Images";
 
-const AppPromotionImage = () => {
+const AppPromotionImage = ({ imageUrl }) => {
   return (
     <div className="app-promotion-image">
       <img
-        src={AppPromotionImg}
+        src={imageUrl}
         alt="App background"
         className="app-promotion-image__background"
       />
-      {/* <img
-        src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/f49252382528e5cf5ebca27ad28ecea4075558a361c4e71debeb9725a50ed4e4?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-        alt="App screenshot"
-        className="app-promotion-image__screenshot"
-      /> */}
+    
       <style jsx>{`
         .app-promotion-image {
           display: flex;

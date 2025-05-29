@@ -1,17 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const AppPromotionContent = () => {
+const AppPromotionContent = ({ title, description }) => {
 
   const { t } = useTranslation("AppPromotionContent");
 
   return (
     <div className="app-promotion-content">
       <h2 className="app-promotion-content__title">
-        {t("title")}
+      {title}
       </h2>
-      <p className="app-promotion-content__description">
-      {t("description")}
+      <p className="app-promotion-content__description"   dangerouslySetInnerHTML={{ __html: description }}>
+      {/* {t("description")} */}
       </p>
       <style jsx>{`
         .app-promotion-content {

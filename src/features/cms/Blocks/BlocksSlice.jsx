@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks, fetchFooterBlocks } from "./BlocksAction";
+import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks, fetchFooterBlocks, fetchMarketingCampaigns } from "./BlocksAction";
 
 const initialState = {
     headerBlocks: [],
@@ -16,7 +16,20 @@ const initialState = {
 
     footerBlocks: [],
     footerLoading: false,
-    footerError: null
+    footerError: null,
+
+    marketingCampaigns: {
+        H1: {
+            data: [],
+            loading: false,
+            error: null
+        },
+        H2: {
+            data: [],
+            loading: false,
+            error: null
+        }
+    }
 };
 
 const blocksSlice = createSlice({
@@ -81,6 +94,32 @@ const blocksSlice = createSlice({
             .addCase(fetchFooterBlocks.rejected, (state, action) => {
                 state.footerLoading = false;
                 state.footerError = action.payload;
+            })
+
+            // Marketing Campaigns
+            .addCase(fetchMarketingCampaigns.pending, (state, action) => {
+                const { name } = action.meta.arg;
+                state.marketingCampaigns[name] = {
+                    ...state.marketingCampaigns[name],
+                    loading: true,
+                    error: null
+                };
+            })
+            .addCase(fetchMarketingCampaigns.fulfilled, (state, action) => {
+                const { name } = action.meta.arg;
+                state.marketingCampaigns[name] = {
+                    loading: false,
+                    data: action.payload?.results || [],
+                    error: null
+                };
+            })
+            .addCase(fetchMarketingCampaigns.rejected, (state, action) => {
+                const { name } = action.meta.arg;
+                state.marketingCampaigns[name] = {
+                    ...state.marketingCampaigns[name],
+                    loading: false,
+                    error: action.payload
+                };
             });
     },
 });
