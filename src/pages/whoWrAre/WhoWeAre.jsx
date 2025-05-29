@@ -41,7 +41,7 @@ function WhoWeAre() {
   const data = whoWeAre?.[0];
 
   const backgroundImage = whoWeAre?.[0]?.hero_image?.url
-  ? `${config.api.cmsBaseUrl}${whoWeAre[0].hero_image.url}`
+  ? `${whoWeAre[0].hero_image.url}`
   :  PlaceHolderImg1;
 
 
