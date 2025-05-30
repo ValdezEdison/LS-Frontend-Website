@@ -1,7 +1,7 @@
 import React from 'react';
 import AppleSignin from 'react-apple-signin-auth';
 import styles from './SocialLogin.module.css';
-import { getSocialAuthAppleIdKey, getSocialAuthAppleIdTeam } from '../../utils/decryptSecrets';
+import { getSocialAuthAppleId, getSocialAuthAppleRedirectUri } from '../../utils/decryptSecrets';
 import config from '../../config';
 
 const AppleLoginButton = ({ onSuccess, onFailure }) => {
@@ -14,9 +14,8 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
     }
   };
 
-  const clientId = getSocialAuthAppleIdKey();
-  const baseURL  = config.api.baseUrl;
-  const redirectURI = `https://ls-website-zylfz.ondigitalocean.app/auth/apple/callback`;
+  const clientId = getSocialAuthAppleId();
+  const redirectURI = getSocialAuthAppleRedirectUri();
 
   // Generate secure random state parameter
   // Corrected secure random state parameter generator
@@ -33,7 +32,7 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
       <div ref={appleSignInRef} style={{ display: 'none' }}>
         <AppleSignin
           authOptions={{
-            clientId: `com.service.es.discover.localsecrets`,
+            clientId: clientId,
             redirectURI: redirectURI,
             scope: 'name email',
             state: generateStateParameter(),
@@ -43,7 +42,6 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
           uiType="dark"
           noDefaultStyle={true}
           onSuccess={(response) => {
-            console.log(response, 'response');
             if (response?.authorization?.id_token) {
               const user = {
                 email: response.user?.email,
