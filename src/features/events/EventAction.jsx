@@ -93,9 +93,9 @@ export const deleteEvent = createAsyncThunk(
 
 export const fetchNearMeEvents = createAsyncThunk(
   'events/fetchNearMeEvents',
-  async ({ page, latitude, longitude, type }, { rejectWithValue }) => {
+  async ({ page, latitude, longitude, type, categories, subcategories, levels, radius, startDate, endDate, sortBy  }, { rejectWithValue }) => {
     try {
-      const response = await eventService.getNearMeEvents(page, latitude, longitude, type);
+      const response = await eventService.getNearMeEvents(page, latitude, longitude, type, categories, subcategories, levels, radius, startDate, endDate, sortBy);
       return response;
     } catch (error) {
       return rejectWithValue(handleApiError(error));

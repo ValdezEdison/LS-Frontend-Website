@@ -29,12 +29,20 @@ const Filter = ({ categories, ratings, state, setState }) => {
     );
   
     if (isSubcategory) {
-      setSelectedFilters((prev) =>
-        prev.includes(categoryTitle)
+      setSelectedFilters((prev) => {
+        const alreadySelected = prev.includes(categoryTitle);
+    
+        // If subcategories exist and category is already selected, do not remove it
+        if (alreadySelected && state.subcategories.length > 0) {
+          return prev;
+        }
+    
+        return alreadySelected
           ? prev.filter((f) => f !== categoryTitle)
-          : [...prev, categoryTitle]
-      );
+          : [...prev, categoryTitle];
+      });
     }
+    
   
     setState((prevState) => {
       // Split and clean current categories, subcategories, and levels
@@ -107,7 +115,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
           return {
             ...prevState,
             categories: updatedCategories.join(','),
-            levels: updatedLevels.join(','),
+            // levels: updatedLevels.join(','),
           };
         } else {
           // Check logic for categories
@@ -164,6 +172,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
       subcategories: '',
       ratings: '',
     }));
+    setExpandedCategories({});
   };
 
   useEffect(() => {
@@ -175,6 +184,64 @@ const Filter = ({ categories, ratings, state, setState }) => {
     
     setHasActiveFilters(hasFilters);
   }, [state.levels, state.categories, state.subcategories, state.ratings]);
+
+
+
+  const handleMainCategoryChange = (mainCategoryId, mainCategoryTitle) => {
+    setState((prevState) => {
+      const currentLevels = prevState.levels ? prevState.levels.split(',').filter(Boolean) : [];
+      const currentCategories = prevState.categories ? prevState.categories.split(',').filter(Boolean) : [];
+      const currentSubcategories = prevState.subcategories ? prevState.subcategories.split(',').filter(Boolean) : [];
+      
+      const trimmedMainCategoryId = mainCategoryId.toString().trim();
+      const mainCategory = categories.find(cat => cat.id.toString() === trimmedMainCategoryId);
+
+      if (currentLevels.includes(trimmedMainCategoryId)) {
+        // Unselecting the main category - remove it and all its categories/subcategories
+        const updatedLevels = currentLevels.filter(id => id !== trimmedMainCategoryId);
+        
+        // Get all category IDs under this main category
+        const categoryIdsToRemove = mainCategory.categories.map(cat => cat.id.toString());
+        
+        // Get all subcategory IDs under this main category
+        const subcategoryIdsToRemove = mainCategory.categories.flatMap(cat => 
+          cat.subcategories ? cat.subcategories.map(sub => sub.id.toString()) : []
+        );
+
+        // Remove these categories and subcategories
+        const updatedCategories = currentCategories.filter(id => !categoryIdsToRemove.includes(id));
+        const updatedSubcategories = currentSubcategories.filter(id => !subcategoryIdsToRemove.includes(id));
+
+        // Update selected filters by removing all related titles
+        const titlesToRemove = [
+          mainCategoryTitle,
+          ...mainCategory.categories.map(cat => cat.title),
+          ...mainCategory.categories.flatMap(cat => 
+            cat.subcategories ? cat.subcategories.map(sub => sub.title) : []
+          )
+        ];
+        setSelectedFilters(prev => prev.filter(f => !titlesToRemove.includes(f)));
+
+        return {
+          ...prevState,
+          levels: updatedLevels.join(','),
+          categories: updatedCategories.join(','),
+          subcategories: updatedSubcategories.join(','),
+        };
+      } else {
+        // Selecting the main category - just add it to levels
+        const updatedLevels = [...new Set([...currentLevels, trimmedMainCategoryId])];
+        
+        // Add main category title to selected filters
+        setSelectedFilters(prev => [...new Set([...prev, mainCategoryTitle])]);
+
+        return {
+          ...prevState,
+          levels: updatedLevels.join(','),
+        };
+      }
+    });
+  };
 
   const renderSubcategories = (subcategories, parentCategoryId, parentCategoryTitle, mainCategoryId) => {
     return subcategories.map((subcategory) => (
@@ -210,7 +277,11 @@ const Filter = ({ categories, ratings, state, setState }) => {
         <div key={mainCategory.id} className={styles.mainCategory}>
           <div
             className={styles.mainCategoryHeader}
-            onClick={() => toggleCategory(mainCategory.id)}
+            // onClick={() => toggleCategory(mainCategory.id)}
+            onClick={() => {
+              toggleCategory(mainCategory.id);
+              handleMainCategoryChange(mainCategory.id, mainCategory.title);
+            }}
           >
             <h3 className={styles.ratingTitle}>{mainCategory.title}</h3>
           </div>

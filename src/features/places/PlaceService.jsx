@@ -27,7 +27,7 @@ const PlaceService = {
       url += `&levels=${encodeURIComponent(levels)}`;
     }
     if (subcategories) {
-      url += `&levels=${encodeURIComponent(subcategories)}`;
+      url += `&subcategories=${encodeURIComponent(subcategories)}`;
     }
     if (points) {
       url += `&${points}`; // Just append the already encoded points string

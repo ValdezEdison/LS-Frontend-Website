@@ -41,8 +41,30 @@ const eventService = {
         return apiService.delete(`/events/${eventId}`);
     },
 
-    getNearMeEvents: async (page = 1, lat, lng, type = "event") => {
-        return apiService.get(`/sites/near-me?latitude=${lat}&longitude=${lng}&page=${page}&type=${type}`);
+    getNearMeEvents: async (page = 1, lat, lng, type = "event", categories, subcategories, levels, radius, startDate, endDate, sortBy) => {
+        // return apiService.get(`/sites/near-me?latitude=${lat}&longitude=${lng}&page=${page}&type=${type}`);
+        const params = {
+            latitude: lat,
+            longitude: lng,
+            page: page,
+            type: type
+        };
+    
+        // Add optional parameters only if they exist
+        if (categories) params.categories = categories;
+        if (subcategories) params.subcategories = subcategories;
+        if (levels) params.levels = levels;
+        if (radius) params.radius = radius;
+        if (startDate) params.initial_date = startDate;
+        if (endDate) params.end_date = endDate;
+        if (sortBy) params.sort_by = sortBy;
+    
+        // Convert params to query string
+        const queryString = Object.keys(params)
+            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+            .join('&');
+    
+        return apiService.get(`/sites/near-me?${queryString}`);
     },
 
     getEventsSearchResults: async (page = 1, type, keyword) => {
