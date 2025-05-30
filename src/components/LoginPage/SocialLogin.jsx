@@ -29,6 +29,7 @@ const SocialLogin = ({ onSocialLogin }) => {
 
 
   const handleAppleSuccess = (token, user) => {
+    console.log(token, user, 'token, user');
     onSocialLogin('apple-id', token, null);
   };
 

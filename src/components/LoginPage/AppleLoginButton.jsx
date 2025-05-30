@@ -1,7 +1,7 @@
 import React from 'react';
 import AppleSignin from 'react-apple-signin-auth';
 import styles from './SocialLogin.module.css';
-import { getSocialAuthAppleIdKey } from '../../utils/decryptSecrets';
+import { getSocialAuthAppleIdKey, getSocialAuthAppleIdTeam } from '../../utils/decryptSecrets';
 import config from '../../config';
 
 const AppleLoginButton = ({ onSuccess, onFailure }) => {
@@ -16,6 +16,16 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
 
   const clientId = getSocialAuthAppleIdKey();
   const baseURL  = config.api.baseUrl;
+  const redirectURI = `https://ls-website-zylfz.ondigitalocean.app/auth/apple/callback`;
+
+  // Generate secure random state parameter
+  // Corrected secure random state parameter generator
+  const generateStateParameter = () => {
+    const array = new Uint8Array(16);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').substring(0, 16);
+  };
+
 
   return (
     <>
@@ -23,15 +33,17 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
       <div ref={appleSignInRef} style={{ display: 'none' }}>
         <AppleSignin
           authOptions={{
-            clientId: clientId,
-            redirectURI: `${baseURL}/auth/apple/callback`,
+            clientId: `com.service.es.discover.localsecrets`,
+            redirectURI: redirectURI,
             scope: 'name email',
-            state: 'state',
-            usePopup: true
+            state: generateStateParameter(),
+            usePopup: true,
+            responseType: 'code id_token'
           }}
           uiType="dark"
           noDefaultStyle={true}
           onSuccess={(response) => {
+            console.log(response, 'response');
             if (response?.authorization?.id_token) {
               const user = {
                 email: response.user?.email,
@@ -43,7 +55,7 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
             }
           }}
           onError={(error) => {
-            
+            console.log(error, 'errrrrrrrrrrrrr vc');
             onFailure(error);
           }}
           skipScript={false}
