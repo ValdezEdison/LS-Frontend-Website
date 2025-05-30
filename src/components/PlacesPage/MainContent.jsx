@@ -22,7 +22,7 @@ import GoToFilterCard from "../common/GoToFilterCard";
 import { listUpdater } from "../../features/places/PlaceSlice";
 import { Trans } from 'react-i18next';
 
-const MainContent = ({ state, setState, countries, cities, handleActions, handleNavigate }) => {
+const MainContent = ({ state, setState, countries, cities, handleActions, handleNavigate, hasFiltersChanged }) => {
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
   const { places, loading: placesLoading, error: placesError, next, count, placesSearchResults } = useSelector((state) => state.places);
@@ -256,7 +256,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
   return (
     <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{t('availablePlaces', { count })}</h1>
+        <h1 className={styles.title}>{ count !== null && count > 0 ? t('availablePlaces', { count }) : ""}</h1>
         <div className={styles2.searchContainer}>
           <SearchInput
             handleSearchClick={() => setShowSuggestionDropDown(true)}

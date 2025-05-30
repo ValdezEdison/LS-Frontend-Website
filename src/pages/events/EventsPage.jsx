@@ -298,7 +298,8 @@ const EventsPage = () => {
       levels: state.selectedLevel,
       sortBy: state.selectedOrder,
       latitude: currentLocation?.preferences?.last_known_latitude,
-      longitude: currentLocation?.preferences?.last_known_longitude
+      longitude: currentLocation?.preferences?.last_known_longitude,
+      radius: currentLocation?.preferences?.default_radius
     };
 
     // Only add startDate if it exists

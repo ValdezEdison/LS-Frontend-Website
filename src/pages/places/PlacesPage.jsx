@@ -79,6 +79,7 @@ const PlacesPage = () => {
   const initialRender = useRef(true);
   const prevDepsRef = useRef([]);
   const initializedRef = useRef(false);
+  const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
 
   // Selectors
   const {
@@ -497,7 +498,7 @@ const PlacesPage = () => {
         dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
       }
     }
-  
+    setHasFiltersChanged(false)
    
   }, [language, isAuthenticated, dispatch, currentLocation]);
   
@@ -577,6 +578,7 @@ const PlacesPage = () => {
     const hasChanged = currentDeps.some((dep, i) => dep !== prevDepsRef.current[i]);
 
     if (hasChanged) {
+      setHasFiltersChanged(true);
       dispatch(resetPlacesList());
       if(!trackingEnabled && (
         state.selectedDestinationId !== null ||
@@ -1090,6 +1092,7 @@ const PlacesPage = () => {
                   cities={cities}
                   handleActions={handleActions}
                   handleNavigate={handleNavigate}
+                  hasFiltersChanged={hasFiltersChanged}
                 />
               )}
             </div>
