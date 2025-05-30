@@ -153,13 +153,14 @@ const Events = () => {
   // Events with filters
   useEffect(() => {
     if (cityId) {
+      console.log(state, 'state');
       const params = {
         cityId: cityId,
         page: 1,
         type: 'event',
         levels: state.selectedLevel,
         points: state.points,
-        ...(state.selectedDateRange.startDate && {
+        ...(state.selectedDateRange.startDate && state.selectedDateRange.endDate && {
           startDate: formatLocalDate(state.selectedDateRange.startDate), // state.selectedDateRange?.startDate.toISOString().split('T')[0],
           endDate: formatLocalDate(state.selectedDateRange.endDate), // state.selectedDateRange?.endDate?.toISOString().split('T')[0]
         })

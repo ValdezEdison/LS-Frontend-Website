@@ -96,7 +96,7 @@ const PersonalDetails = ({
     // },
     { 
       label: t('personalDetails.fields.profileType'), 
-      value: user?.current_trip?.type || groups.find(g => g.name === user?.group)?.name || "", 
+      value: "" || groups.find(g => g.name === user?.group)?.name || "", 
       action: t('personalDetails.actions.info'),
       // onClick: toggleGroupsInfo
     },
