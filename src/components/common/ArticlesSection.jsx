@@ -17,7 +17,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: Math.min(4, posts.length),
+    slidesToShow: 4,
     centerMode: false,
     slidesToScroll: 1,
     arrows: posts.length > 4,
@@ -25,7 +25,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: Math.min(2, posts.length),
+          slidesToShow: 2,
           arrows: posts.length > 2,
         },
       },
