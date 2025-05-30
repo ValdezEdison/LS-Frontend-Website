@@ -96,7 +96,7 @@ const PersonalDetails = ({
     // },
     { 
       label: t('personalDetails.fields.profileType'), 
-      value: "" || groups.find(g => g.name === user?.group)?.name || "", 
+      value: user?.groups[0]?.name || groups.find(g => g.name === user?.group)?.name || "", 
       action: t('personalDetails.actions.info'),
       // onClick: toggleGroupsInfo
     },
