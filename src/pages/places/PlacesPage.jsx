@@ -460,7 +460,7 @@ const PlacesPage = () => {
     if (isAuthenticated) {
       dispatch(fetchTravelLiteList());
     }
-  
+    dispatch(resetPlacesList())
     const hasFilters = 
       state.selectedCountryId !== null ||
       state.selectedDestinationId !== null ||
@@ -577,6 +577,7 @@ const PlacesPage = () => {
     const hasChanged = currentDeps.some((dep, i) => dep !== prevDepsRef.current[i]);
 
     if (hasChanged) {
+      dispatch(resetPlacesList());
       if(!trackingEnabled && (
         state.selectedDestinationId !== null ||
         state.selectedCountryName !== "" ||
