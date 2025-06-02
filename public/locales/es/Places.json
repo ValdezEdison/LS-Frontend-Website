@@ -55,12 +55,12 @@
     "itinerary": "Itinerario"
   },
   "ratings": {
-    "title": "Puntuación",
+    "title": "Calificación",
     "labels": {
-      "4": "Excelente: 4 o más",
-      "3": "Muy bueno: 3 o más",
-      "2": "Bueno: 2 o más",
-      "1": "Mejorable: menos de 2"
+        "4.9-5.0": "Excepcional: 4.9 - 5.0",
+        "4.7-4.8": "Excelente: 4.7 - 4.8",
+        "4.5-4.6": "Muy Bueno: 4.5 - 4.6",
+        "4.0-4.4": "Bueno: 4.0 - 4.4"
     }
   },
   "Events": {

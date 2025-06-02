@@ -249,6 +249,11 @@
     },
     "placeholder": {
       "search": "search city..."
+    },
+    "locationToggle": {
+        "enableLabel": "Enable Location",
+        "activeState": "Active",
+        "inactiveState": "Inactive"
     }
   }
 }

@@ -93,7 +93,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
       checkbox: true,
     },
     {
-      label: `${t("filter.select")} ${t("filter.sortBy")}`,
+      label:state.selectedOrder !== "" ? orderOptions[state.selectedOrder]?.name : `${t("filter.select")} ${t("filter.sortBy")}`,
       options: orderOptions,
       selectedId: state.selectedOrder,
       onSelect: (value) => updateState("selectedOrder", value),

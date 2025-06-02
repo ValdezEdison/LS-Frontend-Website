@@ -677,28 +677,28 @@ button,input,select,textarea{
 }
 
 .suggestion-events .suggestionIcon {
-  background: url(../../../public/images/calendar-icon-black.png) no-repeat 0 0;
+  background: url(../../../images/calendar-icon-black.png) no-repeat 0 0;
   background-size: 100%;
   width: 15px;
 }
 
 .suggestion-cities .suggestionIcon,.suggestion-neighborhoods  .suggestionIcon,.suggestion-places .suggestionIcon {
-  background: url(../../../public/images/map-icon.png) no-repeat 0 0;
+  background: url(../../../images/map-icon.png) no-repeat 0 0;
   background-size: 100%;
 }
 
 .suggestion-countries .suggestionIcon {
-  background: url(../../../public/images/globe.png) no-repeat 0 0;
+  background: url(../../../images/globe.png) no-repeat 0 0;
   background-size: 100%;
 }
 
 .suggestion-countries .suggestionIcon {
-  background: url(../../../public/images/globe.png) no-repeat 0 0;
+  background: url(../../../images/globe.png) no-repeat 0 0;
   background-size: 100%;
 }
 
 .suggestion-regions .suggestionIcon {
-  background: url(../../../public/images/region.png) no-repeat 0 0;
+  background: url(../../../images/region.png) no-repeat 0 0;
   background-size: 100%;
 }
 
