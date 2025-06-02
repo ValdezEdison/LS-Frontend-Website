@@ -194,7 +194,33 @@ const WordPressService = {
       }
     });
     return response.data;
-  }
+  },
+
+  getPostsForCategories: async (categoryIds, params = {}) => {
+    const idsArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+    const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
+      params: {
+        categories: idsArray.join(','),
+        page: params.page || 1,
+        per_page: params.per_page || 20, // Increased default
+        _embed: true,
+        // Optional: Order by most recent first
+        orderby: 'date',
+        order: 'desc'
+      }
+    });
+  
+    return {
+      posts: response.data,
+      pagination: {
+        total: parseInt(response.headers['x-wp-total'], 10) || 0,
+        totalPages: parseInt(response.headers['x-wp-totalpages'], 10) || 0,
+        currentPage: params.page || 1
+      }
+    };
+  },
+
+
 };
 
 export default WordPressService;

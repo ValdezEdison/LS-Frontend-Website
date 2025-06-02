@@ -7,14 +7,15 @@ import BlogSection from "../../components/Blog/BlogSection";
 import Newsletter from "../../components/common/Newsletter";
 import Footer from "../../components/layouts/Footer";
 import ArticlesSection from "../../components/common/ArticlesSection";
-import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags, fetchMedia, fetchPostsByTag } from "../../features/cms/wordpress/WordPressAction";
+import { fetchPosts, fetchCategories, fetchPostsByCategory, fetchTags, fetchMedia, fetchPostsByTag, fetchPostsForCategories } from "../../features/cms/wordpress/WordPressAction";
 import { useDispatch, useSelector } from "react-redux";
 import BlogTags from "../../components/Blog/BlogTags";
 import { LanguageContext } from "../../context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { WidgetSkeleton } from "../../components/skeleton/common/WidgetSkeleton";
 import { useNavigate, useLocation } from "react-router-dom";
-import { resetPostsByTag } from "../../features/cms/wordpress/WordPressSlice";
+import { resetPostsByTag, resetBlog } from "../../features/cms/wordpress/WordPressSlice";
+import BlogCategories from "../../components/Blog/BlogCategories";
 
 function BlogPage() {
 
@@ -23,7 +24,7 @@ function BlogPage() {
   const location = useLocation();
   const { id, name } = location.state || {};
 
-  const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags, postsByTagLoading, postsByTag } = useSelector((state) => state.cms.wordpress);
+  const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags, postsByTagLoading, postsByTag, postsForCategoriesLoading, postsForCategories } = useSelector((state) => state.cms.wordpress);
 
   const { language, languageId } = useContext(LanguageContext);
 
@@ -33,39 +34,88 @@ function BlogPage() {
   const [state, setState] = useState({
     tag: null,
     tagName: "",
+    category: null, 
+    categoryName: ""
   });
 
 
-  useEffect(() => {
-    if(!state.tag){
-      dispatch(resetPostsByTag());
-      dispatch(fetchPosts({ per_page: 20 }));
-      dispatch(fetchCategories({ per_page: 10 })).then((action) => {
-        if (action.payload) {
-          // Fetch posts for each category
-          action.payload.forEach(category => {
-            dispatch(fetchPostsByCategory({
-              categoryId: category.id,
-            }));
-          });
+   // Group posts by category from the bulk fetch
+   const getPostsGroupedByCategory = () => {
+    if (!postsForCategories || !categories) return {};
+    
+    const grouped = {};
+    
+    // Initialize empty arrays for each category
+    categories.forEach(category => {
+      grouped[category.id] = [];
+    });
+    
+    // Assign posts to their categories
+    postsForCategories?.forEach(post => {
+      post.categories?.forEach(categoryId => {
+        if (grouped[categoryId]) {
+          grouped[categoryId].push(post);
         }
       });
-      dispatch(fetchTags({ per_page: 100 }));
-    }
-    // dispatch(fetchPosts({ per_page: 20 }));
-    // dispatch(fetchTags({ per_page: 100 }));
-    // dispatch(fetchCategories({ per_page: 10 })).then((action) => {
-    //   if (action.payload) {
-    //     // Fetch posts for each category
-    //     action.payload.forEach(category => {
-    //       dispatch(fetchPostsByCategory({
-    //         categoryId: category.id,
+    });
+    
+    return grouped;
+  };
 
-    //       }));
-    //     });
-    //   }
-    // });
-  }, [dispatch, language, state.tag]);
+  const postsGroupedByCategory = getPostsGroupedByCategory();
+
+
+  // useEffect(() => {
+  //   if(!state.tag){
+  //     dispatch(resetPostsByTag());
+  //     dispatch(fetchPosts({ per_page: 20 }));
+  //     dispatch(fetchCategories({ per_page: 10 })).then((action) => {
+  //       if (action.payload) {
+  //         // Fetch posts for each category
+  //         action.payload.forEach(category => {
+  //           dispatch(fetchPostsByCategory({
+  //             categoryId: category.id,
+  //           }));
+  //         });
+  //       }
+  //     });
+  //     dispatch(fetchTags({ per_page: 100 }));
+  //   }
+  //   // dispatch(fetchPosts({ per_page: 20 }));
+  //   // dispatch(fetchTags({ per_page: 100 }));
+  //   // dispatch(fetchCategories({ per_page: 10 })).then((action) => {
+  //   //   if (action.payload) {
+  //   //     // Fetch posts for each category
+  //   //     action.payload.forEach(category => {
+  //   //       dispatch(fetchPostsByCategory({
+  //   //         categoryId: category.id,
+
+  //   //       }));
+  //   //     });
+  //   //   }
+  //   // });
+  // }, [dispatch, language, state.tag]);
+
+
+  useEffect(() => {
+    if (state.tag || state.category) return;
+  
+    const loadData = async () => {
+      dispatch(resetBlog());
+      dispatch(resetPostsByTag());
+      // dispatch(fetchPosts({ per_page: 20 }));
+      
+      const categoriesAction = await dispatch(fetchCategories({ per_page: 100 }));
+      if (categoriesAction.payload) {
+        const categoryIds = categoriesAction.payload.map(c => c.id);
+        dispatch(fetchPostsForCategories(categoryIds));
+      }
+      
+      dispatch(fetchTags({ per_page: 100 }));
+    };
+  
+    loadData();
+  }, [dispatch, language, state.tag, state.category]); // Add all dependencies that truly affect this
 
 
 
@@ -89,12 +139,20 @@ function BlogPage() {
 
   useEffect(() => {
     if (state.tag) {
-
+      dispatch(resetBlog());
       dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
    
     }
 
   }, [state.tag, dispatch]);
+
+  useEffect(() => {
+    if (state.category) {
+      dispatch(resetBlog());
+      const categoryIds = state.category
+      dispatch(fetchPostsForCategories(categoryIds));
+    }
+  }, [state.category, dispatch]);
 
   return (
     <div className={styles.blogContainer}>
@@ -107,19 +165,21 @@ function BlogPage() {
             <div className="page-center">
               <div className={styles.blogHeaderWrapper}>
                 <h1 className={styles.blogTitle}>{t('title')}</h1>
-                <BlogTags tags={tags} loading={LoadingTags} state={state} setState={setState} />
+                {/* <BlogTags tags={tags} loading={LoadingTags} state={state} setState={setState} /> */}
+                <BlogCategories categories={categories} loading={categoriesLoading} state={state} setState={setState} />
               </div>
               {/* <h2 className={styles.sectionTitle}>Últimos artículos</h2> */}
             </div>
 
 
           </div>
-          {postsByCategoryLoading || categoriesLoading || postsByTagLoading && (
+          {(postsForCategoriesLoading || categoriesLoading || postsByTagLoading) ? (
             [...Array(4)].map((_, i) => (
-              <WidgetSkeleton />
+              <WidgetSkeleton key={i}/>
             ))
-          )}
-          { state.tag ? (
+          )
+          :
+           state.tag ? (
             <ArticlesSection
               title={state.tagName}
               posts={postsByTag} 
@@ -129,9 +189,21 @@ function BlogPage() {
               layout="grid"  // Add this prop to indicate grid layout
               setState={setState}
             />
-          ) : (
+          ) : 
+          state.category ? (
+            <ArticlesSection
+              title={state.categoryName}
+              posts={postsForCategories} 
+              seeMore={false}
+              handleNavActions={handleNavActions}
+              tags={tags}
+              layout="grid"  // Add this prop to indicate grid layout
+              setState={setState}
+            />
+          ) :
+           (
             categories.map((category) => {
-              const categoryPosts = postsByCategory[category.id] || [];
+              const categoryPosts = postsGroupedByCategory[category.id] || [];
               if (categoryPosts.length > 0) {
                 return (
                   <ArticlesSection

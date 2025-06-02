@@ -69,6 +69,18 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
  
   };
 
+  const handleTagClick = (e, tag) => {
+    e.stopPropagation();
+  
+    setState((prev) => ({
+      ...prev,
+      tag: tag.id,
+      tagName: tag.name,
+      category: null,
+      categoryName: null
+    }));
+  };
+
   // Render individual post card
   const renderPostCard = (post) => {
     return (
@@ -90,9 +102,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
             {post.tags.map(tagId => {
               const tag = tags.find(t => t.id === tagId);
               return tag ? (
-                <span key={tagId} className={styles.articleTag} onClick={(e) => {updateState(e,"tag", tagId)
-                  updateState(e, "tagName", tag.name)
-                }}>
+                <span key={tagId} className={styles.articleTag} onClick={(e) => handleTagClick(e, tag)}>
                   {tag.name}
                 </span>
               ) : null;

@@ -123,3 +123,16 @@ export const fetchPostsByTag = createAsyncThunk(
     }
   }
 );
+
+export const fetchPostsForCategories = createAsyncThunk(
+  'wordpress/fetchPostsForCategories',
+  async (categoryIds, { rejectWithValue }) => {
+    try {
+      return await WordPressService.getPostsForCategories(categoryIds, {
+        per_page: 20 // Fetch more posts initially
+      });
+    } catch (error) {
+      return rejectWithValue(handleApiError(error));
+    }
+  }
+);
