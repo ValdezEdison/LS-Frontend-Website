@@ -276,8 +276,8 @@ const MyTrips = () => {
       <div className={styles.myTrips}>
         {isOpen && popupState.warning && (
           <div className={styles.warningToaster}>
-            <div className={styles.warningToasterLeft}><img src={Warning} alt={t('myTrips.toast.warning')}/> {t('myTrips.toast.tripDeleted')}</div>
-            <div className={styles.warningToasterRight}>  <span className={styles.undoButton} onClick={handleUndoDelete}>{t('myTrips.toast.undo')}</span> <span className={styles.closeButton} onClick={handleCloseToaster}><img src={Close} alt={t('myTrips.toast.close')}/></span></div>
+            <div className={styles.warningToasterLeft}><img src={Warning} alt={t('myTrips.toast.warning')}/> {t('toast.tripDeleted')}</div>
+            <div className={styles.warningToasterRight}>  <span className={styles.undoButton} onClick={handleUndoDelete}>{t('toast.undo')}</span> <span className={styles.closeButton} onClick={handleCloseToaster}><img src={Close} alt={t('myTrips.toast.close')}/></span></div>
           </div>
         )}
 

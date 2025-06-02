@@ -253,9 +253,19 @@ const LoginPage = () => {
         if (result) {
           toast.success(t('messages.success'));
           // await dispatch(getProfile()).unwrap();
-          const from = location.state?.from?.pathname || "/";
+          const fromLocation = location.state?.from;
+          const fromPath = fromLocation?.pathname || "/";
+          
+          // Preserve all original navigation properties
+          const navigationOptions = {
+            replace: true,
+            ...(fromLocation?.state && { state: fromLocation.state }),
+            ...(fromLocation?.search && { search: fromLocation.search }),
+            ...(fromLocation?.hash && { hash: fromLocation.hash })
+          };
+          // requestLocationAccess();
+          navigate(fromPath, navigationOptions);
           await requestLocationAccess();
-          navigate(from, { replace: true });
          
         }
       }

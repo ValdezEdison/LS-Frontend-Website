@@ -128,7 +128,7 @@ const ItineraryDetail = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchItineraryDetails(id));
-      dispatch(fetchSuggestedPlaces({ page: 1, type: "place" }));
+      // dispatch(fetchSuggestedPlaces({ page: 1, type: "place" }));
       if (isAuthenticated) {
         dispatch(fetchTravelLiteList());
       }
@@ -142,6 +142,13 @@ const ItineraryDetail = () => {
     };
 
   }, [dispatch, id, language]);
+
+  useEffect(() => {
+    if(itineraryDetails) {
+      dispatch(fetchSuggestedPlaces({ page: 1, type: "place", cityId: itineraryDetails?.cities[0]?.id || itineraryDetails?.city?.id || '' }));
+    }
+    
+  },[language, itineraryDetails] )
 
   const handleViewMoreDetails = (e, id) => {
 
@@ -164,7 +171,19 @@ const ItineraryDetail = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "itinerary" }));
+        const stopIds = itineraryDetails?.stops?.map(stop => stop.id) || [];
+        const firstCity = itineraryDetails?.cities?.[0] || itineraryDetails?.city || {};
+        setFormState(prev => ({ ...prev, type: "itinerary", stops: stopIds, destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]}));
+        break;
+      case 'addToStop':
+          setFormState(prev => ({
+            ...prev,
+            stops: [...prev.stops, id]
+          }));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);
@@ -221,15 +240,15 @@ const ItineraryDetail = () => {
           setIsSearchingCities(true);
           try {
             const result = await dispatch(fetchCities({ searchQuery: query }));
-            setCitiesSearchResults(result.payload || []);
+            // setCitiesSearchResults(result.payload || []);
           } catch (error) {
             
-            setCitiesSearchResults([]);
+            // setCitiesSearchResults([]);
           } finally {
-            setIsSearchingCities(false);
+            // setIsSearchingCities(false);
           }
         } else {
-          setCitiesSearchResults([]);
+          // setCitiesSearchResults([]);
         }
       }, 500),
       [dispatch]
