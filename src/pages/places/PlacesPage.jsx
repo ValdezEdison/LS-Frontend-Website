@@ -124,10 +124,10 @@ const PlacesPage = () => {
 
   // Constants
   const RATINGS = [
-    { label: t('ratings.labels.4'), value: 4 },
-    // { label: t('ratings.labels.3'), value: 3 },
-    // { label: t('ratings.labels.2'), value: 2 },
-    // { label: t('ratings.labels.1'), value: 1 }
+    { label: t('ratings.labels.4.9-5.0'), value:  5.0 },
+    { label: t('ratings.labels.4.7-4.8'), value:  4.8 },
+    { label: t('ratings.labels.4.5-4.6'), value:  4.6 },
+    { label: t('ratings.labels.4.0-4.4'), value:  4.4 },
   ];
 
   // State Management

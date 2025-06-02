@@ -141,6 +141,8 @@ function SearchComponent({ continents, loading, state, setState, unifiedSearchRe
         navigate(`/places/details`, { state: { id: id } });
       } else if (type === "event") {
         navigate(`/events/details`, { state: { id: id } });
+      } else if (type === "city") {
+        navigate(`/places/destination`, { state: { id: id } });
       }
     }else{
       togglePopup("alert", true);

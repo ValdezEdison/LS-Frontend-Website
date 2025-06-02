@@ -404,7 +404,7 @@ const LocationSettings = ({ state, setState}) => {
         )}  
     <div className={styles.locationSwitchMainWrapper}>
       <div className={styles.locationEnableWrapper}>
-        <p>Enable Location</p>
+        <p>{t("locationSettings.locationToggle.enableLabel")}</p>
         <div className={styles.locationSwitch}>
           <label className={styles.switch}>
             <input type="checkbox"   checked={isLocationEnabled}
@@ -412,7 +412,7 @@ const LocationSettings = ({ state, setState}) => {
             <span className={styles.slider}></span>
           </label>
           <span className={`${styles.toggleAction} ${isLocationEnabled ? styles.checkedd : ''}`}>
-      {isLocationEnabled ? 'Active' : 'Inactive'}
+      {isLocationEnabled ? t("locationSettings.locationToggle.activeState") : t("locationSettings.locationToggle.inactiveState")}
     </span>
       </div>
       </div>

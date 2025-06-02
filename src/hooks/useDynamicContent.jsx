@@ -22,8 +22,8 @@ const useDynamicContent = (type) => {
         return state.eventsByCity;
       case 'placesList':
         return state.placesInCity;
-      case 'itineraries':
-        return state.itineraries;
+      case 'itineries':
+        return state.itineriesInCity;
       default:
         throw new Error(`Unsupported type: ${type}`);
     }

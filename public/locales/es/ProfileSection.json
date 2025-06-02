@@ -170,6 +170,7 @@
         "tabs": {
             "personal": "Detalles personales",
             "preferences": "Preferencias",
+            "location": "Configuración de ubicación" ,
             "security": "Seguridad",
             "privacy": "Privacidad",
             "notifications": "Notificaciones"
@@ -236,6 +237,11 @@
     },
     "placeholder": {
       "search": "buscar ciudad..."
+    },
+    "locationToggle": {
+        "enableLabel": "Activar ubicación",
+        "activeState": "Activado",
+        "inactiveState": "Desactivado"
     }
   }
 }

@@ -33,7 +33,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
         const alreadySelected = prev.includes(categoryTitle);
     
         // If subcategories exist and category is already selected, do not remove it
-        if (alreadySelected && state.subcategories.length > 0) {
+        if (alreadySelected && state.subcategories.length >= 0) {
           return prev;
         }
     
@@ -79,8 +79,8 @@ const Filter = ({ categories, ratings, state, setState }) => {
           return {
             ...prevState,
             subcategories: updatedSubcategories.join(','),
-            categories: updatedCategories.join(','),
-            levels: updatedLevels.join(','),
+            // categories: updatedCategories.join(','),
+            // levels: updatedLevels.join(','),
           };
         } else {
           // Check logic for subcategories

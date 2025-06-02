@@ -57,10 +57,10 @@
   "ratings": {
     "title": "Rating",
     "labels": {
-      "4": "Excellent: 4+",
-      "3": "Very Good: 3+",
-      "2": "Good: 2+",
-      "1": "Needs Improvement: below 2"
+        "4.9-5.0": "Exceptional: 4.9 - 5.0",
+        "4.7-4.8": "Excellent: 4.7 - 4.8",
+        "4.5-4.6": "Very Good: 4.5 - 4.6",
+        "4.0-4.4": "Good: 4.0 - 4.4"
     }
   },
   "Events": {

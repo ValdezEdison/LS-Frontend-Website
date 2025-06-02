@@ -56,7 +56,7 @@ const ItineraryList = () => {
   const tagDetails = hasTagDetails ? JSON.parse(localStorage.getItem('tagDetails')) : null;
 
   // const { loading: itineriesLoading, error, itineries, next, count} = useSelector((state) => state.itineriesInCity);
-  const { loading: itineriesLoading, error, data: itineries, next, count } = useDynamicContent('itineraries');
+  const { loading: itineriesLoading, error, data: itineries, next, count } = useDynamicContent('itineries');
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { loading: destinationLoading, destination } = useSelector((state) => state.destination);
