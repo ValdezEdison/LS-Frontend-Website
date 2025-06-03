@@ -135,23 +135,21 @@ function SearchComponent({ continents, loading, state, setState, unifiedSearchRe
   };
 
   const handleNavigate = (id, type) => {
-
-    if(isAuthenticated){
-      if (type === "place") {
-        navigate(`/places/details`, { state: { id: id } });
-      } else if (type === "event") {
-        navigate(`/events/details`, { state: { id: id } });
-      } else if (type === "city") {
-        navigate(`/places/destination`, { state: { id: id } });
-      }
-    }else{
+    if (!isAuthenticated) {
       togglePopup("alert", true);
       setAlertTitle(tCommon('authAlert.viewDetails.title'));
       setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      return;
     }
-
-   
-  }
+  
+    const routes = {
+      place: '/places/details',
+      event: '/events/details',
+      city: '/places/destination'
+    };
+  
+    navigate(routes[type], { state: { id } });
+  };
 
 
   const handleNavigateToLogin = () => {

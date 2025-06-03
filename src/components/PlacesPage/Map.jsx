@@ -62,7 +62,7 @@ const Map = ({ onOpenPopup }) => {
 
                 markers.push(marker);
                 mapInstance.setCenter(position);
-                mapInstance.setZoom(10);
+                mapInstance.setZoom(15);
             } 
             // Otherwise, show clustered geoLocations
             else if (geoLocations.length > 0) {

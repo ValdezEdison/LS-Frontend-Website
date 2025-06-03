@@ -53,7 +53,6 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
             }
           }}
           onError={(error) => {
-            console.log(error, 'errrrrrrrrrrrrr vc');
             onFailure(error);
           }}
           skipScript={false}
