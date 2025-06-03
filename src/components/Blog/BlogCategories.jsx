@@ -18,7 +18,7 @@ function BlogCategories({ categories, loading, state, setState }) {
   };
 
   const handleCategoriesSelect = (categoryId) => {
-    console.log(categoryId, 'categoryId');
+    
     setState((prev) => {
       // If the selected category is the same as the current one, reset
       if (prev.category === categoryId) {

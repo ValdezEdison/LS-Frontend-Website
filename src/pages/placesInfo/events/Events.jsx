@@ -153,7 +153,7 @@ const Events = () => {
   // Events with filters
   useEffect(() => {
     if (cityId) {
-      console.log(state, 'state');
+      
       const params = {
         cityId: cityId,
         page: 1,

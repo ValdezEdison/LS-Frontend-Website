@@ -120,6 +120,7 @@ const EventDetails = () => {
   // Centralized popup handlers
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
+    state && name === "map" ? setState(prev => ({ ...prev, latitude: place?.address?.latitude, longitude: place?.address?.longitude })) : setState(prev => ({ ...prev, latitude: "", longitude: "" }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
   };
 
