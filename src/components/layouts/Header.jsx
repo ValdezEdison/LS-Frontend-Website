@@ -247,6 +247,7 @@ const Header = () => {
   }
 
   useEffect(() => {
+    // place the secret key from the scratch/encryptedSecretKey file
     setSecretKey("23a28f8270fd7bef759d20500101040b1f54fdc4cc2622e65c0954ca8de85663")
     
   },[])
