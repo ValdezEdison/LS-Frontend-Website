@@ -422,7 +422,7 @@ const handleNavigateToLogin = () => {
                     }`}
                   onClick={() => handleNavigation("/my-trips")}
                 >
-                My Trips
+                  {t("nav.my_trips")}
                 </button>
               }
             </nav>
@@ -531,7 +531,7 @@ const handleNavigateToLogin = () => {
                       }`}
                     onClick={() => handleNavigation("/my-trips")}
                   >
-                    My Trips
+                    {t("nav.my_trips")}
                   </li>
                 }
                 <li
