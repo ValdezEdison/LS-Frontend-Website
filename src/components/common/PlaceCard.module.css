@@ -290,28 +290,48 @@
   width: 85%;
 }
 
+.popupPlaceCard.placeCard {
+  max-width: calc(60% - 5px);
+  flex-basis: calc(60% - 5px);
 }
 
-@media screen and (max-width:640px) {
+}
 
+@media screen and (max-width:850px) {
+  .popupPlaceCard.placeCard {
+      max-width: 100%;
+      flex-basis: 100%;
+  }
+}
+ 
+@media screen and (max-width:640px) {
+ 
   .placeCard {
     max-width: 100%;
     flex-basis: 100%;
   }
-
-  ._popupPlaceCard.placeCard {
-    flex-direction: column;
+ 
+  .popupPlaceCard.placeCard {
     gap: 10px;
-    max-width: max-content;
-    min-width: unset;
+    max-width: 100%;
+    flex-basis: 100%;
 }
-  
+ 
 }
-
-
+ 
+ 
 @media screen and (max-width:480px) {
   .favIcon {
     top: 8px;
     right: 5px;
   }
+ 
+  .popupPlaceCard.placeCard {
+    flex-direction: column;
+  }
+ 
+   .popupPlaceCard  .placeImageContainer img{
+    width: 100%;
+    margin-bottom: 0;
+   }
 }
