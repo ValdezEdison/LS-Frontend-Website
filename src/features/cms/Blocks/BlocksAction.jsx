@@ -62,3 +62,27 @@ export const fetchMarketingCampaigns = createAsyncThunk(
         }
     }
 );
+
+export const fetchSEOSettingsList = createAsyncThunk(
+    'blocks/fetchSeoSettingsList',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getSEOSettingsList(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
+
+export const fetchAnalyticsSettingsList = createAsyncThunk(
+    'blocks/fetchAnalyticsSettingsList',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getAnalyticsSettingsList(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);

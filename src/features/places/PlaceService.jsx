@@ -66,7 +66,7 @@ const PlaceService = {
     if (avg_rating !== undefined && avg_rating !== null && avg_rating !== "") url += `avg_rating=${encodeURIComponent(avg_rating)}&`;
     if (categories !== undefined && categories !== null && categories !== "") url += `categories=${encodeURIComponent(categories)}&`;
     if (levels !== undefined && levels !== null && levels !== "") url += `levels=${encodeURIComponent(levels)}&`;
-    if (subcategories !== undefined && subcategories !== null && subcategories !== "") url += `levels=${encodeURIComponent(subcategories)}&`;
+    if (subcategories !== undefined && subcategories !== null && subcategories !== "") url += `subcategories=${encodeURIComponent(subcategories)}&`;
 
     // Add location parameters if they exist
     if (latitude && longitude) {

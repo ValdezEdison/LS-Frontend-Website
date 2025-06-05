@@ -19,6 +19,12 @@ const BlocksService = {
     getMarketingCampaigns: async (language, name) => {
         return CmsApiService.get(`/api/v2/marketing-campaigns/?locale=${encodeURIComponent(language)}&name=${encodeURIComponent(name)}`);
     },
+    getSEOSettingsList: async (language) => {
+        return CmsApiService.get(`/api/v2/seo-settings/?locale=${encodeURIComponent(language)}`);
+    },
+    getAnalyticsSettingsList: async (language) => {
+        return CmsApiService.get(`/api/v2/analytics-settings/?locale=${encodeURIComponent(language)}`);
+    },
   
 }
 

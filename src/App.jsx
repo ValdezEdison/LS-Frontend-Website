@@ -5,6 +5,8 @@ import ErrorBoundary from "./components/common/ErrorBoundary"; // Import as name
 import { store } from "./app/store";
 import { Provider } from 'react-redux';
 import { LocationProvider } from './context/LocationContext';
+import AnalyticsTracker from "./utils/AnalyticsTracker";
+import AppLoader from "./components/common/AppLoader";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <ErrorBoundary>
         <LocationProvider>
             <BrowserRouter>
+              {/* <AppLoader />
+              <AnalyticsTracker />  */}
               <Router />
             </BrowserRouter>
         </LocationProvider>

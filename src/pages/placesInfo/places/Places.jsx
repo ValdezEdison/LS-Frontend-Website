@@ -249,7 +249,7 @@ const Places = () => {
 
     const filters = [
         {
-            label: t('Filters.level'),
+            label: state.selectedLevel ? categories.find(cat => cat.id === state.selectedLevel)?.title : t('Filters.level'),
             type: "select",
             options: categories.map(category => ({ id: category.id, title: category.title })),
             selectedId: state.selectedLevel,
@@ -263,7 +263,7 @@ const Places = () => {
             },
         },
         {
-            label: t('Filters.category'),
+            label: state.selectedCategory ? categories.find(cat => cat.id === state.selectedLevel)?.categories.find(c => c.id === state.selectedCategory)?.title : t('Filters.category'),
             type: "select",
             options: state.selectedLevel
                 ? categories.find(cat => cat.id === state.selectedLevel)?.categories || []
@@ -278,7 +278,7 @@ const Places = () => {
             },
         },
         {
-            label: t('Filters.subcategory'),
+            label: state.selectedSubcategory ? categories.find(cat => cat.id === state.selectedLevel)?.categories.find(c => c.id === state.selectedCategory)?.subcategories.find(s => s.id === state.selectedSubcategory)?.title : t('Filters.subcategory'),
             type: "select",
             options: state.selectedCategory
                 ? categories

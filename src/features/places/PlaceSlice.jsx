@@ -74,6 +74,9 @@ const placeSlice = createSlice({
             state.places = [];
             state.next = null;
             state.count = 0;
+        },
+        resetDetails: (state) => {
+            state.place = null;
         }
     },
     extraReducers: (builder) => {
@@ -377,5 +380,5 @@ const placeSlice = createSlice({
     },
 });
 
-export const { setFavTogglingId, resetShareableLink, listUpdater, resetGeoLocations, resetPlacesList, resetNearByPlaces, resetRandomPlaces } = placeSlice.actions;
+export const { setFavTogglingId, resetShareableLink, listUpdater, resetGeoLocations, resetPlacesList, resetNearByPlaces, resetRandomPlaces, resetDetails } = placeSlice.actions;
 export default placeSlice.reducer;

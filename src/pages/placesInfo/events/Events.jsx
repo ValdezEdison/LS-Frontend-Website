@@ -206,7 +206,7 @@ const Events = () => {
       },
     },
     {
-      label: t('Events.filters.level'),
+      label: state.selectedLevel ? categories.find(cat => cat.id === state.selectedLevel)?.title : t('Events.filters.level'),
       type: "select",
       options: categories.map(category => ({ id: category.id, title: category.title })),
       selectedId: state.selectedLevel,

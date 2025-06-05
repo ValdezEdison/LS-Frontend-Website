@@ -40,6 +40,8 @@ import useDynamicContent from "../../../hooks/useDynamicContent";
 import useHasTagDetails from "../../../hooks/useHasTagDetails";
 import { listUpdater as tagsListUpdater, resetState } from "../../../features/places/placesInfo/tags/TagsSlice";
 import { fetchItinerariesByTag } from "../../../features/places/placesInfo/tags/TagsAction";
+import SelectedItemList from "../../../components/common/SelectedItemList";
+import styles3 from "../../../components/PlacesPage/MainContent.module.css";
 
 
 const ItineraryList = () => {
@@ -124,6 +126,10 @@ const ItineraryList = () => {
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
+  const [state, setState] = useState({
+    selectedOrder: "",
+  })
+
   const cityId = hasTagDetails ? tagDetails.cityId : id;
 
   useEffect(() => {
@@ -136,7 +142,7 @@ const ItineraryList = () => {
                 page: 1
             }));
         }else{
-          dispatch(fetchItineriesInCity(cityId));
+          dispatch(fetchItineriesInCity({cityId: cityId, page: 1}));
         }
       
       dispatch(fetchCities({}));
@@ -239,15 +245,24 @@ const ItineraryList = () => {
     { id: 4, name: t('Filters.recommendations') },
   ];
 
+  const orderOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
+    id: index,
+    name: option,
+  }));
+
+  const updateState = (value) => {
+    setState((prev) => ({ ...prev, selectedOrder: value }));
+  }
+
   // Define filters array
   const filters = [
 
     {
-      label: t('Filters.sortBy'),
+      label: state.selectedOrder !== "" ? orderOptions[state.selectedOrder]?.name : t('Filters.sortBy'),
       type: "select",
-      options: sortOrder,
-      selectedId: selectedOrderId,
-      onSelect: (value) => setSelectedOrderId(value),
+      options: orderOptions,
+      selectedId: state.selectedOrder,
+      onSelect: (value) => updateState(value),
     },
   ];
 
@@ -389,6 +404,23 @@ const ItineraryList = () => {
       },[])
 
 
+      useEffect(() => {
+        if (cityId && state.selectedOrder !== null) {
+             if(hasTagDetails) {
+                const tagDetails = JSON.parse(localStorage.getItem('tagDetails'));
+                dispatch(fetchItinerariesByTag({ 
+                    tagId: tagDetails.tagId,
+                    cityId: tagDetails.cityId,
+                    page: 1,
+                    sortOrder: state.selectedOrder
+                }));
+            }else{
+              dispatch(fetchItineriesInCity({cityId, sortOrder: state.selectedOrder}));
+            }
+        }
+      }, [dispatch, language, cityId, state.selectedOrder]);
+
+
   return (
     // <div className={styles.athenasPlaces}>
     <>
@@ -430,6 +462,14 @@ const ItineraryList = () => {
           <div className={styles.filterContainer}>
             <FilterBar filters={filters} />
           </div>
+        </div>
+        <div className={styles3.placesSelectedItemsList}>
+          <SelectedItemList
+            state={state}
+            setState={setState}
+            translate={t}
+            type="submenu-itineraries"
+          />
         </div>
         </>
         }

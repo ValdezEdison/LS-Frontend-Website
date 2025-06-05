@@ -11,6 +11,92 @@ const Filter = ({ categories, ratings, state, setState }) => {
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
 
+  // Update selectedFilters and expandedCategories whenever filter state changes
+  useEffect(() => {
+    const newSelectedFilters = [];
+    const newExpandedCategories = {};
+    
+    // Check active filters (independent of expansion state)
+    const hasLevels = Boolean(state.levels && state.levels.length > 0);
+    const hasCategories = Boolean(state.categories && state.categories.length > 0);
+    const hasSubcategories = Boolean(state.subcategories && state.subcategories.length > 0);
+    const hasAnyFilters = hasLevels || hasCategories || hasSubcategories;
+
+    // Update active filters state (independent of UI expansion)
+    setHasActiveFilters(hasAnyFilters);
+
+    // If no filters, reset expansion and selected filters
+    if (!hasAnyFilters) {
+        setExpandedCategories({});
+        setSelectedFilters([]);
+        return;
+    }
+
+    // Process levels for expansion and filter titles
+    if (hasLevels) {
+      const levelIds = state.levels.split(',').filter(Boolean);
+      
+      // First, remove any expanded categories that are no longer in levelIds
+      Object.keys(expandedCategories).forEach(expandedId => {
+          if (!levelIds.includes(expandedId)) {
+              delete expandedCategories[expandedId];
+
+          }
+      });
+
+      // Then process current levelIds
+      levelIds.forEach(levelId => {
+          const level = categories.find(cat => cat.id.toString() === levelId.toString());
+          if (level) {
+              newSelectedFilters.push(level.title);
+              newExpandedCategories[level.id] = true;
+          }
+      });
+    }
+
+    // Process categories for expansion and filter titles
+    if (hasCategories) {
+        const categoryIds = state.categories.split(',').filter(Boolean);
+        categoryIds.forEach(categoryId => {
+            for (const level of categories) {
+                const category = level.categories?.find(cat => cat.id.toString() === categoryId.toString());
+                if (category) {
+                    newSelectedFilters.push(category.title);
+                    newExpandedCategories[level.id] = true; // Expand parent level
+                    break;
+                }
+            }
+        });
+    }
+
+    // Process subcategories for expansion and filter titles
+    if (hasSubcategories) {
+        const subcategoryIds = state.subcategories.split(',').filter(Boolean);
+        subcategoryIds.forEach(subcategoryId => {
+            for (const level of categories) {
+                for (const category of level.categories || []) {
+                    const subcategory = category.subcategories?.find(
+                        sub => sub.id.toString() === subcategoryId.toString()
+                    );
+                    if (subcategory) {
+                        newSelectedFilters.push(subcategory.title);
+                        newExpandedCategories[level.id] = true; // Expand parent level
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    // Update states
+    setSelectedFilters([...new Set(newSelectedFilters)]);
+    setExpandedCategories(prev => ({
+        ...prev, // Preserve any manually expanded categories
+        ...newExpandedCategories // Add required expansions
+    }));
+
+}, [state.levels, state.categories, state.subcategories, state.ratings, categories]);
+
   const toggleCategory = (categoryId) => {
     setExpandedCategories((prev) => ({
       ...prev,

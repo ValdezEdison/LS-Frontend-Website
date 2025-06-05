@@ -18,6 +18,7 @@ const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilt
   });
 
   const { t } = useTranslation("FilterPanel");
+  const isClearing = useRef(false);
 
   const [availableCategories, setAvailableCategories] = useState([]);
 
@@ -173,6 +174,7 @@ const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilt
   };
 
   const clearAllFilters = () => {
+    isClearing.current = true;
     setSelectedLevels([]);
     setSelectedCategories([]);
     setSelectedSubcategories([]);
@@ -185,15 +187,40 @@ const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilt
       selectedDateRange: { startDate: null, endDate: null },
       page: 1,
       type: "event",
-      selectedCityId: null,
+      // selectedCityId: null,
       selectedDestinationId: null,
       destinationSearchQuery: "",
       startDate: null,
       endDate: null,
       seletedOrder: null
     });
-    onApplyFilters();
+    //  applyFilters();
   };
+
+
+
+  useEffect(() => {
+    if (isClearing.current) {
+      const areAllFiltersEmpty = 
+        selectedLevels.length === 0 &&
+        selectedCategories.length === 0 &&
+        selectedSubcategories.length === 0 &&
+        selectedTags.length === 0 &&
+        dateRange.every(date => date === null) &&
+        state.selectedLevel === "" &&
+        state.selectedCategory === "" &&
+        state.selectedSubcategory === "" &&
+        state.selectedDestinationId === null &&
+        state.destinationSearchQuery === "" &&
+        state.startDate === null &&
+        state.endDate === null;
+
+      if (areAllFiltersEmpty) {
+        applyFilters();
+        isClearing.current = false; // Reset for next time
+      }
+    }
+  }, [isClearing, state]);
 
   const applyFilters = () => {
     onApplyFilters();

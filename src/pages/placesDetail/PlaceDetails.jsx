@@ -9,7 +9,7 @@ import ReviewSection from "../../components/PlacesDetailPage/ReviewSection";
 import Modal from "../../components/modal/Modal";
 import ImageGalleryPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ImageGalleryPopupContent";
 import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ReviewSectionPopupContent";
-import { openPopup, closePopup } from "../../features/popup/PopupSlice";
+import { openPopup, closePopup, closeAddToTripPopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
@@ -32,8 +32,12 @@ import { resetNearByPlaces } from "../../features/places/PlaceSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
-import { resetShareableLink } from "../../features/places/PlaceSlice";
+import { resetShareableLink, resetDetails } from "../../features/places/PlaceSlice";
 import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
+import { useAddTrip } from "../../hooks/useAddTrip";
+import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
+import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
+import { fetchCities } from "../../features/common/cities/CityAction";
 
 
 const PlaceDetails = () => {
@@ -56,6 +60,7 @@ const PlaceDetails = () => {
   const { currentLocation } = useSelector((state) => state.locationSettings);
 
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { cities } = useSelector((state) => state.cities);
 
   const { languages, loading: languagesLoading } = useSelector((state) => state.languages);
   const { t } = useTranslation("Places");
@@ -115,6 +120,34 @@ const PlaceDetails = () => {
     success: false,
   });
 
+     // Add trip functionality
+      const {
+        tripState,
+        formState,
+        formErrors,
+        citiesSearchResults,
+        isSearchingCities,
+        activeDestinationIndex,
+        successData,
+        isAddToPopupOpen,
+        travelLiteList,
+        tripPopupState,
+        setTripPopupState,
+        setFormState,
+        setTripState,
+        setFormErrors,
+        handleTripClick,
+        handleSubmitTrip,
+        handleSubmit,
+        updateDestination,
+        setActiveDestinationIndex,
+        debouncedFetchCitiesForAddTrip,
+        openAddTripPopup,
+        closeAddTripPopup,
+        closeSuccessMessage,
+        closeAddToTrip
+      } = useAddTrip();
+
 
   // Centralized popup handlers
   const togglePopup = (name, state) => {
@@ -133,6 +166,40 @@ const PlaceDetails = () => {
     }
   };
 
+  // const handleActions = (e, action, id, name) => {
+    
+  //   e.stopPropagation();
+  //   switch (action) {
+  //     case 'addToFavorites':
+  //       handleFavClick(e, id);
+  //       break;
+  //     // case 'addToTrip':
+  //     //   handleAddToTripClick(e, id, name);
+  //     //   setFormState(prev => ({ ...prev, type: "place" }));
+  //     //   break;
+  //     case 'viewMore':
+  //       handleViewMoreDetails(e, id);
+  //       break;
+  //     // case 'addToStop':
+  //     //   setFormState(prev => ({
+  //     //     ...prev,
+  //     //     stops: [...prev.stops, id]
+  //     //   }));
+  //     //   break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  const handleAddToTripClick = (e, id, name) => {
+    const result = handleTripClick(e, id, name);
+    if (result?.needsAuth) {
+      setAlertTitle(tCommon('authAlert.favorites.title'));
+      setAlertMessage(tCommon('authAlert.favorites.description'));
+      togglePopup("alert", true);
+    }
+  };
+
   const handleActions = (e, action, id, name) => {
     
     e.stopPropagation();
@@ -140,19 +207,25 @@ const PlaceDetails = () => {
       case 'addToFavorites':
         handleFavClick(e, id);
         break;
-      // case 'addToTrip':
-      //   handleAddToTripClick(e, id, name);
-      //   setFormState(prev => ({ ...prev, type: "place" }));
-      //   break;
+      case 'addToTrip':
+        handleAddToTripClick(e, id, name);
+        const stopIds = place?.stops?.map(stop => stop.id) || [];
+        const firstCity = place?.cities?.[0] || place?.city || {};
+        setFormState(prev => ({ ...prev, type: "place", stops: stopIds, destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]}));
+        break;
+      case 'addToStop':
+          setFormState(prev => ({
+            ...prev,
+            stops: [...prev.stops, id]
+          }));
+        break;
       case 'viewMore':
         handleViewMoreDetails(e, id);
         break;
-      // case 'addToStop':
-      //   setFormState(prev => ({
-      //     ...prev,
-      //     stops: [...prev.stops, id]
-      //   }));
-      //   break;
       default:
         break;
     }
@@ -206,6 +279,7 @@ const PlaceDetails = () => {
       dispatch(fetchPlaceById(id));
       dispatch(fetchPlaceComments(id));
       dispatch(generateLink(id));
+      dispatch(fetchCities({}))
       if(currentLocation) {
         dispatch(fetchNearbyPlaces({page: 1, placeId: id, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude}));
       }else{
@@ -591,13 +665,38 @@ const PlaceDetails = () => {
     return () => {
       dispatch(resetNearByPlaces());
       dispatch(resetShareableLink());
+      dispatch(resetDetails());
     }
     
   },[])
 
+  const modalSearchProps = {
+    activeDestinationIndex,
+    setActiveDestinationIndex,
+    citiesSearchResults,
+    isSearchingCities,
+    updateDestination
+  };
+
 
   return (
     <>
+      {isOpen && tripPopupState.addTripPopup && (
+        <AddTripPopup
+          onClose={closeAddTripPopup}
+          travelLiteList={travelLiteList}
+          state={tripState}
+          setState={setTripState}
+          handleSubmitTrip={handleSubmitTrip}
+        />
+      )}
+
+      {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
+        dispatch(closeAddToTripPopup());
+        dispatch(closePopup());
+        dispatch(resetTripType());
+      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
+
       {isOpen && popupState.map && (
         <MapPopup
         onClose={() => {
@@ -725,7 +824,7 @@ const PlaceDetails = () => {
                 {isLoading ? (
                   <MuseumInfoSkeleton />
                 ) : (
-                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
+                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleActions}
                     isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
                     toggleShareOptions={toggleShareOptions}
                    />
