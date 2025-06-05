@@ -2,10 +2,11 @@ import ApiService from "../../../../services/ApiService";
 
 const itineraryService = {
 
-    getItineriesInCityId: async (cityId, page=1) => {
+    getItineriesInCityId: async (cityId, sortOrder, page=1) => {
         const params = {}
         if (cityId !== undefined && cityId !== null && cityId !== "") params.city_id = cityId;
         if (page !== undefined && page !== null && page !== "") params.page = page;
+        if (sortOrder !== undefined && sortOrder !== null && sortOrder !== "") params.sort_order = sortOrder;
         return ApiService.get('/routes/', {params});
     },
 

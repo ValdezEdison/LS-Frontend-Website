@@ -317,6 +317,7 @@ const EventsPage = () => {
     }else {
       dispatch(fetchEvents(params));
     }
+    dispatch(fetchGeoLocations({ cityId: state.selectedDestinationId, type: state.type }));
     
     dispatch(closePopup());
     togglePopup("filterPanel", false);

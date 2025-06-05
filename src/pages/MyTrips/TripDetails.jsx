@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import TripInfo from "../../components/TripDetails/TripInfo";
@@ -22,6 +22,7 @@ const TripDetails = () => {
   const location = useLocation();
 
   const { id } = location.state;
+  const initialLoad = useRef(true);
 
   const [formState, setFormState] = useState({
      
@@ -46,7 +47,7 @@ const TripDetails = () => {
     if(id){
       dispatch(fetchTripDetails(id));
       dispatch(fetchSimilarStops({page: 1, tripId: id}));
-      dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+      // dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
       dispatch(generateLink(id));
     }
 
@@ -71,10 +72,16 @@ const TripDetails = () => {
   };
 
     useEffect(() => {
-      if (formState.mode) {
+      if (initialLoad.current) {
+        initialLoad.current = false;
+        return;
+      }
+      
+      if (formState.mode && tripDetails?.stops?.length > 1) {
+        
         dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
       }
-    }, [formState.mode, dispatch, id]);
+    }, [formState.mode, dispatch, tripDetails?.stops]);
 
      const handleClickDownloadTrip = () => {
         if (id) {

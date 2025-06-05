@@ -12,9 +12,37 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
 
   const { t } = useTranslation('MyTrips');
 
+    // Check if date is already in "DD Month YYYY" format
+    const isAlreadyFormatted = (dateString) => {
+      return /^\d{1,2} \w+ \d{4}$/.test(dateString);
+    };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    if (isAlreadyFormatted(dateString)) return dateString;
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+      
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = date.toLocaleString('default', { month: 'long' });
+      const year = date.getFullYear();
+      
+      return `${day} ${month} ${year}`;
+    } catch {
+      return dateString; // Return original if formatting fails
+    }
+  };
+
   // Extract relevant data
   const eventImage = images.length > 0 ? images[0].original : PlaceHolderImg2;
-  const eventDate = next_schedule ? `${next_schedule.day} ${next_schedule.opening_hours[0]?.initial_hour}` : t('travelItineraryEdit.eventCard.dateNotAvailable');
+  // const eventDate = next_schedule ? `${next_schedule.day} ${next_schedule.opening_hours[0]?.initial_hour}` : t('travelItineraryEdit.eventCard.dateNotAvailable');
+  const formattedDate = next_schedule ? formatDate(next_schedule.day) : "";
+  const eventTime = next_schedule?.opening_hours[0]?.initial_hour || "";
+  const eventDate = next_schedule 
+    ? `${formattedDate} ${eventTime}`.trim()
+    : t('travelItineraryEdit.eventCard.dateNotAvailable');
   const eventCategory = levels.length > 0 ? levels[0].title : t('travelItineraryEdit.eventCard.categoryNotAvailable');
   const eventLocation = city ? `${city.name}, ${city.country.name}` : t('travelItineraryEdit.eventCard.locationNotAvailable');
 

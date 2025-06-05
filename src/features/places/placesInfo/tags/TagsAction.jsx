@@ -28,9 +28,9 @@ export const fetchEventsOrPlacesByTag = createAsyncThunk(
 
 export const fetchItinerariesByTag = createAsyncThunk(
     "tags/fetchItinerariesByTag",
-    async ({ tagId, cityId, page }, { rejectWithValue }) => {
+    async ({ tagId, cityId, page, sortOrder }, { rejectWithValue }) => {
         try {
-            const response = await tagsService.getItinerariesByTag(tagId, cityId, page);
+            const response = await tagsService.getItinerariesByTag(tagId, cityId, page, sortOrder);
             return response;
         } catch (error) {
             return rejectWithValue(handleApiError(error));

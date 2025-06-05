@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks, fetchFooterBlocks, fetchMarketingCampaigns } from "./BlocksAction";
+import { fetchHeaderBlocks, fetchNewsLetterBlocks, fetchBannerBlocks, fetchFooterBlocks, fetchMarketingCampaigns, fetchSEOSettingsList, fetchAnalyticsSettingsList  } from "./BlocksAction";
 
 const initialState = {
     headerBlocks: [],
@@ -29,6 +29,20 @@ const initialState = {
             loading: false,
             error: null
         }
+    },
+
+    SEOSettings: {
+        data: [],
+        loading: false,
+        error: null
+    },
+
+    analyticsSettings: {
+       analytics: { 
+            data: [],
+            loading: false,
+            error: null
+       }
     }
 };
 
@@ -120,6 +134,34 @@ const blocksSlice = createSlice({
                     loading: false,
                     error: action.payload
                 };
+            })
+
+            // SEO Settings
+            .addCase(fetchSEOSettingsList.pending, (state) => {
+                state.SEOSettings.loading = true;
+                state.SEOSettings.error = null;
+            })
+            .addCase(fetchSEOSettingsList.fulfilled, (state, action) => {
+                state.SEOSettings.loading = false;
+                state.SEOSettings.data = action.payload;
+            })
+            .addCase(fetchSEOSettingsList.rejected, (state, action) => {
+                state.SEOSettings.loading = false;
+                state.SEOSettings.error = action.payload;
+            })
+
+            // Analytics Settings
+            .addCase(fetchAnalyticsSettingsList.pending, (state) => {
+                state.analyticsSettings.analytics.loading = true;
+                state.analyticsSettings.analytics.error = null;
+            })
+            .addCase(fetchAnalyticsSettingsList.fulfilled, (state, action) => {
+                state.analyticsSettings.analytics.loading = false;
+                state.analyticsSettings.analytics.data = action.payload?.results;
+            })
+            .addCase(fetchAnalyticsSettingsList.rejected, (state, action) => {
+                state.analyticsSettings.analytics.loading = false;
+                state.analyticsSettings.analytics.error = action.payload;
             });
     },
 });

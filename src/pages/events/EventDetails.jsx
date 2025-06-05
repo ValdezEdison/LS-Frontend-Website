@@ -32,7 +32,7 @@ import { setFavTogglingId } from "../../features/favorites/FavoritesSlice";
 import ConfirmationPopup from "../../components/popup/Confirmation/ConfirmationPopup";
 import SuccessMessagePopup from "../../components/popup/SuccessMessage/SuccessMessagePopup";
 import { toast } from "react-toastify";
-import { resetShareableLink } from "../../features/places/PlaceSlice";
+import { resetShareableLink, resetDetails, resetNearByPlaces } from "../../features/places/PlaceSlice";
 
 
 const EventDetails = () => {
@@ -125,7 +125,7 @@ const EventDetails = () => {
   };
 
 
-  const handleFavClick = (id) => {
+  const handleFavClick = (e,id) => {
     if (!isAuthenticated) {
       togglePopup("alert", true);
     } else {
@@ -546,6 +546,47 @@ const EventDetails = () => {
     }
   };
 
+  const handleActions = (e, action, id, name) => {
+    
+    e.stopPropagation();
+    switch (action) {
+      case 'addToFavorites':
+        handleFavClick(e, id);
+        break;
+      // case 'addToTrip':
+      //   handleAddToTripClick(e, id, name);
+      //   const stopIds = place?.stops?.map(stop => stop.id) || [];
+      //   const firstCity = place?.cities?.[0] || place?.city || {};
+      //   setFormState(prev => ({ ...prev, type: "place", stops: stopIds, destinations: [{
+      //     destinationSearchQuery: '',
+      //     destinationId: firstCity.id || null,
+      //     destinationName: firstCity.name || ''
+      //   }]}));
+      //   break;
+      // case 'addToStop':
+      //     setFormState(prev => ({
+      //       ...prev,
+      //       stops: [...prev.stops, id]
+      //     }));
+      //   break;
+      case 'viewMore':
+        handleViewMoreDetails(e, id);
+        break;
+      default:
+        break;
+    }
+  };
+
+   useEffect(() => {
+  
+      return () => {
+        dispatch(resetNearByPlaces());
+        dispatch(resetShareableLink());
+        dispatch(resetDetails());
+      }
+      
+    },[])
+
 
   return (
     <>
@@ -673,7 +714,7 @@ const EventDetails = () => {
                 {isLoading ? (
                   <MuseumInfoSkeleton />
                 ) : (
-                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleFavClick}
+                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleActions}
                     isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
                     toggleShareOptions={toggleShareOptions}
                   />

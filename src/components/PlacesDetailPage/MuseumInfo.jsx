@@ -4,14 +4,20 @@ import ShareOptions from "../common/ShareOptions";
 import { useSelector } from "react-redux";
 import { MapIcon } from "../common/Images";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
-const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { }, isFavoriteToggling = false, handleGenerateLink, showShareOptions, toggleShareOptions }) => {
+const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { }, isFavoriteToggling = false, handleGenerateLink, showShareOptions, toggleShareOptions, handle }) => {
 
   const { shareableLink } = useSelector((state) => state.places);
 
   const { t } = useTranslation("DetailsPage");
+  const { t: tPlaces } = useTranslation("Places");
 
   const shareOptionsRef = useRef(null);
+
+  const location = useLocation();
+
+  const isPlacesDetailPage = location.pathname.includes("places/details");
 
   // Handle clicks outside the ShareOptions
   useEffect(() => {
@@ -33,6 +39,11 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showShareOptions, toggleShareOptions]);
+
+  const handleTripClick = (e) => {
+    e.stopPropagation();
+    handleActions(e, 'addToTrip', place?.id, place?.display_text || place?.title);
+};
 
   return (
     <div className={styles.museumInfo}>
@@ -57,7 +68,16 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
       <div className={styles.museumInfoRight}>
 
         <div className={styles.contactInfo}>
-          <div className={`${styles.favIcon} ${place?.is_fav ? styles.active : ''}`} onClick={(e) => handleActions(e, place?.id)}></div>
+          <div className={`${styles.favIcon} ${place?.is_fav ? styles.active : ''}`} onClick={(e) => handleActions(e, 'addToFavorites', place?.id)}></div>
+          {isPlacesDetailPage &&
+            <button
+                  className={styles.addToTripButton}
+                  onClick={handleTripClick}
+              >
+                  <span className={styles.addIcon}></span>
+                  {tPlaces("placeCard.add_to_trip")}
+            </button>
+          }
           <div className={styles.shareIconWrapper} ref={shareOptionsRef}>
             <img
               src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/3ef4f075a0deb02b772bf1fe5266b0e789697ca3a6ba3ea75c950a14406974bf?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"

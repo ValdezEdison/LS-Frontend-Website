@@ -25,7 +25,7 @@ import { Trans } from 'react-i18next';
 const MainContent = ({ state, setState, countries, cities, handleActions, handleNavigate, hasFiltersChanged }) => {
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
-  const { places, loading: placesLoading, error: placesError, next, count, placesSearchResults } = useSelector((state) => state.places);
+  const { places, loading: placesLoading, error: placesError, next, count, placesSearchResults, categories } = useSelector((state) => state.places);
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
 
   const { loading: countriesLoading } = useSelector((state) => state.countries);
@@ -292,6 +292,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
         <SelectedItemList
           state={state}
           setState={setState}
+          categories={categories}
           countries={countries}
           cities={cities}
           translate={t}
