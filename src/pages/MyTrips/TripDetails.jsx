@@ -36,11 +36,12 @@ const TripDetails = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation('MyTrips');
+  const { t: tCommon } = useTranslation('Common');
 
   const { language } = useContext(LanguageContext);
   const { tripDetails, similarStops, loading, similarStopsLoading, downloadedTrip } = useSelector((state) => state.myTrips);
-   const { generatedLink } = useSelector((formState) => formState.itineriesInCity);
-
+  const { generatedLink } = useSelector((formState) => formState.itineriesInCity);
+  const { isAuthenticated } = useSelector((formState) => formState.auth);
   
 
   useEffect(() => {
@@ -123,6 +124,15 @@ const TripDetails = () => {
           setShowShareOptions(!showShareOptions);
         };
 
+        const handleNavActions = (e, id, action) => {
+    
+          if (action === "viewDetail") {
+            navigate('/places/details', { state: { id } });
+          } else if (action === "viewList") {
+            navigate('/places');
+          }
+        };
+
 
   return (
     <>
@@ -136,7 +146,7 @@ const TripDetails = () => {
         {similarStopsLoading ? (
               <WidgetSkeleton />
             ) : (
-              <Widget data={similarStops} title={t('tripDetails.similarPlaces')} count={4} seeMore={false}/>
+              <Widget data={similarStops} title={t('tripDetails.similarPlaces')} count={4} seeMore={true}  handleNavActions={handleNavActions}/>
             )}
 
       </main>
