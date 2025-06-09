@@ -21,6 +21,8 @@ const getCookie = (name) => {
     subscribe: async (email, gdpr_consent) => {
         const csrfToken = Cookies.get('csrftoken');
         console.log('CSRF Token:', csrfToken);
+        console.log(Cookies.get(), 'Cookies');
+
         return ApiService.post("/newsletter/subscribe/", 
           { email, gdpr_consent },
           {
