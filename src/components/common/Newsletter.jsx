@@ -137,28 +137,32 @@ const handleSubmit = async (e) => {
         </div>
       )}
 
-      <form className={styles.newsletterForm} onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="emailInput" className={styles.visuallyHidden}>
+      <form  className={styles.newsletterFormOuter} onSubmit={handleSubmit}>
+      <div className={styles.newsletterForm}>
+        <div className={styles.newsletterFormWrapper}>
+          <label htmlFor="emailInput" className={styles.visuallyHidden}>
           {newsLetterBlocks[0]?.email_placeholder}
-        </label>
-        <input
-          type="email"
-          id="emailInput"
-          placeholder={newsLetterBlocks[0]?.email_placeholder}
-          className={styles.emailInput}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={submitting}
-          required
-        />
-        <button 
+          </label>
+          <input
+            type="email"
+            id="emailInput"
+            placeholder={newsLetterBlocks[0]?.email_placeholder}
+            className={styles.emailInput}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={submitting}
+            required
+          />
+           <button 
           type="submit" 
           className={styles.subscribeButton}
           disabled={submitting}
         >
           {submitting ? "..." : newsLetterBlocks[0]?.submit_button_text}
         </button>
+        </div>
+        
+       
         
       {/* Conditionally render GDPR checkbox if required */}
       {newsLetterBlocks[0]?.gdpr_checkbox_required && (
