@@ -1,4 +1,6 @@
 
+// src/features/cms/Blocks/BlocksService.jsx
+import { get } from "lodash";
 import CmsApiService from "../../../services/CmsApiService";
 
 const BlocksService = {
@@ -25,7 +27,10 @@ const BlocksService = {
     getAnalyticsSettingsList: async (language) => {
         return CmsApiService.get(`/api/v2/analytics-settings/?locale=${encodeURIComponent(language)}`);
     },
-  
+    getAmbassadorBlocks: async (language) => {
+        return CmsApiService.get(`/api/v2/ambassadors-blocks/?locale=${encodeURIComponent(language)}`);
+    },
+
 }
 
 export default BlocksService

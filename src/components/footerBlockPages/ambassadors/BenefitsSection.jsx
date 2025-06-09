@@ -1,56 +1,53 @@
 import React from "react";
 import BenefitCard from "./BenefitCard";
-import styles from "./BenefitsSection.module.css";
-import { useTranslation } from "react-i18next";
+// No longer need to import styles from "./BenefitsSection.module.css";
+// import styles from "./BenefitsSection.module.css"; // You can remove this line
 
-function BenefitsSection() {
-
-  const { t } = useTranslation("Ambassadors");
-  // const benefits = [
-  //   {
-  //     id: 1,
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a8e08cdcbad23ed5f1136b2547d34d284f833e89?placeholderIfAbsent=true",
-  //     title: "Cultura de innovación y creatividad",
-  //   },
-  //   {
-  //     id: 2,
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/56caf4404aa5e408994bfadeecb4fab3d888afcc?placeholderIfAbsent=true",
-  //     title: "Oportunidades de crecimiento profesional",
-  //   },
-  //   {
-  //     id: 3,
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/a658e25bb6e2806981c1ad98bd9f920ab9e31480?placeholderIfAbsent=true",
-  //     title: "Enfoque en la comunidad local",
-  //   },
-  //   {
-  //     id: 4,
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/79343fec988fcf0c51c287ee5292c8d921ae4888?placeholderIfAbsent=true",
-  //     title: "Impacto en la industria del turismo",
-  //   },
-  // ];
-
-  const benefits = [0, 1, 2, 3].map(index => ({
-    id: index + 1,
-    image: t(`benefits.items.${index}.image`),
-    title: t(`benefits.items.${index}.title`)
-  }));
+function BenefitsSection({ benefits = [], subtitle }) {
+  if (!benefits || benefits.length === 0) return null;
 
   return (
-    <section className={styles.benefitsSection}>
-      <h2 className={styles.title}>{t('benefits.title')}</h2>
-      <div className={styles.grid}>
-        <div className={styles.column}>
-          <BenefitCard image={benefits[0].image} title={benefits[0].title} />
-          <BenefitCard image={benefits[1].image} title={benefits[1].title} />
-        </div>
-        <div className={styles.column}>
-          <BenefitCard image={benefits[2].image} title={benefits[2].title} />
-          <BenefitCard image={benefits[3].image} title={benefits[3].title} />
-        </div>
+    <section
+      // Inlined .benefitsSection styles
+      style={{
+        padding: "60px 0", // Adjust padding for the section
+        textAlign: "center",
+      }}
+    >
+      {subtitle && (
+        <h2
+          // Inlined .sectionTitle styles
+          style={{
+            fontSize: "36px",
+            fontWeight: 700,
+            color: "#151820",
+            marginBottom: "40px",
+            fontFamily: "Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif",
+          }}
+        >
+          {subtitle}
+        </h2>
+      )}
+      <div
+        // Inlined .benefitsGrid styles
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Responsive grid
+          gap: "30px", // Space between cards
+          maxWidth: "900px", // Max width for the grid
+          margin: "0 auto", // Center the grid
+          padding: "0 20px", // Horizontal padding
+        }}
+      >
+        {benefits.map((benefit) => (
+          <BenefitCard
+            key={benefit.id}
+            heroImage={benefit.hero_image?.url}
+            altText={benefit.hero_image?.alt || benefit.hero_title}
+            title={benefit.hero_title}
+            text={benefit.hero_text}
+          />
+        ))}
       </div>
     </section>
   );

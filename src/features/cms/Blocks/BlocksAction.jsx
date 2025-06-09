@@ -1,6 +1,21 @@
+
+// src/features/cms/Blocks/BlocksAction.jsx
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import BlocksService from './BlocksService';
 import { handleApiError } from '../../../utils/Helper';
+
+
+export const fetchAmbassadorBlocks = createAsyncThunk(
+    'blocks/fetchAmbassadorBlocks',
+    async (language, { rejectWithValue }) => {
+        try {
+            const response = await BlocksService.getAmbassadorBlocks(language);
+            return response;
+        } catch (error) {
+            return rejectWithValue(handleApiError(error));
+        }
+    }
+);
 
 export const fetchHeaderBlocks = createAsyncThunk(
     'blocks/fetchHeaderBlocks',
