@@ -209,7 +209,7 @@ const PlaceDetails = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        const stopIds = place?.stops?.map(stop => stop.id) || [];
+        const stopIds = [place?.id];
         const firstCity = place?.cities?.[0] || place?.city || {};
         setFormState(prev => ({ ...prev, type: "place", stops: stopIds, destinations: [{
           destinationSearchQuery: '',

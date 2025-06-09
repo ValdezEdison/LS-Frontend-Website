@@ -65,11 +65,23 @@
         "email": "Correo electrónico*",
         "message": "Mensaje*",
         "disclaimer": "No facilites ningún dato personal o sensible en esta casilla",
-        "privacy": {
-          "text": "Al hacer clic en 'Enviar' confirmas que has leído nuestra",
+        "required": "Este campo es obligatorio",
+        "consent": {
+          "text": "Acepto el tratamiento de mis datos personales de acuerdo con la",
           "link": "Política de privacidad",
-          "optOut": ". Si no deseas recibir nuestros correos electrónicos sobre servicios similares, escríbenos a ejemplo@gmail.com"
+          "optOut": ". Si no deseas recibir nuestros correos electrónicos sobre servicios similares, escríbenos a info@localsecrets.travel"
         },
-        "submit": "Enviar"
+        "privacy": {
+          "text": "Al hacer clic en 'Enviar' confirmas que has leído nuestra ",
+          "link": "Política de privacidad",
+          "optOut": ". Si no deseas recibir nuestros correos electrónicos sobre servicios similares, escríbenos a info@localsecrets.travel"
+        },
+        "submit": "Enviar",
+        "validation": {
+          "allFieldsRequired": "Por favor complete todos los campos",
+          "consentRequired": "Debe aceptar los términos para enviar el formulario"
+        },
+        "successMessage": "¡Mensaje enviado con éxito!",
+        "errorMessage": "Ocurrió un error. Por favor inténtalo de nuevo."
       }
   }

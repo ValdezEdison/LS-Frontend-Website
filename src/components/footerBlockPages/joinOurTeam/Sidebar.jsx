@@ -10,7 +10,7 @@ function Sidebar() {
           Trabaja con nosotros
         </a>
         <a href="#" className={styles.sidebarLink}>
-          La vida en Local Secrets
+          Más que una empresa
         </a>
       </div>
       <div className={styles.sidebarDivider} aria-hidden="true" />

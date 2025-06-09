@@ -100,7 +100,7 @@ const TravelItineraryEdit = () => {
     if (id) {
       dispatch(fetchTripDetails(id));
       dispatch(fetchSimilarStops({ page: 1, tripId: id }));
-      dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+      // dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
       dispatch(fetchCities({}));
     }
   }, [language, id, dispatch]);
@@ -113,10 +113,10 @@ const TravelItineraryEdit = () => {
 
 
   useEffect(() => {
-    if (formState.mode) {
+    if (formState.mode  && tripDetails?.stops?.length > 1) {
       dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
     }
-  }, [formState.mode, dispatch, id]);
+  }, [formState.mode, dispatch, id, tripDetails?.stops]);
 
 
 
@@ -307,7 +307,7 @@ const TravelItineraryEdit = () => {
       case 'addToStop':
         setFormState(prev => ({
           ...prev,
-          stops: [...prev.stops, id]
+          sites: [...prev.sites, id]
         }));
         break;
       default:
@@ -328,6 +328,15 @@ const TravelItineraryEdit = () => {
   const handleCancel = () => {
     navigate(-1);
   }
+
+  const handleNavActions = (e, id, action) => {
+    
+    if (action === "viewDetail") {
+      navigate('/places/details', { state: { id } });
+    } else if (action === "viewList") {
+      navigate('/places');
+    }
+  };
 
   return (
     <div className={styles.travelItineraryContainer}>
@@ -398,13 +407,28 @@ const TravelItineraryEdit = () => {
             Array.from({ length: 4 }).map((_, index) => (
               <EventCardSkeleton key={index} />
             ))
-          ) : visibleStops.length > 0 && (
-            // Render visible events if available
-            visibleStops.map((event, index) => (
-              <EventCard key={index} event={event} handleActions={handleActions}
-                isFavoriteToggling={isFavoriteToggling && favTogglingId === event.id} />
-            ))
-          )}
+          ) : 
+            // Filtered stops rendering
+          visibleStops.filter(stop => !formState.sites?.includes(stop.id)).length > 0 && (
+            visibleStops
+              .filter(stop => !formState.sites?.includes(stop.id))
+              .map((stop, index) => (
+                <EventCard 
+                  key={stop.id || index}
+                  event={stop}
+                  handleActions={handleActions}
+                  isFavoriteToggling={isFavoriteToggling && favTogglingId === stop.id}
+                />
+              ))
+          )
+          // visibleStops.length > 0 && (
+          //   // Render visible events if available
+          //   visibleStops.map((event, index) => (
+          //     <EventCard key={index} event={event} handleActions={handleActions}
+          //       isFavoriteToggling={isFavoriteToggling && favTogglingId === event.id} />
+          //   ))
+          // )
+          }
         </div>
         <div className={styles.showMoreWrapper}>
           {loading ? <Loader /> : stopsNext && isAuthenticated && <SeeMoreButton
@@ -418,7 +442,7 @@ const TravelItineraryEdit = () => {
         {similarStopsLoading ? (
           <WidgetSkeleton />
         ) : (
-          <Widget data={similarStops} title={t('travelItineraryEdit.similarPlaces')}  count={4} seeMore={false} />
+          <Widget data={similarStops} title={t('travelItineraryEdit.similarPlaces')}  count={4} seeMore={true} handleNavActions={handleNavActions}/>
         )}
       </main>
       <Footer />

@@ -20,8 +20,28 @@
 
 .newsletterForm {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  max-width: 600px;
+  width: 100%;
   margin-bottom: 18px;
+  align-items: center;
+}
+
+.newsletterFormWrapper{
+  display: flex;
+  max-width: 450px;
+  width: 100%;
+}
+
+.gdprRow{
+  gap: 10px;
+}
+
+.newsletterFormOuter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .visuallyHidden {
@@ -74,12 +94,23 @@
   text-decoration: underline;
 }
 
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust gap for spacing */
+}
+
+.gdprRow {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 15px; /* Adjust as needed */
+}
 @media (max-width: 991px) {
   .newsletter {
     padding: 40px 20px;
   }
 
-  .newsletterForm {
+  .newsletterFormWrapper {
     flex-direction: column;
     align-items: center;
   }

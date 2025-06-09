@@ -4,6 +4,10 @@
     "placeholder": "Your email address",
     "buttonText": "SIGN UP",
     "privacyNotice": "By entering your email address, you agree to receive automated personalized marketing offers, including recommendations for places and events. Read our",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "emailRequired": "Please enter your email address",
+    "gdprRequired": "Please agree to the privacy policy",
+    "successMessage": "Thank you for subscribing!",
+    "errorMessage": "An error occurred. Please try again."
   }
   
