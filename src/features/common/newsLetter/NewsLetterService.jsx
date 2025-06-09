@@ -1,4 +1,5 @@
 import ApiService from "../../../services/ApiService";
+import Cookies from "js-cookie";
 
 const getCookie = (name) => {
     let cookieValue = null;
@@ -18,8 +19,8 @@ const getCookie = (name) => {
 
   const NewsLetterService = {
     subscribe: async (email, gdpr_consent) => {
-        const csrfToken = getCookie('csrftoken');
-        console.log(csrfToken, 'csrfToken');
+        const csrfToken = Cookies.get('csrftoken');
+        console.log('CSRF Token:', csrfToken);
         return ApiService.post("/newsletter/subscribe/", 
           { email, gdpr_consent },
           {
