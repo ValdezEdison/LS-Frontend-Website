@@ -34,7 +34,7 @@ function BenefitsSection({ benefits = [], subtitle }) {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", // Responsive grid
           gap: "30px", // Space between cards
-          maxWidth: "900px", // Max width for the grid
+          maxWidth: "1000px", // Max width for the grid
           margin: "0 auto", // Center the grid
           padding: "0 20px", // Horizontal padding
         }}
