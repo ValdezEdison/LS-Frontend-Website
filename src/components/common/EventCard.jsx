@@ -4,11 +4,15 @@ import { PlaceHolderImg2 } from "../common/Images"
 import Loader from "../common/Loader";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 function EventCard({ event, handleActions, isFavoriteToggling = false }) {
   const { title, images, next_schedule, levels, city } = event;
 
   const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const location = useLocation();
+  const isMyTripsEditPage = location.pathname.includes("my-trips/edit");
 
   const { t } = useTranslation('MyTrips');
 
@@ -68,7 +72,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
       </div>
       <div className={styles.eventActions}>
         <button className={styles.viewMoreButton} onClick={(e) => handleActions(e, 'viewMore', event?.id, title)}>{t('travelItineraryEdit.buttons.viewMore')}</button>
-        <button className={styles.addToTripButton} onClick={(e) => handleActions(e, 'addToTrip', event?.id, title)}>
+        <button className={styles.addToTripButton} onClick={(e) => handleActions(e, isMyTripsEditPage ? 'addToStop' : 'addToTrip', event?.id, title)}>
           <span className={styles.addIcon}></span>
           {t('travelItineraryEdit.buttons.addToTrip')}
         </button>

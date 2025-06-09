@@ -343,7 +343,8 @@ const PlacesPage = () => {
         handleAddToTripClick(e, id, name);
         const selectedPlace = places.find(place => place.id === id);
         const firstCity = selectedPlace?.cities?.[0] || selectedPlace?.city || {};
-        setFormState(prev => ({ ...prev, type: "place",
+        const stops = [selectedPlace?.id];
+        setFormState(prev => ({ ...prev, type: "place", stops: stops,
           destinations: [{
             destinationSearchQuery: '',
             destinationId: firstCity.id || null,
