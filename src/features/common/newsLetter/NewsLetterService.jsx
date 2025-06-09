@@ -48,7 +48,7 @@ function getCookieValue(name) {
           { email, gdpr_consent },
           {
             headers: {
-              'X-CSRFToken': csrfToken,
+              'X-CSRFToken': 'B0cGPFoDUP1lxGCADY2pYjj0rCKSQ8EQ',
             }
           }
         );
