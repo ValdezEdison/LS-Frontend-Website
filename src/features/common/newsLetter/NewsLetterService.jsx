@@ -17,11 +17,30 @@ const getCookie = (name) => {
     return cookieValue;
   };
 
+  console.log('Native document.cookie:', document.cookie);
+
+
+console.log('Cookies.get():', Cookies.get());
+console.log('Cookies.get("csrftoken"):', Cookies.get('csrftoken'));
+console.log('Cookies.get("csrftoken", { path: "/" }):', Cookies.get('csrftoken', { path: '/' }));
+
+function getCookieValue(name) {
+  const cookies = document.cookie.split(';');
+  for (let c of cookies) {
+    const [key, value] = c.trim().split('=');
+    if (key === name) return decodeURIComponent(value);
+  }
+  return null;
+}
+console.log('Manual getCookieValue:', getCookieValue('csrftoken'));
+
+
   const NewsLetterService = {
     subscribe: async (email, gdpr_consent) => {
         const csrfToken = Cookies.get('csrftoken');
         console.log('CSRF Token:', csrfToken);
         console.log(Cookies.get(), 'Cookies');
+        console.log('document.cookie:', document.cookie);
 
         return ApiService.post("/newsletter/subscribe/", 
           { email, gdpr_consent },
