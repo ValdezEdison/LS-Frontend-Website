@@ -32,16 +32,18 @@ function getCookieValue(name) {
   }
   return null;
 }
-console.log('Manual getCookieValue:', getCookieValue('csrftoken'));
+
 
 
   const NewsLetterService = {
     subscribe: async (email, gdpr_consent) => {
         const csrfToken = Cookies.get('csrftoken');
         console.log('CSRF Token:', csrfToken);
-        console.log(Cookies.get(), 'Cookies');
         console.log('document.cookie:', document.cookie);
-
+        console.log('Manual getCookieValue:', getCookieValue('csrftoken'));
+        console.log('Cookies.get():', Cookies.get());
+        console.log('Cookies.get("csrftoken"):', Cookies.get('csrftoken'));
+        console.log('Cookies.get("csrftoken", { path: "/" }):', Cookies.get('csrftoken', { path: '/' }));
         return ApiService.post("/newsletter/subscribe/", 
           { email, gdpr_consent },
           {
