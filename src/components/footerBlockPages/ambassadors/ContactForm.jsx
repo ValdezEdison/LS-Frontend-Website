@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styles from "./ContactForm.module.css"; // Your styles here
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { submitContactForm } from "../../../features/common/contactUs/ContactUsAction";
+import { toast } from "react-toastify";
 
 function ContactForm() {
   const { t } = useTranslation("Ambassadors");
@@ -17,6 +20,8 @@ function ContactForm() {
   const [status, setStatus] = useState({ type: null, message: "" });
   const [submitting, setSubmitting] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -26,48 +31,100 @@ function ContactForm() {
     setIsConsented(e.target.checked);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setStatus({ type: null, message: "" });
+
+  //   // Validate Consent
+  //   if (!isConsented) {
+  //     setStatus({ type: "error", message: "You must agree to the terms to submit the form." });
+  //     return;
+  //   }
+
+  //   // Basic validation
+  //   if (Object.values(formData).some((field) => !field.trim())) {
+  //     setStatus({ type: "error", message: "Please fill out all fields." });
+  //     return;
+  //   }
+
+  //   setSubmitting(true);
+  //   try {
+  //     const response = await fetch("https://localsecrets-staging.rudo.es/contact-form/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.error || "Failed to send the message");
+  //     }
+
+  //     setStatus({ type: "success", message: "Message sent successfully!" });
+  //     setFormData({
+  //       firstName: "",
+  //       lastName: "",
+  //       linkedin: "",
+  //       email: "",
+  //       message: "",
+  //     });
+  //     setIsConsented(false); // Reset consent
+  //   } catch (error) {
+  //     setStatus({ type: "error", message: error.message });
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: null, message: "" });
 
     // Validate Consent
     if (!isConsented) {
-      setStatus({ type: "error", message: "You must agree to the terms to submit the form." });
+      setStatus({ type: "error", message: t("contactForm.validation.consentRequired") });
       return;
     }
 
     // Basic validation
     if (Object.values(formData).some((field) => !field.trim())) {
-      setStatus({ type: "error", message: "Please fill out all fields." });
+      setStatus({ type: "error", message: t("contactForm.validation.allFieldsRequired") });
       return;
     }
 
     setSubmitting(true);
     try {
-      const response = await fetch("https://localsecrets-staging.rudo.es/contact-form/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // const response = await fetch("https://localsecrets-staging.rudo.es/contact-form/", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to send the message");
-      }
-
-      setStatus({ type: "success", message: "Message sent successfully!" });
-      setFormData({
-        firstName: "",
-        lastName: "",
-        linkedin: "",
-        email: "",
-        message: "",
+      const response = await dispatch(
+        submitContactForm({ ...formData, consent: isConsented })
+      ).then((response) => {
+        if(response.type === "contactUs/sendContactUs/fulfilled"){
+          toast.success(response.payload.message || t("contactForm.successMessage"));
+          setFormData({
+            firstName: "",
+            lastName: "",
+            linkedin: "",
+            email: "",
+            message: "",
+          });
+        }else if(response.type === "contactUs/sendContactUs/rejected"){
+          toast.error(response.payload.error_description || t("contactForm.errorMessage"));
+        }
       });
+ 
       setIsConsented(false); // Reset consent
     } catch (error) {
-      setStatus({ type: "error", message: error.message });
+      setStatus({ type: "error", message: error.message || t("contactForm.errorMessage") });
     } finally {
       setSubmitting(false);
     }
@@ -153,11 +210,11 @@ function ContactForm() {
         {t("contactForm.privacy.optOut")}
       </p>
 
-      {status.type && (
+      {/* {status.type && (
         <div className={`${styles.statusMessage} ${styles[status.type]}`}>
           {status.message}
         </div>
-      )}
+      )} */}
 
       <button type="submit" className={styles.submitButton} disabled={submitting}>
         {submitting ? "..." : t("contactForm.submit")}

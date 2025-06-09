@@ -75,6 +75,12 @@
           "link": "Privacy Policy",
           "optOut": ". If you don't want to receive our emails about similar services, write to us at info@localsecrets.travel"
         },
-        "submit": "Submit"
+        "submit": "Submit",
+        "validation": {
+          "allFieldsRequired": "Please fill out all fields",
+          "consentRequired": "You must agree to the terms to submit the form"
+        },
+        "successMessage": "Message sent successfully!",
+        "errorMessage": "An error occurred. Please try again."
       }
   }

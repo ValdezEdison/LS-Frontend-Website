@@ -4,6 +4,10 @@
     "placeholder": "Tu dirección de email",
     "buttonText": "SUSCRÍBETE",
     "privacyNotice": "Al introducir tu dirección de correo, consientes recibir propuestas comerciales personalizadas elaboradas automáticamente, incluidas las propuestas de lugares y eventos, consulta nuestra",
-    "privacyPolicy": "Política de privacidad"
+    "privacyPolicy": "Política de privacidad",
+    "emailRequired": "Por favor ingrese su dirección de correo electrónico",
+    "gdprRequired": "Por favor acepte la política de privacidad",
+    "successMessage": "¡Gracias por suscribirte!",
+    "errorMessage": "Ocurrió un error. Por favor inténtalo de nuevo."
   }
   

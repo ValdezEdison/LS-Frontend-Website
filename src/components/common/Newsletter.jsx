@@ -1,10 +1,13 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Newsletter.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { subscribe } from "../../features/common/newsLetter/NewsLetterAction";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Newsletter = () => {
   // State for form handling
@@ -13,56 +16,92 @@ const Newsletter = () => {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState({ type: null, message: "" });
 
-  // const { t } = useTranslation("Newsletter");
+  const { t } = useTranslation("Newsletter");
   const { newsLetterBlocks, newsLetterLoading, newsLetterError } = useSelector((state) => state.cms.blocks);
+
+  const dispatch = useDispatch();
 
   const createMarkup = (html) => {
     return { __html: html };
   };
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   setStatus({ type: null, message: "" }); // Reset status
+
+//   if (!email.trim()) {
+//     setStatus({ type: "error", message: "Please enter your email address" });
+//     return;
+//   }
+
+//   if (newsLetterBlocks[0]?.gdpr_checkbox_required && !gdprConsent) {
+//     setStatus({ type: "error", message: "Please agree to the privacy policy" });
+//     return;
+//   }
+
+//   setSubmitting(true);
+//   try {
+//     const csrftoken = document.cookie.split('; ')
+//         .find(row => row.startsWith('csrftoken'))
+//         ?.split('=')[1];
+
+//     const response = await fetch("https://localsecrets-staging.rudo.es/newsletter/subscribe/", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "X-CSRFToken": csrftoken, // Include the CSRF token
+//         },
+//         body: JSON.stringify({ email: email, gdpr_consent: gdprConsent }),
+//     });
+//     const data = await response.json();
+//     if (!response.ok) {
+//       throw new Error(data.error || "Failed to subscribe");
+//     }
+
+//     setStatus({
+//       type: "success",
+//       message: newsLetterBlocks[0]?.success_message || "Thank you for subscribing!",
+//     });
+//     setEmail("");
+//     setGdprConsent(false);
+//   } catch (error) {
+//     setStatus({
+//       type: "error",
+//       message: error.message || "An error occurred. Please try again.",
+//     });
+//   } finally {
+//     setSubmitting(false);
+//   }
+// };
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   setStatus({ type: null, message: "" }); // Reset status
 
   if (!email.trim()) {
-    setStatus({ type: "error", message: "Please enter your email address" });
+    setStatus({ type: "error", message: t("emailRequired") });
     return;
   }
 
   if (newsLetterBlocks[0]?.gdpr_checkbox_required && !gdprConsent) {
-    setStatus({ type: "error", message: "Please agree to the privacy policy" });
+    setStatus({ type: "error", message:  t("gdprRequired") });
     return;
   }
 
   setSubmitting(true);
   try {
-    const csrftoken = document.cookie.split('; ')
-        .find(row => row.startsWith('csrftoken'))
-        ?.split('=')[1];
-
-    const response = await fetch("https://localsecrets-staging.rudo.es/newsletter/subscribe/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken, // Include the CSRF token
-        },
-        body: JSON.stringify({ email: email, gdpr_consent: gdprConsent }),
+    const resultAction = await dispatch(subscribe({ email, gdpr_consent: gdprConsent })).then((response) => {
+      if (response.type === "newsletter/subscribe/fulfilled") {
+          toast.success(response.payload?.detail || t("successMessage"));
+      }else if (response.type === "newsletter/subscribe/rejected") {
+          toast.error(response.payload?.error_description || t("errorMessage"));
+      }
     });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || "Failed to subscribe");
-    }
-
-    setStatus({
-      type: "success",
-      message: newsLetterBlocks[0]?.success_message || "Thank you for subscribing!",
-    });
-    setEmail("");
-    setGdprConsent(false);
+   
   } catch (error) {
     setStatus({
       type: "error",
-      message: error.message || "An error occurred. Please try again.",
+      message: error.message || t("errorMessage"),
     });
   } finally {
     setSubmitting(false);
@@ -99,7 +138,7 @@ const handleSubmit = async (e) => {
       )}
 
       <form className={styles.newsletterForm} onSubmit={handleSubmit}>
-      
+      <div>
         <label htmlFor="emailInput" className={styles.visuallyHidden}>
           {newsLetterBlocks[0]?.email_placeholder}
         </label>
@@ -139,6 +178,7 @@ const handleSubmit = async (e) => {
           </label>
         </div>
       )}
+      </div>
       </form>
       
       <p className={styles.privacyNotice}>
@@ -147,8 +187,8 @@ const handleSubmit = async (e) => {
           <>
             {" "}
             <a href={newsLetterBlocks[0]?.privacy_policy_url} className={styles.privacyLink}>
-              {/* {t("privacyPolicy")} */}
-              Privacy Policy
+              {t("privacyPolicy")}
+              {/* Privacy Policy */}
             </a>
             .
           </>
