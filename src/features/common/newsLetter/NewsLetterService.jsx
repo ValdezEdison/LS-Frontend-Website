@@ -4,6 +4,7 @@ const getCookie = (name) => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
       const cookies = document.cookie.split(';');
+      console.log(cookies, 'cookies');
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
         if (cookie.substring(0, name.length + 1) === (name + '=')) {
@@ -18,6 +19,7 @@ const getCookie = (name) => {
   const NewsLetterService = {
     subscribe: async (email, gdpr_consent) => {
         const csrfToken = getCookie('csrftoken');
+        console.log(csrfToken, 'csrfToken');
         return ApiService.post("/newsletter/subscribe/", 
           { email, gdpr_consent },
           {
