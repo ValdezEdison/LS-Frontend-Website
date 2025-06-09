@@ -65,10 +65,15 @@
     "email": "Email*",
     "message": "Message*",
     "disclaimer": "Do not provide any personal or sensitive data in this field",
+      "consent": {
+          "text": "I agree to the processing of my personal data in accordance with the",
+          "link": "Privacy Policy",
+          "optOut": ". If you don't want to receive our emails about similar services, write to us at info@localsecrets.travel"
+        },
     "privacy": {
       "text": "By clicking 'Submit' you confirm that you have read our",
       "link": "Privacy Policy",
-      "optOut": ". If you don't wish to receive our emails about similar services, write to us at example@gmail.com"
+      "optOut": ". If you don't wish to receive our emails about similar services, write to us at info@localsecrets.travel"
     },
     "submit": "Submit"
   }

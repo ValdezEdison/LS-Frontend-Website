@@ -79,6 +79,7 @@ const Router = () => {
                 <Route path="/join-our-team" element={<WorkWithUs />} />
 
                 <Route path="/life-at-local-secrets" element={<LifeAtLocalSecrets />} />
+                <Route path="/more-than-a-company" element={<LifeAtLocalSecrets />} />
                 <Route path="/ambassadors" element={<Ambassadors />} />
                 <Route path="/local-secret-manager" element={<LocalSecretManager />} />
                 <Route path="/help-center" element={<HelpCenter />} />

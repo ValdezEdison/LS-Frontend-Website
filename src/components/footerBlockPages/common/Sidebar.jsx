@@ -24,7 +24,8 @@ const Sidebar = () => {
     { name: t('sidebar.joinUs'), path: "/join-our-team" },
     { 
       name: t('sidebar.lifeAtCompany'), 
-      path: "/life-at-local-secrets",
+      //path: "/life-at-local-secrets",
+      path: "/more-than-a-company",
       className: styles.lifeAtCompanyLink 
     },
   ];
