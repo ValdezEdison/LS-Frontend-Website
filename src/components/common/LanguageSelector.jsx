@@ -16,7 +16,7 @@ const LanguageSelector = ({ languagesRef, handleLanguageChange }) => {
 
   // Filter out 'fr' and 'pt' languages
   const filteredLanguages = languages.filter(
-    (lang) => lang.code !== "fr" && lang.code !== "pt"
+    (lang) => lang.code !== "fr" && lang.code !== "pt" && lang.code !== "de"
   );
 
   // Map language codes to their corresponding flag images
