@@ -557,6 +557,7 @@ const PlacesPage = () => {
         state.points,
         state.page,
         state.subcategories,
+        language,
       ];
 
       return;
@@ -574,6 +575,7 @@ const PlacesPage = () => {
       state.points,
       state.page,
       state.subcategories,
+      language,
     ];
 
     const hasChanged = currentDeps.some((dep, i) => dep !== prevDepsRef.current[i]);
