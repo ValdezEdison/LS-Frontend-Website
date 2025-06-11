@@ -48,6 +48,9 @@ const EventDetails = () => {
   const [successTitle, setSuccessTitle] = useState("");
   const [showShareOptions, setShowShareOptions] = useState(false);
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, shareableLink } = useSelector((state) => state.places);
   const { isFavoriteToggling, favTogglingId } = useSelector((state) => state.favorites);
@@ -174,7 +177,7 @@ const EventDetails = () => {
       if(currentLocation){
         dispatch(fetchNearbyPlaces({page: 1, placeId: id, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude}));
       }else{
-        dispatch(fetchNearbyPlaces(id));
+        dispatch(fetchNearbyPlaces({placeId: id}));
       }
       
     }
@@ -546,6 +549,17 @@ const EventDetails = () => {
     }
   };
 
+  const handleViewMoreDetails = (e, id) => {
+    togglePopup("map", false);
+    if (isAuthenticated) {
+      navigate('/events/details', { state: { id } });
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
+
   const handleActions = (e, action, id, name) => {
     
     e.stopPropagation();
@@ -627,8 +641,8 @@ const EventDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} itle={tDetail("authAlert.title")}
-            description={tDetail("authAlert.message")}
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin} title={ alertTitle || tDetail("authAlert.title")}
+            description={ alertMessage || tDetail("authAlert.message")}
             buttonText={tDetail("authAlert.button")} />
         </Modal>
       )}

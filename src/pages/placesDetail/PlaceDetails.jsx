@@ -52,6 +52,8 @@ const PlaceDetails = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [successTitle, setSuccessTitle] = useState("");
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
 
   const { isOpen } = useSelector((state) => state.popup);
   const { place, loading: isLoading, NearbyPlaces: NearByPlaces, comments, shareableLink } = useSelector((state) => state.places);
@@ -283,7 +285,7 @@ const PlaceDetails = () => {
       if(currentLocation) {
         dispatch(fetchNearbyPlaces({page: 1, placeId: id, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude}));
       }else{
-        dispatch(fetchNearbyPlaces(id));
+        dispatch(fetchNearbyPlaces({placeId: id}));
       }
      
     }
@@ -737,8 +739,8 @@ const PlaceDetails = () => {
           onClose={() => togglePopup("alert", false)}
           customClass="modalSmTypeOne"
         >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin}  title={tDetail("authAlert.title")}
-  description={tDetail("authAlert.message")}
+          <AlertPopup handleNavigateToLogin={handleNavigateToLogin}  title={alertTitle || tDetail("authAlert.title")}
+        description={alertMessage || tDetail("authAlert.message")}
   buttonText={tDetail("authAlert.button")}/>
         </Modal>
       )}
