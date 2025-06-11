@@ -169,7 +169,15 @@ const FavoritesPage = () => {
         break;
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
-        setFormState(prev => ({ ...prev, type: "event" }));
+        const selectedPlace = favorites.find(favorite => favorite.id === id);
+        const firstCity = selectedPlace?.cities?.[0] || selectedPlace?.city || {};
+        const stops = [selectedPlace?.id];
+        setFormState(prev => ({ ...prev, type: selectedPlace.type, stops: stops,
+           destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]}));
         break;
       case 'viewMore':
         handleViewMoreDetails(e, id);

@@ -310,7 +310,8 @@ const ItineraryList = () => {
       case 'addToTrip':
         handleAddToTripClick(e, id, name);
         const selectedItinerary = itineries.find((itinerary) => itinerary.id === id);
-        const stops = selectedItinerary?.stops || [];
+        // const stops = selectedItinerary?.stops || [];
+        const stops = selectedItinerary?.stops?.map(stop => stop.id) || [];
         const firstCity = selectedItinerary?.cities?.[0] || {};
         setFormState(prev => ({ ...prev, type: "itinerary", stops: stops,
           destinations: [{
