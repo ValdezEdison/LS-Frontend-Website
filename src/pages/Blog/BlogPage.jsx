@@ -27,6 +27,7 @@ function BlogPage() {
   const { posts, loading: postsLoading, error: postsError, categories, categoriesLoading, postsByCategory, postsByCategoryLoading, tags, LoadingTags, postsByTagLoading, postsByTag, postsForCategoriesLoading, postsForCategories } = useSelector((state) => state.cms.wordpress);
 
   const { language, languageId } = useContext(LanguageContext);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
 
   const { t } = useTranslation("BlogSection");
@@ -124,7 +125,8 @@ function BlogPage() {
     if (action === "viewDetail") {
       navigate('/blog-detail', { state: { id } });
     } else if (action === "viewList") {
-      navigate('/blog-list');
+      // navigate('/blog-list');
+      setState((prev) => ({ ...prev, category: id, categoryName: categories.find(category => category.id === id)?.name, tag: null, tagName: "" }));
     }
   }
 
@@ -215,6 +217,7 @@ function BlogPage() {
                     tags={tags}
                     layout="carousel"  // Default carousel layout
                     setState={setState}
+                    categoryId={category.id}
                   />
                 );
               }
@@ -226,7 +229,7 @@ function BlogPage() {
         </main>
       </div>
 
-      <Newsletter />
+     {!isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );

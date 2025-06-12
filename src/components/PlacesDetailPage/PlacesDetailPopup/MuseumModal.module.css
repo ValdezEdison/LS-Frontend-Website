@@ -195,6 +195,7 @@
 .mainImageContainer :global(.slick-slide img){
   width: 641px !important;
   height: 390px !important;
+  object-fit: contain;
   border-radius: 8px;
 }
 

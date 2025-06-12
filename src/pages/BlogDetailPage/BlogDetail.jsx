@@ -17,6 +17,7 @@ function BlogDetail() {
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
   const { loading, currentPost, tags } = useSelector((state) => state.cms.wordpress);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const location = useLocation();
   const { id } = location.state || {};
@@ -47,7 +48,7 @@ function BlogDetail() {
           <ArticleContent currentPost={currentPost} tags={tags} loading={loading} setState={setState}/>
         
       </main>
-      <Newsletter />
+      {!isAuthenticated && <Newsletter />}
       <Footer />
 
     </div>
