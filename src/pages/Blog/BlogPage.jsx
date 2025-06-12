@@ -109,7 +109,7 @@ function BlogPage() {
       const categoriesAction = await dispatch(fetchCategories({ per_page: 100 }));
       if (categoriesAction.payload) {
         const categoryIds = categoriesAction.payload.map(c => c.id);
-        dispatch(fetchPostsForCategories(categoryIds));
+        dispatch(fetchPostsForCategories({categoryIds: categoryIds, per_page: 20}));
       }
       
       dispatch(fetchTags({ per_page: 100 }));
@@ -142,7 +142,7 @@ function BlogPage() {
   useEffect(() => {
     if (state.tag) {
       dispatch(resetBlog());
-      dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 20 }));
+      dispatch(fetchPostsByTag({ tagId: state.tag, per_page: 100 }));
    
     }
 
@@ -152,7 +152,7 @@ function BlogPage() {
     if (state.category) {
       dispatch(resetBlog());
       const categoryIds = state.category
-      dispatch(fetchPostsForCategories(categoryIds));
+      dispatch(fetchPostsForCategories({categoryIds: categoryIds, per_page: 100}));
     }
   }, [state.category, dispatch]);
 

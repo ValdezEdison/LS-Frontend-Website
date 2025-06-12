@@ -15,7 +15,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
 
   // Slider settings for carousel layout
   const settings = {
-    infinite: true,
+    infinite: posts.length > 4,
     speed: 500,
     slidesToShow: 4,
     centerMode: false,
