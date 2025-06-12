@@ -193,8 +193,9 @@ const wordPressSlice = createSlice({
         state.postsForCategoriesLoading = true;
       })
       .addCase(fetchPostsForCategories.fulfilled, (state, action) => {
+        
         state.postsForCategoriesLoading = false;
-        state.postsForCategories = action.payload?.posts;
+        state.postsForCategories = action.payload;
       })
       .addCase(fetchPostsForCategories.rejected, (state, action) => {
         state.postsForCategoriesLoading = false;

@@ -196,29 +196,54 @@ const WordPressService = {
     return response.data;
   },
 
+  // getPostsForCategories: async (categoryIds, params = {}) => {
+  //   const idsArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+  //   const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
+  //     params: {
+  //       categories: idsArray.join(','),
+  //       page: params.page || 1,
+  //       per_page: params.per_page || 20, // Increased default
+  //       _embed: true,
+  //       // Optional: Order by most recent first
+  //       orderby: 'date',
+  //       order: 'desc'
+  //     }
+  //   });
+  
+  //   return {
+  //     posts: response.data,
+  //     pagination: {
+  //       total: parseInt(response.headers['x-wp-total'], 10) || 0,
+  //       totalPages: parseInt(response.headers['x-wp-totalpages'], 10) || 0,
+  //       currentPage: params.page || 1
+  //     }
+  //   };
+  // },
   getPostsForCategories: async (categoryIds, params = {}) => {
     const idsArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
-    const response = await WordPressInstance.get('/wp-json/wp/v2/posts', {
-      params: {
-        categories: idsArray.join(','),
-        page: params.page || 1,
-        per_page: params.per_page || 20, // Increased default
-        _embed: true,
-        // Optional: Order by most recent first
-        orderby: 'date',
-        order: 'desc'
-      }
-    });
-  
-    return {
-      posts: response.data,
-      pagination: {
-        total: parseInt(response.headers['x-wp-total'], 10) || 0,
-        totalPages: parseInt(response.headers['x-wp-totalpages'], 10) || 0,
-        currentPage: params.page || 1
-      }
-    };
-  },
+    const postsPerCategory = params.per_page || 15;
+    
+    // Fetch posts for each category separately
+    const allPromises = idsArray.map(categoryId => 
+      WordPressInstance.get('/wp-json/wp/v2/posts', {
+        params: {
+          categories: categoryId,
+          per_page: postsPerCategory,
+          _embed: true,
+          orderby: 'date',
+          order: 'desc'
+        }
+      })
+    );
+    
+    // Wait for all requests to complete
+    const allResponses = await Promise.all(allPromises);
+    
+    // Combine all posts into a single array
+    const allPosts = allResponses.flatMap(response => response.data);
+    
+    return allPosts;
+}
 
 
 };
