@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { update } from "lodash";
 
-const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags, layout = 'carousel', setState }) => {
+const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags, layout = 'carousel', setState, categoryId = null }) => {
   const { t } = useTranslation("Common");
   const location = useLocation();
   const isBlogPage = location.pathname === "/blog-list";
@@ -125,7 +125,7 @@ const ArticlesSection = ({ title, posts, seeMore = true, handleNavActions, tags,
           {seeMore && posts.length > (layout === 'grid' ? 8 : 4) && (
             <div
               className={styles.seeMoreLink}
-              onClick={(e) => handleNavActions(e, null, "viewList")}
+              onClick={(e) => handleNavActions(e, categoryId, "viewList")}
             >
               {t('seeMore')}
             </div>

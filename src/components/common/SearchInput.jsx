@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import CustomInput from "./CustomInput";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
+import { useLocation } from "react-router-dom";
 
 const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, handleSearch, showSuggestionDropDown, handleSearchClose, searchValue, placeholder, suggestionsList, onSelect, customClassName = "", selectedValue = "", customClassNameForSuggestions = "" }) => {
   const [defaultSuggestions] = useState([
@@ -24,6 +25,10 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
   const containerClass = customClassName && styles[customClassName] ? styles[customClassName] : "";
 
   const suggestionsContainerClass = customClassNameForSuggestions && styles[customClassNameForSuggestions] ? styles[customClassNameForSuggestions] : "";
+
+  const location = useLocation();
+  const isPlacesPage = location.pathname === "/places";
+  const isEventsPage = location.pathname === "/events";
 
   return (
     <div className={`${containerClass}`}>
@@ -53,14 +58,16 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
           {loading ? <Loader /> :
             Array.isArray(suggestions) && suggestions.length > 0 ? (
               // Render suggestions if available
-              suggestions.map((suggestion, index) => (
+              <div className={`suggestion-${isPlacesPage ? "places" : isEventsPage ? "events" : "places"}`}>
+              {suggestions.map((suggestion, index) => (
                 <SuggestionItem
                   key={index}
                   id={suggestion.id}
                   text={suggestion?.title || `${suggestion.name}${suggestion?.country?.name ? ', ' + suggestion.country.name : ''}`}
                   onSelect={onSelect}
                 />
-              ))
+              ))}
+              </div>
             ) : (
               // Show "No results" message if no suggestions are found
               <div className={styles.filterNoResults}>{t("noResults")}</div>

@@ -129,7 +129,7 @@ export const fetchPostsForCategories = createAsyncThunk(
   async (categoryIds, { rejectWithValue }) => {
     try {
       return await WordPressService.getPostsForCategories(categoryIds, {
-        per_page: 20 // Fetch more posts initially
+        per_page: 100 // Fetch more posts initially
       });
     } catch (error) {
       return rejectWithValue(handleApiError(error));
