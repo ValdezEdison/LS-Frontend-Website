@@ -246,8 +246,7 @@ const FilterPanel = ({ onClose, categories, cities, state, setState, onApplyFilt
           </span>
         )}
       </div>
-      <div className={`${styles.tagContainer} ${!expandedSections.levels && styles.tagMore
-        }`}>
+      <div style={{display: "flex", gap: "10px", flexWrap: "wrap"}} className={`${!expandedSections.levels && styles.tagMore}`}>
         {categories?.map(level => (
           <span
             key={level.id}
