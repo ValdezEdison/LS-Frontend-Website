@@ -254,11 +254,16 @@
   margin: 0;
 }
 .aboutDescription {
-  text-align: justify;
-  margin-top: 20px;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
+    color: #151820;
+    text-align: justify;
+    font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+
 }
 @media (width<=991px) {
   .aboutDescription {
@@ -313,13 +318,16 @@
   font-weight: 600;
 }
 .missionDescription {
-  text-align: justify;
-  flex: auto;
-  width: 682px;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  margin: 0;
+    color: #151820;
+    text-align: justify;
+    font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+
 }
 @media (width<=991px) {
   .missionDescription {
@@ -421,13 +429,16 @@ background: #D9D9D9;
   margin: 0;
 }
 .visionDescription {
-  text-align: justify;
-  flex: auto;
-  width: 686px;
-  margin-top: auto;
-  margin-bottom: auto;
-  font-size: 14px;
-  font-weight: 400;
+    color: #151820;
+    text-align: justify;
+    font-family: Source Sans Pro, -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+
 }
 @media (width<=991px) {
   .visionDescription {
