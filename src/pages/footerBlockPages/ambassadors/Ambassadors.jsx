@@ -54,7 +54,7 @@ const ambassadorData = blocks?.ambassadorBlocks?.[0] || null;
 
   if (!ambassadorData) {
     console.warn('No ambassador data found. Blocks:', blocks);
-    return <div>No ambassador data found</div>;
+    return  <Loader />;
   }
   console.log('Rendering AmbassadorPage with data:', ambassadorData);
  
