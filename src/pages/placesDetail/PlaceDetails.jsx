@@ -44,7 +44,7 @@ const PlaceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
-
+  const [galleryStartIndex, setGalleryStartIndex] = useState(0);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
@@ -294,9 +294,10 @@ const PlaceDetails = () => {
     }
   }, [id, dispatch, language, currentLocation]);
 
-  const handleClickViewMoreDetails = () => {
-    togglePopup("gallery", true);
-  };
+  const handleClickViewMoreDetails = (index) => {
+  setGalleryStartIndex(index); // Set the index of the image that was clicked
+  togglePopup("gallery", true); // Then, open the gallery popup
+};
 
   // const closeModal = () => {
   //   setShowImgGalleryPopup(false);
@@ -713,17 +714,20 @@ const PlaceDetails = () => {
         />
       )}
 
-      {isOpen && popupState.gallery && (
+     {isOpen && popupState.gallery && (
         <Modal
           title={place.title}
           customClass="galleryReviewPopup"
           onClose={() => togglePopup("gallery", false)}
         >
-          <ImageGalleryPopupContent images={place.images} />
+          <ImageGalleryPopupContent 
+            images={place.images} 
+            startIndex={galleryStartIndex}  
+          /> 
           <ReviewSectionPopupContent placeDetails={place} reviews={comments} />
         </Modal>
       )}
-
+ 
       <TravelerReviews
         onClose={() => togglePopup("reviewDrawer", false)}
         isOpen={isOpen && popupState.reviewDrawer}

@@ -32,7 +32,7 @@ function TestimonialCard({ quote, author, avatar }) {
             objectFit: "contain",
             objectPosition: "center",
             borderRadius: "50%",
-            width: "54px",
+            width: "auto",
             // Assuming you want the avatar centered, you might need to wrap it or add display: block and margin: auto
             display: "block",
             margin: "0 auto 20px auto", // Centering and spacing below avatar

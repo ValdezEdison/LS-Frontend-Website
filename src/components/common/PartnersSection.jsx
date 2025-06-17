@@ -112,33 +112,41 @@ const PartnersSection = ({ ourPartners, ourPartnersLoading }) => {
       <h2 className={styles.sectionTitle}>{activePartnerGroup.name || t("title")}</h2>
       
       <div className={styles.partnersSlider}>
-        <Slider {...settings}>
-          {partners.map((partner) => (
+      <Slider {...settings}>
+        {partners.map((partner) => {
+          const partnerLogo = (
+            <img
+              src={partner.logo?.url ? partner.logo.url : PlaceHolderImg1}
+              alt={partner.logo?.alt || partner.name}
+              width={partner.logo?.width}
+              height={partner.logo?.height}
+              className={styles.logoImage}
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src = PlaceHolderImg1;
+                e.currentTarget.alt = partner.name || "Partner logo";
+              }}
+            />
+          );
+
+          return (
             <div key={partner.id} className={styles.partnerLogo}>
-              {partner.logo?.url ? (
-                <img
-                src={partner.logo?.url ?  partner.logo.url : PlaceHolderImg1}
-                  alt={partner.logo.alt || partner.name}
-                  width={partner.logo.width}
-                  height={partner.logo.height}
-                  className={styles.logoImage}
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = PlaceHolderImg1;
-                    e.currentTarget.alt = partner.name || "Partner logo";
-                  }}
-                />
+              {partner.website_url ? (
+                <a
+                  href={partner.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Link to ${partner.name}'s website`}
+                >
+                  {partnerLogo}
+                </a>
               ) : (
-                <img
-                  src={PlaceHolderImg1}
-                  alt={partner.name || "Partner logo"}
-                  className={styles.logoImage}
-                  loading="lazy"
-                />
+                partnerLogo
               )}
             </div>
-          ))}
-        </Slider>
+          );
+        })}
+      </Slider>
       </div>
     </section>
   );
