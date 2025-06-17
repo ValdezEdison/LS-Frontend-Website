@@ -15,6 +15,7 @@ import { getGoogleMapsApiKey, getGoogleMapsMapId } from '../../utils/decryptSecr
 
 const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, handleActions }) => {
     const { t } = useTranslation('Places');
+    const { t: tCommon } = useTranslation('Common');
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { loading, NearbyPlaces, places, geoLocations } = useSelector((state) => state.places);
     const { events } = useSelector((state) => state.eventsByCity);
@@ -314,7 +315,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
                                     ))
                                 ) : (
                                     <div className={styles2.noDataFound}>
-                                        No data found
+                                        {tCommon('noResults')}
                                     </div>
                                 )}
                             </div>
