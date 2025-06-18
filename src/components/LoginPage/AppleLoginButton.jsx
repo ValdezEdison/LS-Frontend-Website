@@ -42,7 +42,7 @@ const AppleLoginButton = ({ onSuccess, onFailure }) => {
           uiType="dark"
           noDefaultStyle={true}
           onSuccess={(response) => {
-            console.log(response, "response");
+            // console.log(response, "response");
             if (response?.authorization?.id_token) {
               const user = {
                 email: response.user?.email,

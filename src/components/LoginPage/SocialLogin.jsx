@@ -85,10 +85,10 @@ const SocialLogin = ({ onSocialLogin }) => {
           />
         </button> */}
 
-        <AppleLoginButton
+        {/* <AppleLoginButton
           onSuccess={handleAppleSuccess}
           onFailure={handleAppleFailure}
-        />
+        /> */}
       </div>
     </div>
   );

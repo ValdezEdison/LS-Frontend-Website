@@ -534,7 +534,7 @@ const handleMarkerHover = (marker, location, event) => {
                                 ))
                             ) : (
                                 <div className={styles2.noDataFound}>
-                                    No data found
+                                     {tCommon('noResults')}
                                 </div>
                             )}
                         </div>
