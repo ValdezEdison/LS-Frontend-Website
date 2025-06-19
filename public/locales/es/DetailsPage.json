@@ -1,6 +1,7 @@
 {
     "header": {
         "openingHours": "Horario de apertura",
+        "alwaysOpen": "Siempre abierto",
         "websiteButton": "Ir a la web",
         "phone": "Teléfono",
         "share": "Compartir",

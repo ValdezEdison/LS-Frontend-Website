@@ -59,6 +59,8 @@
       "imageAlt": "Contact illustration"
     },
     "contactForm": {
+     "title": "Contact Us",
+      "subtitle": "Leave us a message.",
     "firstName": "First Name*",
     "lastName": "Last Name*",
     "linkedin": "LinkedIn Profile*",
@@ -66,7 +68,7 @@
     "message": "Message*",
     "disclaimer": "Do not provide any personal or sensitive data in this field",
       "consent": {
-          "text": "I agree to the processing of my personal data in accordance with the",
+          "text": "I agree to the processing of my personal data in accordance with the ",
           "link": "Privacy Policy",
           "optOut": ". If you don't want to receive our emails about similar services, write to us at info@localsecrets.travel"
         },
