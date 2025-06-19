@@ -1,6 +1,7 @@
 {
     "header": {
         "openingHours": "Opening Hours",
+        "alwaysOpen": "Always open",
         "websiteButton": "Go to website",
         "phone": "Phone",
         "share": "Share",

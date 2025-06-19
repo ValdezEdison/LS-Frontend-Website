@@ -16,14 +16,14 @@ function JobSearch() {
       />
       <div className={styles.searchContainer}>
         <h1 className={styles.heroTitle}>{t('jobSearch.title')}</h1>
-        <div className={styles.searchBox}>
+      {/*   <div className={styles.searchBox}> 
           <img src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/fe2ecee8a7f73c71620770be14a276a46e4b7cbd?placeholderIfAbsent=true" alt={t('jobSearch.searchIconAlt')}  className={styles.searchIcon} />
           <input
             type="text"
             placeholder={t('jobSearch.placeholder')}
             className={styles.searchInput}
           />
-        </div>
+        </div>*/}
       </div>
     </section>
   );

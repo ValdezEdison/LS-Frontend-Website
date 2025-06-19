@@ -4,14 +4,14 @@
       "viewAll": "Ver todo"
     },
     "jobSearch": {
-      "title": "Busca posiciones abiertas",
-      "backgroundAlt": "Imagen de fondo del lugar de trabajo",
-      "searchIconAlt": "Icono de búsqueda",
-      "placeholder": "Busca una posición o localización"
+      "title": "",
+      "backgroundAlt": "",
+      "searchIconAlt": "",
+      "placeholder": ""
     },
     "departments": {
       "engineering": "Ingeniería y tecnología",
-      "sales": "Ventas",
+      "sales": "Business Development",
       "customerService": "Atención al cliente",
       "marketing": "Marketing",
       "administration": "Administración",
@@ -21,25 +21,25 @@
       "plural": "{{count}} trabajos"
     },
     "companyStats": {
-      "title": "Ayudamos al mundo a viajar",
-      "description": "Todos los días, Local Secrets ayuda a las personas a planificar viajes, conectando a viajeros, empresas y comunidades de todo el mundo",
-      "users": "Atendemos a más de 100 mil usuarios",
-      "reviews": "Recibimos más de 100 mil reseñas al año",
-      "countries": "Tenemos actividad en más de 20 países",
-      "businesses": "Potenciamos a más de 100 mil empresas"
+      "title": "Transforma destinos. Potencia comunidades. Haz carrera con nosotros.",
+      "description": "En Local Secrets, el turismo es motor de desarrollo económico, inclusión social y preservación cultural. Si buscas crecer profesionalmente en un entorno dinámico y con propósito, únete a un equipo que transforma la forma en que el mundo viaja y se conecta.",
+      "users": "Transforma destinos",
+      "reviews": "Potencia comunidades",
+      "countries": "Desarrolla tu carrera profesional unido a nuestros valores",
+      "businesses": "Acogemos nuevo talento e ideas transformadoras en el turismo."
     },
     "newsletter": {
       "title": "Si no encuentras la posición que buscas, puedes ponerte en contacto con nosotros",
       "buttonText": "Contactar"
     },
     "testimonials": {
-        "title": "¿Qué dicen los empleados de nosotros?",
-        "description": "Echa un vistazo lo que dicen nuestros trabajadores sobre el portal de Local Secrets. Nuestro objetivo es brindar la máxima calidad para todos los públicos.",
+        "title": "¿Qué dicen los empleados sobre nosotros?",
+        "description": "Valoramos las nuevas perspectivas y damos la bienvenida a quienes quieran proponer, construir y liderar. En Local Secrets, cada voz cuenta y cada idea puede convertirse en una experiencia que transforme la forma de viajar.",
         "avatarAlt": "Retrato de empleado",
         "quotes": [
-          "\"Desde el principio me ha parecido super sencillo utilizar Local Secrets. Además me he descargado la app para poder gestionar mi negocio desde cualquier lugar. Increible\"",
-          "\"Simplemente la mejor web. Lo recomiendo sobre todo para negocios que están empezando y no saben como hacerse ver\"",
-          "\"Súper atentos. En todo momento han respondido a mis dudas super rápido y mi local ha tenido más visitas desde que estamos en Local Secrets. Muchas gracias\""
+          "\"Javier Álvarez: Local Secrets ha sido mi primera experiencia profesional, y no podría haber sido mejor. He crecido en un entorno dinámico y colaborativo, aprendiendo del sector turístico mientras contribuyo en un proyecto que valora lo local y las experiencias auténticas.\"",
+          "\"Carlos Freire: Nuestro día a día es una invitación a descubrir y compartir lo que hace único a cada lugar. Pertenecer a Local Secrets significa valorar los auténticos detalles que hacen especial cada rincón del mundo.\"",
+          "\"Gia Orellana: Trabajar en Local Secrets App es como descubrir un lugar nuevo cada día, creando contenidos para que personas de todo el mundo exploren destinos auténticos.\""
         ]
       }
   }

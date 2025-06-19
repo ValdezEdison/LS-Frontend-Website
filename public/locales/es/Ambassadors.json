@@ -59,6 +59,8 @@
       "imageAlt": "Imagen de contacto"
     },
     "contactForm": {
+       "title": "Contactar ahora",
+      "subtitle": "Déjenos un mensaje.",
         "firstName": "Nombre*",
         "lastName": "Apellido*",
         "linkedin": "Perfil de LinkedIn*",
@@ -67,7 +69,7 @@
         "disclaimer": "No facilites ningún dato personal o sensible en esta casilla",
         "required": "Este campo es obligatorio",
         "consent": {
-          "text": "Acepto el tratamiento de mis datos personales de acuerdo con la",
+          "text": "Acepto el tratamiento de mis datos personales de acuerdo con la ",
           "link": "Política de privacidad",
           "optOut": ". Si no deseas recibir nuestros correos electrónicos sobre servicios similares, escríbenos a info@localsecrets.travel"
         },

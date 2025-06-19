@@ -1,45 +1,45 @@
 {
     "departmentSection": {
       "title": "Explore open positions by department",
-      "viewAll": "View all"
+      "viewAll": "See all"
     },
     "jobSearch": {
-      "title": "Search open positions",
-      "backgroundAlt": "Background image of workplace",
-      "searchIconAlt": "Search icon",
-      "placeholder": "Search for a position or location"
+      "title": "",
+      "backgroundAlt": "",
+      "searchIconAlt": "",
+      "placeholder": ""
     },
     "departments": {
-      "engineering": "Engineering & Technology",
-      "sales": "Sales",
+      "engineering": "Engineering and Technology",
+      "sales": "Business Development",
       "customerService": "Customer Service",
       "marketing": "Marketing",
       "administration": "Administration",
       "design": "Design",
-      "none": "No positions",
-      "singular": "1 job",
-      "plural": "{{count}} jobs"
+      "none": "No vacancies available",
+      "singular": "1 opening",
+      "plural": "{{count}} openings"
     },
     "companyStats": {
-      "title": "We help the world travel",
-      "description": "Every day, Local Secrets helps people plan trips, connecting travelers, businesses and communities around the world",
-      "users": "We serve over 100,000 users",
-      "reviews": "We receive over 100,000 reviews per year",
-      "countries": "We operate in more than 20 countries",
-      "businesses": "We empower over 100,000 businesses"
+      "title": "Transform destinations. Empower communities. Make a career with us.",
+      "description": "At Local Secrets, tourism is a driver of economic development, social inclusion and cultural preservation. If you are looking to grow professionally in a dynamic and purposeful environment, join a team that transforms the way the world travels and connects.",
+      "users": "Transform destinations",
+      "reviews": "Empower communities",
+      "countries": "Develop your career with our values.",
+      "businesses": "We welcome new talent and transformative ideas in tourism."
     },
     "newsletter": {
-      "title": "If you don't find the position you're looking for, you can contact us",
-      "buttonText": "Contact"
+      "title": "If you do not find the position you are looking for, you can contact us.",
+      "buttonText": "Get in touch"
     },
     "testimonials": {
         "title": "What do employees say about us?",
-        "description": "Check out what our workers say about the Local Secrets portal. Our goal is to provide the highest quality for all audiences.",
-        "avatarAlt": "Employee portrait",
+        "description": "We value fresh perspectives and welcome those who want to propose, build and lead. At Local Secrets, every voice counts and every idea can become an experience that transforms the way we travel.",
+        "avatarAlt": "Retrato de empleado",
         "quotes": [
-          "\"From the beginning I found Local Secrets super easy to use. Plus I downloaded the app to manage my business from anywhere. Amazing!\"",
-          "\"Simply the best website. I especially recommend it for businesses that are just starting out and don't know how to get noticed\"",
-          "\"Super attentive. They answered all my questions very quickly and my location has had more visits since we've been on Local Secrets. Thank you very much\""
+          "\"Javier Álvarez: Local Secrets has been my first professional experience, and it couldn't have been better. I have grown in a dynamic and collaborative environment, learning about the tourism industry while contributing to a project that values local and authentic experiences.\"",
+          "\"Carlos Freire: Our day-to-day is an invitation to discover and share what makes each place unique. Belonging to Local Secrets means valuing the authentic details that make every corner of the world special.\"",
+          "\"Gia Orellana: Working at Local Secrets is like discovering a new place every day, creating content for people around the world to explore authentic destinations.\""
         ]
       }
   }
