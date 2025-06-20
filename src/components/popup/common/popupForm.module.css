@@ -1,0 +1,62 @@
+/* Popup Form Styles */
+  .popupBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+  }
+
+  .popupModal {
+    background-color: white;
+    color: #333;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 2rem;
+    width: 100%;
+    max-width: 32rem;
+    position: relative;
+    animation: fade-in-up 0.3s ease-out forwards;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #9ca3af;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  .formSubtitle {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+  
+  .formField { margin-bottom: 1rem; }
+  .formLabel { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem; }
+  .formInput, .formTextarea { width: 100%; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; box-sizing: border-box; }
+  .formInput:focus, .formTextarea:focus { outline: none; box-shadow: 0 0 0 2px #f4c031; }
+  .submitButtonContainer { margin-top: 2rem; text-align: right; }
+  .submitButton { padding: 0.75rem 1.5rem; background-color: #f4c031; color: white; font-weight: 600; border: none; border-radius: 0.5rem; cursor: pointer; }
+
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
