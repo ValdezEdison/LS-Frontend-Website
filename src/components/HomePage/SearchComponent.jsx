@@ -147,8 +147,13 @@ function SearchComponent({ continents, loading, state, setState, unifiedSearchRe
       event: '/events/details',
       city: '/places/destination'
     };
-  
-    navigate(routes[type], { state: { id } });
+
+    const idStr = String(id);
+    if (idStr.includes('/')) { // Now safe for numbers
+        navigate(`${routes[type]}/${encodeURIComponent(idStr)}`);
+    } else {
+        navigate(routes[type], { state: { id } });
+    }
   };
 
 

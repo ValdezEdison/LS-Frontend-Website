@@ -13,6 +13,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
 
   const location = useLocation();
   const isMyTripsEditPage = location.pathname.includes("my-trips/edit");
+  const isEventsPage = location.pathname.includes("events");
 
   const { t } = useTranslation('MyTrips');
 
@@ -51,7 +52,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
   const eventLocation = city ? `${city.name}, ${city.country.name}` : t('travelItineraryEdit.eventCard.locationNotAvailable');
 
   return (
-    <div className={styles.eventCard} onClick={(e) => handleActions(e, 'viewMore', event?.id, title)}>
+    <div className={styles.eventCard} onClick={(e) => handleActions(e, 'viewMore', isEventsPage? event?.id : event?.absolute_url || event?.id, title)}>
       <div className={styles.eventImageContainer}>
         {isFavoriteToggling && (
           <div className={styles.loaderOverlay}>
@@ -71,7 +72,7 @@ function EventCard({ event, handleActions, isFavoriteToggling = false }) {
         <p className={styles.eventCategory}>{eventCategory}</p>
       </div>
       <div className={styles.eventActions}>
-        <button className={styles.viewMoreButton} onClick={(e) => handleActions(e, 'viewMore', event?.id, title)}>{t('travelItineraryEdit.buttons.viewMore')}</button>
+        <button className={styles.viewMoreButton} onClick={(e) => handleActions(e, 'viewMore', isEventsPage? event?.id : event?.absolute_url || event?.id, title)}>{t('travelItineraryEdit.buttons.viewMore')}</button>
         <button className={styles.addToTripButton} onClick={(e) => handleActions(e, isMyTripsEditPage ? 'addToStop' : 'addToTrip', event?.id, title)}>
           <span className={styles.addIcon}></span>
           {t('travelItineraryEdit.buttons.addToTrip')}

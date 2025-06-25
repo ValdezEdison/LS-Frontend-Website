@@ -4,7 +4,7 @@ import Map from "./Map";
 import Filter from "./Filter";
 import SidebarSkeleton from "../skeleton/PlacesPage/SidebarSkeleton";
 
-const Sidebar = ({categories, ratings, handleShowMapPopup, state, setState, filterLoading}) => {
+const Sidebar = ({categories, ratings, handleShowMapPopup, state, setState, filterLoading, onSearch=() => {}}) => {
 
 
 
@@ -12,7 +12,7 @@ const Sidebar = ({categories, ratings, handleShowMapPopup, state, setState, filt
     <aside className={styles.sidebar}>
       <Map onOpenPopup={handleShowMapPopup} />
       {filterLoading ? <SidebarSkeleton /> :
-        <Filter categories={categories} ratings={ratings} state={state} setState={setState}/>
+        <Filter categories={categories} ratings={ratings} state={state} setState={setState} onSearch={onSearch}/>
       }
     </aside>
   );

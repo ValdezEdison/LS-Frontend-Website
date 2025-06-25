@@ -223,7 +223,12 @@ const ItineraryPage = () => {
   const handleViewMoreDetails = (e, id) => {
 
     if (isAuthenticated) {
-      navigate('/itineraries/details', { state: { id } });
+      const idStr = String(id);
+      if (idStr.includes('/')) { // Now safe for numbers
+          navigate(`/itineraries/details/${encodeURIComponent(idStr)}`);
+      } else {
+          navigate(`/itineraries/details`, { state: { id } });
+      }
     } else {
       togglePopup("alert", true);
       setAlertTitle(tCommon('authAlert.viewDetails.title'));
@@ -264,7 +269,12 @@ const ItineraryPage = () => {
     const handleNavActions = (e, id, action) => {
     
       if (isAuthenticated && action === "viewDetail") {
-        navigate('/places/details', { state: { id } });
+        const idStr = String(id);
+        if (idStr.includes('/')) { // Now safe for numbers
+            navigate(`/places/details/${encodeURIComponent(idStr)}`);
+        } else {
+            navigate(`/places/details`, { state: { id } });
+        }
       } else if (action === "viewList") {
         navigate('/places');
       } else {

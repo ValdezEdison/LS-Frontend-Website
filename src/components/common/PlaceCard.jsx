@@ -12,6 +12,7 @@ const PlaceCard = forwardRef(
         
         const location = useLocation();
         const isItineraryPage = location.pathname.includes("itineraries");
+        const isEventsPage = location.pathname.includes("events");
         const { isAddToPopupOpen } = useSelector((state) => state.popup);
         const navigate = useNavigate();
 
@@ -36,7 +37,8 @@ const PlaceCard = forwardRef(
         };
 
         const handleCardClick = (e) => {
-            handleViewMoreDetails(e, place?.id, place?.display_text || place?.title);
+            const identifier = place?.absolute_url || place?.id;
+            handleViewMoreDetails(e, isEventsPage? place?.id : identifier, place?.display_text || place?.title);
         };
 
 

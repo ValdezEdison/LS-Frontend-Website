@@ -26,7 +26,7 @@ const MapPopup = ({ onClose, categories = {}, ratings = {}, state, setState, han
     const location = useLocation();
     const isEventsRoute = location.pathname === '/places/events';
     const isDetailsRoute = location.pathname.includes('/details');
-    const isPlacesDetailsPage = location.pathname === '/places/details';
+    const isPlacesDetailsPage = location.pathname.includes('/places/details');
     const isEventDetailsPage = location.pathname === '/events/details';
     const isPlacesPage = location.pathname === '/places';
     const isDestinationEvents = location.pathname === '/places/events';

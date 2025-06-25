@@ -107,7 +107,12 @@ const TravelItineraryEdit = () => {
 
   const handleViewMoreDetails = (e, id) => {
     e.stopPropagation();
-    navigate('/places/details', { state: { id } });
+    const idStr = String(id);
+    if (idStr.includes('/')) { // Now safe for numbers
+        navigate(`/places/details/${encodeURIComponent(idStr)}`);
+    } else {
+        navigate(`/places/details`, { state: { id } });
+    }
   };
 
 
@@ -332,7 +337,12 @@ const TravelItineraryEdit = () => {
   const handleNavActions = (e, id, action) => {
     
     if (action === "viewDetail") {
-      navigate('/places/details', { state: { id } });
+      const idStr = String(id);
+      if (idStr.includes('/')) { // Now safe for numbers
+          navigate(`/places/details/${encodeURIComponent(idStr)}`);
+      } else {
+          navigate(`/places/details`, { state: { id } });
+      }
     } else if (action === "viewList") {
       navigate('/places');
     }

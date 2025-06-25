@@ -11,7 +11,7 @@ import ImageGalleryPopupContent from "../../components/PlacesDetailPage/PlacesDe
 import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesDetailPopup/ReviewSectionPopupContent";
 import { openPopup, closePopup, closeAddToTripPopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
@@ -236,7 +236,13 @@ const PlaceDetails = () => {
   const handleViewMoreDetails = (e, id) => {
     togglePopup("map", false);
     if (isAuthenticated) {
-      navigate('/places/details', { state: { id } });
+        const idStr = String(id);
+        if (idStr.includes('/')) { // Now safe for numbers
+            navigate(`/places/details/${encodeURIComponent(idStr)}`);
+        } else {
+            navigate(`/places/details`, { state: { id } });
+        }
+      
     } else {
       togglePopup("alert", true);
       setAlertTitle(tCommon('authAlert.viewDetails.title'));
@@ -274,25 +280,57 @@ const PlaceDetails = () => {
   ];
 
   const location = useLocation();
+  const { id: absolute_url } = useParams();
   const { id } = location.state || {};
+  const cleanUrl = (url) => {
+    if (!url) return url;
+    return url.replace(/^\/?sites\//, '');
+  };
+  const identifier = absolute_url ? cleanUrl(absolute_url) : id;
+  const trackingEnabled = currentLocation?.preferences?.geolocation_enabled;
 
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchPlaceById(id));
-      dispatch(fetchPlaceComments(id));
-      dispatch(generateLink(id));
-      dispatch(fetchCities({}))
-      if(currentLocation) {
-        dispatch(fetchNearbyPlaces({page: 1, placeId: id, latitude: currentLocation.preferences?.last_known_latitude, longitude: currentLocation.preferences?.last_known_longitude}));
-      }else{
-        dispatch(fetchNearbyPlaces({placeId: id}));
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchData = async () => {
+    if (identifier) {
+      try {
+        // First fetch the place details
+        const placeResponse = await dispatch(fetchPlaceById(identifier));
+        if (isMounted && placeResponse.payload?.id) {
+          const placeId = placeResponse.payload.id;
+          
+          // Now dispatch other actions with the proper ID from API response
+          dispatch(fetchPlaceComments(placeId));
+          dispatch(generateLink(placeId));
+          dispatch(fetchCities({}));
+          if (currentLocation && trackingEnabled) {
+            dispatch(fetchNearbyPlaces({
+              page: 1, 
+              placeId: placeId, 
+              latitude: currentLocation.preferences?.last_known_latitude, 
+              longitude: currentLocation.preferences?.last_known_longitude
+            }));
+          } else {
+            dispatch(fetchNearbyPlaces({ placeId: placeId, page: 1 }));
+          }
+         
+        }
+      } catch (error) {
+        console.error('Error fetching place details:', error);
       }
-     
     }
-    return () => {
-      dispatch(resetShareableLink());
-    }
-  }, [id, dispatch, language, currentLocation]);
+  };
+
+  fetchData();
+
+  return () => {
+    isMounted = false;
+    dispatch(resetShareableLink());
+  };
+}, [identifier, dispatch, language, currentLocation]);
+
+
 
   const handleClickViewMoreDetails = (index) => {
   setGalleryStartIndex(index); // Set the index of the image that was clicked
@@ -624,8 +662,8 @@ const PlaceDetails = () => {
       setState({
         ...state,
 
-        latitude: place.address.latitude,
-        longitude: place.address.longitude
+        latitude: place.address?.latitude,
+        longitude: place.address?.longitude
 
       })
       // dispatch(fetchGeoLocations({ type: "place"}));
@@ -649,7 +687,12 @@ const PlaceDetails = () => {
   const handleNavActions = (e, id, action) => {
     
     if (isAuthenticated && action === "viewDetail") {
-      navigate('/places/details', { state: { id } });
+      const idStr = String(id);
+      if (idStr.includes('/')) { // Now safe for numbers
+          navigate(`/places/details/${encodeURIComponent(idStr)}`);
+      } else {
+          navigate(`/places/details`, { state: { id } });
+      }
     } else if (action === "viewList") {
       navigate('/places');
     } else {

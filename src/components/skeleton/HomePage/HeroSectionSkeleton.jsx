@@ -38,7 +38,7 @@ const HeroSectionSkeleton = () => {
           />
         )}
       </div>
-      <style jsx>{`
+      <style jsx="true">{`
         .hero-section {
           position: relative;
           min-height: 400px;

@@ -60,8 +60,13 @@ const TripDetails = () => {
   }, [language, id, dispatch]);
 
   const handleViewMoreDetails = (e,id) => {
-    ;
-    navigate('/places/details', { state: { id } });
+   
+    const idStr = String(id);
+    if (idStr.includes('/')) { // Now safe for numbers
+        navigate(`/places/details/${encodeURIComponent(idStr)}`);
+    } else {
+        navigate(`/places/details`, { state: { id } });
+    }
   };
 
   const handleActions = (e, action, id) => {
@@ -127,7 +132,12 @@ const TripDetails = () => {
         const handleNavActions = (e, id, action) => {
     
           if (action === "viewDetail") {
-            navigate('/places/details', { state: { id } });
+            const idStr = String(id);
+            if (idStr.includes('/')) { // Now safe for numbers
+                navigate(`/places/details/${encodeURIComponent(idStr)}`);
+            } else {
+                navigate(`/places/details`, { state: { id } });
+            }
           } else if (action === "viewList") {
             navigate('/places');
           }

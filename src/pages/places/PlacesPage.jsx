@@ -294,7 +294,12 @@ const PlacesPage = () => {
 
   const handleViewMoreDetails = (e, id) => {
     if (isAuthenticated) {
-      navigate('/places/details', { state: { id } });
+      const idStr = String(id);
+      if (idStr.includes('/')) { // Now safe for numbers
+          navigate(`/places/details/${encodeURIComponent(idStr)}`);
+      } else {
+          navigate(`/places/details`, { state: { id } });
+      }
     } else {
       togglePopup("alert", true);
       setAlertTitle(tCommon('authAlert.viewDetails.title'));
@@ -359,6 +364,9 @@ const PlacesPage = () => {
           ...prev,
           stops: [...prev.stops, id]
         }));
+        break;
+      case 'search':
+        handleSearch(e);
         break;
       default:
         break;
@@ -491,12 +499,12 @@ const PlacesPage = () => {
           type: "place",
           radius: currentLocation.preferences?.default_radius || 5000
         }));
-        dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam }));
+        dispatch(fetchGeoLocations({ cityId: "", type: "place", points: pointsParam, page: 1 }));
       
          
       } else {
         dispatch(fetchRandomPlaces({ page: 1, type: "place" }));
-        dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
+        dispatch(fetchGeoLocations({ cityId: "", type: "place", page: 1 }));
       }
     }
     setHasFiltersChanged(false)
@@ -540,49 +548,11 @@ const PlacesPage = () => {
     return () => debouncedFetchCities.cancel();
   }, [state.selectedCountryId, state.destinationSearchQuery, debouncedFetchCities, dispatch]);
 
-  useEffect(() => {
-    // Fetch places when filters change
-    if (initialRender.current) {
-      initialRender.current = false;
 
-      prevDepsRef.current = [
-        state.selectedCountryName,
-        state.selectedDestinationId,
-        state.selectedDestinations,
-        state.selectedOrder,
-        state.selectedCountryId,
-        state.ratings,
-        state.categories,
-        state.levels,
-        state.points,
-        state.page,
-        state.subcategories,
-        language,
-      ];
 
-      return;
-    }
 
-    const currentDeps = [
-      state.selectedCountryName,
-      state.selectedDestinationId,
-      state.selectedDestinations,
-      state.selectedOrder,
-      state.selectedCountryId,
-      state.ratings,
-      state.categories,
-      state.levels,
-      state.points,
-      state.page,
-      state.subcategories,
-      language,
-    ];
-
-    const hasChanged = currentDeps.some((dep, i) => dep !== prevDepsRef.current[i]);
-
-    if (hasChanged) {
-      setHasFiltersChanged(true);
-      dispatch(resetPlacesList());
+  const handleSearch = async (e) => {
+     dispatch(resetPlacesList());
       if(!trackingEnabled && (
         state.selectedDestinationId !== null ||
         state.selectedCountryName !== "" ||
@@ -727,29 +697,16 @@ const PlacesPage = () => {
         )
       ) {
         dispatch(fetchRandomPlaces({ page: 1, type: "place" }));
-        dispatch(fetchGeoLocations({ cityId: "", type: "place" }));
+        dispatch(fetchGeoLocations({ cityId: "", type: "place", page: 1 }));
        }
-      
- 
-      prevDepsRef.current = currentDeps;
-    }
-  }, [
-    state.selectedCountryName,
-    state.selectedDestinationId,
-    state.selectedDestinations,
-    state.selectedOrder,
-    state.selectedCountryId,
-    state.ratings,
-    state.categories,
-    state.levels,
-    state.points,
-    state.page,
-    state.subcategories,
-    language,
-    dispatch
-  ]);
+  }
 
-
+useEffect(() => {
+  if(language) {
+    handleSearch();
+  }
+  
+}, [language])
 
   useEffect(() => {
     // Navigation when destination is selected
@@ -1081,6 +1038,7 @@ const PlacesPage = () => {
                     state={state}
                     setState={setState}
                     filterLoading={filterLoading}
+                    onSearch={ handleSearch}
                   />
               {/* //   )
               // } */}

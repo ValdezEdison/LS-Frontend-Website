@@ -108,5 +108,6 @@
     "noStops": "No stops available"
   },
    "noResultsBasedOnManualLocation": "We've customised content for {{city}}. <br/> <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>",
-  "noResultsBasedOnCurrentLocation": "We've customised content for your current location.<br/> <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>"
+  "noResultsBasedOnCurrentLocation": "We've customised content for your current location.<br/> <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>",
+  "searchPlaces": "Search"
 }

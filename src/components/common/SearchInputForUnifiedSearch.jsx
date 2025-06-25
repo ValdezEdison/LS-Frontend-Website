@@ -72,7 +72,7 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
                 {suggestions.map((suggestion, index) => (
                   <SuggestionItem
                     key={index}
-                    id={suggestion.id}
+                    id={type === "places" ? suggestion?.absolute_url || suggestion.id : suggestion.id}
                     text={suggestion?.name || suggestion?.title || ""}
                     onSelect={onSelect}
                     type={suggestion?.type || ""}

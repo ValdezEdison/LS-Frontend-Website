@@ -17,7 +17,7 @@ const Map = ({ onOpenPopup }) => {
     const { t } = useTranslation('Common');
     const location = useLocation();
 
-    const isPlacesDetailsPage = location.pathname === '/places/details';
+    const isPlacesDetailsPage = location.pathname.includes('/places/details');
     const isEventsDetailsPage = location.pathname === '/events/details';
 
     useEffect(() => {

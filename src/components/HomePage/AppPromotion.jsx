@@ -18,7 +18,7 @@ const AppPromotion = ({ campaignData }) => {
         /> */}
         </div>
       </div>
-      <style jsx>{`
+      <style jsx="true">{`
         .app-promotion {
           display: flex;
           flex-direction: column;

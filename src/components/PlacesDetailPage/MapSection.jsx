@@ -21,15 +21,21 @@ const MapSection = ({ place, handleShowMapPopup }) => {
             </li>
             ) : (
             // Otherwise, map over the schedules as before.
-            place?.schedules.map((schedule, index) => (
-              <li key={index} className={styles.hoursItem}>
-                <span className={styles.day}>{schedule.day}</span>
-                <span className={styles.hours}>
-                  {schedule.opening_hours[0]?.initial_hour} -{" "}
-                  {schedule.opening_hours[0]?.end_hour}
-                </span>
-              </li>
-            ))
+       place?.schedules
+          .filter(schedule => schedule.opening_hours.length > 0) // Only show days with opening hours
+          .map((schedule, index) => (
+            <li key={index} className={styles.hoursItem}>
+              <span className={styles.day}>{schedule.day}</span>
+              <span className={styles.hours}>
+                {schedule?.opening_hours.map((hour, hourIndex) => (
+                  <span key={hourIndex}>
+                    {hour.initial_hour} - {hour.end_hour}
+                    {hourIndex < schedule.opening_hours.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+              </span>
+            </li>
+          ))
           )}
         </ul>
       </div>

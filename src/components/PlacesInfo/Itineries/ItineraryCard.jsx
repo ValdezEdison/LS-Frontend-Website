@@ -30,8 +30,8 @@ const ItineraryCard = ({ place, index, handleViewMoreDetails, handleActions = ()
       style={style}
       {...attributes}
       {...listeners} className={styles.itenaryCardWrapper}  {...(isTripEditPage
-        ? { onDoubleClick: (e) => handleViewMoreDetails(e, place?.id) }
-        : { onClick: (e) => handleViewMoreDetails(e, place?.id) }
+        ? { onDoubleClick: (e) => handleViewMoreDetails(e, place?.absolute_url || place?.id) }
+        : { onClick: (e) => handleViewMoreDetails(e, place?.absolute_url || place?.id) }
       )}>
       {/* <div className={styles.cardIndex}>{index}</div> */}
 

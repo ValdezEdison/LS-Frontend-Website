@@ -10,7 +10,7 @@ const AppPromotionImage = ({ imageUrl }) => {
         className="app-promotion-image__background"
       />
     
-      <style jsx>{`
+      <style jsx="true">{`
         .app-promotion-image {
           display: flex;
           flex-direction: column;
