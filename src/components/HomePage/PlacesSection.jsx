@@ -61,7 +61,9 @@ const PlacesSection = ({ places = [] }) => {
         if(place?.absolute_url){
           navigate(place.absolute_url);
           navigate(`/places/details/${encodeURIComponent(place.absolute_url)}`);
-        }else{
+        }
+        
+        else{
           navigate(`/places/details`, { state: { id: place.id } });
         }
         

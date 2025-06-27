@@ -28,13 +28,15 @@ const LanguageSelector = ({ languagesRef, handleLanguageChange }) => {
   return (
     <div className={styles.languageSelector} role="menu" ref={languagesRef}>
       {filteredLanguages.map((lang) => (
-        <LanguageOption
-          key={lang.code}
-          flag={flagImages[lang.code]} // Use the corresponding flag image
-          language={lang.name}
-          selected={language === lang.code}
-          onClick={() => handleLanguageChange(lang.id, lang.code, flagImages[lang.code], lang.name)}
-        />
+      <LanguageOption
+        key={lang.code}
+        flag={flagImages[lang.code]} // Display corresponding flag
+        language={lang.name}
+        selected={language === lang.code}
+        onClick={() =>
+          handleLanguageChange(lang.id, lang.code, flagImages[lang.code], lang.name)
+        }
+      />
       ))}
     </div>
   );
