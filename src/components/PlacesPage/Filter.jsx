@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Sidebar.module.css'; // Assuming you have a CSS module for styles
 import { useTranslation } from 'react-i18next';
 
-const Filter = ({ categories, ratings, state, setState }) => {
+const Filter = ({ categories, ratings, state, setState, onSearch=() => {} }) => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [visibleSubcategories, setVisibleSubcategories] = useState({});
@@ -248,8 +248,11 @@ const Filter = ({ categories, ratings, state, setState }) => {
       [categoryId]: !prev[categoryId],
     }));
   };
+  const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
+  const [lastClearEvent, setLastClearEvent] = useState(null);
 
-  const clearFilters = () => {
+  const clearFilters = (e) => {
+    setLastClearEvent(e);
     setSelectedFilters([]);
     setState((prevState) => ({
       ...prevState,
@@ -259,7 +262,18 @@ const Filter = ({ categories, ratings, state, setState }) => {
       ratings: '',
     }));
     setExpandedCategories({});
+    setHasFiltersChanged(true);
   };
+
+     
+  
+    useEffect(() => {
+    if (hasFiltersChanged) {
+          onSearch(lastClearEvent);
+        setHasFiltersChanged(false);
+        setLastClearEvent(null);
+    }
+    }, [state, hasFiltersChanged]);
 
   useEffect(() => {
     const hasFilters = 
@@ -355,7 +369,7 @@ const Filter = ({ categories, ratings, state, setState }) => {
     <div className={styles.filters}>
       <h2 className={styles.filterTitle}>{t("filter.filterBy")}</h2>
       {hasActiveFilters && (
-        <div className={styles.clearFilters} onClick={clearFilters}>
+        <div className={styles.clearFilters} onClick={(e) => clearFilters(e)}>
           {tCommon("removeFilters")}
         </div>
       )}

@@ -5,10 +5,14 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./Widget.module.css";
 import { PlaceHolderImg2 } from "./Images";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 const Widget = ({ data = [], title, count, handleNavActions, seeMore = true}) => {
 
   const { t } = useTranslation("Common");
+  const location = useLocation();
+
+  const isEventspage = location.pathname === "/events";
   
 ;
   const settings = {
@@ -46,7 +50,7 @@ const Widget = ({ data = [], title, count, handleNavActions, seeMore = true}) =>
       {data.length > 0 ? 
       <Slider {...settings}>
         {data.map((place, index) => (
-          <div key={index} className={styles.placeCard} onClick={(e) =>handleNavActions(e, place.id, "viewDetail")}>
+          <div key={index} className={styles.placeCard} onClick={(e) =>handleNavActions(e, isEventspage ? place.id : place?.absolute_url || place.id, "viewDetail")}>
             <img
               src={place.images[0] ? place.images[0]?.original : PlaceHolderImg2}
               alt={place.name}

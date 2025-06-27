@@ -5,7 +5,7 @@ import ItineraryCard from "../../../components/PlacesInfo/Itineries/ItineraryCar
 import RelatedContent from "../../../components/PlacesInfo/Itineries/RelatedContent";
 import styles from "./ItineraryDetail.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchItineraryDetails } from "../../../features/places/placesInfo/itinerary/ItineraryAction";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Import the skeleton styles
@@ -38,7 +38,14 @@ const ItineraryDetail = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = location.state;
+  const { id } = location.state || {};
+  const { id: absolute_url } = useParams();
+
+  const cleanUrl = (url) => {
+    if (!url) return url;
+    return url.replace(/^\/?routes\//, '');
+  };
+  const identifier = absolute_url ? cleanUrl(absolute_url) : id;
 
   const { language } = useContext(LanguageContext);
 
@@ -126,22 +133,45 @@ const ItineraryDetail = () => {
   };
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchItineraryDetails(id));
-      // dispatch(fetchSuggestedPlaces({ page: 1, type: "place" }));
-      if (isAuthenticated) {
-        dispatch(fetchTravelLiteList());
+    let isMounted = true;
+
+    const fetchData = async () => {
+      if (!identifier) return;
+
+      try {
+        // First fetch itinerary details
+        const itineraryResponse = await dispatch(fetchItineraryDetails(identifier));
+        
+        if (!isMounted) return;
+        
+        const itineraryId = itineraryResponse.payload?.id;
+        if (!itineraryId) return;
+
+        // Dispatch dependent actions using the correct ID from API
+        if (isAuthenticated) {
+          dispatch(fetchTravelLiteList());
+        }
+        
+        dispatch(fetchCities({}));
+        // dispatch(fetchTravelTime({ travelId: itineraryId, mode: formState.mode }));
+        dispatch(generateLink(itineraryId));
+        
+        // If you need the suggested places later:
+        // dispatch(fetchSuggestedPlaces({ page: 1, type: "place" }));
+        
+      } catch (error) {
+        console.error('Error fetching itinerary data:', error);
       }
-      dispatch(fetchCities({}));
-      dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
-      dispatch(generateLink(id));
-    }
+    };
+
+    fetchData();
+
     return () => {
+      isMounted = false;
       dispatch(resetTripType());
       dispatch(resetShareableLink());
     };
-
-  }, [dispatch, id, language]);
+  }, [dispatch, identifier, language]);
 
   useEffect(() => {
     if(itineraryDetails) {
@@ -154,7 +184,12 @@ const ItineraryDetail = () => {
 
     if(isAuthenticated){
 
-      navigate('/places/details', { state: { id } });
+      const idStr = String(id);
+      if (idStr.includes('/')) { // Now safe for numbers
+          navigate(`/places/details/${encodeURIComponent(idStr)}`);
+      } else {
+          navigate(`/places/details`, { state: { id } });
+      }
     }else{
         togglePopup("alert", true);
         setAlertTitle(tCommon('authAlert.viewDetails.title'));
@@ -389,8 +424,8 @@ const ItineraryDetail = () => {
   
 
   useEffect(() => {
-    if (formState.mode) {
-      dispatch(fetchTravelTime({ travelId: id, mode: formState.mode }));
+    if (formState.mode && itineraryDetails && itineraryDetails.id) {
+      dispatch(fetchTravelTime({ travelId: itineraryDetails.id, mode: formState.mode }));
     }
   }, [formState.mode, dispatch, id]);
 
@@ -475,7 +510,12 @@ const ItineraryDetail = () => {
     const handleNavActions = (e, id, action) => {
       
       if (isAuthenticated && action === "viewDetail") {
-        navigate('/places/details', { state: { id } });
+        const idStr = String(id);
+        if (idStr.includes('/')) { // Now safe for numbers
+            navigate(`/places/details/${encodeURIComponent(idStr)}`);
+        } else {
+            navigate(`/places/details`, { state: { id } });
+        }
       } else if (action === "viewList") {
         navigate('/places');
       } else {

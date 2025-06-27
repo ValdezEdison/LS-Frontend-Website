@@ -22,6 +22,10 @@ import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../popup/Alert/AlertPopup";
 import Modal from "../modal/Modal";
 
+
+import LocationService from "../../services/LocationService";
+ 
+
 const Header = () => {
 
   const { t, i18n } = useTranslation("Header");
@@ -151,17 +155,98 @@ const Header = () => {
     };
   }, [showNavBar]);
 
+
+useEffect(() => {
+  const initializeLanguageForGuest = async () => {
+    if (!isAuthenticated) {
+      try {
+        let detectedLanguageCode = navigator.language.split("-")[0]; // e.g., "fr" from "fr-FR"
+        // Use geolocation service to determine the country
+        const position = await LocationService.startLocationTracking(); // Use location service
+        // Call reverse geocoding or an external location API to get the country and map it to language codes
+        const locationData = await fetchLocationData(); // Hypothetical helper function
+        if (locationData?.countryCode) {
+          if (locationData.countryCode === "FR") {
+            detectedLanguageCode = "fr";
+          } else if (locationData.countryCode === "RU") {
+            detectedLanguageCode = "en"; // Default to English if Russian is unavailable
+          }
+          // Add more mappings if needed
+        }
+        // Match detected code with available languages
+        const availableLanguage = languagesList.find(
+          (lang) => lang.code === detectedLanguageCode
+        );
+        // Fallback to English if detected language isn't available
+        const selectedLanguage = availableLanguage || languagesList.find((lang) => lang.code === "en");
+        setLanguage(
+          selectedLanguage.id,
+          selectedLanguage.code,
+          flagImages[selectedLanguage.code],
+          selectedLanguage.name
+        );
+        i18n.changeLanguage(selectedLanguage.code);
+      } catch (error) {
+        console.error("Failed to initialize language for guest:", error);
+        // Fallback to English on error
+        const defaultLang = languagesList.find((lang) => lang.code === "en");
+        setLanguage(
+          defaultLang.id,
+          defaultLang.code,
+          flagImages[defaultLang.code],
+          defaultLang.name
+        );
+        i18n.changeLanguage("en");
+      }
+    }
+  };
+  initializeLanguageForGuest();
+}, [isAuthenticated, setLanguage, i18n]);
+
+  
   const isActive = (path) => {
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
 
+
   const handleLanguageChange = (id, code, flag, name) => {
-    const selectedLang = languagesList.find(lang => lang.code === code);
-    i18n.changeLanguage(code); // Update i18n
-    setLanguage(selectedLang.id, code, flag, name); // Update context and localStorage
-    setShowLanguageOption(false); // Close the language selector
-    // dispatch(updateUserLanguage(id));
-  };
+  const selectedLang = languagesList.find((lang) => lang.code === code);
+
+  i18n.changeLanguage(code); // Change i18n language
+  setLanguage(selectedLang.id, code, flag, name); // Update context and localStorage
+  
+  // Dispatch action to save the language preference
+  dispatch(updateUserLanguage(id)).then((result) => {
+    if (result.type === "auth/updateUserLanguage/fulfilled") {
+      if (result.payload?.detail) {
+        toast.success(result.payload.detail); // Show success toast
+        dispatch(getProfile()).then((profileResult) => {
+          if (profileResult.type === "auth/getProfile/fulfilled") {
+            const profileLanguage = profileResult.payload?.language;
+            if (profileLanguage) {
+              const { code: updatedCode, name: updatedName } = profileLanguage;
+              const updatedLang = languagesList.find((lang) => lang.code === updatedCode);
+              setLanguage(
+                updatedLang.id,
+                updatedCode,
+                flagImages[updatedCode],
+                updatedName
+              ); // Ensure context matches updated language
+              i18n.changeLanguage(updatedCode); // Sync i18n language
+            }
+          }
+        });
+      }
+    } else {
+      const errorMessage =
+        result.payload?.detail ||
+        result.error?.message ||
+        t("Failed to update language preference");
+      toast.error(errorMessage); // Show error toast
+    }
+  });
+};
+
 
   const languageData = getLanguageData();
 

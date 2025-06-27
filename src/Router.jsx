@@ -54,7 +54,8 @@ const Router = () => {
                 
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />
-                <Route path="/places/details" element={<PlaceDetails />} />
+                {/* <Route path="/places/details" element={<PlaceDetails />} /> */}
+                <Route path="/places/details/:id?" element={<PlaceDetails />} />
                 <Route path="/places/destination" element={<Destination />} />
                 <Route path="/places/events" element={<Events />} />
                 <Route path="/places/destination-places" element={<Places />} />
@@ -67,7 +68,7 @@ const Router = () => {
 
                 <Route path="/itineraries" element={<ItineraryPage />} />
                 {/* <Route path="/itineraries/details" element={<ItineraryDetails />} /> */}
-                <Route path="/itineraries/details" element={<ItineraryDetail />} />
+                <Route path="/itineraries/details/:id?" element={<ItineraryDetail />} />
 
                 <Route path="/explore" element={<ExplorePage />} />
 

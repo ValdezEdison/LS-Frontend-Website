@@ -58,7 +58,15 @@ const PlacesSection = ({ places = [] }) => {
   const handleNavigate = (place) => {
     if (place) {
       if(isAuthenticated){
-        navigate(`/places/details`, { state: { id: place.id } });
+        if(place?.absolute_url){
+          navigate(place.absolute_url);
+          navigate(`/places/details/${encodeURIComponent(place.absolute_url)}`);
+        }
+        
+        else{
+          navigate(`/places/details`, { state: { id: place.id } });
+        }
+        
       }else{
         togglePopup("alert", true);
         setAlertTitle(tCommon('authAlert.viewDetails.title'));

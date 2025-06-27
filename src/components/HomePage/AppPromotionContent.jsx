@@ -13,7 +13,7 @@ const AppPromotionContent = ({ title, description }) => {
       <p className="app-promotion-content__description"   dangerouslySetInnerHTML={{ __html: description }}>
       {/* {t("description")} */}
       </p>
-      <style jsx>{`
+      <style jsx="true">{`
         .app-promotion-content {
           display: flex;
           // min-width: 240px;

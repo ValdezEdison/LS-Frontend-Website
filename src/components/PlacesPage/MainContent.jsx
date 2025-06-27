@@ -79,7 +79,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
     },
     {
       label: `${t("filter.select")} ${t("filter.destination")}`,
-      options: cities,
+      options: citiesLoading ? [] : cities,
       selectedId: state.selectedDestinations,
       onSelect: (value) =>
         setState((prevState) => ({
@@ -253,6 +253,11 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
   }, [currentLocation, trackingEnabled]);
 
 
+  const onSearch = (e) => {
+    handleActions(e, 'search', "");
+  }
+
+
   return (
     <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
@@ -277,6 +282,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
         <FilterBar
           filters={filters}
           isLoading={citiesLoading || countriesLoading}
+          onSearch={onSearch}
         />
       </div>
       {!isAuthenticated && <LoginBanner handleNavigateToLogin={handleNavigateToLogin} styles={styles} />}
@@ -297,6 +303,7 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
           cities={cities}
           translate={t}
           type="places"
+          onSearch={onSearch}
         />
       </div>
       <div className={styles.placesList} ref={placesListRef}>

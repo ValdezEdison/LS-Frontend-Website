@@ -90,7 +90,7 @@ const ExplorePage = () => {
 
   const handleNavActions = (e, id, action) => {
     if(action === "viewDetail") {
-      navigate('/places/details', { state: { id } });
+      navigate('/blog-detail', { state: { id } });
     }else if(action === "viewList") {
       navigate('/blog-list');
     }
@@ -202,7 +202,7 @@ const ExplorePage = () => {
         }
       </div>
       
-      {isAuthenticated && <Newsletter />}
+      {!isAuthenticated && <Newsletter />}
       <Footer />
     </div>
   );

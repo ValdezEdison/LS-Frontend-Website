@@ -184,7 +184,12 @@ const Places = () => {
     const handleViewMoreDetails = (e, id) => {
         togglePopup("map", false);
         if (isAuthenticated) {
-            navigate('/places/details', { state: { id } });
+            const idStr = String(id);
+            if (idStr.includes('/')) { // Now safe for numbers
+                navigate(`/places/details/${encodeURIComponent(idStr)}`);
+            } else {
+                navigate(`/places/details`, { state: { id } });
+            }
         } else {
             togglePopup("alert", true);
             setAlertTitle(tCommon('authAlert.viewDetails.title'));
@@ -396,7 +401,12 @@ const Places = () => {
     const handleNavActions = (e, id, action) => {
         
         if (isAuthenticated && action === "viewDetail") {
-          navigate('/places/details', { state: { id } });
+            const idStr = String(id);
+            if (idStr.includes('/')) { // Now safe for numbers
+                navigate(`/places/details/${encodeURIComponent(idStr)}`);
+            } else {
+                navigate(`/places/details`, { state: { id } });
+            }
         } else if (action === "viewList") {
           navigate('/places');
         } else {

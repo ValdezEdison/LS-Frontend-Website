@@ -316,7 +316,7 @@ const Events = () => {
   const handleNavActions = (e, id, action) => {
     
     if (isAuthenticated && action === "viewDetail") {
-      navigate('/places/details', { state: { id } });
+      navigate('/events/details', { state: { id } });
     } else if (action === "viewList") {
       navigate('/places');
     } else {

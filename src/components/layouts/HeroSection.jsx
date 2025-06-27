@@ -43,7 +43,7 @@ const HeroSection = ({ handleNavigateToLogin, heroContent }) => {
           </button>
         )}
       </div>
-      <style jsx>{`
+      <style jsx="true">{`
         .hero-section {
           position: relative;
           min-height: 400px;

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../components/PlacesPage/MainContent.module.css";
 import styles2 from "./SelectedItemList.module.css";
 import { useTranslation } from "react-i18next";
 
-const SelectedItemList = ({ state, setState, categories, countries, cities, translate, type }) => {
+const SelectedItemList = ({ state, setState, categories, countries, cities, translate, type, onSearch }) => {
     const { t } = useTranslation("Common");
     const {
         selectedLevel,
@@ -17,6 +17,17 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
         categories: placesCategories,
         subcategories,
     } = state;
+
+    const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
+    const [lastClearEvent, setLastClearEvent] = useState(null);
+
+    useEffect(() => {
+    if (hasFiltersChanged) {
+         onSearch(lastClearEvent);
+        setHasFiltersChanged(false);
+        setLastClearEvent(null);
+    }
+    }, [state, hasFiltersChanged]);
 
     // Helper function to safely parse comma-separated string to array of numbers
     const parseIds = (str) => {
@@ -124,7 +135,8 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
     };
 
     // Function to clear all filters
-    const handleClickClearFilter = () => {
+    const handleClickClearFilter = (e) => {
+         setLastClearEvent(e);
         if (type === "submenu-places") {
             setState(prev => ({
                 ...prev,
@@ -147,6 +159,7 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
                 subcategories: "",
                 page: 1,
             }));
+            setHasFiltersChanged(true);
         } else if (type === "submenu-events") {
             setState(prev => ({
                 ...prev,
@@ -310,7 +323,7 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
                 ))}
 
                 {/* Render selected order */}
-                {type === "places" || type === "submenu-itineraries" && selectedOrder && (
+                {(type === "places" || type === "submenu-itineraries") && selectedOrder && (
                     <div className={styles.placesSelectedItem}>
                         <span className={styles.placesSelectedText}>
                             {translate(`filter.orderOptions.${selectedOrder}`)}
@@ -341,7 +354,7 @@ const SelectedItemList = ({ state, setState, categories, countries, cities, tran
                 )}
             </div>
 
-            <div className={styles.placesClearFilter} onClick={handleClickClearFilter}>
+            <div className={styles.placesClearFilter} onClick={(e) => handleClickClearFilter(e)}>
             {t("removeFilters")}
             </div>
         </>
