@@ -16,6 +16,7 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
   const shareOptionsRef = useRef(null);
 
   const location = useLocation();
+  const currentUrl = window.location.href;
 
   const isPlacesDetailPage = location.pathname.includes("places/details");
 
@@ -85,9 +86,9 @@ const MuseumInfo = ({ place, handleNavigateToWebsite, handleActions = () => { },
               className={styles.webIcon}
               onClick={() => handleGenerateLink()}
             />
-            {showShareOptions && shareableLink && (
+            {showShareOptions && (currentUrl || shareableLink) && (
               <ShareOptions
-                url={shareableLink}
+                url={currentUrl || shareableLink}
                 title={place?.title}
                 description={place?.description}
                 onClose={toggleShareOptions}

@@ -109,6 +109,6 @@
   },
 "noResultsBasedOnManualLocation": "We've customized content for {{city}}. <br/> <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>",
 "noResultsBasedOnCurrentLocation": "We've customized content for your current location. <br/> <changeLocation>Change location</changeLocation> or <disableLocation>Disable location services</disableLocation>",
-"searchPlaces": "Search"
+"searchPlaces": "Search places!"
   
 }
