@@ -19,10 +19,10 @@ const SearchInput = ({ handleSearchClick, showRegionDropDown, suggestionRef, han
 
     // Group suggestions by type
     const groupedSuggestions = suggestionsList ? {
-      places: suggestionsList.places || [],
-      events: suggestionsList.events || [],
       cities: suggestionsList.cities || [],
       countries: suggestionsList.countries || [],
+      places: suggestionsList.places || [],
+      events: suggestionsList.events || [],
       neighborhoods: suggestionsList.neighborhoods || [],
       regions: suggestionsList.regions || []
     } : {};

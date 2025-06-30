@@ -24,7 +24,7 @@ const FAQItem = ({ question, answer, isOpen, toggleOpen, index }) => {
         </div>
         <div className={styles[index === 0 ? 'faqDivider' : `faqDivider${index + 1}`]} />
         {isOpen && answer && (
-          <p className={styles[index === 0 ? 'faqAnswer' : `faqAnswer${index + 1}`]}>{answer}</p>
+          <p className={styles.faqAnswer} style={{ whiteSpace: 'pre-line',}} >{answer}</p>
         )}
       </article>
     );
