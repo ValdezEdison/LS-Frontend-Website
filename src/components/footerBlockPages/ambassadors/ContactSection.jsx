@@ -30,7 +30,7 @@ function ContactSection({ title, description, images }) {
         </div>
       </div>
 
-      <div className="page-center">
+      <div className="page-center" id="page-center">
         <div className={styles.formSection}>
           <h2 className={styles.formTitle}>
             {t('contact.formTitle')}

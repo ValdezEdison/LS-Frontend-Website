@@ -7,6 +7,10 @@ function CallToAction() {
 
   const { t } = useTranslation("LocalSecretManager");
 
+  const handleClick = () => {
+    window.location.href = "/ambassadors/#page-center";
+  };
+
   return (
     <section className={styles.ctaSection}>
       <div className={styles.ctaContent}>
@@ -14,11 +18,13 @@ function CallToAction() {
           {t('cta.title')}
         </h2>
         <p className={styles.ctaDescription}>
-        {t('cta.description')}
+          {t('cta.description')}
         </p>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.ctaButton}>{t('cta.buttonText')}</button>
+        <button className={styles.ctaButton} onClick={handleClick}>
+          {t('cta.buttonText')}
+        </button>
       </div>
     </section>
   );
