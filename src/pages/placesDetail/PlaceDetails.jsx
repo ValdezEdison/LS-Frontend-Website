@@ -277,7 +277,7 @@ useEffect(() => {
           
           // Now dispatch other actions with the proper ID from API response
           dispatch(fetchPlaceComments(placeId));
-          dispatch(generateLink(placeId));
+          // dispatch(generateLink(placeId));
           dispatch(fetchCities({}));
           if (currentLocation && trackingEnabled) {
             dispatch(fetchNearbyPlaces({
@@ -596,7 +596,7 @@ useEffect(() => {
   }, [place]);
 
   const handleGenerateLink = () => {
-    if (id) {
+    if (identifier.includes('/')) {
       setShowShareOptions(!showShareOptions);
     }
   }

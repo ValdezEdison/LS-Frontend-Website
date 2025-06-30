@@ -34,7 +34,7 @@ const FilterBar = ({ filters, isLoading, isDrawer=false, onSearch = () => {} }) 
           ))}
         </>
         {isPlacesPage &&
-          <button className={styles2.loginButton} onClick={(e) => onSearch(e)}>{t("searchPlaces")}</button>
+          <button className={styles2.searchButton} onClick={(e) => onSearch(e)}>{t("searchPlaces")}</button>
         }
     </div>
   );

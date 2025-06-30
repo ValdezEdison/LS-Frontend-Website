@@ -109,5 +109,5 @@
   },
    "noResultsBasedOnManualLocation": "Hemos personalizado el contenido para {{city}}. <br/> <changeLocation>Cambiar ubicación</changeLocation> o <disableLocation>Desactivar servicios de ubicación</disableLocation>",
   "noResultsBasedOnCurrentLocation": "Hemos personalizado el contenido para tu ubicación actual.<br/> <changeLocation>Cambiar ubicación</changeLocation> o <disableLocation>Desactivar servicios de ubicación</disableLocation>",
-  "searchPlaces": "Buscar!"
+  "searchPlaces": "Buscar! lugares!"
 }

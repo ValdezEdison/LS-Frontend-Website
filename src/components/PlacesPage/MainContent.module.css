@@ -93,6 +93,19 @@
   transition: all ease .3s;
 }
 
+.searchButton {
+  background-color: #f4c031;
+  color: #000000;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all ease .3s;
+  flex-shrink: 0;
+}
+
 .loginButtonWrapper{
   margin: 21px auto;
   display: flex;
@@ -100,6 +113,10 @@
 }
 
 .loginButton:hover {
+  background-color: #e5b22e;
+}
+
+.searchButton:hover {
   background-color: #e5b22e;
 }
 
