@@ -7,7 +7,10 @@
   "nearbyPlaces": "Other nearby places",
   "logInButton": "Sign in",
   "showMore": "Show more",
-  "visitWebsite": "Visit website",
+  "visitWebsite": "Visit website", 
+  "disableLocation": "Disable Location",
+  "toggleGeoError": "Failed to update location tracking."
+ ,
   "banner": {
     "title": "Apply our filters to get better results",
     "description": "67% of our customers are doing it",
@@ -58,4 +61,4 @@
     "and": "and",
     "peopleAlsoSeen": "Other people have also seen",
     "pageNotFound": "Page not found" 
-}
+} 
