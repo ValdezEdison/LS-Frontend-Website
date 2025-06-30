@@ -167,32 +167,7 @@ const PlaceDetails = () => {
       dispatch(toggleFavorite(id));
     }
   };
-
-  // const handleActions = (e, action, id, name) => {
-    
-  //   e.stopPropagation();
-  //   switch (action) {
-  //     case 'addToFavorites':
-  //       handleFavClick(e, id);
-  //       break;
-  //     // case 'addToTrip':
-  //     //   handleAddToTripClick(e, id, name);
-  //     //   setFormState(prev => ({ ...prev, type: "place" }));
-  //     //   break;
-  //     case 'viewMore':
-  //       handleViewMoreDetails(e, id);
-  //       break;
-  //     // case 'addToStop':
-  //     //   setFormState(prev => ({
-  //     //     ...prev,
-  //     //     stops: [...prev.stops, id]
-  //     //   }));
-  //     //   break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
+ 
   const handleAddToTripClick = (e, id, name) => {
     const result = handleTripClick(e, id, name);
     if (result?.needsAuth) {
@@ -351,15 +326,16 @@ useEffect(() => {
     togglePopup("reviewDrawer", false);
   };
 
-  const handleClickAddComment = () => {
-    if (!isAuthenticated) {
-      togglePopup("alert", true);
-    } else {
-      togglePopup("comment", true);
-    }
-
-  };
-
+const handleClickAddComment = () => {
+  if (!isAuthenticated) {
+    togglePopup("alert", true); // Ask user to login
+  } else if (!place?.id) {
+    console.error("[Error]: Unable to proceed without a valid placeId.");
+    toast.error("Place couldn't be identified. Please refresh and try.");
+  } else {
+    togglePopup("comment", true); // Show comment form
+  }
+};
   const handleNavigateToWebsite = (place) => {
     if (place?.url) {
       window.open(place.url, "_blank"); // Open the external URL in a new tab
@@ -418,43 +394,7 @@ useEffect(() => {
       togglePopup("comment", true);
     }
   };
-
-  // const handleSubmitComment = () => {
-  //   if (comment.text.trim() && comment.rating > 0) {
-  //     const action = isEditing
-  //       ? dispatch(editComment({
-  //         commentId: editingCommentId,
-  //         commentData: {
-  //           body: comment.text,
-  //           rating: comment.rating,
-  //         }
-  //       }))
-  //       : dispatch(addComment({
-  //         placeId: id,
-  //         commentData: {
-  //           body: comment.text,
-  //           rating: comment.rating,
-  //         }
-  //       }));
-
-  //     action
-  //       .unwrap()
-  //       .then(() => {
-  //         setComment({ text: "", rating: 0 });
-  //         setSuccessMessage(editingCommentId ? "Comment updated successfully!" : "Comment added successfully!");
-  //         togglePopup("comment", false);
-  //         togglePopup("success", true);
-  //         setIsEditing(false);
-  //         setEditingCommentId(null);
-  //         dispatch(fetchPlaceComments(id)); // Refresh comments
-  //       })
-  //       .catch((error) => {
-  //         
-  //       });
-  //   }
-  // };
-
-
+ 
   const handleClickDeleteComment = (commentId) => {
     if (!isAuthenticated) {
       togglePopup("alert", true);
@@ -554,92 +494,76 @@ useEffect(() => {
       }
     }));
   };
+useEffect(() => {
+  if (!identifier || !place?.id) {
+    console.error("[Error]: Identifier or placeId missing.");
+  }
+}, [identifier, place?.id]);
 
-  const handleSubmitComment = () => {
+ const handleSubmitComment = () => {
+  // Mark all fields as touched
+  setCommentForm((prev) => ({
+    ...prev,
+    touched: {
+      text: true,
+      rating: true,
+    },
+  }));
 
-    // Mark all fields as touched
-    setCommentForm(prev => ({
-      ...prev,
-      touched: {
-        text: true,
-        rating: true
-      }
-    }));
+  if (validateCommentForm()) {
+    togglePopup("comment", false);
 
-    if (validateCommentForm()) {
-      togglePopup("comment", false);
-      const action = isEditing
-        ? dispatch(editComment({
-          commentId: editingCommentId,
-          commentData: {
-            body: commentForm.text,
-            rating: commentForm.rating,
-          }
-        }))
-        : dispatch(addComment({
-          placeId: id,
-          commentData: {
-            body: commentForm.text,
-            rating: commentForm.rating,
-          }
-        }));
+    // Dispatch addComment action
+    const action = dispatch(
+      addComment({
+        placeId: place.id,
+        commentData: {
+          body: commentForm.text,
+          rating: commentForm.rating,
+        },
+      })
+    );
 
-      action
-        .unwrap()
-        .then(() => {
-          setCommentForm({
+    action
+      .unwrap()
+      .then(() => {
+        // Reset error state on success
+        setCommentForm({
+          text: "",
+          rating: 0,
+          errors: {
             text: "",
-            rating: 0,
-            errors: {
-              text: '',
-              rating: ''
-            },
-            touched: {
-              text: false,
-              rating: false
-            }
-          });
-          setSuccessTitle(tDetail(isEditing 
-            ? 'reviews.success.updatedTitle' 
-            : 'reviews.success.addedTitle'));
-          
-          setSuccessMessage(tDetail(isEditing 
-            ? 'reviews.success.updatedMessage' 
-            : 'reviews.success.addedMessage'));
-          togglePopup("comment", false);
-          togglePopup("success", true);
-          setIsEditing(false);
-          setEditingCommentId(null);
-          dispatch(fetchPlaceComments(id));
-        })
-        .catch((error) => {
-          
-          togglePopup("comment", false);
-          setCommentForm({
-            text: "",
-            rating: 0,
-            errors: {
-              text: '',
-              rating: ''
-            },
-            touched: {
-              text: false,
-              rating: false
-            }
-          });
-
-          // Check for the specific error about already posted review
-          if (error.error === "An error ocurred" && error.detail === "You have already posted a review") {
-            // Show toast message
-            toast.warning(error.detail, "Error");
-          } else {
-            // Show generic error message for other errors
-            toast.error(error.error_description || tDetail('errors.genericError'));
-          }
+            rating: "",
+          },
+          touched: {
+            text: false,
+            rating: false,
+          },
         });
-    }
-  };
 
+        // Show success message
+        setSuccessTitle(tDetail("reviews.success.addedTitle"));
+        setSuccessMessage(tDetail("reviews.success.addedMessage"));
+        togglePopup("success", true);
+      })
+      .catch((error) => {
+        // Handle error explicitly
+        togglePopup("comment", false);
+        console.error("[COMMENT ERROR]: ", error);
+
+        if (
+          error.error === "An error occurred" &&
+          error.detail === "You have already posted a review"
+        ) {
+          toast.warning(error.detail, "Error");
+        } else {
+          toast.error(
+            error.error_description || tDetail("errors.genericError")
+          );
+        }
+      });
+  }
+};
   useEffect(() => {
     let timer;
     if (popupState.success) {

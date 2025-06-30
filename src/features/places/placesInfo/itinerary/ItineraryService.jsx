@@ -29,7 +29,7 @@ const itineraryService = {
     },
 
     generateLink: async (tripId) => {
-        return ApiService.get(`/routes/${tripId}/generate_link`);
+        return ApiService.get(`/routes/${tripId}/generate_web_link`);
     },
 
     downloadTrip: async (tripId) => {
