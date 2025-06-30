@@ -123,9 +123,14 @@ const PlaceCard = forwardRef(
                             {place?.city?.name && place?.city?.country?.name && ", "}
                             {place?.city?.country?.name}
                         </p>
-                            <p className={styles.placeCategory}>
-                                {place?.categories?.[0]?.title || place?.levels?.[0]?.title || ""}
-                            </p>
+                  
+                             <p className={styles.placeCategory}>
+                        {place?.categories?.length > 0
+                            ? place.categories[0]?.title // Prioritize categories
+                            : place?.levels?.length > 0
+                            ? place.levels[0]?.title // Fallback to levels
+                            : translate("placeCard.noCategoryAvailable")} {/* Fallback text */}
+                    </p>
                         </>
                         }
                         {place?.num_of_stops !== undefined && (

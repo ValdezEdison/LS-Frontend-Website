@@ -20,90 +20,109 @@ const Map = ({ onOpenPopup }) => {
     const isPlacesDetailsPage = location.pathname.includes('/places/details');
     const isEventsDetailsPage = location.pathname === '/events/details';
 
+const markersRef = useRef([]);
+const clustererRef = useRef(null);
+
 useEffect(() => {
-    const loader = new Loader({
-        apiKey: apiKey,
-        version: "weekly",
-        libraries: ["maps", "marker", "core", "geometry"],
+  const loader = new Loader({
+    apiKey: apiKey,
+    version: "weekly",
+    libraries: ["maps", "marker", "core", "geometry"],
+  });
+
+  loader.load().then(() => {
+    const google = window.google;
+
+    const mapInstance = new google.maps.Map(mapContainerRef.current, {
+      center: { lat: 0, lng: 0 },
+      zoom: 2,
+      mapId: mapId,
+      fullscreenControl: false,
     });
 
-    loader.load().then(() => {
-        const google = window.google;
+    setMap(mapInstance);
 
-        // Initialize the map with a reasonable default
-        const mapInstance = new google.maps.Map(mapContainerRef.current, {
-            center: { lat: 0, lng: 0 },
-            zoom: 2,
-            mapId: mapId,
-            fullscreenControl: false,
+    const bounds = new google.maps.LatLngBounds();
+
+    // Clear previous markers if any
+    markersRef.current.forEach(marker => marker.setMap(null));
+    markersRef.current = [];
+
+    if (place?.address?.latitude && place?.address?.longitude) {
+      const position = {
+        lat: place.address.latitude,
+        lng: place.address.longitude,
+      };
+
+      const marker = new google.maps.Marker({
+        position,
+        map: mapInstance,
+      });
+
+      markersRef.current.push(marker);
+
+      bounds.extend(position);
+      mapInstance.setCenter(position);
+      mapInstance.setZoom(15);
+    } else if (geoLocations.length > 0) {
+      const validLocations = geoLocations.filter(
+        (loc) => loc?.address?.latitude && loc?.address?.longitude
+      );
+
+      if (validLocations.length === 0) {
+        console.error('No valid geolocations found');
+        return;
+      }
+
+      validLocations.forEach((location) => {
+        const position = {
+          lat: location.address.latitude,
+          lng: location.address.longitude,
+        };
+
+        bounds.extend(position);
+
+        const marker = new google.maps.Marker({
+          position,
+          map: mapInstance,
         });
 
-        setMap(mapInstance);
+        markersRef.current.push(marker);
+      });
 
-        const bounds = new google.maps.LatLngBounds();
-        let markers = [];
+      mapInstance.fitBounds(bounds);
 
-        if (place?.address?.latitude && place?.address?.longitude) {
-            // Place marker for the single location
-            const position = {
-                lat: place.address.latitude,
-                lng: place.address.longitude,
-            };
+      // Clear previous clusterer if any
+      if (clustererRef.current) {
+        clustererRef.current.clearMarkers();
+      }
 
-            const marker = new google.maps.Marker({
-                position,
-                map: mapInstance,
-            });
+      clustererRef.current = new MarkerClusterer({ map: mapInstance, markers: markersRef.current, gridSize: 50 });
+    } else {
+      console.warn('GeoLocations are empty, showing default map.');
+    }
+  });
 
-            bounds.extend(position);
-            mapInstance.setCenter(position);
-            mapInstance.setZoom(15); // Set zoom level for better focus
-        } else if (geoLocations.length > 0) {
-            // Handle multiple geo locations
-            const validLocations = geoLocations.filter(
-                (loc) => loc?.address?.latitude && loc?.address?.longitude
-            );
-
-            if (validLocations.length === 0) {
-                console.error('No valid geolocations found');
-                return;
-            }
-
-            const markers = validLocations.map((location) => {
-                const position = {
-                    lat: location.address.latitude,
-                    lng: location.address.longitude,
-                };
-
-                bounds.extend(position);
-
-                return new google.maps.Marker({
-                    position,
-                    map: mapInstance,
-                });
-            });
-
-            // Fit map bounds dynamically to the geolocations
-            mapInstance.fitBounds(bounds);
-
-            // Apply clustering to markers for better visualization
-            new MarkerClusterer({ map: mapInstance, markers, gridSize: 50 });
-        } else {
-            console.warn('GeoLocations are empty, showing default map.');
-            // Optionally alert the user or display a message about no locations
-        }
-    });
+  // Cleanup function to remove markers and clusterer on unmount or before next effect run
+  return () => {
+    markersRef.current.forEach(marker => marker.setMap(null));
+    markersRef.current = [];
+    if (clustererRef.current) {
+      clustererRef.current.clearMarkers();
+      clustererRef.current = null;
+    }
+  };
 }, [geoLocations, apiKey, place]);
-
+ 
     return (
         <div className={styles.mapContainer}>
-              {geoLocationsLoading &&
+            {geoLocationsLoading &&
                 <div className="loaderOverlay">
                     <div className="loaderBtnWrapper">
-                        <PageLoader /> 
+                        <PageLoader />
                     </div>
                 </div>
-                }
+            }
             <div
                 ref={mapContainerRef}
                 className={styles.mapFrame}
