@@ -32,7 +32,7 @@ import { useAddTrip } from "../../../hooks/useAddTrip";
 import { useTripSummary } from "../../../hooks/useTripSummary";
 import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
 import Widget from "../../../components/common/Widget";
-
+import { Helmet } from 'react-helmet'; // Import react-helmet
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -539,8 +539,31 @@ const ItineraryDetail = () => {
 
 
   if (loading) {
+
+    const defaultImage = "http://discover.localsecrets.travel/wp-content/uploads/2024/08/cropped-cropped-logo-web-1.png";  
+
     return (
       <>
+          <Helmet>
+      {/* Title Tag */}
+      <title>{itineraryDetails?.title || "Explore This Itinerary"}</title>
+
+      {/* General Meta Tags */}
+      <meta name="description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
+
+      {/* Open Graph Meta Tags */}
+      <meta property="og:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
+      <meta property="og:description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
+      <meta property="og:image" content={itineraryDetails?.image || defaultImage } />
+      <meta property="og:url" content={`${window.location.origin}/itineraries/${itineraryDetails?.id || "default"}`} />
+      <meta property="og:type" content="website" />
+
+      {/* Twitter Card Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
+      <meta name="twitter:description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
+      <meta name="twitter:image" content={itineraryDetails?.image || defaultImage } />
+    </Helmet>
 
         <div className={styles.itineraryDetailContainer}>
           <Header />
