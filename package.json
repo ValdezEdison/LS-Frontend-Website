@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "env-cmd -f ./.env.development vite",
-    "dev:local": "env-cmd -f ./.env.local vite",
-    "build": "env-cmd -f ./.env.development vite build",
+    "dev:local": "env-cmd -f ./.env.local vite", 
+    "build": "vite build",
     "build:prod": "env-cmd -f ./.env.production vite build",
     "build:uat": "env-cmd -f ./.env.uat vite build",
     "preview": "vite preview",
