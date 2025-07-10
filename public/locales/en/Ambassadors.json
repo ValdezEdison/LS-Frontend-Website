@@ -85,4 +85,49 @@
         "successMessage": "Message sent successfully!",
         "errorMessage": "An error occurred. Please try again."
       }
+      ,
+ 
+  "SendContactForm": {
+    "title": "Contact Us",
+    "description": "Fill out this form to send us a message.",
+    "form": {
+      "firstName": {
+        "label": "First Name",
+        "errors": {
+          "required": "Please enter your first name.",
+          "invalid": "Your first name is invalid."
+        }
+      },
+      "lastName": {
+        "label": "Last Name",
+        "errors": {
+          "required": "Please enter your last name.",
+          "invalid": "Your last name is invalid."
+        }
+      },
+      "linkedin": {
+        "label": "LinkedIn Profile",
+        "errors": {
+          "required": "Please enter your LinkedIn profile URL.",
+          "invalid": "The LinkedIn profile URL is invalid."
+        }
+      },
+      "email": {
+        "label": "Email Address",
+        "errors": {
+          "required": "Please enter your email address.",
+          "invalid": "The email address you entered is invalid."
+        }
+      },
+      "message": {
+        "label": "Message",
+        "errors": {
+          "required": "Please enter your message."
+        }
+      },
+      "submit": "Send Message",
+      "helpText": "We will get back to you as soon as possible."
+    }
   }
+}
+ 

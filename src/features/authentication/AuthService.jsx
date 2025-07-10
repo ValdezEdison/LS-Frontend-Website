@@ -31,6 +31,23 @@ const authService = {
     return apiService.post('users/verification-email', { email });
   },
 
+  // New Method: Send Contact Form
+  sendContactForm: async (formData) => {
+    return apiService.post('/contact-form/', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  },
+  // New Method: Signup Newsletter
+  signupNewsletter: async (email, gdprConsent) => {
+    return apiService.post('/newsletter/subscribe/', { email, gdpr_consent: gdprConsent }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  },
+
   updateProfile: async (userData) => {
     return apiService.patch('/users/me', userData);
   },

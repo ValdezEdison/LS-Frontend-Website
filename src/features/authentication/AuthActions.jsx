@@ -83,6 +83,9 @@ export const resendVerificationMail = createAsyncThunk(
   }
 );
 
+
+
+
 export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (userData, { rejectWithValue }) => {

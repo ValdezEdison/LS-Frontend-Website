@@ -1,11 +1,42 @@
-import React from "react";
-import ContactForm from "./ContactForm";
+import React, { useState } from "react";
+import SendContactForm from "./SendContactForm";
 import styles from "./ContactSection.module.css";
 import { useTranslation } from "react-i18next";
 
 // Modify the function signature to accept props
 function ContactSection({ title, description, images }) {
   const { t } = useTranslation("Ambassadors");
+
+  // Initialize fieldStates in component state
+  const [fieldStates, setFieldStates] = useState({
+    name: { error: null, touched: false },
+    email: { error: null, touched: false },
+    message: { error: null, touched: false },
+  });
+
+// Updated handleInputChange Function
+const handleInputChange = (field, value) => {
+  if (typeof value !== 'string' || value === null || value === undefined) {
+    setFieldStates((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        error: "Invalid input",
+        touched: true,
+      },
+    }));
+    return;
+  }
+
+  setFieldStates((prevState) => ({
+    ...prevState,
+    [field]: {
+      ...prevState[field],
+      error: value.trim() === "" ? "Field is required" : null,
+      touched: true,
+    },
+  }));
+};
 
   return (
     <section className={styles.section}>
@@ -37,7 +68,19 @@ function ContactSection({ title, description, images }) {
           </h2>
           <div className={styles.formContainer}>
             <div className={styles.formColumn}>
-              <ContactForm />
+              <SendContactForm
+                fieldStates={fieldStates}
+                handleInputChange={(field, value) =>
+                  handleInputChange(field, value)
+                }
+                formData={{}} // Logic for formData as required
+                handleSubmit={() => {}}
+                handleFocus={() => {}}
+                handleBlur={() => {}}
+                isFormValid={
+                  !Object.values(fieldStates).some((field) => field.error)
+                }
+              />
             </div>
             {/* Use the 'images' prop for the contact image if available */}
             {images && images.length > 0 && (

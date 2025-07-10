@@ -9,7 +9,11 @@
   "showMore": "Show more",
   "visitWebsite": "Visit website", 
   "disableLocation": "Disable Location",
-  "toggleGeoError": "Failed to update location tracking."
+  "toggleGeoError": "Failed to update location tracking.",
+    "locations": {
+    "title": "No Results Found",
+    "noResults": "We couldn’t find any places nearby."
+  }
  ,
   "banner": {
     "title": "Apply our filters to get better results",

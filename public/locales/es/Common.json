@@ -13,6 +13,13 @@
     "description": "El 67% de nuestros clientes lo están haciendo",
     "button": "Ir a filtros"
   },
+  "disableLocation": "Deshabilitar geolocalización",
+  "toggleGeoError": "Fallo en actualizar la geolocalización.",
+    "locations": {
+    "title": "No se han encontrado resultados",
+    "noResults": "No hemos encontrado ningún lugar cercano."
+  }
+ ,
   "subNav": {
     "destination": "Destino",
     "events": "Eventos",

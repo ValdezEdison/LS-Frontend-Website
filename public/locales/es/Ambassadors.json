@@ -85,5 +85,35 @@
         },
         "successMessage": "¡Mensaje enviado con éxito!",
         "errorMessage": "Ocurrió un error. Por favor inténtalo de nuevo."
-      }
+      },
+   
+  "SendContactForm": {
+    "title": "Contact Us",
+    "description": "Fill out this form to send us a message.",
+    "form": {
+      "name": {
+        "label": "Name",
+        "errors": {
+          "required": "Please enter your name",
+          "invalid": "Your name is invalid"
+        }
+      },
+      "email": {
+        "label": "Email Address",
+        "errors": {
+          "required": "Please enter your email",
+          "invalid": "Your email address is invalid"
+        }
+      },
+      "message": {
+        "label": "Message",
+        "errors": {
+          "required": "Please enter your message"
+        }
+      },
+      "submit": "Send Message",
+      "helpText": "We will get back to you as soon as possible."
+    }
   }
+}
+  

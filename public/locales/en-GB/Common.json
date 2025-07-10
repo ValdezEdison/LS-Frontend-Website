@@ -13,6 +13,12 @@
     "description": "67% of our customers are doing it",
     "button": "Go to filters"
   },
+    "toggleGeoError": "Failed to update location tracking.",
+    "locations": {
+    "title": "No Results Found",
+    "noResults": "We couldn’t find any places nearby."
+  }
+ ,
   "subNav": {
     "destination": "Destination",
     "events": "Events",

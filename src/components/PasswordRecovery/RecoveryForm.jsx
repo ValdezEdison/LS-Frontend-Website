@@ -1,3 +1,4 @@
+// src/components/PasswordRecovery/RecoveryForm.jsx
 import React from "react";
 import styles from "./RecoveryForm.module.css";
 import Loader from "../common/Loader";

@@ -8,7 +8,7 @@ function Testimonials() {
 
   const testimonials = [
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/5d7bb9ccd4c28a2b6763735918f97577c2c904a2?placeholderIfAbsent=true",
+      image: "https://businesses.nyc3.digitaloceanspaces.com/media/images/javialvarez.max-165x165.jpg",
       imageClass: styles.testimonialAvatar,
       text: t('testimonials.quotes.0'),
       textClass: styles.testimonialText,
@@ -16,7 +16,7 @@ function Testimonials() {
       bgClass: styles.testimonialCard,
     },
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/c9b431a587a9df8e73c2f5686acfd4a48f5620d4?placeholderIfAbsent=true",
+      image: "https://businesses.nyc3.digitaloceanspaces.com/media/images/carlosfreire.max-165x165.jpg",
       imageClass: styles.testimonialAvatar,
       text: t('testimonials.quotes.1'),
       textClass: styles.testimonialText,
@@ -24,7 +24,7 @@ function Testimonials() {
       bgClass: styles.testimonialCard,
     },
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/164e45e55fb8202175efd993a673dfe5ae08c781?placeholderIfAbsent=true",
+      image: "https://businesses.nyc3.digitaloceanspaces.com/media/images/Foto_-_Gia_Orellana.max-165x165.png",
       imageClass: styles.testimonialAvatar,
       text: t('testimonials.quotes.2'),
       textClass: styles.testimonialText,

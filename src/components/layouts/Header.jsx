@@ -21,7 +21,7 @@ import useSubNavDataCleanup from "../../hooks/useSubNavDataCleanup";
 import { openPopup, closePopup } from "../../features/popup/PopupSlice";
 import AlertPopup from "../popup/Alert/AlertPopup";
 import Modal from "../modal/Modal";
-
+import { Helmet } from "react-helmet";
 
 import LocationService from "../../services/LocationService";
  
@@ -91,6 +91,20 @@ const Header = () => {
       navigate(path);
     }
   };
+  const [seoSettings, setSeoSettings] = useState(null);
+  // Effect hook to fetch SEO settings on component mount
+  useEffect(() => {
+    const fetchSEOSettings = async () => {
+      try {
+        const response = await BlocksService.getSEOSettingsList("en"); // Pass desired locale dynamically
+        const seoData = response?.data?.results?.[0];
+        setSeoSettings(seoData); // Update state with fetched SEO settings
+      } catch (error) {
+        console.error("Error fetching SEO settings: ", error);
+      }
+    };
+    fetchSEOSettings();
+  }, []);
 
   useEffect(() => {
     dispatch(fetchLanguages());
@@ -437,6 +451,22 @@ const handleNavigateToLogin = () => {
 
   return (
     <>
+      <Helmet>
+        {seoSettings && (
+          <>
+            {/* Dynamically add meta-tags */}
+            <title>{seoSettings.meta_tags.find(tag => tag.tag === "title")?.content || "Default Title"}</title>
+            <meta name="description" content={seoSettings.meta_description || "Default description"} />
+            <meta name="keywords" content={seoSettings.meta_keywords || "default,keywords"} />
+            <meta property="og:title" content={seoSettings.og_title || ""} />
+            <meta property="og:description" content={seoSettings.og_description || ""} />
+            <meta property="og:image" content={seoSettings.og_image || ""} />
+            <meta property="og:url" content={seoSettings.canonical_url || window.location.href} />
+            <meta name="robots" content={seoSettings.robots_settings || "index,follow"} />
+          </>
+        )}
+      </Helmet>
+      
 
   {isOpen && popupState.alert && (
       <Modal onClose={() => togglePopup("alert", false)} customClass="modalSmTypeOne">
@@ -522,6 +552,7 @@ const handleNavigateToLogin = () => {
                   alt="Search"
                   className={styles.icon}
                   onClick={handleClickLanguage}
+                  onError={(e) => { e.target.onerror = null; e.target.src = "/images/language.png"; }}
                 />
                 {showLanguageOption ? <LanguageSelector languagesRef={languagesRef} handleLanguageChange={handleLanguageChange} /> : ""}
 

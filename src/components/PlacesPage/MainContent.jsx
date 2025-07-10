@@ -5,8 +5,9 @@ import LoginBanner from "../common/LoginBanner";
 import RecommendedPlaces from "./RecommendedPlaces";
 // import FilterBar from "./FilterBar";
 import { useTranslation } from 'react-i18next';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SearchInput from "../common/SearchInput";
+import UnifiedSearchService from "../../features/unifiedSearch/UnifiedSearchService";
 import styles2 from "../common/MainSearchBar.module.css";
 import PlacesSelectedItemList from "./PlacesSelectedItemList";
 import SeeMoreButton from "../common/SeeMoreButton";
@@ -21,6 +22,30 @@ import SelectedItemList from "../common/SelectedItemList";
 import GoToFilterCard from "../common/GoToFilterCard";
 import { listUpdater } from "../../features/places/PlaceSlice";
 import { Trans } from 'react-i18next';
+import { toggleUserLocation, fetchLocationSettings } from "../../features/location/LocationAction"; // Update path accordingly
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import TripCardSkeleton from "../skeleton/common/TripCardSkeleton";
+import EventCardSkeleton from "../skeleton/PlacesPage/PlacesInfo/events/EventCardSkeleton";
+import { WidgetSkeleton } from "../skeleton/common/WidgetSkeleton";
+import toggle from "../HomePage/PlacesSection.module.css";
+
+
+
+const ToggleSwitch = ({ checked, onChange, loading, label }) => (
+  <label className={toggle.switch} style={{alignItems: "center"}}>
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+      disabled={loading}
+      aria-label={label}
+      style={{ display: "none" }}
+    />
+    <span className={toggle.slider}></span>
+    <span className={toggle.toggleLabel} style={{marginLeft: 8}}>{label}</span>
+    {loading && <span style={{marginLeft: 8}}><Loader /></span>}
+  </label>
+);
 
 const MainContent = ({ state, setState, countries, cities, handleActions, handleNavigate, hasFiltersChanged }) => {
   const { t } = useTranslation('Places');
@@ -32,6 +57,9 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
   const { loading: citiesLoading } = useSelector((state) => state.cities);
 
   const { data: visiblePlaces, loading, next: hasNext, loadMore, hasLoadedMore } = useSeeMore(places, next, listUpdater);
+
+  
+
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isOpen } = useSelector((state) => state.popup);
@@ -258,6 +286,69 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
   }
 
 
+    const dispatch = useDispatch();
+  const [toggleLoading, setToggleLoading] = useState(false);
+  const [toggleError, setToggleError] = useState();
+
+  // Use your Redux-backed toggle
+  const handleToggleGeolocation = async () => {
+    setToggleLoading(true);
+    setToggleError(null);
+    try {
+      const res = await dispatch(toggleUserLocation({ geolocation_enabled: !trackingEnabled }));
+      if (toggleUserLocation.fulfilled.match(res)) {
+        await dispatch(fetchLocationSettings()); // refresh settings with thunk
+      } else {
+        setToggleError(
+          res.error?.message || t("toggleGeoError", "Failed to update location tracking.")
+        );
+      }
+    } catch (e) {
+      setToggleError(
+        e?.response?.data?.detail ||
+        t("toggleGeoError", "Failed to update location tracking.")
+      );
+    } finally {
+      setToggleLoading(false);
+    }
+  };
+
+  const NoResults = () => (
+    <div className="no-results-wrapper">
+      {(currentLocation && trackingEnabled) ? (
+        (isManuallySelected || isCurrentLocationSelected) ? (
+          <Trans
+            i18nKey={
+              isManuallySelected
+                ? "Places:noResultsBasedOnManualLocation"
+                : "Places:noResultsBasedOnCurrentLocation"
+            }
+            components={{
+              changeLocation: <Link to="/profile/location" className="text-link" />,
+              disableLocation: (
+           
+
+                  <ToggleSwitch
+                  className={styles.toggleSwitch}
+                    checked={!!trackingEnabled}
+                    onChange={handleToggleGeolocation}
+                    loading={toggleLoading} 
+                    label={
+                      trackingEnabled
+                      //? t("disableLocation", "&nbsp;&nbsp;Disable Location")
+                      //: t("enableLocation", "&nbsp;&nbsp;Enable Location")
+                    } 
+                  />  
+              ),
+            }}
+          />
+        ) : t("noResult")
+      ) : t("noResult")}
+      {toggleError && <div style={{ color: "red", marginTop: 5 }}>{toggleError}</div>}
+    </div>
+  );
+
+
   return (
     <main className={styles.mainContent} ref={mainRef}>
       <div className={styles.header}>
@@ -346,30 +437,9 @@ const MainContent = ({ state, setState, countries, cities, handleActions, handle
             return placeCard;
           })
         ) : (
-          currentLocation && trackingEnabled ? (
-            isManuallySelected ? (
-              <div className="no-results-wrapper">    <Trans
-              i18nKey="Places:noResultsBasedOnManualLocation"
-              values={{ city: selectedCityBasedOnLocation }}
-              components={{
-                changeLocation: <Link to="/profile/location" className="text-link" />,
-                disableLocation: <Link to="/profile/location" className="text-link" />
-              }}
-            /></div>
-            ) : isCurrentLocationSelected ? (
-              <div className="no-results-wrapper"><Trans
-              i18nKey="Places:noResultsBasedOnCurrentLocation"
-              components={{
-                changeLocation: <Link to="/profile/location" className="text-link" />,
-                disableLocation: <Link to="/profile/location" className="text-link" />
-              }}
-            /></div>
-            ) : (
-              <div className="no-results-wrapper">{tCommon('noResult')}</div>
-            )
-          ) : (
-            <div className="no-results-wrapper">{tCommon('noResult')}</div>
-          )
+                    <> 
+                      <NoResults />
+                    </>
         )}
 
     

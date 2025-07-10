@@ -103,6 +103,7 @@ const ImageGalleryPopupContent = ({ images, isWide = false }) => {
         </>
       ) : (
         <div className={styles.mainImageContainer}>
+    
           <img
             src={images && images[0] ? images[0]?.original : PlaceHolderImg1}
             alt="Main exhibit"

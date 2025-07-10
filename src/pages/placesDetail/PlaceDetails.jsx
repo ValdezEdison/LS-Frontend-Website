@@ -12,7 +12,7 @@ import ReviewSectionPopupContent from "../../components/PlacesDetailPage/PlacesD
 import { openPopup, closePopup, closeAddToTripPopup } from "../../features/popup/PopupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, addComment, editComment, deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
+import { fetchPlaceById, fetchPlaceComments, fetchNearbyPlaces, addComment, editComment,   deleteComment, fetchGeoLocations, generateLink } from "../../features/places/PlaceAction";
 import { toggleFavorite } from "../../features/favorites/FavoritesAction";
 import MapSectionSkeleton from "../../components/skeleton/PlacesDetailPage/MapSectionSkeleton";
 import MuseumInfoSkeleton from "../../components/skeleton/PlacesDetailPage/MuseumInfoSkeleton";
@@ -38,10 +38,12 @@ import { useAddTrip } from "../../hooks/useAddTrip";
 import AddTripPopup from "../../components/popup/AddToTrip/AddTripPopup";
 import AddToTripPopup from "../../components/popup/AddToTrip/AddToTripPopup";
 import { fetchCities } from "../../features/common/cities/CityAction";
-
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const PlaceDetails = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch(); 
+
+
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
   const [galleryStartIndex, setGalleryStartIndex] = useState(0);
@@ -257,6 +259,25 @@ const PlaceDetails = () => {
   const location = useLocation();
   const { id: absolute_url } = useParams();
   const { id } = location.state || {};
+
+  
+    // Get the specific place data from your Redux store
+    const { placeDetails, loading } = useSelector((state) => state.places);
+
+    useEffect(() => {
+        // Fetch data for this page when the component loads
+        dispatch(fetchPlaceById(id));
+    }, [dispatch, id]);
+
+    // ✅ Correctly defined variables based on your JSON output
+    const title = placeDetails?.title || "Discover a Local Secret";
+    const description = placeDetails?.description || "Explore unique destinations and hidden gems.";
+    const imageUrl = placeDetails?.images?.[0]?.fullsize || placeDetails?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg";
+    const pageUrl = placeDetails?.absolute_url 
+        ? `${window.location.origin}${placeDetails.absolute_url}` 
+        : window.location.href;
+
+
   const cleanUrl = (url) => {
     if (!url) return url;
     return url.replace(/^\/?sites\//, '');
@@ -651,6 +672,27 @@ useEffect(() => {
 
   return (
     <>
+ 
+    <HelmetProvider>
+            <Helmet>
+                    <title>{place?.title}</title>
+                    <meta name="description" content={place?.description} />
+                    
+                    {/* Open Graph (Facebook, etc.) */}
+                    <meta property="og:title" content={place?.title} />
+                    <meta property="og:description" content={place?.description} />
+                    <meta property="og:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
+                    <meta property="og:url" content={pageUrl} />
+                    <meta property="og:type" content="article" /> {/* Use "article" for detailed content pages */}
+
+                    {/* Twitter Card */}
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:title" content={place?.title} />
+                    <meta name="twitter:description" content={place?.description} />
+                    <meta name="twitter:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
+                </Helmet>
+
+
       {isOpen && tripPopupState.addTripPopup && (
         <AddTripPopup
           onClose={closeAddTripPopup}
@@ -841,6 +883,7 @@ useEffect(() => {
         </main>
         <Footer />
       </div>
+          </HelmetProvider>
     </>
   );
 };

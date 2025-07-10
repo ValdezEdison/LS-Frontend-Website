@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from 'react-helmet'; 
 
 const PlaceCard = forwardRef(
     ({ place, translate, isAuthenticated, handleViewMoreDetails = () => { }, isPopup = false, handleActions = () => { }, isFavoriteToggling = false }, ref) => {
@@ -79,31 +78,8 @@ const PlaceCard = forwardRef(
               } 
             });
           };
-  
-        const defaultImage = "http://discover.localsecrets.travel/wp-content/uploads/2024/08/cropped-cropped-logo-web-1.png";  
 
         return (
-             <>
-             <Helmet>
-                {/* Title Tag */}
-                <title>{place?.title || "Discover Amazing Places"}</title>
-
-                {/* General Meta Tags */}
-                <meta name="description" content={place?.description || "Explore unique destinations worldwide"} />
-
-                {/* Open Graph Meta Tags */}
-                <meta property="og:title" content={place?.title || "Discover Amazing Places"} />
-                <meta property="og:description" content={place?.description || "Explore unique destinations worldwide"} />
-                <meta property="og:image" content={place?.image || defaultImage} />
-                <meta property="og:url" content={`${window.location.origin}/places/${place?.id}`} />
-                <meta property="og:type" content="website" /> 
-
-                {/* Twitter Card Meta Tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={place?.title || "Explore This Itinerary"} />
-                <meta name="twitter:description" content={place?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
-                <meta name="twitter:image" content={place?.image || defaultImage } />
-            </Helmet>
             <div
                 ref={ref}
                 className={`${styles.placeCard} ${isPopup ? styles.popupPlaceCard : ""}`}
@@ -147,13 +123,14 @@ const PlaceCard = forwardRef(
                             {place?.city?.name && place?.city?.country?.name && ", "}
                             {place?.city?.country?.name}
                         </p>
- 
-                        <p className={styles.placeCategory}>
-                            {place?.levels?.[0]?.title || ""}
-                        </p>
-                        <p className={styles.placeCategory}>
-                            {place?.categories?.map(category => category.title).join(', ')}
-                        </p>
+                  
+                             <p className={styles.placeCategory}>
+                        {place?.categories?.length > 0
+                            ? place.categories[0]?.title // Prioritize categories
+                            : place?.levels?.length > 0
+                            ? place.levels[0]?.title // Fallback to levels
+                            : translate("placeCard.noCategoryAvailable")} {/* Fallback text */}
+                    </p>
                         </>
                         }
                         {place?.num_of_stops !== undefined && (
@@ -222,7 +199,6 @@ const PlaceCard = forwardRef(
                     </div>
                 )}
             </div>
-            </>
         );
     });
 

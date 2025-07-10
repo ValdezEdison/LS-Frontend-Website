@@ -12,7 +12,7 @@ const GoToFilterCard = ({ index, handleActionFilter }) => {
             </div>
             <div className={styles.placesBlueBannerRight}>
                 <div className={styles.placesBannerDescrption}>
-                    <h3>{t('banner.title')}</h3>
+                    <h3 style={{ color: "white" }}>{t('banner.title')}</h3>
                     <p>{t('banner.description')}</p>
                 </div>
                 <button className={styles.filterButton} onClick={handleActionFilter}>

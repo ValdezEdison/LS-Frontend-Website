@@ -163,7 +163,7 @@ const PlaceService = {
     return apiService.get(url);
   },
   getRandomPlaces: async (page = 1, type) => {
-    return apiService.get(`/sites/random?page=${page}&type=${type}`);
+    return apiService.get(`/sites/random-web?page=${page}&type=${type}`);
   },
 
   getPlacesSearchResults: async (page = 1, type, keyword) => {

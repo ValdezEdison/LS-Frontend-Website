@@ -19,6 +19,7 @@ const ImageGallery = ({ handleClickViewMoreDetails, images }) => {
       <div className={styles.imageGalleryTop}>
         <div className={styles.mainImage}>
           <img
+          
             src={images && images[0] && images[0]?.original ? images[0]?.original : PlaceHolderImg2}
             alt="Main exhibit"
             // Pass index 0 for the main image

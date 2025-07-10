@@ -32,7 +32,7 @@ import { useAddTrip } from "../../../hooks/useAddTrip";
 import { useTripSummary } from "../../../hooks/useTripSummary";
 import { fetchSuggestedPlaces } from "../../../features/suggestions/SuggestionAction";
 import Widget from "../../../components/common/Widget";
-import { Helmet } from 'react-helmet'; // Import react-helmet
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const ItineraryDetail = () => {
   const dispatch = useDispatch();
@@ -251,23 +251,7 @@ const ItineraryDetail = () => {
     navigate('/login', { formState: { from: location } });
   }
 
-  // const debouncedFetchCities = useCallback(
-  //   debounce((query) => {
-  //     dispatch(fetchCities({ searchQuery: query }));
-  //   }, 500),
-  //   [dispatch]
-  // );
-
-  // useEffect(() => {
-  //   if (formState?.destinationSearchQuery?.trim()) {
-  //     debouncedFetchCities(formState.destinationSearchQuery);
-  //   } else {
-  //     dispatch(fetchCities({}));
-  //   }
-
-  //   return () => debouncedFetchCities.cancel();
-  // }, [formState?.destinationSearchQuery, debouncedFetchCities, dispatch]);
-
+ 
     // Debounced search function
     const debouncedFetchCities = useCallback(
       debounce(async (query) => {
@@ -352,76 +336,7 @@ const ItineraryDetail = () => {
   };
 
   const storedTripType = localStorage.getItem('tripType')
-
-  // const handleSubmit = async (e) => {
-  //   
-  //   if (!storedTripType) {
-  //     dispatch(setTripType({  id: id, type: formState.tripType }))
-  //     dispatch(closeAddToTripPopup())
-  //     togglePopup("success", true);
-  //     setSuccessMessage(`A new stop has been added to your trip ${itineraryDetails.title}. Continue adding destinations and events as you wish.`);
-  //     setSuccessTitle("Route added!");
-  //     return
-  //   }
-
-  //   e.preventDefault();
-
-  //   if (!validateForm()) return;
-
-  //   try {
-  //     dispatch(setTripType({  id: id, type: formState.tripType }))
-  //     if (isCreatingNewTrip) {
-  //       const tripData = {
-  //         title: formState.tripName,
-  //         type: formState.tripType,
-  //         cities: formState.destinations.map((destination) => destination.destinationId),
-  //         initial_date: formState.startDate.toISOString().split('T')[0],
-  //         end_date: formState.endDate.toISOString().split('T')[0],
-  //         stops: formState.stops,
-  //       };
-  //       dispatch(addTrip(tripData))
-  //       .then((response) => {
-  //         
-          
-  //         if (response.type === "places/addTrip/fulfilled") {
-  //           // Success case
-  //           dispatch(resetTripType());
-  //           togglePopup("success", true);
-  //           setSuccessMessage(`A new trip has been added to your account. Continue adding destinations and events as you wish.`);
-  //           setSuccessTitle("Trip added!");
-  //         } 
-  //         else if (response.type === "places/addTrip/rejected") {
-  //           // Error case
-  //           const errorMsg = response.payload?.error_description || 
-  //                           response.error?.message || 
-  //                           "Failed to create trip";
-            
-  //           togglePopup("error", true);
-  //           setSuccessMessage(errorMsg);
-  //           setSuccessTitle("Error creating trip");
-  //           
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         // Unexpected errors
-  //         
-  //         togglePopup("error", true);
-  //         setSuccessMessage("An unexpected error occurred while creating the trip");
-  //         setSuccessTitle("Error");
-  //       });
-  //     } else {
-  //       // Logic to add itinerary to existing trip would go here
-  //       
-  //     }
-
-  //     dispatch(closeAddToTripPopup());
-  //     dispatch(closePopup());
-  //   } catch (error) {
-  //     
-  //   }
-  // };
-
-  
+ 
 
   useEffect(() => {
     if (formState.mode && itineraryDetails && itineraryDetails.id) {
@@ -543,28 +458,7 @@ const ItineraryDetail = () => {
     const defaultImage = "http://discover.localsecrets.travel/wp-content/uploads/2024/08/cropped-cropped-logo-web-1.png";  
 
     return (
-      <>
-          <Helmet>
-      {/* Title Tag */}
-      <title>{itineraryDetails?.title || "Explore This Itinerary"}</title>
-
-      {/* General Meta Tags */}
-      <meta name="description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
-
-      {/* Open Graph Meta Tags */}
-      <meta property="og:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
-      <meta property="og:description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
-      <meta property="og:image" content={itineraryDetails?.image || defaultImage } />
-      <meta property="og:url" content={`${window.location.origin}/itineraries/${itineraryDetails?.id || "default"}`} />
-      <meta property="og:type" content="website" />
-
-      {/* Twitter Card Meta Tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
-      <meta name="twitter:description" content={itineraryDetails?.description || "Embark on an unforgettable journey with this exclusive itinerary."} />
-      <meta name="twitter:image" content={itineraryDetails?.image || defaultImage } />
-    </Helmet>
-
+  
         <div className={styles.itineraryDetailContainer}>
           <Header />
           <main className="page-center">
@@ -602,12 +496,73 @@ const ItineraryDetail = () => {
           </main>
           <Footer />
         </div>
-      </>
+         
+      
     );
   }
 
   return (
     <>
+            <HelmetProvider>
+
+          <Helmet>
+            {/* Title Tag */}
+            <title>{itineraryDetails?.title || "Explore This Itinerary"}</title>
+
+          {/* General Meta Tags */}
+          <meta
+            name="description"
+            content={
+              itineraryDetails?.tags?.map(tag => tag.title).join(', ') ||
+              itineraryDetails?.title ||
+              "Embark on an unforgettable journey with this exclusive itinerary."
+            }
+          />
+
+          {/* Open Graph Meta Tags */}
+          <meta property="og:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
+          <meta
+            property="og:description"
+            content={
+              itineraryDetails?.tags?.map(tag => tag.title).join(', ') ||
+              itineraryDetails?.title ||
+              "Embark on an unforgettable journey with this exclusive itinerary."
+            }
+          />
+          <meta
+            property="og:image"
+            content={
+              itineraryDetails?.image?.fullsize ||  
+              itineraryDetails?.cities?.[0]?.image ||
+              "http://discover.localsecrets.travel/wp-content/uploads/2024/08/cropped-cropped-logo-web-1.png"
+            }
+          />
+          <meta
+            property="og:url"
+            content={`${window.location.origin}/itineraries/${itineraryDetails?.absolute_url || "default"}`}
+          />
+          <meta property="og:type" content="website" />
+
+          {/* Twitter Card Meta Tags */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={itineraryDetails?.title || "Explore This Itinerary"} />
+          <meta
+            name="twitter:description"
+            content={
+              itineraryDetails?.tags?.map(tag => tag.title).join(', ') ||
+              itineraryDetails?.title ||
+              "Embark on an unforgettable journey with this exclusive itinerary."
+            }
+          />
+          <meta
+            name="twitter:image"
+            content={
+              itineraryDetails?.image?.fullsize ||  
+              itineraryDetails?.cities?.[0]?.image ||
+              "http://discover.localsecrets.travel/wp-content/uploads/2024/08/cropped-cropped-logo-web-1.png"
+            }
+          />
+        </Helmet>
        {isOpen && tripPopupState.addTripPopup && (
         <AddTripPopup
           onClose={closeAddTripPopup}
@@ -712,6 +667,8 @@ const ItineraryDetail = () => {
         </main>
         <Footer />
       </div>
+      
+          </HelmetProvider>
     </>
   );
 };

@@ -435,3 +435,47 @@
   }
 }
 
+label.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: auto; /* Adjusts width dynamically based on content */
+  vertical-align: middle;
+  gap: 8px; /* Adds space between the toggle and label text */
+}
+
+.switch .slider {
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.switch input[type="checkbox"]:checked + .slider {
+  background-color: #4caf50;
+}
+
+.switch .slider:before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.switch input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+.switch .toggleLabel {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}

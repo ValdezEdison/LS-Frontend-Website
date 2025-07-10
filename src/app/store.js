@@ -114,8 +114,9 @@ const store = configureStore({
     suggestions: suggestionReducer,
     tags: tagsReducer,
     unifiedSearch: unifiedSearchReducer,
-    contactUs: contactUsReducer,
-    newsLetter: NewsLetterReducer
+    //contactUs: contactUsReducer,
+    newsLetter: NewsLetterReducer,
+    contact: contactUsReducer,
   },
  
   middleware: (getDefaultMiddleware) =>
