@@ -500,7 +500,7 @@ const ItineraryDetail = () => {
       
     );
   }
-
+ 
   return (
     <>
             <HelmetProvider>

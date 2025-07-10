@@ -276,6 +276,25 @@ const PlaceDetails = () => {
     const pageUrl = placeDetails?.absolute_url 
         ? `${window.location.origin}${placeDetails.absolute_url}` 
         : window.location.href;
+ 
+    const truncateDescription = (text, maxLength = 190) => {
+        // If there's no text, return an empty string
+        if (!text) {
+            return "";
+        }
+        
+        // If the text is already short enough, return it as is
+        if (text.length <= maxLength) {
+            return text;
+        }
+        
+        // Find the last space before the character limit
+        const truncatedText = text.substring(0, maxLength);
+        const lastSpaceIndex = truncatedText.lastIndexOf(' ');
+        
+        // Cut the text at the last whole word and add an ellipsis
+        return truncatedText.substring(0, lastSpaceIndex) + "...";
+    };
 
 
   const cleanUrl = (url) => {
@@ -676,11 +695,11 @@ useEffect(() => {
     <HelmetProvider>
             <Helmet>
                     <title>{place?.title}</title>
-                    <meta name="description" content={place?.description} />
-                    
+                    <meta name="description" content={truncateDescription(place?.description)} />
+
                     {/* Open Graph (Facebook, etc.) */}
                     <meta property="og:title" content={place?.title} />
-                    <meta property="og:description" content={place?.description} />
+                    <meta property="og:description" content={truncateDescription(place?.description)} />
                     <meta property="og:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
                     <meta property="og:url" content={pageUrl} />
                     <meta property="og:type" content="article" /> {/* Use "article" for detailed content pages */}
@@ -688,7 +707,7 @@ useEffect(() => {
                     {/* Twitter Card */}
                     <meta name="twitter:card" content="summary_large_image" />
                     <meta name="twitter:title" content={place?.title} />
-                    <meta name="twitter:description" content={place?.description} />
+                    <meta name="twitter:description" content={truncateDescription(place?.description)} />
                     <meta name="twitter:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
                 </Helmet>
 
