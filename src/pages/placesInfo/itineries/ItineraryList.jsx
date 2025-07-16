@@ -1,3 +1,4 @@
+// src/pages/placesInfo/itineraries/ItineraryList.jsx
 import React from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
@@ -45,6 +46,102 @@ import styles3 from "../../../components/PlacesPage/MainContent.module.css";
 
 
 const ItineraryList = () => {
+  /**
+ * Normalizes a URL to prevent double slashes
+ * @param {string} baseUrl - The base URL or path (e.g., '/sites/')
+ * @param {string} path - The path to append (e.g., '/webroutes/espana/barcelona-es/route-slug/')
+ * @returns {string} - A properly formatted URL without double slashes
+ */
+const normalizeUrl = (baseUrl, path) => {
+  // Remove leading and trailing slashes from both parts
+  const cleanBase = (baseUrl || '').replace(/^\/+|\/+$/g, '');
+  const cleanPath = (path || '').replace(/^\/+|\/+$/g, '');
+  
+  // Join with a single slash
+  return cleanBase && cleanPath ? `/${cleanBase}/${cleanPath}` : 
+         cleanBase ? `/${cleanBase}` : 
+         cleanPath ? `/${cleanPath}` : '/';
+};
+  // Add this function at the top of your component
+const getCleanItineraryUrl = (itinerary) => {
+  if (!itinerary || !itinerary.absolute_url) {
+    return null;
+  }
+  
+  // Log the original URL for debugging
+  console.log('Original absolute_url:', itinerary.absolute_url);
+  
+  // Extract URL parts
+  const url = itinerary.absolute_url;
+  
+  // Check if we're dealing with a webroutes URL
+  if (url.includes('webroutes')) {
+    // Handle the case where the URL already contains 'webroutes'
+    // Extract the part after 'webroutes'
+    const parts = url.split('webroutes');
+    const path = parts[parts.length - 1];
+    
+    // Normalize the URL to prevent double slashes
+    return normalizeUrl('webroutes', path);
+  } 
+  // Check if we're dealing with a sites URL
+  else if (url.includes('sites')) {
+    // Something strange is happening - we're getting a 'sites' URL for an itinerary
+    console.warn('Unexpected URL format for itinerary - contains "sites" instead of "webroutes":', url);
+    
+    // Try to extract the path and normalize
+    const parts = url.split('sites');
+    const path = parts[parts.length - 1];
+    
+    // Normalize the URL to prevent double slashes
+    return normalizeUrl('sites', path);
+  } 
+  // For all other URL formats
+  else {
+    // Clean the URL of any leading/trailing slashes
+    const cleanUrl = url.replace(/^\/+|\/+$/g, '');
+    
+    // Add the appropriate prefix based on what we're dealing with
+    return normalizeUrl('webroutes', cleanUrl);
+  }
+};
+const fixUrl = (url) => {
+  // Remove any leading/trailing slashes and double slashes
+  return '/' + url.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/');
+};
+  // Add this to your handleViewMoreDetails function
+
+    const handleViewMoreDetails = (e, id) => {
+    if (isAuthenticated) {
+      console.group('Itinerary Navigation Debug');
+      console.log('Itinerary ID:', id);
+      
+      // Check if the ID is actually a URL path
+      if (typeof id === 'string' && (id.includes('/webroutes/') || id.startsWith('/webroutes/'))) {
+        // It's a URL path, clean it and encode it for navigation
+        const cleanUrl = id.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/');
+        
+        // Make sure it starts with a slash for proper encoding
+        const urlToEncode = cleanUrl.startsWith('/') ? cleanUrl : '/' + cleanUrl;
+        
+        // Encode the entire path
+        const encodedUrl = encodeURIComponent(urlToEncode);
+        console.log('Encoded URL:', encodedUrl);
+        
+        // Navigate to the encoded URL using the correct pattern
+        navigate(`/itineraries/details/${encodedUrl}`);
+      } else {
+        // It's a regular ID, use state-based navigation
+        console.log('Using ID-based navigation');
+        navigate('/places/itineraries-details', { state: { id } });
+      }
+      console.groupEnd();
+    } else {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+    }
+  };
 
   const { t } = useTranslation('Places');
   const { t: tCommon } = useTranslation('Common');
@@ -113,25 +210,17 @@ const ItineraryList = () => {
     closeSuccessMessage,
     closeAddToTrip
   } = useAddTrip();
-
-
   const [alertMessage, setAlertMessage] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
-
   const togglePopup = (name, state) => {
     setPopupState((prev) => ({ ...prev, [name]: state }));
     state ? dispatch(openPopup()) : dispatch(closePopup());
   };
-
-
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-
   const [state, setState] = useState({
     selectedOrder: "",
   })
-
   const cityId = hasTagDetails ? tagDetails.cityId : id;
-
   useEffect(() => {
     if (cityId) {
          if(hasTagDetails) {
@@ -150,18 +239,7 @@ const ItineraryList = () => {
     }
   }, [dispatch, language, cityId]);
 
-  const handleViewMoreDetails = (e, id) => {
-
-    if (isAuthenticated) {
-      navigate('/places/itineraries-details', { state: { id } });
-    } else {
-      togglePopup("alert", true);
-      setAlertTitle(tCommon('authAlert.viewDetails.title'));
-      setAlertMessage(tCommon('authAlert.viewDetails.description'));
-    }
-  };
-
-
+ 
   const getResponsiveOffset = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 480) return -20; // Smaller tablets
@@ -171,11 +249,9 @@ const ItineraryList = () => {
 
     return 30;                           // Large screens
   };
-
   const updateButtonPosition = () => {
     if (placesListRef.current && mainRef.current && gotoTopButtonRef.current) {
       const mainWrapperLeftPosition = mainRef.current.getBoundingClientRect().left;
-
       const leftPosition = placesListRef.current.getBoundingClientRect().left;
       const placesListWidth = placesListRef.current.offsetWidth;
       const final = leftPosition + placesListWidth;
@@ -187,25 +263,16 @@ const ItineraryList = () => {
 
     }
   };
-
   useEffect(() => {
-    // Initial position calculation
     updateButtonPosition();
-
-    // Handle resize event
     window.addEventListener('resize', updateButtonPosition);
-
-    // Cleanup the event listener
     return () => {
       window.removeEventListener('resize', updateButtonPosition);
     };
   }, []);
 
-
-
   useEffect(() => {
     let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
       const arrowButton = gotoTopButtonRef.current?.getBoundingClientRect();
       const breaker = placesListBreakerRef.current?.getBoundingClientRect();
@@ -215,13 +282,11 @@ const ItineraryList = () => {
           arrowButton.bottom >= breaker.top &&
           window.scrollY > lastScrollY
         ) {
-          // Scrolling down and elements meet — hide the arrow
           setShowArrow(false);
         } else if (
           breaker.top > window.innerHeight &&
           window.scrollY < lastScrollY
         ) {
-          // Scrolling up and passed the breaker — show the arrow
           setShowArrow(true);
         }
       }
@@ -230,13 +295,10 @@ const ItineraryList = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-
 
   const sortOrder = [
     { id: 1, name: t('Filters.all') },
@@ -244,20 +306,16 @@ const ItineraryList = () => {
     { id: 3, name: t('Filters.highestRated') },
     { id: 4, name: t('Filters.recommendations') },
   ];
-
   const orderOptions = t("filter.orderOptions", { returnObjects: true }).map((option, index) => ({
     id: index,
     name: option,
   }));
-
   const updateState = (value) => {
     setState((prev) => ({ ...prev, selectedOrder: value }));
   }
 
-  // Define filters array
   const filters = [
-
-    {
+        {
       label: state.selectedOrder !== "" ? orderOptions[state.selectedOrder]?.name : t('Filters.sortBy'),
       type: "select",
       options: orderOptions,
@@ -265,75 +323,80 @@ const ItineraryList = () => {
       onSelect: (value) => updateState(value),
     },
   ];
+ 
+const handleActions = (e, action, id, name) => {
+  e.stopPropagation();
+  switch (action) {
+    case 'addToFavorites':
+      handleFavClick(e, id);
+      break;
+    case 'addToTrip':
+      handleAddToTripClick(e, id, name);
+      const selectedItinerary = itineries.find((itinerary) => itinerary.id === id);
+      const stops = selectedItinerary?.stops?.map(stop => stop.id) || [];
+      const firstCity = selectedItinerary?.cities?.[0] || {};
+      setFormState(prev => ({ ...prev, type: "itinerary", stops: stops,
+        destinations: [{
+          destinationSearchQuery: '',
+          destinationId: firstCity.id || null,
+          destinationName: firstCity.name || ''
+        }]
+      }));
+      break;
 
+    case 'viewMore':
+      if (isAuthenticated) {
+        // Check if the ID is actually a URL path
+        if (typeof id === 'string' && (id.includes('/webroutes/') || id.startsWith('/webroutes/'))) {
+          // It's a URL path, clean it and encode it for navigation
+          const cleanUrl = id.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/');
+          
+          // Make sure it starts with a slash for proper encoding
+          const urlToEncode = cleanUrl.startsWith('/') ? cleanUrl : '/' + cleanUrl;
+          
+          // Encode the entire path
+          const encodedUrl = encodeURIComponent(urlToEncode);
+          console.log('Encoded URL:', encodedUrl);
+          
+          // Navigate to the encoded URL using the correct pattern
+          navigate(`/itineraries/details/${encodedUrl}`);
+        } else {
+          // Try to find the itinerary and get its URL
+          const itinerary = itineries.find(item => item.id === id);
+          if (itinerary && itinerary.absolute_url) {
+            // We have an absolute_url, clean it and encode it
+            const cleanUrl = itinerary.absolute_url.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/');
+            
+            // Make sure it starts with a slash for proper encoding
+            const urlToEncode = cleanUrl.startsWith('/') ? cleanUrl : '/' + cleanUrl;
+            
+            // Encode the entire path
+            const encodedUrl = encodeURIComponent(urlToEncode);
+            
+            // Navigate to the encoded URL using the correct pattern
+            navigate(`/itineraries/details/${encodedUrl}`);
+          } else {
+            // Fallback to ID-based navigation
+            navigate('/places/itineraries-details', { state: { id } });
+          }
+        }
+      } else {
+        togglePopup("alert", true);
+        setAlertTitle(tCommon('authAlert.viewDetails.title'));
+        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      }
+      break;
 
-  // const handleActions = (e, action, id) => {
-  //   e.stopPropagation();
-  //   if (action === 'addToFavorites') {
-  //     handleFavClick(e, id);
-  //   } else if (action === 'addToTrip') {
-  //     handleTripClick(e, id);
-  //   }
-  // };
-
-  // const handleFavClick = (e, id) => {
-  //   e.stopPropagation();
-  //   if (isAuthenticated) {
-  //     dispatch(toggleFavorite(id));
-  //     dispatch(setFavTogglingId(id));
-  //   } else {
-  //     setAlertTitle(tCommon('authAlert.favorites.title'));
-  //     setAlertMessage(tCommon('authAlert.favorites.description'));
-  //     togglePopup("alert", true);
-  //   }
-  // };
-
-  // const handleTripClick = (e, id) => {
-  //   e.stopPropagation();
-  //   if (isAuthenticated) {
-  //     dispatch(openAddToTripPopup());
-  //     navigate('/places/itineraries-details', { state: { id } });
-  //   } else {
-  //     setAlertTitle(tCommon('authAlert.favorites.title'));
-  //     setAlertMessage(tCommon('authAlert.favorites.description'));
-  //     togglePopup("alert", true);
-  //   }
-  // };
-
-
-  const handleActions = (e, action, id, name) => {
-    e.stopPropagation();
-    switch (action) {
-      case 'addToFavorites':
-        handleFavClick(e, id);
-        break;
-      case 'addToTrip':
-        handleAddToTripClick(e, id, name);
-        const selectedItinerary = itineries.find((itinerary) => itinerary.id === id);
-        // const stops = selectedItinerary?.stops || [];
-        const stops = selectedItinerary?.stops?.map(stop => stop.id) || [];
-        const firstCity = selectedItinerary?.cities?.[0] || {};
-        setFormState(prev => ({ ...prev, type: "itinerary", stops: stops,
-          destinations: [{
-            destinationSearchQuery: '',
-            destinationId: firstCity.id || null,
-            destinationName: firstCity.name || ''
-          }]
-        }));
-        break;
-      case 'viewMore':
-        handleViewMoreDetails(e, id);
-        break;
       case 'addToStop':
-        setFormState(prev => ({
-          ...prev,
-          stops: [...prev.stops, id]
-        }));
-        break;
-      default:
-        break;
-    }
-  };
+      setFormState(prev => ({
+        ...prev,
+        stops: [...prev.stops, id]
+      }));
+      break;
+          default:
+            break;
+        }
+      };
 
   const handleAddToTripClick = (e, id, name) => {
     const result = handleTripClick(e, id, name);
@@ -364,7 +427,6 @@ const ItineraryList = () => {
     isSearchingCities,
     updateDestination
   };
-
     useEffect(() => {
           if (tripPopupState.addTripPopup || isAddToPopupOpen) {
               document.body.classList.add('overflowHide');
@@ -378,11 +440,7 @@ const ItineraryList = () => {
           };
       }, [tripPopupState.addTripPopup, isAddToPopupOpen]);
 
-
-
-
-      const handleNavActions = (e, id, action) => {
-          
+      const handleNavActions = (e, id, action) => {          
         if (isAuthenticated && action === "viewDetail") {
           const idStr = String(id);
           if (idStr.includes('/')) { // Now safe for numbers
@@ -397,19 +455,14 @@ const ItineraryList = () => {
           setAlertTitle(tCommon('authAlert.viewDetails.title'));
           setAlertMessage(tCommon('authAlert.viewDetails.description'));
         }
-      };
+      };   
     
-    
-      useEffect(() => {
-    
+      useEffect(() => {    
         return () => {
           dispatch(resetGeoLocations());
           dispatch(resetState())
-        }
-        
+        }        
       },[])
-
-
       useEffect(() => {
         if (cityId && state.selectedOrder !== null) {
              if(hasTagDetails) {
@@ -426,9 +479,10 @@ const ItineraryList = () => {
         }
       }, [dispatch, language, cityId, state.selectedOrder]);
 
-
+      
   return (
     // <div className={styles.athenasPlaces}>
+    
     <>
       {isOpen && tripPopupState.addTripPopup && (
         <AddTripPopup
@@ -457,7 +511,7 @@ const ItineraryList = () => {
       )}
       <Header />
       <main className="page-center" ref={mainRef}>
-        <h1 className={commonStyle.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.name}`}</h1>
+        <h1 className={commonStyle.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.code}`}</h1>
         <SubNavMenu activeLink="lugares" />
         {!hasTagDetails &&
         <>
@@ -481,17 +535,7 @@ const ItineraryList = () => {
         }
         <p className={commonStyle.availablePlaces}>{!hasTagDetails && t('Itineraries.availableCount', { count })}</p>
         <div className={styles.placesList} ref={placesListRef}>
-          {/* <button
-            style={{
-              display: showArrow && !isOpen && !loading && visiblePlaces.length > 0 ? 'block' : 'none'
-            }}
 
-            className={styles2.gotoTopButton}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            ref={gotoTopButtonRef}
-          >
-            <img src={Arrow} alt={t('arrowIcon')} />
-          </button> */}
           {itineriesLoading ?
             (Array.from({ length: 5 }).map((_, index) => (
               <CardSkeleton key={index} />

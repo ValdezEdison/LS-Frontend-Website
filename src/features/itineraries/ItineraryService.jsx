@@ -2,13 +2,13 @@ import ApiService from "../../services/ApiService";
 
 const itineraryService = {
     getItineraries: async (page = 1) => {
-        return ApiService.get(`/routes/by_city?page=${page}`);
+        return ApiService.get(`webroutes/by_city?page=${page}`);
     },
     getItinerariesInCity: async (cityId, page = 1) => {
         const query = [`page=${page}`];
         if (cityId) query.push(`city_id=${cityId}`);
         
-        return ApiService.get(`/routes?${query.join('&')}`);
+        return ApiService.get(`/webroutes?${query.join('&')}`);
     },
     getItinerary: async (itineraryId) => {
         return ApiService.get(`/itineraries/${itineraryId}`);

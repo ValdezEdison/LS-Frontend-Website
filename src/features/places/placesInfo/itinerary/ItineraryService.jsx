@@ -7,11 +7,12 @@ const itineraryService = {
         if (cityId !== undefined && cityId !== null && cityId !== "") params.city_id = cityId;
         if (page !== undefined && page !== null && page !== "") params.page = page;
         if (sortOrder !== undefined && sortOrder !== null && sortOrder !== "") params.sort_order = sortOrder;
-        return ApiService.get('/routes/', {params});
+        
+        return ApiService.get('/webroutes/', {params});
     },
 
     getItineraryDetails: async (routeId) => {
-        return ApiService.get(`/routes/${routeId}`);
+        return ApiService.get(`/webroutes/${routeId}`);
     },
 
     getTravelLiteList: async () => {
@@ -21,7 +22,7 @@ const itineraryService = {
     getTravelTime: async (travelId, mode) => {
         const params = {}
         if (mode !== undefined && mode !== null && mode !== "") params.mode = mode;
-        return ApiService.get(`routes/${travelId}/directions`, {params});
+        return ApiService.get(`webroutes/${travelId}/directions`, {params});
     },
 
     addTrip: async (trip) => {
@@ -29,11 +30,11 @@ const itineraryService = {
     },
 
     generateLink: async (tripId) => {
-        return ApiService.get(`/routes/${tripId}/generate_web_link`);
+        return ApiService.get(`/webroutes/${tripId}/generate_web_link`);
     },
 
     downloadTrip: async (tripId) => {
-        return ApiService.get(`/routes/${tripId}/pdf`);
+        return ApiService.get(`/webroutes/${tripId}/pdf`);
     },
     getStops: async (cityId, type = "place", page = 1) => {
         const encodedCityId = encodeURIComponent(cityId);
@@ -45,7 +46,7 @@ const itineraryService = {
     },
 
     addToExistingTrip: async (tripId, siteId) => {
-        return ApiService.post(`/routes/${siteId}/add_to_travel`, {id: tripId});
+        return ApiService.post(`/webroutes/${siteId}/add_to_travel`, {id: tripId});
     },
 
 }

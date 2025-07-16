@@ -408,7 +408,7 @@ const Events = () => {
 
       <Header />
       <main className="page-center">
-        <h1 className={styles.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.name}`}</h1>
+        <h1 className={styles.pageTitle}>{hasTagDetails ? `${tagDetails?.cityName}, #${tagDetails?.title}` : `${destination?.name}, ${destination?.country?.code}`}</h1>
         <SubNavMenu activeLink="eventos" />
       {!hasTagDetails &&
       <>

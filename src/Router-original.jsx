@@ -34,10 +34,7 @@ import Ambassadors from "./pages/footerBlockPages/ambassadors/Ambassadors";
 import LocalSecretManager from "./pages/footerBlockPages/localSecretManager/LocalSecretManager";
 import HelpCenter from "./pages/footerBlockPages/helpCenter/HelpCenter";
 import Tags from "./pages/placesInfo/Tags/Tags";
-import AuthGuard from "./hooks/AuthGuard"; 
-import RedirectToLastCity from "./components/common/RedirectToLastCity";
- 
-
+import AuthGuard from "./hooks/AuthGuard";
 const Router = () => {
     return (
         <>
@@ -58,57 +55,20 @@ const Router = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/places" element={<PlacesPage />} />
                 {/* <Route path="/places/details" element={<PlaceDetails />} /> */}
-                 <Route path="/places/details/:id?" element={<PlaceDetails />} />
-                 {/*<Route path="/places/destination" element={<Destination />} />*/}
-                
-
-
-
-                  {/* Slug-based routes */}
-                <Route path="/cities/:country_slug/:city_slug" element={<Destination />} />
-                
-                {/* ID-based routes for tabs */}
-                <Route path="/places/destination" element={<Destination />} />c
+                <Route path="/places/details/:id?" element={<PlaceDetails />} />
+                <Route path="/places/destination" element={<Destination />} />
                 <Route path="/places/events" element={<Events />} />
-                <Route path="/places/destination-places" element={<Places />} /> 
- 
- 
+                <Route path="/places/destination-places" element={<Places />} />
                 <Route path="/places/itineraries" element={<ItineraryList />} />
-               <Route path="/places/tags" element={<Tags />} />
+                <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
+                <Route path="/places/tags" element={<Tags />} />
 
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/events/details" element={<EventDetails />} />
 
                 <Route path="/itineraries" element={<ItineraryPage />} />
-
-
-  {/* Conflict*/}       
-  
-   {/*<Route path="/itineraries/details/:encoded_url" element={<ItineraryDetail />} /> this caused all the itineraries goes to a fixed one, not providing the desired url, and provide the wrong itinerary on clikc */}
- 
- {/* Conflicts */}
-
-
-  {/* Place and tab routes */}
-  <Route path="/places/events" element={<Events />} />
-  <Route path="/places/destination-places" element={<Places />} />
-  <Route path="/places/itineraries" element={<ItineraryList />} />
-  <Route path="/places/tags" element={<Tags />} />
-
-
-  {/* City routes */}
-  <Route path="/cities/:country_slug/:city_slug" element={<Destination />} />
-  <Route path="/places/destination" element={<RedirectToLastCity />} />
-
-  {/* Itinerary routes - FIXED */}
- 
-    <Route path="/webroutes/*" element={<ItineraryDetail />} />
-  <Route path="/itineraries/details/:id" element={<ItineraryDetail />} />
-  <Route path="/places/itineraries-details" element={<ItineraryDetail />} />
-
-
-
-
+                {/* <Route path="/itineraries/details" element={<ItineraryDetails />} /> */}
+                <Route path="/itineraries/details/:id?" element={<ItineraryDetail />} />
 
                 <Route path="/explore" element={<ExplorePage />} />
 

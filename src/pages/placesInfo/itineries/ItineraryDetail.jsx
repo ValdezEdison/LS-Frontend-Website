@@ -1,3 +1,5 @@
+// src/pages/placesInfo/itineraries/ItineraryDetails.jsx
+
 import React, { useEffect, useContext, useState, useCallback } from "react";
 import Header from "../../../components/layouts/Header";
 import Footer from "../../../components/layouts/Footer";
@@ -38,12 +40,14 @@ const ItineraryDetail = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+
   const { id } = location.state || {};
   const { id: absolute_url } = useParams();
 
+  
   const cleanUrl = (url) => {
     if (!url) return url;
-    return url.replace(/^\/?routes\//, '');
+    return url.replace(/^\/?webroutes\//, '');
   };
   const identifier = absolute_url ? cleanUrl(absolute_url) : id;
 
@@ -75,21 +79,6 @@ const ItineraryDetail = () => {
   const tripType = localStorage.getItem('tripType') 
   ? JSON.parse(localStorage.getItem('tripType')).type 
   : "solo";
-  // const [formState, setFormState] = useState({
-  //   tripType: tripType,
-  //   tripName: '',
-  //   startDate: null,
-  //   endDate: null,
-  //   destinationSearchQuery: "",
-  //   mode: 'driving',
-  //   destinations: [{
-  //     destinationSearchQuery: '',
-  //     destinationId: null,
-  //     destinationName: ''
-  //   }],
-  //   stops: []
-  // });
-
 
    // Add trip functionality
     const {
@@ -180,22 +169,97 @@ const ItineraryDetail = () => {
     
   },[language, itineraryDetails] )
 
-  const handleViewMoreDetails = (e, id) => {
+  /**
+ * Normalizes a URL to prevent double slashes
+ * @param {string} baseUrl - The base URL or path (e.g., '/sites/')
+ * @param {string} path - The path to append (e.g., '/webroutes/espana/barcelona-es/route-slug/')
+ * @returns {string} - A properly formatted URL without double slashes
+ */
+const normalizeUrl = (baseUrl, path) => {
+  // Remove leading and trailing slashes from both parts
+  const cleanBase = (baseUrl || '').replace(/^\/+|\/+$/g, '');
+  const cleanPath = (path || '').replace(/^\/+|\/+$/g, '');
+  
+  // Join with a single slash
+  return cleanBase && cleanPath ? `/${cleanBase}/${cleanPath}` : 
+         cleanBase ? `/${cleanBase}` : 
+         cleanPath ? `/${cleanPath}` : '/';
+};
+  // Add this function at the top of your component
+const getCleanItineraryUrl = (itinerary) => {
+  if (!itinerary || !itinerary.absolute_url) {
+    return null;
+  }
+  
+  // Log the original URL for debugging
+  console.log('Original absolute_url:', itinerary.absolute_url);
+  
+  // Extract URL parts
+  const url = itinerary.absolute_url;
+  
+  // Check if we're dealing with a webroutes URL
+  if (url.includes('webroutes')) {
+    // Handle the case where the URL already contains 'webroutes'
+    // Extract the part after 'webroutes'
+    const parts = url.split('webroutes');
+    const path = parts[parts.length - 1];
+    
+    // Normalize the URL to prevent double slashes
+    return normalizeUrl('webroutes', path);
+  } 
+  // Check if we're dealing with a sites URL
+  else if (url.includes('sites')) {
+    // Something strange is happening - we're getting a 'sites' URL for an itinerary
+    console.warn('Unexpected URL format for itinerary - contains "sites" instead of "webroutes":', url);
+    
+    // Try to extract the path and normalize
+    const parts = url.split('sites');
+    const path = parts[parts.length - 1];
+    
+    // Normalize the URL to prevent double slashes
+    return normalizeUrl('sites', path);
+  } 
+  // For all other URL formats
+  else {
+    // Clean the URL of any leading/trailing slashes
+    const cleanUrl = url.replace(/^\/+|\/+$/g, '');
+    
+    // Add the appropriate prefix based on what we're dealing with
+    return normalizeUrl('webroutes', cleanUrl);
+  }
+};
 
-    if(isAuthenticated){
-
-      const idStr = String(id);
-      if (idStr.includes('/')) { // Now safe for numbers
-          navigate(`/places/details/${encodeURIComponent(idStr)}`);
-      } else {
-          navigate(`/places/details`, { state: { id } });
-      }
-    }else{
-        togglePopup("alert", true);
-        setAlertTitle(tCommon('authAlert.viewDetails.title'));
-        setAlertMessage(tCommon('authAlert.viewDetails.description'));
+// Add this to your handleViewMoreDetails function
+const handleViewMoreDetails = (e, id) => {
+  if (isAuthenticated) {
+    const itinerary = itineries.find(item => item.id === id);
+    
+    console.group('Itinerary Navigation Debug');
+    console.log('Itinerary ID:', id);
+    console.log('Found Itinerary:', itinerary);
+    
+    if (itinerary && itinerary.absolute_url) {
+      console.log('Original absolute_url:', itinerary.absolute_url);
+      
+      // Use our normalized URL function
+      const normalizedUrl = getCleanItineraryUrl(itinerary);
+      console.log('Normalized URL:', normalizedUrl);
+      
+      // Navigate to the clean URL
+      navigate(normalizedUrl);
+    } else {
+      // Fallback to ID-based navigation
+      console.log('No absolute_url found, using ID navigation');
+      navigate('/places/itineraries-details', { state: { id } });
     }
-  };
+    console.groupEnd();
+  } else {
+    togglePopup("alert", true);
+    setAlertTitle(tCommon('authAlert.viewDetails.title'));
+    setAlertMessage(tCommon('authAlert.viewDetails.description'));
+  }
+};
+
 
   const handleActions = (e, action, id, name) => {
     
@@ -281,19 +345,7 @@ const ItineraryDetail = () => {
       return () => debouncedFetchCities.cancel();
     }, [formState.destinations, activeDestinationIndex, debouncedFetchCities]);
   
-    // Update destination handler
-    // const updateDestination = (index, field, value) => {
-    //   setFormState(prev => {
-    //     const newDestinations = [...prev.destinations];
-    //     newDestinations[index] = {
-    //       ...newDestinations[index],
-    //       [field]: value
-    //     };
-    //     return { ...prev, destinations: newDestinations };
-    //   });
-    // };
-
-  // const [formErrors, setFormErrors] = useState({});
+ 
   const [isCreatingNewTrip, setIsCreatingNewTrip] = useState(false);
   const [selectedTripId, setSelectedTripId] = useState(null);
 
@@ -452,6 +504,31 @@ const ItineraryDetail = () => {
     };
   
 
+ const handlePlaceClick = (e, id) => {
+  if (isAuthenticated) {
+    const idStr = String(id);
+    console.log('Place clicked:', idStr);
+    
+    if (idStr.includes('/')) { // Path-based ID
+      // Clean up the URL to avoid double slashes
+      const cleanUrl = idStr.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/');
+      
+      // Encode the URL
+      const encodedUrl = encodeURIComponent(cleanUrl);
+      console.log('Encoded place URL:', encodedUrl);
+      
+      // Navigate to the place details with the encoded URL
+      navigate(`/places/details/${encodedUrl}`);
+    } else {
+      // Regular numeric ID
+      navigate(`/places/details`, { state: { id } });
+    }
+  } else {
+    togglePopup("alert", true);
+    setAlertTitle(tCommon('authAlert.viewDetails.title'));
+    setAlertMessage(tCommon('authAlert.viewDetails.description'));
+  }
+};
 
   if (loading) {
 
@@ -503,8 +580,7 @@ const ItineraryDetail = () => {
  
   return (
     <>
-            <HelmetProvider>
-
+     <HelmetProvider>
           <Helmet>
             {/* Title Tag */}
             <title>{itineraryDetails?.title || "Explore This Itinerary"}</title>
@@ -650,12 +726,15 @@ const ItineraryDetail = () => {
           </section>
           <section className={styles.itineraryPlaces}>
             {itineraryDetails?.stops && itineraryDetails.stops.length > 0 ? (
-              // Render itinerary stops if available
               itineraryDetails.stops.map((stop, index) => (
-                <ItineraryCard key={stop.id} place={stop} index={index + 1} handleViewMoreDetails={handleViewMoreDetails} />
+                <ItineraryCard 
+                  key={stop.id} 
+                  place={stop} 
+                  index={index + 1} 
+                  handleViewMoreDetails={handlePlaceClick} // Pass the new handler here
+                />
               ))
             ) : (
-              // Show "No results" message if no stops are found
               <div className="no-results-wrapper">{t('Itinerary.noStops')}</div>
             )}
           </section>

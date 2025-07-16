@@ -31,7 +31,7 @@ import NewsLetterReducer from "../features/common/newsLetter/NewsLetterSlice.jsx
 // cms reducer
 import blockReducer from "../features/cms/Blocks/BlocksSlice.jsx"
 import pagesReducer from "../features/cms/Pages/PagesSlice.jsx"
-import wordPressReducer from "../features/cms/wordpress/WordPressSlice.jsx";
+import wordPressReducer from "../features/cms/wordpress/WordPressSlice";
 
 
 import locationReducer from "../features/location/LocationSlice.jsx"
@@ -60,21 +60,24 @@ const initialState = {
 };
  
 // Configuration for redux-persist
-const destinationPersistConfig  = {
+const persistConfig = {
   key: "destination", // Key for the persisted state
   storage, // Storage engine (localStorage by default)
-  whitelist: ["destination"], // Only persist the destinationReducer
+  whitelist: ["destination", "location"], // Only persist the destinationReducer
 };
 
-const locationPersistConfig = {
-  key: 'location',
-  storage,
-  whitelist: ['settings', 'currentLocation', 'trackingEnabled']
-};
 // Wrap the destinationReducer with persistReducer
-const persistedDestinationReducer = persistReducer(destinationPersistConfig, destinationReducer);
-const persistedLocationReducer = persistReducer(locationPersistConfig, locationReducer);
- 
+const persistedDestinationReducer = persistReducer(persistConfig, destinationReducer);
+
+const persistedLocationReducer = persistReducer(
+  {
+    key: "location",
+    storage,
+    whitelist: ["settings", "currentLocation", "trackingEnabled"]
+  }, 
+  locationReducer
+);
+
 const cmsReducer = combineReducers({
   blocks: blockReducer,
   pages: pagesReducer,
@@ -98,7 +101,6 @@ const store = configureStore({
     cities: citiesReducer,
     popup: popupReducer,
     destination: persistedDestinationReducer,
-     //destination: destinationReducer,
     eventsByCity: eventByCityReducer,
     placesInCity: placesInCityReducer,
     itineriesInCity: itineriesInCityReducer,
@@ -107,7 +109,7 @@ const store = configureStore({
     continents: continentReducer,
     explore: exploreReducer,
     favorites: favoriteReducer,
-    myTrips: myTripsReducer, 
+    myTrips: myTripsReducer,
     locationSettings: persistedLocationReducer,
     suggestions: suggestionReducer,
     tags: tagsReducer,
@@ -120,15 +122,8 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER", PURGE, 
-                         "languages/fetchLanguages/fulfilled", 
-                         "destination/fetchBySlug/fulfilled",
-                         "pages/fetchOurPartners/fulfilled",
-                         "blocks/fetchFooterBlocks/fulfilled",
-                         "locations/fetchLocationSettings/fulfilled"],
-        ignoredActionPaths: ['result', 'payload.trackingId'],
-        ignoredPaths: ['location.trackingId'],
-
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER", PURGE],
+        ignoredActionPaths: ['result'],
       },
     }),
 });

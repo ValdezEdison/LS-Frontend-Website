@@ -690,8 +690,7 @@ useEffect(() => {
 
 
   return (
-    <>
- 
+    <>  
     <HelmetProvider>
             <Helmet>
                     <title>{place?.title}</title>
@@ -742,7 +741,7 @@ useEffect(() => {
         />
       )}
 
-     {isOpen && popupState.gallery && (
+      {isOpen && popupState.gallery && (
         <Modal
           title={place.title}
           customClass="galleryReviewPopup"
@@ -755,7 +754,7 @@ useEffect(() => {
           <ReviewSectionPopupContent placeDetails={place} reviews={comments} />
         </Modal>
       )}
- 
+
       <TravelerReviews
         onClose={() => togglePopup("reviewDrawer", false)}
         isOpen={isOpen && popupState.reviewDrawer}
@@ -861,7 +860,7 @@ useEffect(() => {
                   <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleActions}
                     isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
                     toggleShareOptions={toggleShareOptions}
-                   />
+                    />
                 )}
                 
                 {isLoading ? (
@@ -902,7 +901,7 @@ useEffect(() => {
         </main>
         <Footer />
       </div>
-          </HelmetProvider>
+    </HelmetProvider>
     </>
   );
 };

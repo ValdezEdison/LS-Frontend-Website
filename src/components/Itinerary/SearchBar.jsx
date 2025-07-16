@@ -57,47 +57,7 @@ const SearchBar = ({state , setState, cities, count}) => {
       
     };
 
-  return (
-    <section className={styles.banner}>
-      <div className={styles.bannerContent}>
-      <h1 className={styles.title}>{t('itinerary.title', { count: count })}</h1>
-      <div className={styles.itenarySearchWrapper}>
-        <span className={styles.searchLabel}>{t('itinerary.searchLabel')}</span>
-        <div className={styles.searchContainer}>
-          <SearchInput
-            handleSearchClick={() => setShowSuggestionDropDown(true)}
-            suggestionRef={suggestionRef}
-            handleSearch={handleSearch}
-            showSuggestionDropDown={showSuggestionDropDown}
-            handleSearchClose={handleSearchClose}
-            searchValue={state.destinationSearchQuery}
-            suggestionsList={cities}
-            placeholder={t('itinerary.searchPlaceholder')}
-            onSelect={(value) => updateState("selectedDestinationId", value)}
-            customClassName="placesSearchInputContainer"
-            selectedValue={state.selectedDestinationId}
-             customClassNameForSuggestions="suggestionsContainerSm"
-          />
-          {/* <div className={styles.searchInput}>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/3a5ff2c7562e4764a5a85cb40d9ea963/c94fcaf591be0223923a2bc7ad1c4674340cfa8c?apiKey=3a5ff2c7562e4764a5a85cb40d9ea963&"
-              alt=""
-              className={styles.searchIcon}
-            />
-            <input
-              type="text"
-              placeholder="Busca un destino"
-              aria-label="Busca un destino"
-            />
-          </div> */}
-        </div>
-      </div>
-      
-        
-      </div>
-    
-    </section>
-  );
+ 
 };
 
 export default SearchBar;

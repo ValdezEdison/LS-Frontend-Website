@@ -9,8 +9,8 @@ const tagsService = {
         return ApiService.get(`/sites?type=${type}&city_id=${cityId}&tag=${tagId}&page=${page}`)
     },
     getItinerariesByTag: (tagId, cityId, page, sortOrder) => {
-        if(sortOrder) return ApiService.get(`/routes?city_id=${cityId}&tag=${tagId}&page=${page}&sort_order=${sortOrder}`);
-        return ApiService.get(`/routes?city_id=${cityId}&tag=${tagId}&page=${page}`);
+        if(sortOrder) return ApiService.get(`/webroutes?city_id=${cityId}&tag=${tagId}&page=${page}&sort_order=${sortOrder}`);
+        return ApiService.get(`/webroutes?city_id=${cityId}&tag=${tagId}&page=${page}`);
     }
 }
 
