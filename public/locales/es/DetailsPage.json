@@ -12,6 +12,7 @@
         "addReview": "Añadir un comentario",
         "seeAll": "Ver todos los comentarios",
         "rating": "Puntuación",
+        "travelerCommentsTitle": "Comentarios de los viajeros:",
         "reviewsCount_zero": "No hay reseñas aún.",
         "reviewsCount_one": "{{count}} reseña",
         "reviewsCount_other": "{{count}} reseñas",

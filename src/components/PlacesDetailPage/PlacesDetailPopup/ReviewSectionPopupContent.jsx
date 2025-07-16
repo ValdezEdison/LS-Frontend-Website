@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './MuseumModal.module.css';
-import { Profilecircle, ProfilePlaceholder, Star, StarFill } from "../../common/Images";
+import { ProfilePlaceholder, Star, StarFill } from "../../common/Images";
+import { useTranslation } from 'react-i18next'; // 1. Import the hook
 
 const ReviewSectionPopupContent = ({ placeDetails, reviews }) => {
+  const { t } = useTranslation("DetailsPage");
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -23,10 +26,14 @@ const ReviewSectionPopupContent = ({ placeDetails, reviews }) => {
           <div className={styles.stars}>
             {renderStars(placeDetails.rating)}
           </div>
-          <div className={styles.reviewCount}>{reviews.length} reseñas</div>
+          {/* 3. Replace hardcoded text with the 't' function */}
+          <div className={styles.reviewCount}>
+            {t('reviews.reviewsCount', { count: reviews.length })}
+          </div>
         </div>
       </div>
-      <h3 className={styles.reviewsTitle}>Comentarios de los viajeros:</h3>
+      {/* 4. Replace hardcoded title */}
+      <h3 className={styles.reviewsTitle}>{t('reviews.travelerCommentsTitle')}</h3>
       <ul className={styles.reviewList}>
         {reviews.map((review, index) => (
           <li key={review.id || index} className={styles.reviewItem}>

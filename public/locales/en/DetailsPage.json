@@ -12,6 +12,7 @@
         "addReview": "Add a review",
         "seeAll": "See all reviews",
         "rating": "Rating", 
+        "travelerCommentsTitle": "Traveler Comments:",
         "reviewsCount_zero": "No reviews",
         "reviewsCount_one": "{{count}} review",
         "reviewsCount_other": "{{count}} reviews",
