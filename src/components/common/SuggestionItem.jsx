@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./SearchInput.module.css";
 
 const SuggestionItem = ({ id, text, onSelect, type = "", isUnified = false }) => {
-
   const handleClick = () => {
     if (isUnified) {
       onSelect(id, type);
