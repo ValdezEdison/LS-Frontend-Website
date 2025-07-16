@@ -84,6 +84,49 @@ const ExplorePage = () => {
    }
   };
 
+    const handleSearchClick = () => {
+    if(!showSuggestionDropDown && state.keyword.length === 0){
+      setShowRegionDropDown(!showRegionDropDown); // Toggle the dropdown visibility
+    }else if(state.keyword.length > 0){
+      setShowSuggestionDropDown(!showSuggestionDropDown);
+    }
+    
+  };
+
+  const handleNavigate = (id, type) => {
+    if (!isAuthenticated) {
+      togglePopup("alert", true);
+      setAlertTitle(tCommon('authAlert.viewDetails.title'));
+      setAlertMessage(tCommon('authAlert.viewDetails.description'));
+      return;
+    }
+
+    // Define routes
+    const routes = {
+      place: '/places/details', // Places and events are from the same model "sites"
+      event: '/places/details', // Uses the same structure as "places"
+      city: null // Cities require a structured slug-based URL
+    };
+
+    const idStr = String(id);
+
+    if (type === "city") {
+      // No URI encoding for cities, generate direct slug URL
+      const [countrySlug, citySlug] = idStr.split(","); // Assume `id` is a string like "country_slug,city_slug"
+      if (countrySlug && citySlug) {
+        navigate(`/cities/${countrySlug}/${citySlug}/`);
+      } else {
+        console.error("Invalid format for city ID:", idStr);
+      }
+    } else if (idStr.includes('/')) { 
+      // URL-based IDs (e.g., absolute_url for places/events)
+      navigate(`${routes[type]}/${encodeURIComponent(idStr)}`);
+    } else {
+      // ID-based navigation
+      navigate(routes[type], { state: { id } });
+    }
+  };
+
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
   };
@@ -151,7 +194,11 @@ const ExplorePage = () => {
       <main className="page-center">
         <h1 className={styles.pageTitle}> {tExplore('pageTitle', { count })}</h1>
         {/* <SearchBar /> */}
-        <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} unifiedSearchResults={unifiedSearchResults} />
+        <SearchComponent continents={continents} loading={continentsLoading} state={state} setState={setState} onSelect={handleNavigate} handleSearchClick={() => handleSearchClick()} unifiedSearchResults={unifiedSearchResults} />
+                <div >
+            {/* <SearchInput handleSearchClick={handleSearchClick} showRegionDropDown={showRegionDropDown} suggestionRef={suggestionRef} handleSearch={handleSearch} showSuggestionDropDown={showSuggestionDropDown} handleSearchClose={handleSearchClose} searchValue={searchValue}/> */}
+    
+          </div>
 
         <h2 className={styles.sectionTitle}>{tExplore('sectionTitle')}</h2>
         <p className={styles.sectionSubtitle}>{tExplore('sectionSubtitle')}</p>

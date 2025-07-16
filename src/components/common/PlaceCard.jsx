@@ -167,18 +167,20 @@ const PlaceCard = forwardRef(
 
                     {/* Conditionally render the rating section */}
                     {hasComments && (
-                        <div className={styles.placeRating}>
-                            <span className={styles.ratingScore}>{place?.rating ?? ""}</span>
-                            <div className={styles.ratingInfo}>
-                                <p className={styles.ratingText}>
-                                    {getRatingText(place?.rating, translate)}
-                                </p>
-                                <p className={styles.reviewCount}>
-                                    {place?.comments_count ?? 0} {translate("placeCard.comments")}
-                                </p>
-                            </div>
+                    <div className={styles.placeRating}>
+                        <span className={styles.ratingScore}>{place?.rating ?? ""}</span>
+                        <div className={styles.ratingInfo}>
+                            <p className={styles.ratingText}>
+                                {getRatingText(place?.rating, translate)}
+                            </p>
+                            <p className={styles.reviewCount}> 
+                                {translate("placeCard.comments", { count: place?.comments_count ?? 0 })}
+                             
+
+                            </p>
                         </div>
-                    )}
+                    </div>
+                )}
                 </div>
 
                 {!isPopup && (

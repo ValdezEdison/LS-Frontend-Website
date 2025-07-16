@@ -295,7 +295,7 @@ const PlaceDetails = () => {
         // Cut the text at the last whole word and add an ellipsis
         return truncatedText.substring(0, lastSpaceIndex) + "...";
     };
-
+   const truncate = truncateDescription(description)
 
   const cleanUrl = (url) => {
     if (!url) return url;
@@ -690,218 +690,219 @@ useEffect(() => {
 
 
   return (
-    <>  
-    <HelmetProvider>
-            <Helmet>
-                    <title>{place?.title}</title>
-                    <meta name="description" content={truncateDescription(place?.description)} />
+    <> 
+      <HelmetProvider>
+              <Helmet>
+      
+                      <title> {truncateDescription(place?.description)}</title>
+                      <meta name="description" content={truncateDescription(place?.description)} />
+                      
+                      {/* Open Graph (Facebook, etc.) */}
+                      <meta property="og:title" content={place?.title} />
+                      <meta property="og:description" content={truncateDescription(place?.description)} />
+                      <meta property="og:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
+                      <meta property="og:url" content={pageUrl} />
+                      <meta property="og:type" content="article" /> {/* Use "article" for detailed content pages */}
 
-                    {/* Open Graph (Facebook, etc.) */}
-                    <meta property="og:title" content={place?.title} />
-                    <meta property="og:description" content={truncateDescription(place?.description)} />
-                    <meta property="og:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
-                    <meta property="og:url" content={pageUrl} />
-                    <meta property="og:type" content="article" /> {/* Use "article" for detailed content pages */}
-
-                    {/* Twitter Card */}
-                    <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:title" content={place?.title} />
-                    <meta name="twitter:description" content={truncateDescription(place?.description)} />
-                    <meta name="twitter:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
-                </Helmet>
+                      {/* Twitter Card */}
+                      <meta name="twitter:card" content="summary_large_image" />
+                      <meta name="twitter:title" content={place?.title} />
+                      <meta name="twitter:description" content={truncateDescription(place?.description)} />
+                      <meta name="twitter:image" content={place?.images?.[0]?.fullsize || place?.images?.[0]?.original || "https://www.localsecrets.travel/images/app-local-secrets-logo-2-1.svg"} />
+                  </Helmet>
 
 
-      {isOpen && tripPopupState.addTripPopup && (
-        <AddTripPopup
-          onClose={closeAddTripPopup}
-          travelLiteList={travelLiteList}
-          state={tripState}
-          setState={setTripState}
-          handleSubmitTrip={handleSubmitTrip}
-        />
-      )}
+        {isOpen && tripPopupState.addTripPopup && (
+          <AddTripPopup
+            onClose={closeAddTripPopup}
+            travelLiteList={travelLiteList}
+            state={tripState}
+            setState={setTripState}
+            handleSubmitTrip={handleSubmitTrip}
+          />
+        )}
 
-      {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
-        dispatch(closeAddToTripPopup());
-        dispatch(closePopup());
-        dispatch(resetTripType());
-      }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
+        {isOpen && isAddToPopupOpen && <AddToTripPopup closeModal={() => {
+          dispatch(closeAddToTripPopup());
+          dispatch(closePopup());
+          dispatch(resetTripType());
+        }} state={formState} setState={setFormState} cities={cities} onSubmit={handleSubmit} formErrors={formErrors} setFormErrors={setFormErrors} {...modalSearchProps} handleActions={handleActions} />}
 
-      {isOpen && popupState.map && (
-        <MapPopup
-        onClose={() => {
-          togglePopup("map", false);
-          setState(prev => ({ ...prev, latitude: "", longitude: "" }));
-        }}
-          categories={{}}
-          ratings={{}}
-          state={state}
-          setState={setState}
-          handleActions={handleActions}
-        />
-      )}
+        {isOpen && popupState.map && (
+          <MapPopup
+          onClose={() => {
+            togglePopup("map", false);
+            setState(prev => ({ ...prev, latitude: "", longitude: "" }));
+          }}
+            categories={{}}
+            ratings={{}}
+            state={state}
+            setState={setState}
+            handleActions={handleActions}
+          />
+        )}
 
       {isOpen && popupState.gallery && (
-        <Modal
-          title={place.title}
-          customClass="galleryReviewPopup"
-          onClose={() => togglePopup("gallery", false)}
-        >
-          <ImageGalleryPopupContent 
-            images={place.images} 
-            startIndex={galleryStartIndex}  
-          /> 
-          <ReviewSectionPopupContent placeDetails={place} reviews={comments} />
-        </Modal>
-      )}
+          <Modal
+            title={place.title}
+            customClass="galleryReviewPopup"
+            onClose={() => togglePopup("gallery", false)}
+          >
+            <ImageGalleryPopupContent 
+              images={place.images} 
+              startIndex={galleryStartIndex}  
+            /> 
+            <ReviewSectionPopupContent placeDetails={place} reviews={comments} />
+          </Modal>
+        )}
+  
+        <TravelerReviews
+          onClose={() => togglePopup("reviewDrawer", false)}
+          isOpen={isOpen && popupState.reviewDrawer}
+          showReviewDrawer={popupState.reviewDrawer}
+          filters={filters}
+          isLoading={isLoading}
+          placeDetails={place}
+          reviews={comments}
+        />
 
-      <TravelerReviews
-        onClose={() => togglePopup("reviewDrawer", false)}
-        isOpen={isOpen && popupState.reviewDrawer}
-        showReviewDrawer={popupState.reviewDrawer}
-        filters={filters}
-        isLoading={isLoading}
-        placeDetails={place}
-        reviews={comments}
-      />
+        {isOpen && popupState.alert && (
+          <Modal
+            onClose={() => togglePopup("alert", false)}
+            customClass="modalSmTypeOne"
+          >
+            <AlertPopup handleNavigateToLogin={handleNavigateToLogin}  title={alertTitle || tDetail("authAlert.title")}
+          description={alertMessage || tDetail("authAlert.message")}
+    buttonText={tDetail("authAlert.button")}/>
+          </Modal>
+        )}
 
-      {isOpen && popupState.alert && (
-        <Modal
-          onClose={() => togglePopup("alert", false)}
-          customClass="modalSmTypeOne"
-        >
-          <AlertPopup handleNavigateToLogin={handleNavigateToLogin}  title={alertTitle || tDetail("authAlert.title")}
-        description={alertMessage || tDetail("authAlert.message")}
-  buttonText={tDetail("authAlert.button")}/>
-        </Modal>
-      )}
-
-      {isOpen && popupState.comment && (
-        <Modal
-          title={isEditing ? tDetail('commentPopup.editComment') : tDetail('commentPopup.addComment') }
-          onClose={() => {
-            togglePopup("comment", false);
-            setCommentForm({
-              text: "",
-              rating: 0,
-              errors: {
-                text: '',
-                rating: ''
-              },
-              touched: {
-                text: false,
-                rating: false
-              }
-            });
-            setIsEditing(false);
-            setEditingCommentId(null);
-          }}
-          customClass="modalMdTypeOne"
-        >
-          <CommentPopup
-            title={place?.title}
-            comment={commentForm.text}
-            rating={commentForm.rating}
-            errors={commentForm.errors}
-            touched={commentForm.touched}
-            onCommentChange={handleCommentChange}
-            onRatingChange={handleRatingChange}
-            onFieldBlur={handleFieldBlur}
-            onSubmit={handleSubmitComment}
-            isEditing={isEditing}
-          />
-        </Modal>
-      )}
-
-      {isOpen && popupState.deleteConfirm && (
-        <Modal
-          onClose={() => togglePopup("deleteConfirm", false)}
-          customClass="modalSmTypeOne"
-          hideCloseButton={true}
-        >
-          <ConfirmationPopup
-            title={tDetail('confirmationPopup.deleteComment.title')}
-            description={tDetail('confirmationPopup.deleteComment.description')}
-            onCancel={() => togglePopup("deleteConfirm", false)}
-            onConfirm={handleConfirmDelete}
-          />
-        </Modal>
-      )}
-
-      {isOpen && popupState.success && (
-        <Modal
-          title=""
-          onClose={() => togglePopup("success", false)}
-          customClass="modalSmTypeOne"
-          hideCloseButton={true}
-        >
-          <SuccessMessagePopup
-            title={successTitle}
-            message={successMessage}
-            onClose={() => togglePopup("success", false)}
-          />
-        </Modal>
-      )}
-      <div className={`${styles.lugaresContainer} ${popupState.reviewDrawer ? styles.overflowHide : ''}`}>
-
-        <Header />
-        <main className={styles.mainContent}>
-          <div className="page-center">
-            <div className={styles.contentWrapper}>
-              {isLoading ? (
-                <MapSectionSkeleton />
-              ) : (
-                <MapSection place={place} handleShowMapPopup={handleShowMapPopup} />
-              )}
-              <div className={styles.infoSection}>
-                {isLoading ? (
-                  <MuseumInfoSkeleton />
-                ) : (
-                  <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleActions}
-                    isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
-                    toggleShareOptions={toggleShareOptions}
-                    />
-                )}
-                
-                {isLoading ? (
-                  <ImageGallerySkeleton />
-                ) : (
-                  <ImageGallery
-                    handleClickViewMoreDetails={handleClickViewMoreDetails}
-                    images={place?.images}
-                  />
-                )}
-
-              </div>
-            </div>
-
-            {isLoading ? (
-              <Skeleton count={5} />
-            ) : (
-              <p 
-              className={styles.museumDescription}
-              dangerouslySetInnerHTML={{ 
-                __html: place?.description
-                  ?.replace(/\n/g, '<br />')   // Replace all variations with single line breaks
-              }} 
+        {isOpen && popupState.comment && (
+          <Modal
+            title={isEditing ? tDetail('commentPopup.editComment') : tDetail('commentPopup.addComment') }
+            onClose={() => {
+              togglePopup("comment", false);
+              setCommentForm({
+                text: "",
+                rating: 0,
+                errors: {
+                  text: '',
+                  rating: ''
+                },
+                touched: {
+                  text: false,
+                  rating: false
+                }
+              });
+              setIsEditing(false);
+              setEditingCommentId(null);
+            }}
+            customClass="modalMdTypeOne"
+          >
+            <CommentPopup
+              title={place?.title}
+              comment={commentForm.text}
+              rating={commentForm.rating}
+              errors={commentForm.errors}
+              touched={commentForm.touched}
+              onCommentChange={handleCommentChange}
+              onRatingChange={handleRatingChange}
+              onFieldBlur={handleFieldBlur}
+              onSubmit={handleSubmitComment}
+              isEditing={isEditing}
             />
-            )}
+          </Modal>
+        )}
 
-            {isLoading ? (
-              <ReviewSectionSkeleton />
-            ) : (
-              <ReviewSection handleClickSeeAllComments={handleClickSeeAllComments} handleClickAddComment={handleClickAddComment} handleClickEditComment={handleClickEditComment} handleClickDeleteComment={handleClickDeleteComment} comments={comments} placeDetails={place} />
-            )}
-            {isLoading ? (
-              <WidgetSkeleton />
-            ) : (
-              <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} handleNavActions={handleNavActions}/>
-            )}
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </HelmetProvider>
+        {isOpen && popupState.deleteConfirm && (
+          <Modal
+            onClose={() => togglePopup("deleteConfirm", false)}
+            customClass="modalSmTypeOne"
+            hideCloseButton={true}
+          >
+            <ConfirmationPopup
+              title={tDetail('confirmationPopup.deleteComment.title')}
+              description={tDetail('confirmationPopup.deleteComment.description')}
+              onCancel={() => togglePopup("deleteConfirm", false)}
+              onConfirm={handleConfirmDelete}
+            />
+          </Modal>
+        )}
+
+        {isOpen && popupState.success && (
+          <Modal
+            title=""
+            onClose={() => togglePopup("success", false)}
+            customClass="modalSmTypeOne"
+            hideCloseButton={true}
+          >
+            <SuccessMessagePopup
+              title={successTitle}
+              message={successMessage}
+              onClose={() => togglePopup("success", false)}
+            />
+          </Modal>
+        )}
+        <div className={`${styles.lugaresContainer} ${popupState.reviewDrawer ? styles.overflowHide : ''}`}>
+
+          <Header />
+          <main className={styles.mainContent}>
+            <div className="page-center">
+              <div className={styles.contentWrapper}>
+                {isLoading ? (
+                  <MapSectionSkeleton />
+                ) : (
+                  <MapSection place={place} handleShowMapPopup={handleShowMapPopup} />
+                )}
+                <div className={styles.infoSection}>
+                  {isLoading ? (
+                    <MuseumInfoSkeleton />
+                  ) : (
+                    <MuseumInfo place={place} handleNavigateToWebsite={handleNavigateToWebsite} handleActions={handleActions}
+                      isFavoriteToggling={isFavoriteToggling && favTogglingId === place?.id} handleGenerateLink={handleGenerateLink} showShareOptions={showShareOptions}
+                      toggleShareOptions={toggleShareOptions}
+                    />
+                  )}
+                  
+                  {isLoading ? (
+                    <ImageGallerySkeleton />
+                  ) : (
+                    <ImageGallery
+                      handleClickViewMoreDetails={handleClickViewMoreDetails}
+                      images={place?.images}
+                    />
+                  )}
+
+                </div>
+              </div>
+
+              {isLoading ? (
+                <Skeleton count={5} />
+              ) : (
+                <p 
+                className={styles.museumDescription}
+                dangerouslySetInnerHTML={{ 
+                  __html: place?.description
+                    ?.replace(/\n/g, '<br />')   // Replace all variations with single line breaks
+                }} 
+              />
+              )}
+
+              {isLoading ? (
+                <ReviewSectionSkeleton />
+              ) : (
+                <ReviewSection handleClickSeeAllComments={handleClickSeeAllComments} handleClickAddComment={handleClickAddComment} handleClickEditComment={handleClickEditComment} handleClickDeleteComment={handleClickDeleteComment} comments={comments} placeDetails={place} />
+              )}
+              {isLoading ? (
+                <WidgetSkeleton />
+              ) : (
+                <Widget data={NearByPlaces} title={tCommon("nearbyPlaces")} count={4} handleNavActions={handleNavActions}/>
+              )}
+            </div>
+          </main>
+          <Footer />
+        </div>
+      </HelmetProvider>
     </>
   );
 };
