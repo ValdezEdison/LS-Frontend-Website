@@ -1,3 +1,4 @@
+// src/components/HomePage/SearchComponents.jsx
 import React, { useState, useEffect, useRef } from "react";
 import RegionSearch from "./RegionSearch";
 import SearchInput from "../common/SearchInput";
@@ -141,21 +142,32 @@ function SearchComponent({ continents, loading, state, setState, unifiedSearchRe
       setAlertMessage(tCommon('authAlert.viewDetails.description'));
       return;
     }
-  
+
+    // Define routes
     const routes = {
-      place: '/places/details',
-      event: '/events/details',
-      city: '/places/destination'
+      place: '/places/details', // Places and events are from the same model "sites"
+      event: '/places/details', // Uses the same structure as "places"
+      city: null // Cities require a structured slug-based URL
     };
 
     const idStr = String(id);
-    if (idStr.includes('/')) { // Now safe for numbers
-        navigate(`${routes[type]}/${encodeURIComponent(idStr)}`);
+
+    if (type === "city") {
+      // No URI encoding for cities, generate direct slug URL
+      const [countrySlug, citySlug] = idStr.split(","); // Assume `id` is a string like "country_slug,city_slug"
+      if (countrySlug && citySlug) {
+        navigate(`/cities/${countrySlug}/${citySlug}/`);
+      } else {
+        console.error("Invalid format for city ID:", idStr);
+      }
+    } else if (idStr.includes('/')) { 
+      // URL-based IDs (e.g., absolute_url for places/events)
+      navigate(`${routes[type]}/${encodeURIComponent(idStr)}`);
     } else {
-        navigate(routes[type], { state: { id } });
+      // ID-based navigation
+      navigate(routes[type], { state: { id } });
     }
   };
-
 
   const handleNavigateToLogin = () => {
     navigate('/login', { state: { from: location } });
