@@ -41,7 +41,7 @@
   },
   "placeCard": {
     "place_image": "Place image",
-    "perfect": "Exceptional",
+    "perfect": "Outstanding",
     "excellent": "Excellent",
     "very_good": "Very Good",
     "good": "Good",
@@ -59,7 +59,7 @@
   "ratings": {
     "title": "Rating",
     "labels": {
-        "4.9-5.0": "Exceptional: 4.9 - 5.0",
+        "4.9-5.0": "Outstanding: 4.9 - 5.0",
         "4.7-4.8": "Excellent: 4.7 - 4.8",
         "4.5-4.6": "Very Good: 4.5 - 4.6",
         "4.0-4.4": "Good: 4.0 - 4.4"
