@@ -47,7 +47,7 @@
     "good": "Bueno",
     "average": "Promedio",
     "bad": "Malo",
-    "terrible": "No ratings",
+    "norating": "No ratings",
     "comments_zero": "No Comentarios aún",
     "comments_one": "{{count}} Comentario",
     "comments_other": "{{count}} Comentarios",

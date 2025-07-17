@@ -6,5 +6,5 @@ export const getRatingText = (rating, translate) => {
     if (rating >= 3.0) return translate("placeCard.good");
     if (rating >= 2.0) return translate("placeCard.average");
     if (rating >= 1.0) return translate("placeCard.bad");
-    return translate("placeCard.terrible");
+    return translate("placeCard.norating");
   };
